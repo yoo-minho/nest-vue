@@ -1,0 +1,14 @@
+[
+  {
+    "groupName": "그룹 이름 1",
+    "groupDescription": "그룹 1에 대한 설명을 적는 공간입니다.",
+    "graph": [
+      {
+        "month": "Jan",
+        "week": "1",
+        "desc": "1월 1주차",
+        "count": 5
+      }
+    ]
+  }
+]

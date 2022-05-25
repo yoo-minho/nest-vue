@@ -1,7 +1,19 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
+import eslintPlugin from 'vite-plugin-eslint';
+import { quasar, transformAssetUrls } from '@quasar/vite-plugin';
 
-// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue()]
-})
+  define: {
+    'process.env': {},
+  },
+  plugins: [
+    vue({
+      template: { transformAssetUrls },
+    }),
+    eslintPlugin(),
+    quasar({
+      sassVariables: 'src/quasar-variables.sass',
+    }),
+  ],
+});

@@ -1,19 +1,37 @@
 {
-  "name": "client",
+  "name": "nest-vue-client",
   "private": true,
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint": "eslint --ext .js,.vue --ignore-path ../.gitignore --fix src",
+    "format": "prettier .  --write"
   },
   "dependencies": {
-    "vue": "^3.2.25"
+    "@quasar/extras": "^1.13.6",
+    "animate.css": "^4.1.1",
+    "pinia": "^2.0.14",
+    "quasar": "^2.6.6",
+    "vue": "^3.2.25",
+    "vue-router": "^4.0.15"
   },
   "devDependencies": {
+    "@quasar/vite-plugin": "^1.0.9",
+    "@typescript-eslint/eslint-plugin": "^5.23.0",
+    "@typescript-eslint/parser": "^5.23.0",
     "@vitejs/plugin-vue": "^2.3.3",
-    "typescript": "^4.5.4",
+    "@vue/eslint-config-typescript": "^10.0.0",
+    "eslint": "^8.15.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-vue": "^8.7.1",
+    "prettier": "^2.6.2",
+    "sass": "~1.32.12",
+    "typescript": "^4.6.4",
     "vite": "^2.9.9",
+    "vite-plugin-eslint": "^1.6.0",
+    "vue-eslint-parser": "^9.0.1",
     "vue-tsc": "^0.34.7"
   }
 }
