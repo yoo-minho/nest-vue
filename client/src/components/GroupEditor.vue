@@ -3,12 +3,10 @@ import { ref } from 'vue';
 import { getBlogIconUrl } from '../constants';
 import { useGroupStore } from '../stores/group';
 
-const { closeGroupEditor, openLinkEditor, links, deleteLink, initLinks } = useGroupStore();
+const { closeGroupEditor, openLinkEditor, links, deleteLink, initLinks, linkCountMessage } = useGroupStore();
 const groupName = ref('');
 const groupDescription = ref('');
 const email = ref('');
-
-const linkCounter = () => (links.length > 0 ? `(${links.length}/10)` : '');
 
 initLinks();
 </script>
@@ -62,7 +60,7 @@ initLinks();
             hide-bottom-space
           />
           <q-btn color="primary" class="full-width" label="블로그 링크 추가" @click="openLinkEditor">
-            <span>{{ linkCounter() }}</span>
+            <span>{{ 'xxxx' + linkCountMessage }}</span>
           </q-btn>
 
           <q-list v-if="links.length > 0" bordered separator>
