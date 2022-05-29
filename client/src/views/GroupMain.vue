@@ -19,8 +19,8 @@ function clickGroup(id: number): void {
 <template>
   <q-header bordered class="bg-primary text-white max-width">
     <q-toolbar>
+      <q-toolbar-title>Home</q-toolbar-title>
       <q-btn flat round dense icon="search" />
-      <q-toolbar-title>그룹</q-toolbar-title>
       <q-btn icon="add_circle_outline" flat round dense @click="openGroupEditor" />
     </q-toolbar>
   </q-header>

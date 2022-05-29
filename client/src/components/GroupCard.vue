@@ -26,7 +26,10 @@ function isTextImage(url: string) {
           </q-item>
         </q-item-label>
         <q-item-label caption>
-          <span :class="{ [detail ? 'ellipsis-5-lines' : 'ellipsis-2-lines']: true }">{{ description }}</span>
+          <span class="ellipsis-2-lines">
+            {{ description }}
+            <q-tooltip max-width="20rem">{{ description }}</q-tooltip>
+          </span>
         </q-item-label>
       </q-item-section>
     </q-item>
