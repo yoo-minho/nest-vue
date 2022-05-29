@@ -19,5 +19,4 @@ myApp.use(Quasar, {
 });
 myApp.use(createPinia());
 myApp.use(router);
-
 myApp.mount('#app');

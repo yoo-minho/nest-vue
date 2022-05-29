@@ -1,8 +1,21 @@
 <script setup lang="ts">
 import GroupCard from '../components/GroupCard.vue';
 import { useGroupStore } from '../stores/group';
+import axios from 'axios';
 
 const { openGroupEditor } = useGroupStore();
+
+axios.get('http://localhost:5000/api/open-graph-tag', {
+  params: {
+    url: 'https://blog.naver.com/dellose',
+  },
+});
+
+axios.get('http://localhost:5000/api/open-graph-tag', {
+  params: {
+    url: 'https://uminoh.tistory.com/',
+  },
+});
 </script>
 
 <template>

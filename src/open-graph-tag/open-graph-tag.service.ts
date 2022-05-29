@@ -1,26 +1,24 @@
 import { Injectable } from '@nestjs/common';
-import { CreateOpenGraphTagDto } from './dto/create-open-graph-tag.dto';
-import { UpdateOpenGraphTagDto } from './dto/update-open-graph-tag.dto';
+import * as ogs from 'open-graph-scraper';
 
 @Injectable()
 export class OpenGraphTagService {
-  create(createOpenGraphTagDto: CreateOpenGraphTagDto) {
-    return 'This action adds a new openGraphTag';
+  async getOne(url: string) {
+    let result;
+    try {
+      const response = await ogs({ url: convertScrapUrl(url) });
+      result = response.result;
+    } catch (e) {
+      result = { success: false, message: e.result.error };
+    }
+    return result;
   }
+}
 
-  findAll() {
-    return `This action returns all openGraphTag`;
+function convertScrapUrl(url: string): string {
+  if (url.startsWith('https://blog.naver.com/')) {
+    const blogId = url.replace('https://blog.naver.com/', '');
+    return `https://blog.naver.com/prologue/PrologueList.naver?blogId=${blogId}`;
   }
-
-  findOne(id: number) {
-    return `This action returns a #${id} openGraphTag`;
-  }
-
-  update(id: number, updateOpenGraphTagDto: UpdateOpenGraphTagDto) {
-    return `This action updates a #${id} openGraphTag`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} openGraphTag`;
-  }
+  return url;
 }

@@ -4,6 +4,7 @@ import { useQuasar } from 'quasar';
 import { BLOGS } from '../constants';
 import { ref } from 'vue';
 import { BlogType, ErrorMessage } from '../types/common';
+import axios from 'axios';
 
 const { closeLinkEditor, links, addLink } = useGroupStore();
 const $q = useQuasar();
@@ -21,25 +22,38 @@ const getErrorMessage = (v: string): string => {
   }
 };
 
-// function xxx(){
-//   import axios from 'axios';
-// axios.get('/api/welcome');
-// }
-
 const isUpperIncludes = (x: string, y: string) => x.toUpperCase().includes(y.toUpperCase());
 const isAvailableUrl = (url: string): boolean => BLOGS.filter((blog) => isUpperIncludes(url, blog)).length > 0;
 const getBlogType = (url: string): BlogType => BLOGS.filter((blog) => isUpperIncludes(url, blog))[0] as BlogType;
 
 const blogUrl = ref('');
 
-function addBlogLink() {
+async function addBlogLink() {
   const errorMessage = getErrorMessage(blogUrl.value);
   if ('' !== errorMessage) {
     $q.notify({ type: 'negative', message: errorMessage });
     return;
   }
-  addLink({ url: blogUrl.value, type: getBlogType(blogUrl.value), index: links.length + 1 });
+
+  const ogsData = await getOgsData(blogUrl.value);
+  if (!ogsData.success) {
+    $q.notify({ type: 'negative', message: ogsData.message });
+    return;
+  }
+
+  addLink({
+    index: links.length + 1,
+    url: blogUrl.value,
+    type: getBlogType(blogUrl.value),
+    ogTitle: ogsData.ogTitle,
+    ogDescription: ogsData.ogDescription,
+  });
   closeLinkEditor();
+}
+
+async function getOgsData(url: string) {
+  const res = await axios.get('http://localhost:5000/api/open-graph-tag', { params: { url } });
+  return res.data;
 }
 </script>
 
@@ -56,7 +70,13 @@ function addBlogLink() {
     <q-page-container class="max-width">
       <q-page class="q-pa-md">
         <q-form class="q-gutter-y-md column">
-          <q-input v-model="blogUrl" bottom-slots autofocus :rules="linkRules" @keypress.enter.prevent="addBlogLink">
+          <q-input
+            v-model.trim="blogUrl"
+            bottom-slots
+            autofocus
+            :rules="linkRules"
+            @keypress.enter.prevent="addBlogLink"
+          >
             <template #hint> ※ 'https://' 포함한 블로그 주소를 입력해주세요! </template>
           </q-input>
         </q-form>

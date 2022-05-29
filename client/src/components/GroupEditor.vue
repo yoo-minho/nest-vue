@@ -1,9 +1,12 @@
 <script setup lang="ts">
+import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
-import { getBlogIconUrl } from '../constants';
 import { useGroupStore } from '../stores/group';
+import BlogCard from './BlogCard.vue';
 
-const { closeGroupEditor, openLinkEditor, links, deleteLink, initLinks, linkCountMessage } = useGroupStore();
+const groupStore = useGroupStore();
+const { closeGroupEditor, openLinkEditor, initLinks } = groupStore;
+const { links, linkCountMessage } = storeToRefs(groupStore);
 const groupName = ref('');
 const groupDescription = ref('');
 const email = ref('');
@@ -60,30 +63,17 @@ initLinks();
             hide-bottom-space
           />
           <q-btn color="primary" class="full-width" label="블로그 링크 추가" @click="openLinkEditor">
-            <span>{{ 'xxxx' + linkCountMessage }}</span>
+            <span class="link-count-message">{{ linkCountMessage }}</span>
           </q-btn>
 
-          <q-list v-if="links.length > 0" bordered separator>
+          <q-list v-if="links.length > 0" bordered separator class="full-width">
             <div v-for="(v, i) in links" :key="i" :data-index="i">
-              <q-item clickable>
-                <q-item-section side>
-                  <q-avatar rounded size="48px">
-                    <img :src="getBlogIconUrl(v.type)" alt="" />
-                  </q-avatar>
-                </q-item-section>
-                <q-item-section>
-                  <q-item-label>{{ v.url }}</q-item-label>
-                  <q-item-label caption>{{ v.type }}</q-item-label>
-                </q-item-section>
-                <q-item-section side>
-                  <q-icon name="clear" @click="deleteLink(i)" />
-                </q-item-section>
-              </q-item>
+              <BlogCard :link="{ ...v, index: i }"></BlogCard>
             </div>
           </q-list>
         </q-form>
-      </q-page>
-    </q-page-container>
+      </q-page> </q-page-container
+    >}
   </q-layout>
 </template>
 
@@ -92,5 +82,8 @@ initLinks();
   position: absolute;
   z-index: 2001;
   background-color: white;
+}
+.link-count-message {
+  margin-left: 5px;
 }
 </style>
