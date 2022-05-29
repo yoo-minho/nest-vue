@@ -1,3 +1,9 @@
+##220529
+
+- axios를 어떤 폴더 스트럭쳐로 만들까?
+  - https://serversideup.net/build-an-api-wrapper-with-vuejs-axios/
+  - https://serversideup.net/fetch-api-components-with-vue-3-composition-api/
+
 ##220528
 
 - Pinia의 storeToRefs를 활용해서 반응성을 유지할 수 있다.

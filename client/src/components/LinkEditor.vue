@@ -4,7 +4,7 @@ import { useQuasar } from 'quasar';
 import { BLOGS } from '../constants';
 import { ref } from 'vue';
 import { BlogType, ErrorMessage } from '../types/common';
-import axios from 'axios';
+import OpenGraphTagAPI from '../api/openGraphTag';
 
 const { closeLinkEditor, links, addLink } = useGroupStore();
 const $q = useQuasar();
@@ -35,7 +35,7 @@ async function addBlogLink() {
     return;
   }
 
-  const ogsData = await getOgsData(blogUrl.value);
+  const ogsData = await OpenGraphTagAPI.index(blogUrl.value);
   if (!ogsData.success) {
     $q.notify({ type: 'negative', message: ogsData.message });
     return;
@@ -49,11 +49,6 @@ async function addBlogLink() {
     ogDescription: ogsData.ogDescription,
   });
   closeLinkEditor();
-}
-
-async function getOgsData(url: string) {
-  const res = await axios.get('http://localhost:5000/api/open-graph-tag', { params: { url } });
-  return res.data;
 }
 </script>
 
