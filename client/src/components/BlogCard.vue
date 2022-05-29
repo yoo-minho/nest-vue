@@ -5,7 +5,7 @@ import { useGroupStore } from '../stores/group';
 import { Link } from '../types/common';
 
 const props = defineProps<{ link: Link }>();
-const { index, type, url, ogTitle, ogDescription } = toRaw(props.link);
+const { index, type, url, ogTitle, ogDescription, ogImageUrl = getBlogIconUrl(type) } = toRaw(props.link);
 
 const { deleteLink } = useGroupStore();
 </script>
@@ -14,7 +14,7 @@ const { deleteLink } = useGroupStore();
   <q-item clickable>
     <q-item-section side>
       <q-avatar rounded size="48px">
-        <img :src="getBlogIconUrl(type)" alt="" />
+        <img :src="ogImageUrl" alt="" />
       </q-avatar>
     </q-item-section>
     <q-item-section>

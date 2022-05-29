@@ -12,8 +12,7 @@ export class AppController {
   }
 
   @Get('/welcome')
-  async getWelcome () : Promise<any> {
-    //이제되니
-    return await parse("https://rss.blog.naver.com/dellose.xml", {});
+  async getWelcome(): Promise<any> {
+    return await parse('https://rss.blog.naver.com/dellose.xml', {});
   }
 }

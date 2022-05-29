@@ -1,14 +1,17 @@
 import { defineStore } from 'pinia';
-import { Link } from '../types/common';
+import { Group, Link } from '../types/common';
+import GroupApi from '../api/group';
 
 export const useGroupStore = defineStore('group', {
   state: () => ({
     isOpenGroupEditor: false,
     isOpenLinkEditor: false,
     links: [] as Link[],
+    groups: [] as Group[],
   }),
   getters: {
     linkCountMessage: (state) => (state.links.length > 0 ? `(${state.links.length}/10)` : ''),
+    groupDataList: (state) => state.groups,
   },
   actions: {
     openGroupEditor() {
@@ -32,8 +35,19 @@ export const useGroupStore = defineStore('group', {
     deleteLink(idx: number) {
       this.links.splice(idx, 1);
     },
-    getOpenGraphTag() {
-      return 'xxxx';
+    async init() {
+      this.groups = await GroupApi.findAll();
+    },
+    async save(title: string, description: string) {
+      const groupData = {
+        index: -1,
+        title,
+        description,
+        links: this.links,
+      };
+      const createdIndex = await GroupApi.create(groupData);
+      groupData.index = createdIndex;
+      this.groups = [groupData, ...this.groups];
     },
   },
 });

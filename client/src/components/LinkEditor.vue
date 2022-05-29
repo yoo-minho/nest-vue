@@ -47,6 +47,7 @@ async function addBlogLink() {
     type: getBlogType(blogUrl.value),
     ogTitle: ogsData.ogTitle,
     ogDescription: ogsData.ogDescription,
+    ogImageUrl: ogsData.ogImage.url,
   });
   closeLinkEditor();
 }

@@ -1,21 +1,13 @@
 <script setup lang="ts">
+import { storeToRefs } from 'pinia';
 import GroupCard from '../components/GroupCard.vue';
 import { useGroupStore } from '../stores/group';
-import axios from 'axios';
 
-const { openGroupEditor } = useGroupStore();
+const groupStore = useGroupStore();
+const { openGroupEditor, init } = groupStore;
+const { groupDataList } = storeToRefs(groupStore);
 
-axios.get('http://localhost:5000/api/open-graph-tag', {
-  params: {
-    url: 'https://blog.naver.com/dellose',
-  },
-});
-
-axios.get('http://localhost:5000/api/open-graph-tag', {
-  params: {
-    url: 'https://uminoh.tistory.com/',
-  },
-});
+init();
 </script>
 
 <template>
@@ -30,8 +22,8 @@ axios.get('http://localhost:5000/api/open-graph-tag', {
   <q-page-container class="max-width">
     <q-scroll-area :visible="false" class="max-width container-without-header-n-footer">
       <q-page class="q-pa-md">
-        <p v-for="n in 15" :key="n">
-          <GroupCard />
+        <p v-for="groupData in groupDataList" :key="(groupData.index as number)">
+          <GroupCard :group-data="groupData" />
         </p>
       </q-page>
     </q-scroll-area>

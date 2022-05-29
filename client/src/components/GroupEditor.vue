@@ -1,17 +1,30 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { ref } from 'vue';
+import { useQuasar } from 'quasar';
+import { onMounted, ref } from 'vue';
 import { useGroupStore } from '../stores/group';
 import BlogCard from './BlogCard.vue';
 
 const groupStore = useGroupStore();
-const { closeGroupEditor, openLinkEditor, initLinks } = groupStore;
+const { closeGroupEditor, openLinkEditor, initLinks, save } = groupStore;
 const { links, linkCountMessage } = storeToRefs(groupStore);
-const groupName = ref('');
-const groupDescription = ref('');
-const email = ref('');
+const title = ref('');
+const description = ref('');
 
-initLinks();
+const $q = useQuasar();
+
+onMounted(() => {
+  initLinks();
+});
+
+function saveGroup() {
+  if (links.value.length === 0) {
+    $q.notify({ type: 'negative', message: '최소 1개의 url이 필요합니다.' });
+    return;
+  }
+  save(title.value, description.value);
+  closeGroupEditor();
+}
 </script>
 
 <template>
@@ -20,7 +33,7 @@ initLinks();
       <q-toolbar>
         <q-btn flat round dense icon="close" @click="closeGroupEditor" />
         <q-toolbar-title>그룹 만들기</q-toolbar-title>
-        <q-btn flat round dense icon="done" />
+        <q-btn flat round dense icon="done" @click="saveGroup" />
       </q-toolbar>
     </q-header>
 
@@ -28,7 +41,7 @@ initLinks();
       <q-page class="q-pa-md">
         <q-form class="q-gutter-y-md column">
           <q-input
-            v-model="groupName"
+            v-model="title"
             placeholder="그룹 이름 추가"
             label="그룹 이름"
             counter
@@ -38,7 +51,7 @@ initLinks();
             hide-bottom-space
             :rules="[(val) => val?.length > 0 || '그룹 이름을 입력해주세요!']"
           />
-          <q-input
+          <!-- <q-input
             v-model="email"
             label="전용 링크"
             type="email"
@@ -49,9 +62,9 @@ initLinks();
             prefix="https://"
             suffix=".logcrew.com"
             :rules="[(val) => val?.length > 0 || '도메인을 입력해주세요!']"
-          />
+          /> -->
           <q-input
-            v-model="groupDescription"
+            v-model="description"
             stack-label
             autogrow
             clearable
@@ -72,8 +85,8 @@ initLinks();
             </div>
           </q-list>
         </q-form>
-      </q-page> </q-page-container
-    >}
+      </q-page>
+    </q-page-container>
   </q-layout>
 </template>
 

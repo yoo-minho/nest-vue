@@ -7,4 +7,11 @@ export type Link = {
   type: BlogType;
   ogTitle: string;
   ogDescription: string;
+  ogImageUrl: string;
+};
+export type Group = {
+  index: number;
+  title: string;
+  description: string;
+  links: Link[];
 };
