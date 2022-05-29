@@ -6,6 +6,10 @@ export default {
     const groupTable = JSON.parse(item);
     return groupTable;
   },
+  async findOne(id: number): Promise<Group> {
+    const groupTable = await this.findAll();
+    return groupTable.filter((groupData: Group) => groupData.index === id)[0];
+  },
   async create(groupData: Group) {
     const groupTable = await this.findAll();
     const index = groupTable.length;

@@ -8,10 +8,12 @@ export const useGroupStore = defineStore('group', {
     isOpenLinkEditor: false,
     links: [] as Link[],
     groups: [] as Group[],
+    currentGroup: {} as Group,
   }),
   getters: {
     linkCountMessage: (state) => (state.links.length > 0 ? `(${state.links.length}/10)` : ''),
     groupDataList: (state) => state.groups,
+    currentGroupData: (state) => state.currentGroup,
   },
   actions: {
     openGroupEditor() {
@@ -37,6 +39,9 @@ export const useGroupStore = defineStore('group', {
     },
     async init() {
       this.groups = await GroupApi.findAll();
+    },
+    async selectGroup(id: number) {
+      this.currentGroup = await GroupApi.findOne(id);
     },
     async save(title: string, description: string) {
       const groupData = {
