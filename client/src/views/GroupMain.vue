@@ -5,7 +5,7 @@ import GroupCard from '../components/GroupCard.vue';
 import { useGroupStore } from '../stores/group';
 
 const groupStore = useGroupStore();
-const { openGroupEditor, init } = groupStore;
+const { init } = groupStore;
 const { groupDataList } = storeToRefs(groupStore);
 const router = useRouter();
 
@@ -17,14 +17,6 @@ function clickGroup(id: number): void {
 </script>
 
 <template>
-  <q-header bordered class="bg-primary text-white max-width">
-    <q-toolbar>
-      <q-toolbar-title>Home</q-toolbar-title>
-      <q-btn flat round dense icon="search" />
-      <q-btn icon="add_circle_outline" flat round dense @click="openGroupEditor" />
-    </q-toolbar>
-  </q-header>
-
   <q-page-container class="max-width">
     <q-scroll-area :visible="false" class="max-width container-without-header-n-footer">
       <q-page class="q-pa-md">

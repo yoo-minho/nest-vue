@@ -25,7 +25,7 @@ const openUrl = (url: string) => window.open(url, 'stack');
 
     <q-item-section>
       <q-item-label>{{ name }} {{ version }}</q-item-label>
-      <q-item-label caption>{{ description }}</q-item-label>
+      <q-item-label caption class="ellipsis-3-lines">{{ description }}</q-item-label>
     </q-item-section>
 
     <q-item-section side top>

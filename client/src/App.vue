@@ -11,14 +11,16 @@ import { TabName } from './types/common';
 
 const router = useRouter();
 
-const { isOpenGroupEditor, isOpenLinkEditor } = storeToRefs(useGroupStore());
+const groupStore = useGroupStore();
+const { openGroupEditor } = groupStore;
+const { isOpenGroupEditor, isOpenLinkEditor } = storeToRefs(groupStore);
 const HOME_TAB = 'group';
 const CURRENT_TAB = location.pathname.replace('/', '') || HOME_TAB;
 const tab = ref(CURRENT_TAB);
 
 function clickTab(tabName: TabName): void {
   tab.value = tabName;
-  router.push({ path: `/${tabName === HOME_TAB ? '' : tabName}` }); //되니
+  router.push({ path: `/${tabName === HOME_TAB ? '' : tabName}` });
 }
 </script>
 
@@ -32,6 +34,14 @@ function clickTab(tabName: TabName): void {
     </transition-group>
 
     <q-layout>
+      <q-header bordered class="bg-primary text-white max-width">
+        <q-toolbar>
+          <q-toolbar-title class="logo-title" @click="router.push('/')">bundlog</q-toolbar-title>
+          <q-btn flat round dense icon="search" />
+          <q-btn icon="add_circle_outline" flat round dense @click="openGroupEditor" />
+        </q-toolbar>
+      </q-header>
+
       <router-view />
 
       <q-footer bordered class="bg-white text-primary max-width">
@@ -67,5 +77,17 @@ ul {
 
 .container-without-header-n-footer {
   height: calc(100vh - 100px);
+}
+
+.logo-title {
+  font-family: Arial;
+  font-style: italic;
+  color: white;
+  margin-left: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.logo-title:hover {
+  font-style: normal;
 }
 </style>

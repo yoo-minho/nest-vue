@@ -20,9 +20,9 @@ function isTextImage(url: string) {
     <q-item>
       <q-item-section>
         <q-item-label>
-          <q-item v-if="!detail" style="padding: 0; min-height: 0">
+          <q-item style="padding: 0; min-height: 0">
             <q-item-section class="text-weight-bolder">{{ title }}</q-item-section>
-            <q-item-section side>조회수 999</q-item-section>
+            <q-item-section v-if="!detail" side>조회수 999</q-item-section>
           </q-item>
         </q-item-label>
         <q-item-label caption>
@@ -33,22 +33,32 @@ function isTextImage(url: string) {
         </q-item-label>
       </q-item-section>
     </q-item>
-    <q-item class="q-gutter-x-sm">
-      <div v-for="(link, i) in links" :key="i">
-        <q-avatar v-if="isTextImage(link.ogImageUrl)" color="primary" text-color="white" rounded>
-          <div class="text-h6 non-selectable">{{ link.ogTitle.substring(0, 2) }}</div>
-          <q-tooltip>{{ link.ogTitle }}<br />{{ link.url }}</q-tooltip>
-        </q-avatar>
-        <q-avatar v-else rounded size="48px">
-          <img :src="link.ogImageUrl" :alt="link.ogTitle" />
-          <q-tooltip>{{ link.ogTitle }}<br />{{ link.url }}</q-tooltip>
-        </q-avatar>
-        <q-avatar :class="{ 'blog-icon': true, 'shadow-2': true }" rounded size="18px">
-          <img :src="getBlogIconUrl(link.type)" :alt="link.ogTitle" />
-          <q-tooltip>{{ link.type }}</q-tooltip>
-        </q-avatar>
-      </div>
+
+    <q-separator v-if="detail" spaced inset />
+
+    <q-item>
+      <q-item-section>
+        <q-item-label v-if="detail" caption>Links</q-item-label>
+        <q-item-label class="q-gutter-x-sm row">
+          <div v-for="(link, i) in links" :key="i">
+            <q-avatar v-if="isTextImage(link.ogImageUrl)" color="primary" text-color="white" rounded>
+              <div class="text-h6 non-selectable">{{ link.ogTitle.substring(0, 2) }}</div>
+              <q-tooltip>{{ link.ogTitle }}<br />{{ link.url }}</q-tooltip>
+            </q-avatar>
+            <q-avatar v-else rounded size="48px">
+              <img :src="link.ogImageUrl" :alt="link.ogTitle" />
+              <q-tooltip>{{ link.ogTitle }}<br />{{ link.url }}</q-tooltip>
+            </q-avatar>
+            <q-avatar :class="{ 'blog-icon': true, 'shadow-2': true }" rounded size="18px">
+              <img :src="getBlogIconUrl(link.type)" :alt="link.ogTitle" />
+              <q-tooltip>{{ link.type }}</q-tooltip>
+            </q-avatar>
+          </div>
+        </q-item-label>
+      </q-item-section>
     </q-item>
+
+    <q-separator v-if="detail" spaced inset />
   </div>
 </template>
 

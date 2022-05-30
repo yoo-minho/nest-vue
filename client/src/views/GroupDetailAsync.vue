@@ -2,9 +2,7 @@
 import GroupCard from '../components/GroupCard.vue';
 import { useGroupStore } from '../stores/group';
 import { storeToRefs } from 'pinia';
-import { useRouter } from 'vue-router';
 
-const router = useRouter();
 const groupStore = useGroupStore();
 const { selectGroup } = groupStore;
 const { currentGroupData } = storeToRefs(groupStore);
@@ -14,17 +12,19 @@ await selectGroup(props.id);
 </script>
 
 <template>
-  <q-header bordered class="bg-primary text-white max-width">
-    <q-toolbar>
-      <q-btn flat round dense icon="arrow_back" @click="router.back" />
-      <q-toolbar-title>{{ currentGroupData.title }}</q-toolbar-title>
-    </q-toolbar>
-  </q-header>
-
   <q-page-container class="max-width">
     <q-scroll-area :visible="false" class="max-width container-without-header-n-footer">
       <q-page class="q-pa-md">
         <GroupCard :group-data="currentGroupData" :detail="true" />
+
+        <q-item>
+          <q-item-section>
+            <q-item-label caption>Posts</q-item-label>
+            <q-item-label class="q-gutter-x-sm row">
+              <div v-for="(link, i) in 10" :key="i">글을 쓰자.</div>
+            </q-item-label>
+          </q-item-section>
+        </q-item>
       </q-page>
     </q-scroll-area>
   </q-page-container>

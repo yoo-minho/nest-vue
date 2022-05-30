@@ -15,6 +15,16 @@
     "url": "https://www.typescriptlang.org/",
     "github_star": "80.6k"
   },
+
+  {
+    "name": "nestjs",
+    "version": "",
+    "description": " A progressive Node.js framework for building efficient and scalable server-side applications.",
+    "path": "nestjs.png",
+    "url": "https://nestjs.com",
+    "github_star": "47.3k"
+  },
+
   {
     "name": "Vite",
     "version": "",
