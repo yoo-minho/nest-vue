@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { OpenGraphTagModule } from './open-graph-tag/open-graph-tag.module';
+import { RssModule } from './rss/rss.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { OpenGraphTagModule } from './open-graph-tag/open-graph-tag.module';
       rootPath: join(__dirname, '..', 'client/dist'),
     }),
     OpenGraphTagModule,
+    RssModule,
   ],
   controllers: [AppController],
   providers: [AppService],
