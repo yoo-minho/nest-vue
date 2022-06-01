@@ -6,7 +6,7 @@ export class RssService {
   async findOne(url: string) {
     let result;
     try {
-      result = await parse({ url: convertRssUrl(url) });
+      result = await parse(convertRssUrl(url), {});
     } catch (e) {
       result = { success: false, message: e.result.error };
     }
