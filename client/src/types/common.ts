@@ -15,3 +15,12 @@ export type Group = {
   description: string;
   links: Link[];
 };
+export type RssItem = {
+  category: string[];
+  created: number;
+  description: string;
+  link: string;
+  media: object;
+  published: number;
+  title: string;
+};

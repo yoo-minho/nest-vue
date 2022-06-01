@@ -5,7 +5,7 @@ import { RssService } from './rss.service';
 export class RssController {
   constructor(private readonly rssService: RssService) {}
 
-  @Get(':id')
+  @Get()
   findOne(@Query('url') url: string) {
     return this.rssService.findOne(url);
   }
