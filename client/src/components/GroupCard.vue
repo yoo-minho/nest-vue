@@ -5,6 +5,10 @@ import { toRaw } from 'vue';
 
 const props = defineProps<{ groupData: Group; detail: boolean }>();
 const { title, description, links } = toRaw(props.groupData);
+const moreLinksTooltip = links
+  .slice(3)
+  .map((v) => v.ogTitle)
+  .join(', ');
 </script>
 
 <template>
@@ -13,7 +17,7 @@ const { title, description, links } = toRaw(props.groupData);
       <q-item-section>
         <q-item-label>
           <q-item style="padding: 0; min-height: 0">
-            <q-item-section class="text-weight-bolder">{{ title }}</q-item-section>
+            <q-item-section class="text-subtitle1 text-weight-bolder">{{ title }}</q-item-section>
             <q-item-section v-if="!detail" side>조회수 999</q-item-section>
           </q-item>
         </q-item-label>
@@ -31,9 +35,22 @@ const { title, description, links } = toRaw(props.groupData);
     <q-item>
       <q-item-section>
         <q-item-label v-if="detail" caption>Links</q-item-label>
-        <q-item-label class="q-gutter-x-sm row">
-          <div v-for="(link, i) in links" :key="i">
-            <LinkCard :link-data="link"></LinkCard>
+        <q-item-label>
+          <div v-if="links.length > 4" class="row" style="align-items: center">
+            <div v-for="(link, i) in links.slice(0, 3)" :key="i" class="col-3 text-center">
+              <LinkCard :link-data="link" :links="true"></LinkCard>
+            </div>
+            <div class="col-3 text-center">
+              <div>
+                <q-item-label style="font-size: 36px"><q-icon name="add" size="36px"></q-icon>2</q-item-label>
+                <q-tooltip>{{ moreLinksTooltip }}</q-tooltip>
+              </div>
+            </div>
+          </div>
+          <div v-else class="row">
+            <div v-for="(link, i) in links" :key="i" class="col-3 text-center">
+              <LinkCard :link-data="link" :links="true"></LinkCard>
+            </div>
           </div>
         </q-item-label>
       </q-item-section>

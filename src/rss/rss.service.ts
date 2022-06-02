@@ -27,7 +27,7 @@ function convertRssUrl(url: string): string {
 
   if (isTest(url, naverBlogIdReg)) {
     const blogId = url.replace(naverBlogIdReg, '$1');
-    return `https:// https://rss.blog.naver.com/${blogId}.xml`;
+    return `https://rss.blog.naver.com/${blogId}.xml`;
   }
 
   if (isTest(url, tistoryIdReg)) {

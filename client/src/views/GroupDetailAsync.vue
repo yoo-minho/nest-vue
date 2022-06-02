@@ -4,7 +4,6 @@ import LinkCard from '../components/LinkCard.vue';
 import { useGroupStore } from '../stores/group';
 import { storeToRefs } from 'pinia';
 import RssAPI from '../api/rss';
-import { Link, RssItem } from '../types/common';
 
 const groupStore = useGroupStore();
 const { selectGroup } = groupStore;
@@ -16,58 +15,45 @@ const posts = await getPosts();
 
 async function getPosts() {
   const _links = currentGroupData.value.links;
-  const results = await Promise.all(_links.map((link) => RssAPI.index(link.url)));
-  const items = results.map((res, idx) =>
-    res.items.map((item: RssItem) => {
-      const _link: Link = _links[idx];
-      const createdStr = new Date(item.created).toLocaleDateString();
-      return { ...item, link: _link, createdStr };
-    }),
-  );
-  return items.flat().sort((x, y) => y.created - x.created);
+  const results = await Promise.all(_links.map((link) => RssAPI.index(link)));
+  return results.flat().sort((x, y) => y.created - x.created);
+}
+
+function openUrl(url: string) {
+  console.log(url);
+  window.open(url);
 }
 </script>
 
 <template>
   <q-page-container class="max-width">
     <q-scroll-area :visible="false" class="max-width container-without-header-n-footer">
-      <q-page class="q-pa-md">
+      <q-page class="max-width">
         <GroupCard :group-data="currentGroupData" :detail="true" />
         <q-item>
           <q-item-section>
             <q-item-label caption>Posts</q-item-label>
 
-            <div v-for="(post, i) in posts" :key="i" style="position: relative">
+            <q-item-label
+              v-for="(post, i) in posts"
+              :key="i"
+              style="position: relative"
+              class="cursor-pointer"
+              @click="openUrl(post.link)"
+            >
               <q-separator spaced />
-              <q-item style="padding: 0; min-height: 0">
-                <q-item-section>
-                  <q-item-label>{{ post.title }}</q-item-label>
-                  <q-item-label caption class="ellipsis-2-lines">{{ post.description }}</q-item-label>
+              <q-item style="" class="row">
+                <q-item-section class="col-10">
+                  <q-item-label class="text-weight-bold ellipsis">{{ post.title }}</q-item-label>
+                  <q-item-label class="ellipsis-2-lines">{{ post.description }}</q-item-label>
+                  <q-item-label caption>{{ post.createdStr }}</q-item-label>
                 </q-item-section>
 
-                <q-item-section side top>
-                  <LinkCard :link-data="post.link"></LinkCard>
+                <q-item-section class="col-2">
+                  <LinkCard :link-data="post.linkInfo" :posts="true"></LinkCard>
                 </q-item-section>
               </q-item>
-
-              <!-- <q-item>
-                  <q-item-section>
-                    <q-item-label>
-                      <q-item style="padding: 0; min-height: 0">
-                        <q-item-section class="text-weight-bolder">{{ post.title }}</q-item-section>
-                      </q-item>
-                    </q-item-label>
-                    <q-item-label caption>
-                      <span class="ellipsis-2-lines">
-                        {{ post.description }}
-                        <q-tooltip max-width="20rem">내용...</q-tooltip>
-                      </span>
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-
-                <LinkCard :link-data="post.link"></LinkCard> -->
-            </div>
+            </q-item-label>
           </q-item-section>
         </q-item>
       </q-page>
