@@ -36,7 +36,7 @@ function clickTab(tabName: TabName): void {
     <q-layout>
       <q-header bordered class="bg-primary text-white max-width">
         <q-toolbar>
-          <q-toolbar-title class="logo-title" @click="router.push('/')">bundlog</q-toolbar-title>
+          <q-toolbar-title class="logo-title" @click="router.push('/')">logbunch</q-toolbar-title>
           <q-btn flat round dense icon="search" />
           <q-btn icon="add_circle_outline" flat round dense @click="openGroupEditor" />
         </q-toolbar>
