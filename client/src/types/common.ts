@@ -18,7 +18,8 @@ export type Group = {
 export type RssItem = {
   category: string[];
   created: number;
-  description: string;
+  description?: string;
+  content?: string;
   link: string;
   media: object;
   published: number;

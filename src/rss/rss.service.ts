@@ -5,10 +5,13 @@ import { parse } from 'rss-to-json';
 import { firstValueFrom } from 'rxjs';
 
 const BLOG_EXPRESSION = {
-  NAVER: /https:\/\/blog.naver.com\/([0-9a-zA-Z]*)(\/)?([0-9a-zA-Z]*)/gi,
-  TISTORY: /https:\/\/([0-9a-zA-Z]*)\.tistory.com(\/)?([0-9a-zA-Z]*)/gi,
-  VELOG: /https:\/\/velog.io\/@([0-9a-zA-Z]*)(\/)?([0-9a-zA-Z]*)/gi,
-  BRUNCH: /https:\/\/brunch.co.kr\/@([0-9a-zA-Z]*)(\/)?([0-9a-zA-Z]*)/gi,
+  NAVER: /https:\/\/blog.naver.com\/([0-9a-zA-Z_-]*)(\/)?([0-9a-zA-Z]*)/gi,
+  TISTORY: /https:\/\/([0-9a-zA-Z_-]*)\.tistory.com(\/)?([0-9a-zA-Z]*)/gi,
+  VELOG: /https:\/\/velog.io\/@([0-9a-zA-Z_-]*)(\/)?([0-9a-zA-Z]*)/gi,
+  BRUNCH: /https:\/\/brunch.co.kr\/@([0-9a-zA-Z_-]*)(\/)?([0-9a-zA-Z]*)/gi,
+  MEDIUM: /https:\/\/medium.com\/([0-9a-zA-Z_-]*)(\/)?([0-9a-zA-Z]*)/gi,
+  YOUTUBE:
+    /https:\/\/www.youtube.com\/channel\/([0-9a-zA-Z_-]*)(\/)?([0-9a-zA-Z]*)/gi,
 };
 
 @Injectable()
@@ -56,6 +59,16 @@ async function convertRssUrl(
     const $ = cheerio.load(html);
     const rssUrl = $('link[type="application/rss+xml"]').attr('href');
     return rssUrl;
+  }
+
+  if (isTest(url, BLOG_EXPRESSION.MEDIUM)) {
+    const mediumId = url.replace(BLOG_EXPRESSION.MEDIUM, '$1');
+    return `https://medium.com/feed/${mediumId}`;
+  }
+
+  if (isTest(url, BLOG_EXPRESSION.YOUTUBE)) {
+    const youtubeId = url.replace(BLOG_EXPRESSION.YOUTUBE, '$1');
+    return `https://www.youtube.com/feeds/videos.xml?channel_id=${youtubeId}`;
   }
 
   return url;

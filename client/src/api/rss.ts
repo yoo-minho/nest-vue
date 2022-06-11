@@ -9,7 +9,7 @@ export default {
       ...item,
       linkInfo, //신규
       createdStr: new Date(item.created).toLocaleString(), //신규
-      description: removeHtmlTag(htmlDecode(htmlDecode(item.description))), //수정
+      description: removeHtmlTag(htmlDecode(htmlDecode(item.description || item.content || ''))), //수정
     }));
   },
 };

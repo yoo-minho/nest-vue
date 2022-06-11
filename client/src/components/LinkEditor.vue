@@ -23,7 +23,11 @@ const getErrorMessage = (v: string): string => {
 };
 
 const isUpperIncludes = (x: string, y: string) => x.toUpperCase().includes(y.toUpperCase());
-const isAvailableUrl = (url: string): boolean => BLOGS.filter((blog) => isUpperIncludes(url, blog)).length > 0;
+const isAvailableUrl = (url: string): boolean =>
+  BLOGS.filter((blog) => {
+    console.log({ url, blog });
+    return isUpperIncludes(url, blog);
+  }).length > 0;
 const getBlogType = (url: string): BlogType => BLOGS.filter((blog) => isUpperIncludes(url, blog))[0] as BlogType;
 
 const blogUrl = ref('');
