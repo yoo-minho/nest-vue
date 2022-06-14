@@ -5,7 +5,7 @@
     "description": "An approachable, performant and versatile framework for building web user interfaces.",
     "path": "vue.png",
     "url": "https://vuejs.org/",
-    "github_star": "196k"
+    "github_star": "⭐ 196k"
   },
   {
     "name": "Typescript",
@@ -13,7 +13,7 @@
     "description": "TypeScript is a language for application scale JavaScript development",
     "path": "typescript.png",
     "url": "https://www.typescriptlang.org/",
-    "github_star": "80.6k"
+    "github_star": "⭐ 80.6k"
   },
 
   {
@@ -22,7 +22,7 @@
     "description": " A progressive Node.js framework for building efficient and scalable server-side applications.",
     "path": "nestjs.png",
     "url": "https://nestjs.com",
-    "github_star": "47.3k"
+    "github_star": "⭐ 47.3k"
   },
 
   {
@@ -31,7 +31,7 @@
     "description": "Next Generation Frontend Tooling",
     "path": "vite.png",
     "url": "https://vitejs.dev/",
-    "github_star": "41.5k"
+    "github_star": "⭐ 41.5k"
   },
   {
     "name": "Quasar",
@@ -39,7 +39,7 @@
     "description": "Build high-performance VueJS user interfaces (SPA, PWA, SSR, Mobile and Desktop) in record time",
     "path": "quasar.png",
     "url": "https://quasar.dev/",
-    "github_star": "21.2k"
+    "github_star": "⭐ 21.2k"
   },
   {
     "name": "Vue Router",
@@ -47,7 +47,7 @@
     "description": "The official router for Vue.js.",
     "path": "vue.png",
     "url": "https://router.vuejs.org/",
-    "github_star": "18.8k"
+    "github_star": "⭐ 18.8k"
   },
   {
     "name": "Pinia",
@@ -55,6 +55,6 @@
     "description": "The Vue Store that you will enjoy using",
     "path": "pinia.png",
     "url": "https://pinia.vuejs.org/",
-    "github_star": "7.2k"
+    "github_star": "⭐ 7.2k"
   }
 ]

@@ -16,6 +16,11 @@ const routes = [
     name: 'Stack',
     component: () => import('./views/StackMain.vue'),
   },
+  {
+    path: '/setting',
+    name: 'Setting',
+    component: () => import('./views/SettingMain.vue'),
+  },
 ];
 
 const router = createRouter({

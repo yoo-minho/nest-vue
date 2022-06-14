@@ -20,7 +20,6 @@ async function getPosts() {
 }
 
 function openUrl(url: string) {
-  console.log(url);
   window.open(url);
 }
 </script>
