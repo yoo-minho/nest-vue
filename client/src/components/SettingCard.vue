@@ -1,20 +1,18 @@
 <script setup lang="ts">
 import { toRaw } from 'vue';
-import { useRouter } from 'vue-router';
-
-const router = useRouter();
 
 interface SettingJson {
   icon: string;
   title: string;
   pushUrl: string;
+  clickEvent: () => void;
 }
 const props = defineProps<{ settingJson: SettingJson }>();
-const { icon, title, pushUrl } = toRaw(props.settingJson);
+const { icon, title, pushUrl, clickEvent } = toRaw(props.settingJson);
 </script>
 
 <template>
-  <q-item clickable @click="router.push(pushUrl)">
+  <q-item clickable @click="clickEvent()">
     <q-item-section avatar top>
       <q-avatar :icon="icon" />
     </q-item-section>
