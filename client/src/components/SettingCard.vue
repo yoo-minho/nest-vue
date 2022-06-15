@@ -4,11 +4,10 @@ import { toRaw } from 'vue';
 interface SettingJson {
   icon: string;
   title: string;
-  pushUrl: string;
   clickEvent: () => void;
 }
 const props = defineProps<{ settingJson: SettingJson }>();
-const { icon, title, pushUrl, clickEvent } = toRaw(props.settingJson);
+const { icon, title, clickEvent } = toRaw(props.settingJson);
 </script>
 
 <template>

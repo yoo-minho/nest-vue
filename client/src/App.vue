@@ -1,30 +1,28 @@
 <script setup lang="ts">
-import {storeToRefs} from 'pinia';
-import {useGroupStore} from './stores/group';
+import { storeToRefs } from 'pinia';
+import { useGroupStore } from './stores/group';
 
 import GroupEditor from './components/GroupEditor.vue';
 import LinkEditor from './components/LinkEditor.vue';
 import CommonHeader from './components/CommonHeader.vue';
 
 const groupStore = useGroupStore();
-const {isOpenGroupEditor, isOpenLinkEditor} = storeToRefs(groupStore);
+const { isOpenGroupEditor, isOpenLinkEditor } = storeToRefs(groupStore);
 </script>
 
 <template>
   <div class="max-width">
     <transition-group appear enter-active-class="animated fadeInRight" leave-active-class="animated fadeOutRight">
-      <LinkEditor v-if="isOpenLinkEditor"/>
+      <LinkEditor v-if="isOpenLinkEditor" />
     </transition-group>
     <transition-group appear enter-active-class="animated fadeInUp" leave-active-class="animated fadeOutDown">
-      <GroupEditor v-if="isOpenGroupEditor"/>
+      <GroupEditor v-if="isOpenGroupEditor" />
     </transition-group>
 
     <q-layout>
-      <CommonHeader/>
+      <CommonHeader />
       <router-view v-slot="{ Component }">
-        <transition name="fade">
-          <component :is="Component" />
-        </transition>
+        <component :is="Component" />
       </router-view>
     </q-layout>
   </div>
