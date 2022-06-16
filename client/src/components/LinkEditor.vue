@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { useGroupStore } from '../stores/group';
+import { useSubpageStore } from '../stores/subpage';
 import { useQuasar } from 'quasar';
 import { BLOGS } from '../constants';
 import { ref } from 'vue';
 import { BlogType, ErrorMessage } from '../types/common';
 import OpenGraphTagAPI from '../api/openGraphTag';
 
-const { closeLinkEditor, links, addLink } = useGroupStore();
+const { links, addLink } = useGroupStore();
+const { closeLinkEditor } = useSubpageStore();
+
 const $q = useQuasar();
 const linkRules = [
   (val: string): ErrorMessage => val.includes('https://') || '링크에 https://를 포함해주세요!',

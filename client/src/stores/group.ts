@@ -4,8 +4,6 @@ import GroupApi from '../api/group';
 
 export const useGroupStore = defineStore('group', {
   state: () => ({
-    isOpenGroupEditor: false,
-    isOpenLinkEditor: false,
     links: [] as Link[],
     groups: [] as Group[],
     currentGroup: {} as Group,
@@ -16,18 +14,6 @@ export const useGroupStore = defineStore('group', {
     currentGroupData: (state) => state.currentGroup,
   },
   actions: {
-    openGroupEditor() {
-      this.isOpenGroupEditor = true;
-    },
-    closeGroupEditor() {
-      this.isOpenGroupEditor = false;
-    },
-    openLinkEditor() {
-      this.isOpenLinkEditor = true;
-    },
-    closeLinkEditor() {
-      this.isOpenLinkEditor = false;
-    },
     initLinks() {
       this.links.length = 0;
     },

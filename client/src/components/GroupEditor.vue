@@ -3,11 +3,15 @@ import { storeToRefs } from 'pinia';
 import { useQuasar } from 'quasar';
 import { onMounted, ref } from 'vue';
 import { useGroupStore } from '../stores/group';
+import { useSubpageStore } from '../stores/subpage';
 import BlogCard from './BlogCard.vue';
 
 const groupStore = useGroupStore();
-const { closeGroupEditor, openLinkEditor, initLinks, save } = groupStore;
+const { initLinks, save } = groupStore;
 const { links, linkCountMessage } = storeToRefs(groupStore);
+const subpageStore = useSubpageStore();
+const { openLinkEditor, closeGroupEditor } = subpageStore;
+
 const title = ref('');
 const description = ref('');
 
