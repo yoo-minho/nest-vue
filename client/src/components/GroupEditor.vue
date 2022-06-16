@@ -5,6 +5,7 @@ import { onMounted, ref } from 'vue';
 import { useGroupStore } from '../stores/group';
 import { useSubpageStore } from '../stores/subpage';
 import BlogCard from './BlogCard.vue';
+import HeaderItem from './HeaderItem.vue';
 
 const groupStore = useGroupStore();
 const { initLinks, save } = groupStore;
@@ -32,15 +33,8 @@ function saveGroup() {
 </script>
 
 <template>
-  <q-layout id="groupEditor" class="max-width">
-    <q-header bordered class="bg-primary text-white">
-      <q-toolbar>
-        <q-btn flat round dense icon="close" @click="closeGroupEditor" />
-        <q-toolbar-title>그룹 만들기</q-toolbar-title>
-        <q-btn flat round dense icon="done" @click="saveGroup" />
-      </q-toolbar>
-    </q-header>
-
+  <q-layout class="max-width subpage">
+    <HeaderItem :close="closeGroupEditor" :title="'그룹 만들기'" :save="saveGroup" />
     <q-page-container class="max-width">
       <q-page class="q-pa-md">
         <q-form class="q-gutter-y-md column">
@@ -95,11 +89,6 @@ function saveGroup() {
 </template>
 
 <style>
-#groupEditor {
-  position: absolute;
-  z-index: 2001;
-  background-color: white;
-}
 .link-count-message {
   margin-left: 5px;
 }

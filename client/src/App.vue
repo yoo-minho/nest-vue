@@ -1,15 +1,11 @@
 <script setup lang="ts">
-import CommonHeader from './components/CommonHeader.vue';
 import CommonSubpage from './components/CommonSubpage.vue';
 </script>
 
 <template>
   <div class="max-width">
     <CommonSubpage />
-    <q-layout>
-      <CommonHeader />
-      <router-view />
-    </q-layout>
+    <router-view />
   </div>
 </template>
 

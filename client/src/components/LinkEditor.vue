@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import HeaderItem from './HeaderItem.vue';
 import { useGroupStore } from '../stores/group';
 import { useSubpageStore } from '../stores/subpage';
 import { useQuasar } from 'quasar';
@@ -61,15 +62,8 @@ async function addBlogLink() {
 </script>
 
 <template>
-  <q-layout id="linkEditor" class="max-width">
-    <q-header bordered class="bg-primary text-white">
-      <q-toolbar>
-        <q-btn flat round dense icon="keyboard_backspace" @click="closeLinkEditor" />
-        <q-toolbar-title>링크 추가</q-toolbar-title>
-        <q-btn flat round dense icon="done" @click="addBlogLink" />
-      </q-toolbar>
-    </q-header>
-
+  <q-layout class="max-width subpage">
+    <HeaderItem :back="closeLinkEditor" :title="'링크 추가'" :save="addBlogLink" />
     <q-page-container class="max-width">
       <q-page class="q-pa-md">
         <q-form class="q-gutter-y-md column">
@@ -88,10 +82,4 @@ async function addBlogLink() {
   </q-layout>
 </template>
 
-<style>
-#linkEditor {
-  position: absolute;
-  z-index: 2002;
-  background-color: white;
-}
-</style>
+<style></style>

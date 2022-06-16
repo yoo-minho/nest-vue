@@ -1,56 +1,41 @@
 <script setup lang="ts">
-import { useRoute, useRouter } from 'vue-router';
+import { toRaw } from 'vue';
+import { useRouter } from 'vue-router';
 import { useSubpageStore } from '../stores/subpage';
 
 const subpageStore = useSubpageStore();
 const { openGroupEditor, openSettingMain } = subpageStore;
 
 const router = useRouter();
-const route = useRoute();
+
+interface HeaderOption {
+  close?: () => void;
+  back?: () => void;
+  logo?: boolean;
+  title?: string;
+  editor?: boolean;
+  setting?: boolean;
+  save?: () => void;
+}
+
+const props = defineProps<HeaderOption>();
+const { logo, editor, setting } = toRaw(props);
 </script>
 
 <template>
   <q-header bordered class="bg-primary text-white max-width">
-    <q-toolbar v-if="route.name === 'Group'">
-      <q-toolbar-title class="logo-font logo-style logo-common q-ml-sm" @click="router.push('/')">
+    <q-toolbar>
+      <q-btn v-if="close" flat round dense icon="close" @click="close" />
+      <q-btn v-if="back" flat round dense icon="keyboard_backspace" @click="back" />
+      <q-toolbar-title v-if="logo" class="logo-font logo-style logo-common q-ml-sm" @click="router.push('/')">
         bundlog
       </q-toolbar-title>
-      <q-btn flat round dense icon="search" />
-      <q-btn icon="add_circle_outline" flat round dense @click="openGroupEditor" />
-      <q-btn flat round dense icon="menu" @click="openSettingMain" />
-    </q-toolbar>
-
-    <q-toolbar v-else-if="route.name === 'GroupDetail'">
-      <q-toolbar-title class="logo-font logo-style logo-common q-ml-sm" @click="router.push('/')"
-        >bundlog
-      </q-toolbar-title>
-      <q-btn flat round dense icon="search" />
-      <q-btn icon="add_circle_outline" flat round dense @click="openGroupEditor" />
-      <q-btn flat round dense icon="menu" @click="openSettingMain" />
-    </q-toolbar>
-
-    <q-toolbar v-else>
-      <q-toolbar-title class="logo-font logo-style logo-common q-ml-sm" @click="router.push('/')"
-        >bundlog
-      </q-toolbar-title>
-      <q-btn flat round dense icon="search" />
-      <q-btn icon="add_circle_outline" flat round dense @click="openGroupEditor" />
-      <q-btn flat round dense icon="menu" @click="openSettingMain" />
+      <q-toolbar-title v-if="title">{{ title }}</q-toolbar-title>
+      <q-btn v-if="editor" icon="add_circle_outline" flat round dense @click="openGroupEditor" />
+      <q-btn v-if="setting" flat round dense icon="menu" @click="openSettingMain" />
+      <q-btn v-if="save" flat round dense icon="done" @click="save" />
     </q-toolbar>
   </q-header>
-
-  <!-- <q-toolbar v-else-if="route.fullPath === '/setting'">
-      <q-btn flat round dense icon="arrow_back_ios" @click="router.push('/')" />
-      <q-toolbar-title class="logo-common q-pl-none">더 보기</q-toolbar-title>
-    </q-toolbar>
-
-  <q-header bordered class="bg-primary text-white">
-    <q-toolbar>
-      <q-btn flat round dense icon="close" @click="closeGroupEditor" />
-      <q-toolbar-title>그룹 만들기</q-toolbar-title>
-      <q-btn flat round dense icon="done" @click="saveGroup" />
-    </q-toolbar>
-  </q-header> -->
 </template>
 
 <style scoped>
