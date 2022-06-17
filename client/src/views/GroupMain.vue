@@ -19,10 +19,10 @@ function clickGroup(id: number): void {
 </script>
 
 <template>
-  <q-layout class="max-width">
+  <q-layout>
     <HeaderItem :logo="true" :editor="true" :setting="true" />
     <q-page-container class="max-width">
-      <q-scroll-area :visible="false" class="max-width container-without-header-n-footer">
+      <q-scroll-area :visible="false" class="max-width without-header">
         <q-page class="q-pa-md">
           <p v-for="groupData in groupDataList" :key="groupData.index">
             <q-card>

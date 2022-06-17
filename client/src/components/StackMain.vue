@@ -12,7 +12,7 @@ const { closeStackMain } = subpageStore;
   <q-layout class="max-width subpage">
     <HeaderItem :back="closeStackMain" :title="'기술 스택'" />
     <q-page-container>
-      <q-scroll-area :visible="false" class="max-width container-without-header-n-footer">
+      <q-scroll-area :visible="false" class="without-header">
         <q-page class="q-pa-md">
           <div v-for="stackJson in stackArray" :key="stackJson.name">
             <StackCard :stack-json="stackJson" />

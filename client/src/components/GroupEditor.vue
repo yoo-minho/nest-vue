@@ -33,7 +33,7 @@ function saveGroup() {
 </script>
 
 <template>
-  <q-layout class="max-width subpage">
+  <q-layout class="subpage">
     <HeaderItem :close="closeGroupEditor" :title="'그룹 만들기'" :save="saveGroup" />
     <q-page-container class="max-width">
       <q-page class="q-pa-md">

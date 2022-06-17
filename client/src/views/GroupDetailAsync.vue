@@ -26,31 +26,23 @@ function openUrl(url: string) {
 </script>
 
 <template>
-  <q-layout>
+  <q-layout class="max-width">
     <HeaderItem :logo="true" :setting="true" />
-    <q-page-container class="max-width">
-      <q-scroll-area :visible="false" class="max-width container-without-header-n-footer">
+    <q-page-container>
+      <q-scroll-area :visible="false" class="without-header">
         <q-page class="max-width">
           <GroupCard :group-data="currentGroupData" :detail="true" />
           <q-item>
             <q-item-section>
               <q-item-label caption>Posts</q-item-label>
-
-              <q-item-label
-                v-for="(post, i) in posts"
-                :key="i"
-                style="position: relative"
-                class="cursor-pointer"
-                @click="openUrl(post.link)"
-              >
+              <q-item-label v-for="(post, i) in posts" :key="i" class="cursor-pointer" @click="openUrl(post.link)">
                 <q-separator spaced />
-                <q-item style="" class="row">
+                <q-item class="row">
                   <q-item-section class="col-10">
                     <q-item-label class="text-weight-bold ellipsis">{{ post.title }}</q-item-label>
-                    <q-item-label class="ellipsis-2-lines">{{ post.description }}</q-item-label>
-                    <q-item-label caption>{{ post.createdStr }}</q-item-label>
+                    <q-item-label class="ellipsis-2-lines">{{ (post.description || '') + '_\n_\n' }}</q-item-label>
+                    <q-item-label>{{ post.createdStr }}</q-item-label>
                   </q-item-section>
-
                   <q-item-section class="col-2">
                     <LinkCard :link-data="post.linkInfo" :posts="true"></LinkCard>
                   </q-item-section>

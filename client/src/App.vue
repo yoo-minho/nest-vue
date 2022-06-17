@@ -26,11 +26,12 @@ ul {
 
 .max-width {
   max-width: 460px;
-  min-width: 375px;
+  min-width: 360px;
   margin: 0 auto;
+  width: 100vw;
 }
 
-.container-without-header-n-footer {
+.without-header {
   height: calc(100vh - 51px);
 }
 </style>
