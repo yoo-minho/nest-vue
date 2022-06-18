@@ -25,3 +25,7 @@ export type RssItem = {
   published: number;
   title: string;
 };
+export type Post = RssItem & {
+  createdStr: string;
+  linkInfo: Link;
+};

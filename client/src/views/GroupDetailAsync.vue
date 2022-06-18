@@ -1,28 +1,28 @@
 <script setup lang="ts">
 import GroupCard from '../components/GroupCard.vue';
-import LinkCard from '../components/LinkCard.vue';
 import HeaderItem from '../components/HeaderItem.vue';
 import { useGroupStore } from '../stores/group';
 import { storeToRefs } from 'pinia';
 import RssAPI from '../api/rss';
+import { ref } from 'vue';
+import { Link, Post } from '../types/common';
+import GroupDetailLinkCard from '../components/GroupDetailLinkCard.vue';
+import GroupDetailPostCard from '../components/GroupDetailPostCard.vue';
+import { delay } from '../util';
+
+const getPostsByLinks = async (links: Link[]): Promise<Post[]> => {
+  return (await Promise.all(links.map(RssAPI.index))).flat().sort((x, y) => y.created - x.created);
+};
 
 const groupStore = useGroupStore();
 const { selectGroup } = groupStore;
 const { currentGroupData } = storeToRefs(groupStore);
-
 const props = defineProps<{ id: number }>();
 await selectGroup(props.id);
-const posts = await getPosts();
-
-async function getPosts() {
-  const _links = currentGroupData.value.links;
-  const results = await Promise.all(_links.map((link) => RssAPI.index(link)));
-  return results.flat().sort((x, y) => y.created - x.created);
-}
-
-function openUrl(url: string) {
-  window.open(url);
-}
+const { links } = currentGroupData.value;
+const posts = await getPostsByLinks(links);
+const tab = ref('urls');
+await delay(2000);
 </script>
 
 <template>
@@ -32,24 +32,43 @@ function openUrl(url: string) {
       <q-scroll-area :visible="false" class="without-header">
         <q-page class="max-width">
           <GroupCard :group-data="currentGroupData" :detail="true" />
-          <q-item>
-            <q-item-section>
-              <q-item-label caption>Posts</q-item-label>
-              <q-item-label v-for="(post, i) in posts" :key="i" class="cursor-pointer" @click="openUrl(post.link)">
-                <q-separator spaced />
-                <q-item class="row">
-                  <q-item-section class="col-10">
-                    <q-item-label class="text-weight-bold ellipsis">{{ post.title }}</q-item-label>
-                    <q-item-label class="ellipsis-2-lines">{{ (post.description || '') + '_\n_\n' }}</q-item-label>
-                    <q-item-label>{{ post.createdStr }}</q-item-label>
-                  </q-item-section>
-                  <q-item-section class="col-2">
-                    <LinkCard :link-data="post.linkInfo" :posts="true"></LinkCard>
-                  </q-item-section>
-                </q-item>
-              </q-item-label>
-            </q-item-section>
-          </q-item>
+          <q-tabs
+            v-model="tab"
+            dense
+            class="text-grey"
+            active-color="primary"
+            indicator-color="primary"
+            narrow-indicator
+          >
+            <q-tab name="urls" :label="`urls (${links.length})`" />
+            <q-tab name="posts" :label="`posts (${posts.length})`" />
+            <q-tab name="stat" label="STAT" />
+          </q-tabs>
+
+          <q-separator />
+
+          <q-tab-panels v-model="tab" animated>
+            <q-tab-panel name="urls">
+              <q-item style="padding: 0; min-height: 0">
+                <q-item-section>
+                  <GroupDetailLinkCard v-for="(link, i) in links" :key="i" :link="link" />
+                </q-item-section>
+              </q-item>
+            </q-tab-panel>
+
+            <q-tab-panel name="posts">
+              <q-item style="padding: 0; min-height: 0">
+                <q-item-section>
+                  <GroupDetailPostCard v-for="(post, i) in posts" :key="i" :post="post" />
+                </q-item-section>
+              </q-item>
+            </q-tab-panel>
+
+            <q-tab-panel name="stat">
+              <div class="text-h6">Movies</div>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            </q-tab-panel>
+          </q-tab-panels>
         </q-page>
       </q-scroll-area>
     </q-page-container>

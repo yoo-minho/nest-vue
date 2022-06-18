@@ -1,16 +1,18 @@
-import { Link, RssItem } from '../types/common';
+import { Link, Post, RssItem } from '../types/common';
 import axiosClient from './base';
 
 export default {
-  async index(linkInfo: Link) {
+  async index(linkInfo: Link): Promise<Post[]> {
     const res = await axiosClient.get('rss', { params: { url: linkInfo.url } });
     const _items = res.data.items || [];
-    return _items.map((item: RssItem) => ({
-      ...item,
-      linkInfo, //신규
-      createdStr: new Date(item.created).toLocaleString(), //신규
-      description: removeHtmlTag(htmlDecode(htmlDecode(item.description || item.content || ''))), //수정
-    }));
+    return _items.map(
+      (item: RssItem): Post => ({
+        ...item,
+        linkInfo, //신규
+        createdStr: new Date(item.created).toLocaleString(), //신규
+        description: removeHtmlTag(htmlDecode(htmlDecode(item.description || item.content || ''))), //수정
+      }),
+    );
   },
 };
 
