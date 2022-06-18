@@ -3,6 +3,7 @@ import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
 import GroupCard from '../components/GroupCard.vue';
 import HeaderItem from '../components/HeaderItem.vue';
+import LinkList from '../components/LinkList.vue';
 
 import { useGroupStore } from '../stores/group';
 
@@ -27,12 +28,8 @@ function clickGroup(id: number): void {
           <p v-for="groupData in groupDataList" :key="groupData.index">
             <q-card>
               <q-card-section>
-                <GroupCard
-                  :group-data="groupData"
-                  :detail="false"
-                  class="cursor-pointer"
-                  @click="clickGroup(groupData.index)"
-                />
+                <GroupCard :group-data="groupData" class="cursor-pointer" @click="clickGroup(groupData.index)" />
+                <LinkList :links="groupData.links" />
               </q-card-section>
             </q-card>
           </p>
