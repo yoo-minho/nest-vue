@@ -9,6 +9,7 @@ import { Link, Post } from '../types/common';
 import GroupDetailLinkCard from '../components/GroupDetailLinkCard.vue';
 import GroupDetailPostCard from '../components/GroupDetailPostCard.vue';
 import { delay } from '../util';
+import { enumerateDaysFromNMonths } from '../plugin/dayjs';
 
 const getPostsByLinks = async (links: Link[]): Promise<Post[]> => {
   return (await Promise.all(links.map(RssAPI.index))).flat().sort((x, y) => y.created - x.created);
@@ -22,6 +23,9 @@ await selectGroup(props.id);
 const { links } = currentGroupData.value;
 const posts = await getPostsByLinks(links);
 const tab = ref('urls');
+
+console.log(enumerateDaysFromNMonths(3));
+
 await delay(2000);
 </script>
 
@@ -66,7 +70,7 @@ await delay(2000);
 
             <q-tab-panel name="stat">
               <div class="text-h6">Movies</div>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              현재부터 ~ 3개월전까지 new Date()
             </q-tab-panel>
           </q-tab-panels>
         </q-page>

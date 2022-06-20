@@ -24,7 +24,6 @@
     "url": "https://nestjs.com",
     "github_star": "⭐ 47.3k"
   },
-
   {
     "name": "Vite",
     "version": "",
@@ -32,6 +31,14 @@
     "path": "vite.png",
     "url": "https://vitejs.dev/",
     "github_star": "⭐ 41.5k"
+  },
+  {
+    "name": "Day.js",
+    "version": "",
+    "description": "2KB immutable date time library alternative to Moment.js with the same modern API",
+    "path": "dayjs.png",
+    "url": "https://day.js.org/",
+    "github_star": "⭐ 39.3k"
   },
   {
     "name": "Quasar",
