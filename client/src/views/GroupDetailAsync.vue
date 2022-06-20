@@ -5,11 +5,11 @@ import { useGroupStore } from '../stores/group';
 import { storeToRefs } from 'pinia';
 import RssAPI from '../api/rss';
 import { ref } from 'vue';
-import { Link, Post } from '../types/common';
+import { Link, Post, CountGroupByDate } from '../types/common';
 import GroupDetailLinkCard from '../components/GroupDetailLinkCard.vue';
 import GroupDetailPostCard from '../components/GroupDetailPostCard.vue';
 import { delay } from '../util';
-import { enumerateDaysFromNMonths } from '../plugin/dayjs';
+import { enumerateDaysFromNMonths, getStrByMs, isToday } from '../plugin/dayjs';
 
 const getPostsByLinks = async (links: Link[]): Promise<Post[]> => {
   return (await Promise.all(links.map(RssAPI.index))).flat().sort((x, y) => y.created - x.created);
@@ -24,7 +24,16 @@ const { links } = currentGroupData.value;
 const posts = await getPostsByLinks(links);
 const tab = ref('urls');
 
-console.log(enumerateDaysFromNMonths(3));
+const result = posts.reduce((total: CountGroupByDate, value) => {
+  const dateString = getStrByMs(value.created);
+  total[dateString] = (total[dateString] || 0) + 1;
+  return total;
+}, {});
+
+const res = enumerateDaysFromNMonths(3).map((v) => ({
+  ...v,
+  count: result[v.date] || 0,
+}));
 
 await delay(2000);
 </script>
@@ -69,8 +78,23 @@ await delay(2000);
             </q-tab-panel>
 
             <q-tab-panel name="stat">
-              <div class="text-h6">Movies</div>
-              현재부터 ~ 3개월전까지 new Date()
+              <div class="text-h6">Posting Graph</div>
+              <div class="column jandi-area">
+                <div v-for="(v, i) in res" :key="i" class="jandi-wrap">
+                  <div
+                    :class="{
+                      jandi: true,
+                      'shadow-1': false,
+                      [`step-${v.count}`]: true,
+                    }"
+                  >
+                    <q-tooltip>
+                      {{ v.count === 0 ? 'No' : v.count }} posting on {{ v.date }}
+                      {{ isToday(v.date) ? '(Today)' : '' }}</q-tooltip
+                    >
+                  </div>
+                </div>
+              </div>
             </q-tab-panel>
           </q-tab-panels>
         </q-page>
@@ -79,4 +103,40 @@ await delay(2000);
   </q-layout>
 </template>
 
-<style></style>
+<style>
+.jandi-area {
+  height: 120px;
+  width: 240px;
+}
+.jandi-wrap {
+  width: auto;
+  height: 14%;
+}
+.jandi-now {
+  border-color: coral;
+}
+.jandi {
+  width: 12px;
+  height: 12px;
+  border-radius: 4px;
+}
+.step-0 {
+  background: rgba(86, 61, 124, 0.1);
+}
+
+.step-1 {
+  background: rgba(86, 61, 124, 0.3);
+}
+
+.step-2 {
+  background: rgba(86, 61, 124, 0.5);
+}
+
+.step-3 {
+  background: rgba(86, 61, 124, 0.7);
+}
+
+.step-4 {
+  background: rgba(86, 61, 124, 0.9);
+}
+</style>

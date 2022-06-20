@@ -29,3 +29,6 @@ export type Post = RssItem & {
   createdStr: string;
   linkInfo: Link;
 };
+export type CountGroupByDate = {
+  [key: string]: number;
+};
