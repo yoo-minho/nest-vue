@@ -9,14 +9,16 @@ const moreLinksTooltip = links
   .slice(3)
   .map((v) => v.ogTitle)
   .join(', ');
+const LIMIT = 4;
+
 </script>
 
 <template>
   <q-item>
     <q-item-section>
       <q-item-label>
-        <div v-if="links.length > 4" class="row" style="align-items: center">
-          <div v-for="(link, i) in links.slice(0, 3)" :key="i" class="col-3 text-center">
+        <div v-if="links.length > LIMIT" class="row" style="align-items: center">
+          <div v-for="(link, i) in links.slice(0, LIMIT - 1)" :key="i" class="col-3 text-center">
             <LinkCard :link-data="link" :links="true"></LinkCard>
           </div>
           <div class="col-3 text-center">

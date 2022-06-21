@@ -1,13 +1,12 @@
 import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
 
-export const isToday = (dateString: string) => {
-  console.log(
-    { dateString },
-    dayjs(new Date()).format('YYYY-MM-DD'),
-    dateString === dayjs(new Date()).format('YYYY-MM-DD'),
-  );
-  return dateString === dayjs(new Date()).format('YYYY-MM-DD');
-};
+dayjs.extend(relativeTime);
+
+export const isToday = (dateString: string) => dateString === dayjs(new Date()).format('YYYY-MM-DD')
+export const getDateStringByMs = (ms: number) => dayjs(new Date(ms)).format('YYYY-MM-DD');
+export const getAgoStringByMs = (ms: number) => dayjs(new Date(ms)).fromNow();
+export const getlocaleStr = (ms: number) => new Date(ms).toLocaleString();
 
 export const enumerateDaysFromNMonths = (n: number) => {
   const endDate = dayjs().endOf('week');
@@ -15,16 +14,16 @@ export const enumerateDaysFromNMonths = (n: number) => {
   const dates = [];
   let now = startDate;
   while (now.isBefore(endDate) || now.isSame(endDate)) {
+    const copyNow = now;
+    const day = copyNow.day();
+    const month = copyNow.format('MMM');
+    const monthAgo1Week = copyNow.add(-7, 'days').format('MMM');
     dates.push({
       date: now.format('YYYY-MM-DD'),
-      day: now.day(),
+      day: day,
+      month: day === 0 && month !== monthAgo1Week ? month : '',
     });
     now = now.add(1, 'days');
   }
   return dates;
 };
-
-export const getStrByMs = (ms: number) => dayjs(new Date(ms)).format('YYYY-MM-DD');
-export const getlocaleStr = (ms: number) => new Date(ms).toLocaleString();
-
-export default dayjs;

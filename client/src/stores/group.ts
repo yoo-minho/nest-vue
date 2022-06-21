@@ -11,7 +11,6 @@ export const useGroupStore = defineStore('group', {
   getters: {
     linkCountMessage: (state) => (state.links.length > 0 ? `(${state.links.length}/10)` : ''),
     groupDataList: (state) => state.groups,
-    currentGroupData: (state) => state.currentGroup,
   },
   actions: {
     initLinks() {
@@ -26,8 +25,9 @@ export const useGroupStore = defineStore('group', {
     async init() {
       this.groups = await GroupApi.findAll();
     },
-    async selectGroup(id: number) {
+    async getGroupData(id: number) {
       this.currentGroup = await GroupApi.findOne(id);
+      return this.currentGroup;
     },
     async save(title: string, description: string) {
       const groupData = {
