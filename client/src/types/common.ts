@@ -27,8 +27,14 @@ export type RssItem = {
 };
 export type Post = RssItem & {
   createdStr: string;
+  dateString: string;
   linkInfo: Link;
 };
 export type CountGroupByDate = {
   [key: string]: number;
+};
+export type Days = {
+  date: string;
+  day: number;
+  month: string;
 };

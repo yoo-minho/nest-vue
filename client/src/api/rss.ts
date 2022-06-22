@@ -1,5 +1,6 @@
 import { Link, Post, RssItem } from '../types/common';
 import axiosClient from './base';
+import { getDateStringByMs } from '../plugin/dayjs';
 
 export default {
   async index(linkInfo: Link): Promise<Post[]> {
@@ -9,7 +10,8 @@ export default {
       (item: RssItem): Post => ({
         ...item,
         linkInfo, //신규
-        createdStr: new Date(item.created).toLocaleString(), //신규
+        createdStr: new Date(item.created).toLocaleString(), //신규 : Local String Format
+        dateString: getDateStringByMs(item.created), //신규 : YYYY-MM-DD Format
         description: removeHtmlTag(htmlDecode(htmlDecode(item.description || item.content || ''))), //수정
       }),
     );
