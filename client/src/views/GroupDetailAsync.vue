@@ -1,71 +1,21 @@
 <script setup lang="ts">
 import GroupCard from '../components/GroupCard.vue';
 import HeaderItem from '../components/HeaderItem.vue';
-import { useGroupStore } from '../stores/group';
-import RssAPI from '../api/rss';
-import { reactive, ref, watch } from 'vue';
-import { Link, Post, CountGroupByDate } from '../types/common';
 import GroupDetailLinkCard from '../components/GroupDetailLinkCard.vue';
 import GroupDetailPostCard from '../components/GroupDetailPostCard.vue';
+import RssAPI from '../api/rss';
+import { useGroupStore } from '../stores/group';
+import { ref } from 'vue';
 import { delay } from '../util';
-import { enumerateDaysFromNMonths, getDateStringByMs, getAgoStringByMs, isToday } from '../plugin/dayjs';
+import GroupDetailStat from '../components/GroupDetailStat.vue';
 
-const getPostsByLinks = async (links: Link[]) => await Promise.all(links.map(RssAPI.index));
-
-const groupStore = useGroupStore();
-const { getGroupData } = groupStore;
+const { getGroupData } = useGroupStore();
 const props = defineProps<{ id: number }>();
 const currentGroupData = await getGroupData(props.id);
 const { links } = currentGroupData;
-const posts = await getPostsByLinks(links);
-
-const selectModel = ref({ label: 'All', value: -1 });
-const sleectOptions = [{ label: 'All', value: -1 }, ...links.map((v, i) => ({ label: v.ogTitle, value: i }))];
-
-const minCreatedByLink = posts
-  .map((post) => {
-    const minCreated = post[0].created;
-    return {
-      linkInfo: post[0].linkInfo,
-      minCreated: minCreated,
-      dateString: getDateStringByMs(minCreated),
-      agoString: getAgoStringByMs(minCreated),
-    };
-  })
-  .sort((x, y) => x.minCreated - y.minCreated);
-
+const rssResult = await Promise.all(links.map(RssAPI.index));
+const posts = rssResult.flat().sort((x, y) => y.created - x.created);
 const tab = ref('urls');
-
-function getPostCountGroupByDate(posts: Post[]) {
-  const postCounts = posts.reduce((total: CountGroupByDate, { dateString }) => {
-    total[dateString] = (total[dateString] || 0) + 1;
-    return total;
-  }, {});
-  return enumerateDaysFromNMonths(3).map((v) => ({ ...v, count: postCounts[v.date] || 0 }));
-}
-
-const medal = (i: number) => ['🥇', '🥈', '🥉'][i] || '';
-const isRank = (i: number) => i < 3;
-
-const getSortPosts = (originPosts: Post[][], linkIdx: number) => {
-  const _posts = linkIdx === -1 ? originPosts.flat() : originPosts[linkIdx];
-  return _posts.sort((x, y) => y.created - x.created);
-};
-
-const sortPosts = getSortPosts(posts, -1);
-const jandiData = reactive(getPostCountGroupByDate(sortPosts));
-
-const jandiCount = () => jandiData.reduce((total, val) => total + val.count, 0);
-
-watch(
-  () => selectModel.value,
-  (json: { value: number }) => {
-    if (json === null) return;
-    const sortPosts = getSortPosts(posts, json.value);
-    jandiData.length = 0;
-    jandiData.push(...getPostCountGroupByDate(sortPosts));
-  },
-);
 
 await delay(500);
 </script>
@@ -85,9 +35,9 @@ await delay(500);
             indicator-color="primary"
             narrow-indicator
           >
-            <q-tab name="urls" :label="`urls (${links.length})`" />
-            <q-tab name="posts" :label="`posts (${sortPosts.length})`" />
-            <q-tab name="stat" label="STAT" />
+            <q-tab name="urls" :label="`링크 (${links.length})`" />
+            <q-tab name="posts" :label="`포스트 (${posts.length})`" />
+            <q-tab name="stat" label="통계" />
           </q-tabs>
 
           <q-separator />
@@ -104,84 +54,13 @@ await delay(500);
             <q-tab-panel name="posts">
               <q-item style="padding: 0; min-height: 0">
                 <q-item-section>
-                  <GroupDetailPostCard v-for="(post, i) in sortPosts" :key="i" :post="post" />
+                  <GroupDetailPostCard v-for="(post, i) in posts" :key="i" :post="post" />
                 </q-item-section>
               </q-item>
             </q-tab-panel>
 
             <q-tab-panel name="stat">
-              <div class="row" style="align-items: center">
-                <div class="text-h6 col-6">Posting Graph By</div>
-                <div class="q-py-sm col-6">
-                  <q-select v-model="selectModel" :options="sleectOptions" dense options-dense filled />
-                </div>
-              </div>
-              <q-card class="jandi-card">
-                <q-card-section class="row" style="align-items: center; justify-content: center">
-                  <div>
-                    <div class="column jandi-area">
-                      <div v-for="(v, i) in jandiData" :key="i" class="jandi-wrap">
-                        <div class="jandi-month">{{ v.month }}</div>
-                        <div
-                          :class="{
-                            jandi: true,
-                            [`step-${v.count}`]: true,
-                          }"
-                        >
-                          <q-tooltip>
-                            {{ v.count === 0 ? 'No' : v.count }} posting on {{ v.date }}
-                            {{ isToday(v.date) ? '(Today)' : '' }}
-                          </q-tooltip>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="column" style="align-items: center">
-                    <div class="row q-gutter-xs jandi-bottom">
-                      <div class="jandi-comment">Less</div>
-                      <div class="jandi step-0"></div>
-                      <div class="jandi step-1"></div>
-                      <div class="jandi step-2"></div>
-                      <div class="jandi step-3"></div>
-                      <div class="jandi step-4"></div>
-                      <div class="jandi-comment">More</div>
-                    </div>
-                    <div class="q-gutter-xs jandi-bottom">
-                      <div class="jandi-comment">{{ jandiCount() }} posting in the last 3 months</div>
-                    </div>
-                  </div>
-                </q-card-section>
-              </q-card>
-
-              <q-separator style="margin: 20px 0"></q-separator>
-
-              <div class="text-h6">Ranking since last post</div>
-              <q-card class="jandi-card">
-                <q-card-section>
-                  <div class="text-white">
-                    <q-list dark bordered separator>
-                      <q-item v-for="(v, i) in minCreatedByLink" :key="i" clickable>
-                        <q-item-section class="col-8">
-                          <q-item-label class="text-weight-bold ellipsis text-subtitle2">
-                            {{ v.linkInfo.ogTitle }}
-                          </q-item-label>
-                          <q-item-label class="ellipsis text-grey-5">Last Date : {{ v.dateString }}</q-item-label>
-                        </q-item-section>
-                        <q-item-section class="col-4">
-                          <q-item-label :class="{ 'rank-stirng': isRank(i) }">
-                            Rank {{ i + 1 }} {{ medal(i) }}
-                          </q-item-label>
-                          <q-item-label :class="{ 'ago-string': isRank(i) }">{{ v.agoString }}</q-item-label>
-                        </q-item-section>
-                      </q-item>
-                    </q-list>
-                  </div>
-                </q-card-section>
-              </q-card>
-
-              <q-separator style="margin: 20px 0"></q-separator>
-
-              <div class="text-h5" style="text-align: center">How can I keep posting?</div>
+              <GroupDetailStat :links="links" :rss-result="rssResult" />
             </q-tab-panel>
           </q-tab-panels>
         </q-page>
@@ -190,68 +69,4 @@ await delay(500);
   </q-layout>
 </template>
 
-<style>
-.jandi-card {
-  background: #161b22;
-}
-
-.jandi-area {
-  padding-top: 20px;
-  height: 160px;
-  width: 300px;
-}
-
-.jandi-wrap {
-  width: auto;
-  height: 14%;
-}
-
-.jandi-bottom {
-  margin-top: 4px;
-  align-items: center;
-  color: #8b949e;
-}
-
-.jandi-month {
-  position: absolute;
-  top: 12px;
-  color: #f0f6fc;
-}
-
-.jandi {
-  width: 16px;
-  height: 16px;
-  border: 2px solid rgba(255, 255, 255, 0.05);
-  border-radius: 4px;
-  outline-offset: -1px;
-}
-
-.rank-stirng {
-  font-weight: bold;
-  color: #39d353;
-}
-
-.ago-string {
-  color: #26a641;
-}
-
-.step-0 {
-  background: #161b22;
-}
-
-.step-1 {
-  background: #0e4429;
-}
-
-.step-2 {
-  background: #006d32;
-}
-
-.step-3 {
-  background: #26a641;
-}
-
-.step-4 {
-  background: #39d353;
-}
-</style>
+<style></style>

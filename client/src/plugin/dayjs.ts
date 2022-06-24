@@ -9,10 +9,10 @@ export const getDateStringByMs = (ms: number) => dayjs(new Date(ms)).format('YYY
 export const getAgoStringByMs = (ms: number) => dayjs(new Date(ms)).fromNow();
 export const getlocaleStr = (ms: number) => new Date(ms).toLocaleString();
 
-export const enumerateDaysFromNMonths = (n: number) => {
+export const enumerateDaysFromNMonths = (n: number): Days[] => {
   const endDate = dayjs().endOf('week');
   const startDate = dayjs().subtract(n, 'month').startOf('week');
-  const dates = [] as Days[];
+  const dates = [];
   let now = startDate;
   while (now.isBefore(endDate) || now.isSame(endDate)) {
     const copyNow = now;
