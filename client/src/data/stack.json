@@ -1,66 +1,74 @@
 [
   {
     "name": "Vue",
+    "label": "Vue",
     "version": "3",
     "description": "An approachable, performant and versatile framework for building web user interfaces.",
-    "path": "vue.png",
+    "path": "stacks/vue.png",
     "url": "https://vuejs.org/",
-    "github_star": "⭐ 196k"
+    "githubStar": "⭐ 196k"
   },
   {
     "name": "Typescript",
+    "label": "Typescript",
     "version": "",
     "description": "TypeScript is a language for application scale JavaScript development",
-    "path": "typescript.png",
+    "path": "stacks/typescript.png",
     "url": "https://www.typescriptlang.org/",
-    "github_star": "⭐ 80.6k"
+    "githubStar": "⭐ 80.6k"
   },
 
   {
     "name": "nestjs",
+    "label": "nestjs",
     "version": "",
     "description": " A progressive Node.js framework for building efficient and scalable server-side applications.",
-    "path": "nestjs.png",
+    "path": "stacks/nestjs.png",
     "url": "https://nestjs.com",
     "githubStar": "⭐ 47.3k"
   },
   {
     "name": "Vite",
+    "label": "Vite",
     "version": "",
     "description": "Next Generation Frontend Tooling",
-    "path": "vite.png",
+    "path": "stacks/vite.png",
     "url": "https://vitejs.dev/",
     "githubStar": "⭐ 41.5k"
   },
   {
     "name": "Day.js",
+    "label": "Day.js",
     "version": "",
     "description": "2KB immutable date time library alternative to Moment.js with the same modern API",
-    "path": "dayjs.png",
+    "path": "stacks/dayjs.png",
     "url": "https://day.js.org/",
     "githubStar": "⭐ 39.3k"
   },
   {
     "name": "Quasar",
+    "label": "Quasar",
     "version": "",
     "description": "Build high-performance VueJS user interfaces (SPA, PWA, SSR, Mobile and Desktop) in record time",
-    "path": "quasar.png",
+    "path": "stacks/quasar.png",
     "url": "https://quasar.dev/",
     "githubStar": "⭐ 21.2k"
   },
   {
     "name": "Vue Router",
+    "label": "Vue Router",
     "version": "4",
     "description": "The official router for Vue.js.",
-    "path": "vue.png",
+    "path": "stacks/vue.png",
     "url": "https://router.vuejs.org/",
     "githubStar": "⭐ 18.8k"
   },
   {
     "name": "Pinia",
+    "label": "Pinia",
     "version": "",
     "description": "The Vue Store that you will enjoy using",
-    "path": "pinia.png",
+    "path": "stacks/pinia.png",
     "url": "https://pinia.vuejs.org/",
     "githubStar": "⭐ 7.2k"
   }

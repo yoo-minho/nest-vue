@@ -3,15 +3,14 @@ import HeaderItem from './HeaderItem.vue';
 import { useGroupStore } from '../stores/group';
 import { useSubpageStore } from '../stores/subpage';
 import { useQuasar } from 'quasar';
-import { BLOGS } from '../constants';
+import { isAvailableUrl, getBlogType } from '../constants';
 import { ref } from 'vue';
-import { BlogType, ErrorMessage } from '../types/common';
+import { ErrorMessage } from '../types/common';
 import OpenGraphTagAPI from '../api/openGraphTag';
 
 const { links, addLink } = useGroupStore();
 const { closeLinkEditor } = useSubpageStore();
 
-const $q = useQuasar();
 const linkRules = [
   (val: string): ErrorMessage => val.includes('https://') || '링크에 https://를 포함해주세요!',
   (val: string): ErrorMessage => isAvailableUrl(val) || '불가능한 url',
@@ -19,23 +18,12 @@ const linkRules = [
 
 const getErrorMessage = (v: string): string => {
   const resultArr = linkRules.map((func) => func(v));
-  if (typeof resultArr[0] === 'string') {
-    return resultArr[0];
-  } else {
-    return '';
-  }
+  if (typeof resultArr[0] === 'string') return resultArr[0];
+  return '';
 };
 
-const isUpperIncludes = (x: string, y: string) => x.toUpperCase().includes(y.toUpperCase());
-const isAvailableUrl = (url: string): boolean =>
-  BLOGS.filter((blog) => {
-    console.log({ url, blog });
-    return isUpperIncludes(url, blog);
-  }).length > 0;
-const getBlogType = (url: string): BlogType => BLOGS.filter((blog) => isUpperIncludes(url, blog))[0] as BlogType;
-
 const blogUrl = ref('');
-
+const $q = useQuasar();
 async function addBlogLink() {
   const errorMessage = getErrorMessage(blogUrl.value);
   if ('' !== errorMessage) {

@@ -6,6 +6,7 @@ export const useSubpageStore = defineStore('subpage', {
     isOpenLinkEditor: false,
     isOpenSettingMain: false,
     isOpenStackMain: false,
+    stack: 'stack',
   }),
   getters: {},
   actions: {
@@ -28,6 +29,11 @@ export const useSubpageStore = defineStore('subpage', {
       this.isOpenSettingMain = false;
     },
     openStackMain() {
+      this.stack = 'stack';
+      this.isOpenStackMain = true;
+    },
+    openPlatformMain() {
+      this.stack = 'platform';
       this.isOpenStackMain = true;
     },
     closeStackMain() {

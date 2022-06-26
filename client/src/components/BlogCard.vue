@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { toRaw } from 'vue';
-import { getBlogIconUrl } from '../constants';
+import { getImageByBlogType } from '../constants';
 import { useGroupStore } from '../stores/group';
 import { Link } from '../types/common';
 
 const props = defineProps<{ link: Link }>();
-const { index, type, url, ogTitle, ogDescription, ogImageUrl = getBlogIconUrl(type) } = toRaw(props.link);
+const { index, type, url, ogTitle, ogDescription, ogImageUrl = getImageByBlogType(type) } = toRaw(props.link);
 
 const { deleteLink } = useGroupStore();
 </script>

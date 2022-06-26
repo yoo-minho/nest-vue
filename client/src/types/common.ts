@@ -1,16 +1,16 @@
 export type ErrorMessage = string | boolean;
-export type BlogType = string & ('NAVER' | 'TISTORY' | 'VELOG');
 export type TabName = string & ('group' | 'stack');
 export type Link = {
   index: number;
   url: string;
-  type: BlogType;
+  type: string;
   ogTitle: string;
   ogDescription: string;
   ogImageUrl: string;
 };
 export type Group = {
   index: number;
+  id: string;
   title: string;
   description: string;
   links: Link[];
@@ -40,4 +40,13 @@ export type Days = {
 };
 export type DaysCount = Days & {
   count: number;
+};
+export type StackJson = {
+  name: string;
+  label: string;
+  version: string;
+  description: string;
+  path: string;
+  url: string;
+  githubStar: string;
 };

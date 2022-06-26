@@ -1,67 +1,56 @@
 [
   {
-    "name": "Vue",
-    "version": "3",
-    "description": "An approachable, performant and versatile framework for building web user interfaces.",
-    "path": "vue.png",
-    "url": "https://vuejs.org/",
-    "github_star": "⭐ 196k"
-  },
-  {
-    "name": "Typescript",
+    "name": "brunch",
+    "label": "Brunch",
     "version": "",
-    "description": "TypeScript is a language for application scale JavaScript development",
-    "path": "typescript.png",
-    "url": "https://www.typescriptlang.org/",
-    "github_star": "⭐ 80.6k"
+    "description": "글이 작품이 되는 공간, 브런치",
+    "path": "platform/brunch.png",
+    "url": "https://brunch.co.kr",
+    "githubStar": ""
   },
-
   {
-    "name": "nestjs",
+    "name": "medium",
+    "label": "Medium",
     "version": "",
-    "description": " A progressive Node.js framework for building efficient and scalable server-side applications.",
-    "path": "nestjs.png",
-    "url": "https://nestjs.com",
-    "githubStar": "⭐ 47.3k"
+    "description": "Where good ideas find you",
+    "path": "platform/medium.png",
+    "url": "https://medium.com/",
+    "githubStar": ""
   },
   {
-    "name": "Vite",
+    "name": "naver",
+    "label": "Naver Blog",
     "version": "",
-    "description": "Next Generation Frontend Tooling",
-    "path": "vite.png",
-    "url": "https://vitejs.dev/",
-    "githubStar": "⭐ 41.5k"
+    "description": "Lifelog.Blog",
+    "path": "platform/naver.png",
+    "url": "https://blog.naver.com/",
+    "githubStar": ""
   },
   {
-    "name": "Day.js",
+    "name": "tistory",
+    "label": "Tistory",
     "version": "",
-    "description": "2KB immutable date time library alternative to Moment.js with the same modern API",
-    "path": "dayjs.png",
-    "url": "https://day.js.org/",
-    "githubStar": "⭐ 39.3k"
+    "description": "나를 가장 잘 표현하는 곳, 티스토리 | 카카오",
+    "path": "platform/tistory.png",
+    "url": "https://www.tistory.com/",
+    "githubStar": ""
   },
   {
-    "name": "Quasar",
+    "name": "velog",
+    "label": "Velog",
     "version": "",
-    "description": "Build high-performance VueJS user interfaces (SPA, PWA, SSR, Mobile and Desktop) in record time",
-    "path": "quasar.png",
-    "url": "https://quasar.dev/",
-    "githubStar": "⭐ 21.2k"
+    "description": "개발자들을 위한 블로그 서비스. 어디서 글 쓸지 고민하지 말고 벨로그에서 시작하세요.",
+    "path": "platform/velog.png",
+    "url": "https://velog.io/",
+    "githubStar": ""
   },
   {
-    "name": "Vue Router",
-    "version": "4",
-    "description": "The official router for Vue.js.",
-    "path": "vue.png",
-    "url": "https://router.vuejs.org/",
-    "githubStar": "⭐ 18.8k"
-  },
-  {
-    "name": "Pinia",
+    "name": "youtube",
+    "label": "Youtube",
     "version": "",
-    "description": "The Vue Store that you will enjoy using",
-    "path": "pinia.png",
-    "url": "https://pinia.vuejs.org/",
-    "githubStar": "⭐ 7.2k"
+    "description": "YouTube에서 마음에 드는 동영상과 음악을 감상하고, 직접 만든 콘텐츠를 업로드",
+    "path": "platform/youtube.png",
+    "url": "https://www.youtube.com/",
+    "githubStar": ""
   }
 ]

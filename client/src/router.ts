@@ -7,6 +7,11 @@ const routes = [
     component: () => import('./views/GroupMain.vue'),
   },
   {
+    path: '/@:id',
+    name: 'GroupDetail2',
+    component: () => import('./views/GroupDetail.vue'),
+  },
+  {
     path: '/group/:id',
     name: 'GroupDetail',
     component: () => import('./views/GroupDetail.vue'),

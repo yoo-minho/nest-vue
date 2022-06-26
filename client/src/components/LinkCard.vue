@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Link } from '../types/common';
 import { toRaw } from 'vue';
-import { getBlogIconUrl } from '../constants';
+import { getImageByBlogType } from '../constants';
 
 const props = defineProps<{ linkData: Link; links?: boolean; posts?: boolean }>();
 const { ogImageUrl, ogTitle, url, type } = toRaw(props.linkData);
@@ -26,7 +26,7 @@ function isTextImage(url: string) {
       <q-tooltip>{{ ogTitle }}<br />{{ url }}</q-tooltip>
     </q-avatar>
     <q-avatar :class="{ 'blog-icon': true, 'shadow-2': true, posts, links }" rounded size="18px">
-      <img :src="getBlogIconUrl(type)" :alt="ogTitle" />
+      <img :src="getImageByBlogType(type)" :alt="ogTitle" />
       <q-tooltip>{{ type }}</q-tooltip>
     </q-avatar>
   </div>

@@ -1,16 +1,10 @@
 <script setup lang="ts">
 import { toRaw } from 'vue';
-import { getStacksImageUrl } from '../constants';
+import { getImage } from '../constants';
+import { StackJson } from '../types/common';
 
-const props = defineProps<{
-  name: string;
-  version: string;
-  description: string;
-  path: string;
-  url: string;
-  githubStar: string;
-}>();
-const { name, version, description, path, url, githubStar } = toRaw(props);
+const props = defineProps<{ stackJson: StackJson }>();
+const { label, version, description, path, url, githubStar } = toRaw(props.stackJson);
 const openUrl = (url: string) => window.open(url, 'stack');
 </script>
 
@@ -18,12 +12,12 @@ const openUrl = (url: string) => window.open(url, 'stack');
   <q-item>
     <q-item-section top avatar style="cursor: pointer" @click="openUrl(url)">
       <q-avatar rounded size="80px">
-        <img :src="getStacksImageUrl(path)" style="object-fit: cover" />
+        <img :src="getImage(path)" style="object-fit: cover" />
       </q-avatar>
     </q-item-section>
 
-    <q-item-section>
-      <q-item-label>{{ name }} {{ version }}</q-item-label>
+    <q-item-section style="justify-content: flex-start">
+      <q-item-label>{{ label }} {{ version }}</q-item-label>
       <q-item-label caption class="ellipsis-3-lines">{{ description }}</q-item-label>
     </q-item-section>
 

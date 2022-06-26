@@ -14,6 +14,7 @@ const subpageStore = useSubpageStore();
 const { openLinkEditor, closeGroupEditor } = subpageStore;
 
 const title = ref('');
+const id = ref('');
 const description = ref('');
 
 const $q = useQuasar();
@@ -27,7 +28,7 @@ function saveGroup() {
     $q.notify({ type: 'negative', message: '최소 1개의 url이 필요합니다.' });
     return;
   }
-  save(title.value, description.value);
+  save(title.value, id.value, description.value);
   closeGroupEditor();
 }
 </script>
@@ -49,18 +50,17 @@ function saveGroup() {
             hide-bottom-space
             :rules="[(val) => val?.length > 0 || '그룹 이름을 입력해주세요!']"
           />
-          <!-- <q-input
-            v-model="email"
+          <q-input
+            v-model="id"
             label="전용 링크"
             type="email"
             stack-label
             counter
             maxlength="20"
             placeholder="전용 링크 추가"
-            prefix="https://"
-            suffix=".logcrew.com"
+            prefix="https://inglog.io/@"
             :rules="[(val) => val?.length > 0 || '도메인을 입력해주세요!']"
-          /> -->
+          />
           <q-input
             v-model="description"
             stack-label

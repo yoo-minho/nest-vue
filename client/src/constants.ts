@@ -1,14 +1,15 @@
-import { BlogType } from './types/common';
+import platformArray from './data/platform.json';
 
-export const BLOGS = ['NAVER', 'TISTORY', 'VELOG', 'BRUNCH', 'MEDIUM', 'YOUTUBE'];
-export const BLOG_IMAGES = {
-  NAVER: 'naver.png',
-  TISTORY: 'tistory.png',
-  VELOG: 'velog.png',
-  BRUNCH: 'brunch.png',
-  MEDIUM: 'medium.png',
-  YOUTUBE: 'youtube.png',
+export const getBlogType = (url = ''): string =>
+  platformArray
+    .map((platform) => platform.name.toUpperCase())
+    .find((platform) => url.toUpperCase().includes(platform)) || '';
+export const isAvailableUrl = (url: string) => !!getBlogType(url);
+
+export const getBlogImagePath = (type: string) => {
+  const target = platformArray.filter((v) => v.name?.toUpperCase() === type?.toUpperCase());
+  return target.length > 0 ? target[0].path : '';
 };
-const getImageUrl = (path: string) => new URL(`./assets/images/${path}`, import.meta.url).toString();
-export const getBlogIconUrl = (type: BlogType): string => getImageUrl(`blog-icon/${BLOG_IMAGES[type]}`);
-export const getStacksImageUrl = (v: string): string => getImageUrl(`stacks/${v}`);
+
+export const getImage = (path: string) => new URL(`./assets/images/${path}`, import.meta.url).toString();
+export const getImageByBlogType = (type: string): string => getImage(getBlogImagePath(type));
