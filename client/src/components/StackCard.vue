@@ -2,16 +2,15 @@
 import { toRaw } from 'vue';
 import { getStacksImageUrl } from '../constants';
 
-interface StackJson {
+const props = defineProps<{
   name: string;
   version: string;
   description: string;
   path: string;
   url: string;
-  github_star: string;
-}
-const props = defineProps<{ stackJson: StackJson }>();
-const { name, version, description, path, url, github_star } = toRaw(props.stackJson);
+  githubStar: string;
+}>();
+const { name, version, description, path, url, githubStar } = toRaw(props);
 const openUrl = (url: string) => window.open(url, 'stack');
 </script>
 
@@ -28,8 +27,8 @@ const openUrl = (url: string) => window.open(url, 'stack');
       <q-item-label caption class="ellipsis-3-lines">{{ description }}</q-item-label>
     </q-item-section>
 
-    <q-item-section side top>
-      <q-badge>{{ github_star }}</q-badge>
+    <q-item-section v-if="githubStar" side top>
+      <q-badge>{{ githubStar }}</q-badge>
     </q-item-section>
   </q-item>
 </template>
