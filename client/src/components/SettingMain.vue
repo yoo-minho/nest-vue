@@ -2,25 +2,19 @@
 import HeaderItem from './HeaderItem.vue';
 import SettingCard from './SettingCard.vue';
 import { useRouter } from 'vue-router';
-
 import { useSubpageStore } from '../stores/subpage';
 
 const subpageStore = useSubpageStore();
-const { closeSettingMain, openStackMain } = subpageStore;
+const { closeSettingMain, openStackMain, openPlatformMain } = subpageStore;
 
 const router = useRouter();
-
-const routerPush = (path: string) => () => {
-  router.push(path);
-};
+const routerPush = (path: string) => () => router.push(path);
 
 const SERVICE_CATEGORY = [
   { icon: 'flag', title: '우리의 미션', clickEvent: () => routerPush('/') },
-  { icon: 'rss_feed', title: '허용가능한 플랫폼', clickEvent: routerPush('/') },
-  { icon: 'groups', title: '그룹 신청하기', clickEvent: routerPush('/') },
+  { icon: 'rss_feed', title: '허용가능한 플랫폼', clickEvent: openPlatformMain },
   { icon: 'reviews', title: '의견 및 오류 제공', clickEvent: routerPush('/') },
 ];
-
 const ETC_CATEGORY = [{ icon: 'military_tech', title: '기술 스택', clickEvent: openStackMain }];
 </script>
 

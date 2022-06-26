@@ -29,9 +29,11 @@ export const useGroupStore = defineStore('group', {
       this.currentGroup = await GroupApi.findOne(id);
       return this.currentGroup;
     },
-    async save(title: string, description: string) {
+    async save(title: string, id: string, description: string) {
+      //Todo. id 중복체크
       const groupData = {
         index: -1,
+        id,
         title,
         description,
         links: this.links,
