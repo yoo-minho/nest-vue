@@ -8,7 +8,7 @@ const routes = [
   },
   {
     path: '/@:id',
-    name: 'GroupDetail2',
+    name: 'GroupDetailDomain',
     component: () => import('./views/GroupDetail.vue'),
   },
   {
