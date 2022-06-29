@@ -19,7 +19,7 @@ const ETC_CATEGORY = [{ icon: 'military_tech', title: '기술 스택', clickEven
 </script>
 
 <template>
-  <q-layout class="subpage">
+  <q-layout class="subpage max-width">
     <HeaderItem :back="closeSettingMain" :title="'더 보기'" />
     <q-page-container class="max-width">
       <q-list padding class="rounded-borders">

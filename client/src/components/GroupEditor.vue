@@ -8,7 +8,7 @@ import BlogCard from './BlogCard.vue';
 import HeaderItem from './HeaderItem.vue';
 
 const groupStore = useGroupStore();
-const { initLinks, save } = groupStore;
+const { initLinks, save, existsId } = groupStore;
 const { links, linkCountMessage } = storeToRefs(groupStore);
 const subpageStore = useSubpageStore();
 const { openLinkEditor, closeGroupEditor } = subpageStore;
@@ -21,11 +21,17 @@ const $q = useQuasar();
 
 onMounted(() => {
   initLinks();
+  console.log({ existsId, groupStore });
 });
 
-function saveGroup() {
+async function saveGroup() {
   if (links.value.length === 0) {
     $q.notify({ type: 'negative', message: '최소 1개의 url이 필요합니다.' });
+    return;
+  }
+  const isDuplicatedById = await existsId(id.value);
+  if (isDuplicatedById) {
+    $q.notify({ type: 'negative', message: '중복 도메인이 존재합니다.' });
     return;
   }
   save(title.value, id.value, description.value);
@@ -34,7 +40,7 @@ function saveGroup() {
 </script>
 
 <template>
-  <q-layout class="subpage">
+  <q-layout class="subpage max-width">
     <HeaderItem :close="closeGroupEditor" :title="'그룹 만들기'" :save="saveGroup" />
     <q-page-container class="max-width">
       <q-page class="q-pa-md">

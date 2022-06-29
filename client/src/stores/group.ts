@@ -25,12 +25,14 @@ export const useGroupStore = defineStore('group', {
     async init() {
       this.groups = await GroupApi.findAll();
     },
-    async getGroupData(id: number) {
-      this.currentGroup = await GroupApi.findOne(id);
+    async existsId(id: string) {
+      return Object.keys(await GroupApi.findById(id)).length > 0;
+    },
+    async getGroupData(id: string) {
+      this.currentGroup = await GroupApi.findById(id);
       return this.currentGroup;
     },
     async save(title: string, id: string, description: string) {
-      //Todo. id 중복체크
       const groupData = {
         index: -1,
         id,

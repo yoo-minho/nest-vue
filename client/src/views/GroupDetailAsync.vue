@@ -10,7 +10,7 @@ import { delay } from '../util';
 import GroupDetailStat from '../components/GroupDetailStat.vue';
 
 const { getGroupData } = useGroupStore();
-const props = defineProps<{ id: number }>();
+const props = defineProps<{ id: string }>();
 const currentGroupData = await getGroupData(props.id);
 const { links } = currentGroupData;
 const rssResult = await Promise.all(links.map(RssAPI.index));
