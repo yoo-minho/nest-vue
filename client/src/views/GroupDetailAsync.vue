@@ -11,6 +11,7 @@ import GroupDetailStat from '../components/GroupDetailStat.vue';
 
 const { getGroupData } = useGroupStore();
 const props = defineProps<{ id: string }>();
+console.log(props.id);
 const currentGroupData = await getGroupData(props.id);
 const { links } = currentGroupData;
 const rssResult = await Promise.all(links.map(RssAPI.index));

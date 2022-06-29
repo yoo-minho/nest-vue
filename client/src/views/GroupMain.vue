@@ -14,8 +14,8 @@ const router = useRouter();
 
 init();
 
-function clickGroup(id: number): void {
-  router.push({ path: `/group/${id}` });
+function clickGroup(id: string): void {
+  router.push({ path: `/@${id}` });
 }
 </script>
 
@@ -28,7 +28,7 @@ function clickGroup(id: number): void {
           <p v-for="groupData in groupDataList" :key="groupData.index">
             <q-card>
               <q-card-section>
-                <GroupCard :group-data="groupData" class="cursor-pointer" @click="clickGroup(groupData.index)" />
+                <GroupCard :group-data="groupData" class="cursor-pointer" @click="clickGroup(groupData.id)" />
                 <LinkList :links="groupData.links" />
               </q-card-section>
             </q-card>

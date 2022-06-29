@@ -4,7 +4,7 @@ import GroupDetailAsync from './GroupDetailAsync.vue';
 import GroupDetailLoading from './GroupDetailLoading.vue';
 
 const route = useRoute();
-const id = +route.params.id;
+const id = String(route.params.id);
 </script>
 
 <template>

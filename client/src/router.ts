@@ -8,11 +8,6 @@ const routes = [
   },
   {
     path: '/@:id',
-    name: 'GroupDetailDomain',
-    component: () => import('./views/GroupDetail.vue'),
-  },
-  {
-    path: '/group/:id',
     name: 'GroupDetail',
     component: () => import('./views/GroupDetail.vue'),
   },
