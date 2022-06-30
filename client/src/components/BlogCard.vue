@@ -14,7 +14,9 @@ const { deleteLink } = useGroupStore();
   <q-item clickable>
     <q-item-section side>
       <q-avatar rounded size="48px">
-        <img :src="ogImageUrl" alt="" />
+        <q-img :src="ogImageUrl" class="image-48">
+          <template #error>{{ ogTitle.substring(0, 1) }}</template>
+        </q-img>
       </q-avatar>
     </q-item-section>
     <q-item-section>
