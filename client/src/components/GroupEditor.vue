@@ -17,14 +17,25 @@ const title = ref('');
 const id = ref('');
 const description = ref('');
 
+const idRef = ref();
+
 const $q = useQuasar();
+const titleRules = [(val: string) => val?.length > 0 || '그룹 이름을 입력해주세요!'];
+const idRules = [
+  (val: string) => val?.length > 0 || '도메인을 입력해주세요!',
+  (val: string) => new RegExp(/^[A-Za-z0-9_+]*$/).test(val) || '대소문자, 숫자, 언더바를 활용하여 입력해주세요!',
+];
 
 onMounted(() => {
   initLinks();
-  console.log({ existsId, groupStore });
 });
 
 async function saveGroup() {
+  if (id.value.length === 0) {
+    $q.notify({ type: 'negative', message: '도메인을 입력해주세요!' });
+    idRef.value.focus();
+    return;
+  }
   if (links.value.length === 0) {
     $q.notify({ type: 'negative', message: '최소 1개의 url이 필요합니다.' });
     return;
@@ -32,6 +43,7 @@ async function saveGroup() {
   const isDuplicatedById = await existsId(id.value);
   if (isDuplicatedById) {
     $q.notify({ type: 'negative', message: '중복 도메인이 존재합니다.' });
+    idRef.value.focus();
     return;
   }
   save(title.value, id.value, description.value);
@@ -54,9 +66,10 @@ async function saveGroup() {
             stack-label
             autofocus
             hide-bottom-space
-            :rules="[(val) => val?.length > 0 || '그룹 이름을 입력해주세요!']"
+            :rules="titleRules"
           />
           <q-input
+            ref="idRef"
             v-model="id"
             label="전용 링크"
             type="email"
@@ -65,7 +78,7 @@ async function saveGroup() {
             maxlength="20"
             placeholder="전용 링크 추가"
             prefix="https://inglog.io/@"
-            :rules="[(val) => val?.length > 0 || '도메인을 입력해주세요!']"
+            :rules="idRules"
           />
           <q-input
             v-model="description"

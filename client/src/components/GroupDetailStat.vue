@@ -23,16 +23,15 @@ const order = ref(orderOptions[0]);
 
 const getLastPostitngDateByLink = (rssResult: Post[][], order: number) =>
   rssResult
-    .map((res) => {
-      const lastPostitngDate = res[0].created;
-      return {
-        linkInfo: res[0].linkInfo,
-        lastPostitngDate: lastPostitngDate,
-        dateString: getDateStringByMs(lastPostitngDate),
-        agoString: getAgoStringByMs(lastPostitngDate),
-      };
-    })
+    .map((rss) => rss[0] || {})
+    .map(({ created, linkInfo }) => ({
+      linkInfo: linkInfo || {},
+      lastPostitngDate: created,
+      dateString: getDateStringByMs(created),
+      agoString: getAgoStringByMs(created),
+    }))
     .sort((x, y) => (x.lastPostitngDate - y.lastPostitngDate) * order);
+
 const lastPostitngDateByLink = reactive(getLastPostitngDateByLink(rssResult, 1));
 
 const getJandiData = (posts: Post[]): DaysCount[] => {

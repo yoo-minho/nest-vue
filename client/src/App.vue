@@ -34,4 +34,13 @@ ul {
 .without-header {
   height: calc(100vh - 51px);
 }
+
+.image-48 {
+  width: 48px;
+  height: 48px;
+  background: black;
+  color: white;
+  line-height: 48px;
+  text-align: center;
+}
 </style>

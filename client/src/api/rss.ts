@@ -4,7 +4,7 @@ import { getDateStringByMs } from '../plugin/dayjs';
 
 export default {
   async index(linkInfo: Link): Promise<Post[]> {
-    const res = await axiosClient.get('rss', { params: { url: linkInfo.url } });
+    const res = await axiosClient.get('rss', { params: { url: linkInfo.rssUrl || linkInfo.url } });
     const _items = res.data.items || [];
     return _items.map(
       (item: RssItem): Post => ({

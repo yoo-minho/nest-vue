@@ -3,6 +3,7 @@ export type TabName = string & ('group' | 'stack');
 export type Link = {
   index: number;
   url: string;
+  rssUrl?: string;
   type: string;
   ogTitle: string;
   ogDescription: string;

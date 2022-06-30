@@ -22,7 +22,9 @@ function isTextImage(url: string) {
       <q-tooltip>{{ ogTitle }}<br />{{ url }}</q-tooltip>
     </q-avatar>
     <q-avatar v-else rounded size="48px" class="shadow-1">
-      <img :src="ogImageUrl" :alt="ogTitle" style="object-fit: cover" />
+      <q-img :src="ogImageUrl" :alt="ogTitle" class="image-48">
+        <template #error>{{ ogTitle.substring(0, 1) }}</template>
+      </q-img>
       <q-tooltip>{{ ogTitle }}<br />{{ url }}</q-tooltip>
     </q-avatar>
     <q-avatar :class="{ 'blog-icon': true, 'shadow-2': true, posts, links }" rounded size="18px">
