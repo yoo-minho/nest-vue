@@ -15,6 +15,7 @@ const BLOG_EXPRESSION = {
   BRUNCH: /https:\/\/brunch.co.kr\/@([0-9a-zA-Z_-]*)(\/)?([0-9a-zA-Z]*)/gi,
   MEDIUM: /https:\/\/medium.com\/([0-9a-zA-Z_-]*)(\/)?([0-9a-zA-Z]*)/gi,
   YOUTUBE: /https:\/\/www.youtube.com\/channel\/([0-9a-zA-Z_-]*)(\/)?([0-9a-zA-Z]*)/gi,
+  TWITCH: /https:\/\/www.twitch.tv\/([0-9a-zA-Z_-]*)/gi,
 };
 
 const { links, addLink } = useGroupStore();
@@ -47,7 +48,6 @@ function checkUrl() {
   const isAutoRssUrl = Object.entries(BLOG_EXPRESSION)
     .map(([_, v]) => v)
     .reduce((result, curr) => new RegExp(curr).test(url.value) || result, false);
-  console.log({ isAutoRssUrl });
   if (isAutoRssUrl) {
     initRssUrl();
   } else {

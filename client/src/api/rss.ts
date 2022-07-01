@@ -12,6 +12,7 @@ export default {
         linkInfo, //신규
         createdStr: new Date(item.created).toLocaleString(), //신규 : Local String Format
         dateString: getDateStringByMs(item.created), //신규 : YYYY-MM-DD Format
+        title: linkInfo.url.includes('twitch') ? decodeHtmlEntity(item.title) : item.title, //수정
         description: removeHtmlTag(htmlDecode(htmlDecode(item.description || item.content || ''))), //수정
       }),
     );
@@ -25,4 +26,10 @@ function htmlDecode(input: string): string {
 
 function removeHtmlTag(input: string) {
   return input.replace(/<[^>]*>?/g, '');
+}
+
+function decodeHtmlEntity(input: string) {
+  const textarea = document.createElement('textarea');
+  textarea.innerHTML = input;
+  return textarea.value;
 }

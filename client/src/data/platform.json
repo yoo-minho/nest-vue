@@ -52,5 +52,14 @@
     "path": "platform/youtube.png",
     "url": "https://www.youtube.com/",
     "githubStar": ""
+  },
+  {
+    "name": "twitch",
+    "label": "Twitch",
+    "version": "",
+    "description": "Twitch is an interactive livestreaming service for content spanning gaming, entertainment, sports, music, and more.",
+    "path": "platform/twitch.png",
+    "url": "https://www.twitch.tv/",
+    "githubStar": ""
   }
 ]

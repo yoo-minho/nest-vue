@@ -12,6 +12,7 @@ const BLOG_EXPRESSION = {
   MEDIUM: /https:\/\/medium.com\/([0-9a-zA-Z_-]*)(\/)?([0-9a-zA-Z]*)/gi,
   YOUTUBE:
     /https:\/\/www.youtube.com\/channel\/([0-9a-zA-Z_-]*)(\/)?([0-9a-zA-Z]*)/gi,
+  TWITCH: /https:\/\/www.twitch.tv\/([0-9a-zA-Z_-]*)/gi,
 };
 
 @Injectable()
@@ -69,6 +70,11 @@ async function convertRssUrl(
   if (isTest(url, BLOG_EXPRESSION.YOUTUBE)) {
     const youtubeId = url.replace(BLOG_EXPRESSION.YOUTUBE, '$1');
     return `https://www.youtube.com/feeds/videos.xml?channel_id=${youtubeId}`;
+  }
+
+  if (isTest(url, BLOG_EXPRESSION.TWITCH)) {
+    const twitchId = url.replace(BLOG_EXPRESSION.TWITCH, '$1');
+    return `https://twitchrss.appspot.com/vod/${twitchId}`;
   }
 
   return url;
