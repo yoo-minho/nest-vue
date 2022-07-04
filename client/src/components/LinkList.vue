@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from '@vue/reactivity';
 import { toRaw } from 'vue';
 import LinkCard from '../components/LinkCard.vue';
 import { Link } from '../types/common';
@@ -10,26 +11,26 @@ const moreLinksTooltip = links
   .map((v) => v.ogTitle)
   .join(', ');
 const LIMIT = 4;
-
+const remain = computed(() => links.length - LIMIT);
 </script>
 
 <template>
-  <q-item>
+  <q-item dense>
     <q-item-section>
       <q-item-label>
         <div v-if="links.length > LIMIT" class="row" style="align-items: center">
-          <div v-for="(link, i) in links.slice(0, LIMIT - 1)" :key="i" class="col-3 text-center">
+          <div v-for="(link, i) in links.slice(0, LIMIT - 1)" :key="i" class="col-3">
             <LinkCard :link-data="link" :links="true"></LinkCard>
           </div>
-          <div class="col-3 text-center">
+          <div class="col-3">
             <div>
-              <q-item-label style="font-size: 36px"><q-icon name="add" size="36px"></q-icon>2</q-item-label>
+              <q-item-label style="font-size: 36px"><q-icon name="add" size="36px"></q-icon>{{ remain }}</q-item-label>
               <q-tooltip>{{ moreLinksTooltip }}</q-tooltip>
             </div>
           </div>
         </div>
         <div v-else class="row">
-          <div v-for="(link, i) in links" :key="i" class="col-3 text-center">
+          <div v-for="(link, i) in links" :key="i" class="col-3">
             <LinkCard :link-data="link" :links="true"></LinkCard>
           </div>
         </div>

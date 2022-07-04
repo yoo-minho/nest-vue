@@ -15,6 +15,7 @@ export type Group = {
   title: string;
   description: string;
   links: Link[];
+  created_at: Date;
 };
 export type RssItem = {
   category: string[];

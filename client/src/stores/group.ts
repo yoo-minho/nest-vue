@@ -39,6 +39,7 @@ export const useGroupStore = defineStore('group', {
         title,
         description,
         links: this.links,
+        created_at: new Date(),
       };
       const createdIndex = await GroupApi.create(groupData);
       groupData.index = createdIndex;

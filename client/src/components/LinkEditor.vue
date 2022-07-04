@@ -46,7 +46,7 @@ function checkUrl() {
     return;
   }
   const isAutoRssUrl = Object.entries(BLOG_EXPRESSION)
-    .map(([_, v]) => v)
+    .map(([, v]) => v)
     .reduce((result, curr) => new RegExp(curr).test(url.value) || result, false);
   if (isAutoRssUrl) {
     initRssUrl();
