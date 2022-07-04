@@ -8,10 +8,9 @@ const $q = useQuasar();
 const props = defineProps<{ groupData: Group }>();
 const { title, description, id } = toRaw(props.groupData);
 const url = computed(() => `https://inglog.io/@${id}`);
-const copyUrl = () => {
-  navigator.clipboard.writeText(url.value).then(() => {
-    $q.notify({ type: 'positive', message: '복사하였습니다.' });
-  });
+const copyUrl = async () => {
+  await navigator.clipboard.writeText(url.value);
+  $q.notify({ type: 'positive', message: 'Copy Completed!' });
 };
 </script>
 
