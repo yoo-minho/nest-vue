@@ -13,7 +13,9 @@ const { title, description } = toRaw(props.groupData);
         <q-item-label>
           <q-item style="padding: 0; min-height: 0">
             <q-item-section class="text-subtitle1 text-weight-bolder">{{ title }}</q-item-section>
-            <q-item-section side>조회수 999</q-item-section>
+            <q-item-section side>
+              <q-chip outline color="gray" icon="visibility" dense>99</q-chip>
+            </q-item-section>
           </q-item>
         </q-item-label>
         <q-item-label caption>

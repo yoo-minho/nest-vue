@@ -93,7 +93,7 @@ async function saveGroup() {
             hide-bottom-space
           />
           <q-btn color="primary" class="full-width" label="블로그 링크 추가" @click="openLinkEditor">
-            <span class="link-count-message">{{ linkCountMessage }}</span>
+            <span class="q-ml-sm">{{ linkCountMessage }}</span>
           </q-btn>
 
           <q-list v-if="links.length > 0" bordered separator class="full-width">
@@ -107,8 +107,4 @@ async function saveGroup() {
   </q-layout>
 </template>
 
-<style>
-.link-count-message {
-  margin-left: 5px;
-}
-</style>
+<style></style>

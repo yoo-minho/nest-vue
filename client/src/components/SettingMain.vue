@@ -12,6 +12,7 @@ const routerPush = (path: string) => () => router.push(path);
 
 const SERVICE_CATEGORY = [
   { icon: 'flag', title: '우리의 미션', clickEvent: () => routerPush('/') },
+  { icon: 'description', title: '업데이트 노트', clickEvent: () => routerPush('/') },
   { icon: 'rss_feed', title: '허용가능한 플랫폼', clickEvent: openPlatformMain },
   { icon: 'reviews', title: '의견 및 오류 제공', clickEvent: routerPush('/') },
 ];
