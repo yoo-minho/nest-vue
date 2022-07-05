@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { useQuasar } from 'quasar';
+import { QSelect, useQuasar } from 'quasar';
 import { onMounted, ref } from 'vue';
 import { useGroupStore } from '../stores/group';
 import { useSubpageStore } from '../stores/subpage';
@@ -26,9 +26,29 @@ const idRules = [
   (val: string) => new RegExp(/^[A-Za-z0-9_+]*$/).test(val) || '대소문자, 숫자, 언더바를 활용하여 입력해주세요!',
 ];
 
+const defaultOptions: string[] = ['xxxx'];
+const options = ref(defaultOptions);
+const model = ref('');
+const selectedOptions = ref([] as string[]);
+
 onMounted(() => {
   initLinks();
 });
+
+type doneFn = (callbackFn: () => void, afterFn?: (ref: QSelect) => void) => void;
+
+function filterFn(val: string, update: doneFn) {
+  const filterVal = defaultOptions.filter((v) => v.toLowerCase().includes(val.toLowerCase()));
+  update(() => {
+    options.value = filterVal.length > 0 ? filterVal : [val];
+  });
+}
+
+function selectOption() {
+  console.log('selectOption');
+  selectedOptions.value.push(model.value);
+  model.value = '';
+}
 
 async function saveGroup() {
   if (id.value.length === 0) {
@@ -92,6 +112,24 @@ async function saveGroup() {
             placeholder="(선택) 그룹 설명을 적어주세요!"
             hide-bottom-space
           />
+
+          <q-select
+            v-model="model"
+            stack-label
+            label="태그 추가"
+            use-input
+            input-debounce="0"
+            maxlength="10"
+            counter
+            :options="options"
+            @filter="filterFn"
+            @update:model-value="selectOption"
+          ></q-select>
+
+          <div class="row">
+            <q-chip v-for="(v, i) in selectedOptions" :key="i" dense>{{ v }}</q-chip>
+          </div>
+
           <q-btn color="primary" class="full-width" label="블로그 링크 추가" @click="openLinkEditor">
             <span class="q-ml-sm">{{ linkCountMessage }}</span>
           </q-btn>

@@ -27,7 +27,7 @@ function clickGroup(id: string): void {
         <q-page class="q-pa-md">
           <p v-for="groupData in groupDataList" :key="groupData.index">
             <q-card>
-              <q-card-section>
+              <q-card-section style="padding: 0">
                 <GroupCard :group-data="groupData" class="cursor-pointer" @click="clickGroup(groupData.id)" />
                 <LinkList :links="groupData.links" />
               </q-card-section>
