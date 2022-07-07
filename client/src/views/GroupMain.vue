@@ -6,13 +6,21 @@ import HeaderItem from '../components/HeaderItem.vue';
 import LinkList from '../components/LinkList.vue';
 
 import { useGroupStore } from '../stores/group';
+import { useGroupTagStore } from '../stores/groupTag';
+import { onMounted } from 'vue';
 
 const groupStore = useGroupStore();
-const { init } = groupStore;
+const groupTagStore = useGroupTagStore();
+const { init: initGroups } = groupStore;
 const { groupDataList } = storeToRefs(groupStore);
+const { init: initTags } = groupTagStore;
+const { tags } = storeToRefs(groupTagStore);
 const router = useRouter();
 
-init();
+onMounted(() => {
+  initTags();
+  initGroups();
+});
 
 function clickGroup(id: string): void {
   router.push({ path: `/@${id}` });
@@ -24,6 +32,7 @@ function clickGroup(id: string): void {
     <HeaderItem :logo="true" :editor="true" :setting="true" />
     <q-page-container class="max-width">
       <q-scroll-area :visible="false" class="max-width without-header">
+        {{ tags }}
         <q-page class="q-pa-md">
           <p v-for="groupData in groupDataList" :key="groupData.index">
             <q-card>

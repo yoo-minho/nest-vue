@@ -28,8 +28,8 @@ const idRules = [
 
 const defaultOptions: string[] = ['xxxx'];
 const options = ref(defaultOptions);
-const model = ref('');
-const selectedOptions = ref([] as string[]);
+const tag = ref('');
+const selectedTags = ref([] as string[]);
 
 onMounted(() => {
   initLinks();
@@ -45,9 +45,8 @@ function filterFn(val: string, update: doneFn) {
 }
 
 function selectOption() {
-  console.log('selectOption');
-  selectedOptions.value.push(model.value);
-  model.value = '';
+  selectedTags.value.push(tag.value);
+  tag.value = '';
 }
 
 async function saveGroup() {
@@ -66,7 +65,7 @@ async function saveGroup() {
     idRef.value.focus();
     return;
   }
-  save(title.value, id.value, description.value);
+  save(title.value, id.value, description.value, selectedTags.value);
   closeGroupEditor();
 }
 </script>
@@ -112,9 +111,8 @@ async function saveGroup() {
             placeholder="(선택) 그룹 설명을 적어주세요!"
             hide-bottom-space
           />
-
           <q-select
-            v-model="model"
+            v-model="tag"
             stack-label
             label="태그 추가"
             use-input
@@ -127,7 +125,7 @@ async function saveGroup() {
           ></q-select>
 
           <div class="row">
-            <q-chip v-for="(v, i) in selectedOptions" :key="i" dense>{{ v }}</q-chip>
+            <q-chip v-for="(v, i) in selectedTags" :key="i" dense>{{ v }}</q-chip>
           </div>
 
           <q-btn color="primary" class="full-width" label="블로그 링크 추가" @click="openLinkEditor">

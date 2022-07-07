@@ -15,7 +15,13 @@ export type Group = {
   title: string;
   description: string;
   links: Link[];
+  tags: string[];
   created_at: Date;
+};
+export type GroupTag = {
+  index: number;
+  groupId: string;
+  name: string;
 };
 export type RssItem = {
   category: string[];

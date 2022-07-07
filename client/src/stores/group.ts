@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { Group, Link } from '../types/common';
-import GroupApi from '../api/group';
+import GroupApi from '../api/groupApi';
 
 export const useGroupStore = defineStore('group', {
   state: () => ({
@@ -32,13 +32,14 @@ export const useGroupStore = defineStore('group', {
       this.currentGroup = await GroupApi.findById(id);
       return this.currentGroup;
     },
-    async save(title: string, id: string, description: string) {
+    async save(title: string, id: string, description: string, tags: string[]) {
       const groupData = {
         index: -1,
         id,
         title,
         description,
         links: this.links,
+        tags,
         created_at: new Date(),
       };
       const createdIndex = await GroupApi.create(groupData);

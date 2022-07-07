@@ -6,7 +6,7 @@ import { useQuasar } from 'quasar';
 import { getBlogType } from '../constants';
 import { ref } from 'vue';
 import { ErrorMessage } from '../types/common';
-import OpenGraphTagAPI from '../api/openGraphTag';
+import OpenGraphTagAPI from '../api/groupTagApi';
 
 const BLOG_EXPRESSION = {
   NAVER: /https:\/\/blog.naver.com\/([0-9a-zA-Z_-]*)(\/)?([0-9a-zA-Z]*)/gi,
@@ -21,7 +21,7 @@ const BLOG_EXPRESSION = {
 const { links, addLink } = useGroupStore();
 const { closeLinkEditor } = useSubpageStore();
 
-const linkRules = [(val: string): ErrorMessage => val.includes('https://') || '링크에 https://를 포함해주세요!'];
+const linkRules = [(val: string): ErrorMessage => val.includes('https\:\/\/') || '링크에 https://를 포함해주세요!'];
 
 const getErrorMessage = (v: string): string => {
   const resultArr = linkRules.map((func) => func(v));
