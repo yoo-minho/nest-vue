@@ -11,15 +11,15 @@ import { onMounted } from 'vue';
 
 const groupStore = useGroupStore();
 const groupTagStore = useGroupTagStore();
-const { init: initGroups } = groupStore;
-const { groupDataList } = storeToRefs(groupStore);
-const { init: initTags } = groupTagStore;
-const { tags } = storeToRefs(groupTagStore);
+const { getAll: getAllGroups } = groupStore;
+const { groups } = storeToRefs(groupStore);
+const { getAll: getAllTags } = groupTagStore;
+const { countGroupByTag } = storeToRefs(groupTagStore);
 const router = useRouter();
 
 onMounted(() => {
-  initTags();
-  initGroups();
+  getAllTags();
+  getAllGroups();
 });
 
 function clickGroup(id: string): void {
@@ -32,9 +32,11 @@ function clickGroup(id: string): void {
     <HeaderItem :logo="true" :editor="true" :setting="true" />
     <q-page-container class="max-width">
       <q-scroll-area :visible="false" class="max-width without-header">
-        {{ tags }}
+        <div class="row q-px-md q-pt-md">
+          <q-chip v-for="(v, i) in countGroupByTag" :key="i" dense>{{ v.tag }}</q-chip>
+        </div>
         <q-page class="q-pa-md">
-          <p v-for="groupData in groupDataList" :key="groupData.index">
+          <p v-for="groupData in groups" :key="groupData.index">
             <q-card>
               <q-card-section style="padding: 0">
                 <GroupCard :group-data="groupData" class="cursor-pointer" @click="clickGroup(groupData.id)" />

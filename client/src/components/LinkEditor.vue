@@ -6,7 +6,7 @@ import { useQuasar } from 'quasar';
 import { getBlogType } from '../constants';
 import { ref } from 'vue';
 import { ErrorMessage } from '../types/common';
-import OpenGraphTagAPI from '../api/groupTagApi';
+import OpenGraphTagAPI from '../api/openGraphTagApi';
 
 const BLOG_EXPRESSION = {
   NAVER: /https:\/\/blog.naver.com\/([0-9a-zA-Z_-]*)(\/)?([0-9a-zA-Z]*)/gi,

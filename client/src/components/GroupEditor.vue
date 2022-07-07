@@ -3,15 +3,20 @@ import { storeToRefs } from 'pinia';
 import { QSelect, useQuasar } from 'quasar';
 import { onMounted, ref } from 'vue';
 import { useGroupStore } from '../stores/group';
+import { useGroupTagStore } from '../stores/groupTag';
 import { useSubpageStore } from '../stores/subpage';
 import BlogCard from './BlogCard.vue';
 import HeaderItem from './HeaderItem.vue';
 
 const groupStore = useGroupStore();
-const { initLinks, save, existsId } = groupStore;
+const { initLinks, save, existsId, getAll: getAllGroups } = groupStore;
 const { links, linkCountMessage } = storeToRefs(groupStore);
+
 const subpageStore = useSubpageStore();
 const { openLinkEditor, closeGroupEditor } = subpageStore;
+
+const groupTagStore = useGroupTagStore();
+const { getAll: getAllTags } = groupTagStore;
 
 const title = ref('');
 const id = ref('');
@@ -65,7 +70,9 @@ async function saveGroup() {
     idRef.value.focus();
     return;
   }
-  save(title.value, id.value, description.value, selectedTags.value);
+  await save(title.value, id.value, description.value, selectedTags.value);
+  await getAllGroups();
+  await getAllTags();
   closeGroupEditor();
 }
 </script>

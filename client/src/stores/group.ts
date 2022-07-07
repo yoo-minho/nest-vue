@@ -10,7 +10,6 @@ export const useGroupStore = defineStore('group', {
   }),
   getters: {
     linkCountMessage: (state) => (state.links.length > 0 ? `(${state.links.length}/10)` : ''),
-    groupDataList: (state) => state.groups,
   },
   actions: {
     initLinks() {
@@ -22,7 +21,7 @@ export const useGroupStore = defineStore('group', {
     deleteLink(idx: number) {
       this.links.splice(idx, 1);
     },
-    async init() {
+    async getAll() {
       this.groups = await GroupApi.findAll();
     },
     async existsId(id: string) {
@@ -42,9 +41,7 @@ export const useGroupStore = defineStore('group', {
         tags,
         created_at: new Date(),
       };
-      const createdIndex = await GroupApi.create(groupData);
-      groupData.index = createdIndex;
-      this.groups = [groupData, ...this.groups];
+      await GroupApi.create(groupData);
     },
   },
 });
