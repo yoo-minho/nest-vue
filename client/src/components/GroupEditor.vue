@@ -16,13 +16,14 @@ const subpageStore = useSubpageStore();
 const { openLinkEditor, closeGroupEditor } = subpageStore;
 
 const groupTagStore = useGroupTagStore();
-const { getAll: getAllTags } = groupTagStore;
+const { getAll: getAllTags, activeTags } = groupTagStore;
 
 const title = ref('');
 const id = ref('');
 const description = ref('');
 
 const idRef = ref();
+const selectRef = ref();
 
 const $q = useQuasar();
 const titleRules = [(val: string) => val?.length > 0 || '그룹 이름을 입력해주세요!'];
@@ -31,7 +32,7 @@ const idRules = [
   (val: string) => new RegExp(/^[A-Za-z0-9_+]*$/).test(val) || '대소문자, 숫자, 언더바를 활용하여 입력해주세요!',
 ];
 
-const defaultOptions: string[] = ['xxxx'];
+const defaultOptions = activeTags;
 const options = ref(defaultOptions);
 const tag = ref('');
 const selectedTags = ref([] as string[]);
@@ -50,6 +51,17 @@ function filterFn(val: string, update: doneFn) {
 }
 
 function selectOption() {
+  if ((tag.value || '') === '') {
+    $q.notify({ type: 'negative', message: '태그를 입력해주세요.' });
+    selectRef.value.focus();
+    return;
+  }
+  if (selectedTags.value.includes(tag.value)) {
+    $q.notify({ type: 'negative', message: '중복되는 태그가 존재합니다.' });
+    selectRef.value.focus();
+    tag.value = '';
+    return;
+  }
   selectedTags.value.push(tag.value);
   tag.value = '';
 }
@@ -119,6 +131,7 @@ async function saveGroup() {
             hide-bottom-space
           />
           <q-select
+            ref="selectRef"
             v-model="tag"
             stack-label
             label="태그 추가"

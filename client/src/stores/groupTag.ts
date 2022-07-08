@@ -21,8 +21,9 @@ export const useGroupTagStore = defineStore('groupTag', {
         .map(([k, v]) => ({ tag: k, count: v }));
       return [{ tag: totalTag, count: -1 }, ...tags];
     },
-    activeTags: (state) => {
-      return state.tags.map((tag) => tag.name);
+    activeTags: (state): string[] => {
+      const unique = (v: string, idx: number, self: string[]) => self.indexOf(v) === idx;
+      return state.tags.map((tag) => tag.name).filter(unique);
     },
     isTotalTag: (state) => {
       return state.currentTag === totalTag;
