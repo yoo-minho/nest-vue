@@ -8,6 +8,10 @@ export default {
     const item = localStorage.getItem(tableName) || '[]';
     return JSON.parse(item);
   },
+  async findByTag(tag: string): Promise<Group[]> {
+    const groups = await this.findAll();
+    return groups.filter((group) => group.tags.includes(tag));
+  },
   async findById(id: string): Promise<Group> {
     const groups = await this.findAll();
     return groups.filter((groupData: Group) => groupData.id === id)[0];

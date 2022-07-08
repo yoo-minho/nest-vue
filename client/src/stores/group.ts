@@ -24,6 +24,9 @@ export const useGroupStore = defineStore('group', {
     async getAll() {
       this.groups = await GroupApi.findAll();
     },
+    async getByTag(tag: string) {
+      this.groups = await GroupApi.findByTag(tag);
+    },
     async existsId(id: string) {
       return Object.keys((await GroupApi.findById(id)) || {}).length > 0;
     },

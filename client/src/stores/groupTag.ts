@@ -2,10 +2,12 @@ import { defineStore } from 'pinia';
 import { CountGroup, GroupTag } from '../types/common';
 import GroupTagApi from '../api/groupTagApi';
 
+const totalTag = '전체보기';
+
 export const useGroupTagStore = defineStore('groupTag', {
   state: () => ({
     tags: [] as GroupTag[],
-    currentTag: {} as GroupTag,
+    currentTag: totalTag,
   }),
   getters: {
     countGroupByTag: (state) => {
@@ -13,14 +15,25 @@ export const useGroupTagStore = defineStore('groupTag', {
         total[name] = (total[name] || 0) + 1;
         return total;
       }, {});
-      return Object.entries(countBy)
+
+      const tags = Object.entries(countBy)
         .sort(([, a], [, b]) => b - a)
         .map(([k, v]) => ({ tag: k, count: v }));
+      return [{ tag: totalTag, count: -1 }, ...tags];
+    },
+    activeTags: (state) => {
+      return state.tags.map((tag) => tag.name);
+    },
+    isTotalTag: (state) => {
+      return state.currentTag === totalTag;
     },
   },
   actions: {
     async getAll() {
       this.tags = await GroupTagApi.findAll();
+    },
+    setCurrentTag(tag: string) {
+      this.currentTag = tag;
     },
   },
 });
