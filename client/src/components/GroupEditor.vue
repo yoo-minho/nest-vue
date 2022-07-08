@@ -16,7 +16,7 @@ const subpageStore = useSubpageStore();
 const { openLinkEditor, closeGroupEditor } = subpageStore;
 
 const groupTagStore = useGroupTagStore();
-const { getAll: getAllTags } = groupTagStore;
+const { getAll: getAllTags, countGroupByTag } = groupTagStore;
 
 const title = ref('');
 const id = ref('');
