@@ -3,19 +3,20 @@ import GroupCard from '../components/GroupCard.vue';
 import HeaderItem from '../components/HeaderItem.vue';
 import GroupDetailLinkCard from '../components/GroupDetailLinkCard.vue';
 import GroupDetailPostCard from '../components/GroupDetailPostCard.vue';
-import RssAPI from '../api/rss';
+import GroupDetailStat from '../components/GroupDetailStat.vue';
+
+import RssAPI from '../api/rssApi';
 import { useGroupStore } from '../stores/group';
 import { ref } from 'vue';
 import { delay } from '../util';
-import GroupDetailStat from '../components/GroupDetailStat.vue';
 
+const tab = ref('urls');
 const { getGroupData } = useGroupStore();
 const props = defineProps<{ id: string }>();
 const currentGroupData = await getGroupData(props.id);
 const { links } = currentGroupData;
 const rssResult = await Promise.all(links.map(RssAPI.index));
 const posts = rssResult.flat().sort((x, y) => y.created - x.created);
-const tab = ref('urls');
 
 await delay(500);
 </script>
