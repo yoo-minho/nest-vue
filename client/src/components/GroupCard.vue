@@ -5,7 +5,9 @@ import { toRaw, computed } from 'vue';
 
 const $q = useQuasar();
 
-const props = defineProps<{ groupData: Group }>();
+const props = defineProps<{ mode: 'HEADER' | 'LIST-ITEM'; groupData: Group }>();
+const isHeader = props.mode === 'HEADER';
+
 const { title, description, id } = toRaw(props.groupData);
 const url = computed(() => `https://inglog.io/@${id}`);
 const copyUrl = async () => {
@@ -18,24 +20,18 @@ const copyUrl = async () => {
   <div>
     <q-item>
       <q-item-section>
-        <q-item-label>
-          <q-item style="padding: 0; min-height: 0">
-            <q-item-section class="text-weight-bolder text-subtitle1">{{ title }}</q-item-section>
-            <q-item-section side></q-item-section>
+        <q-list :class="{ 'text-center': isHeader }">
+          <q-item v-if="isHeader" class="q-pa-none" style="min-height: 0">
+            <q-item-section class="text-weight-bold text-green-4" @click="copyUrl"> @{{ id }} </q-item-section>
           </q-item>
-          <q-item style="padding: 0; min-height: 0">
-            <q-item-section class="text-weight-bold" style="color: #26a641" @click.stop="copyUrl">
-              @{{ id }}
-            </q-item-section>
-            <q-item-section side class="text-right">6k read</q-item-section>
+          <q-item class="q-pa-none" style="min-height: 0">
+            <q-item-section class="text-weight-bolder" style="font-size: 1rem">{{ title }}</q-item-section>
           </q-item>
-        </q-item-label>
-        <q-item-label caption>
-          <span class="ellipsis-3-lines">
+          <q-item class="q-pa-none ellipsis-3-lines" style="min-height: 0">
             {{ description }}
             <q-tooltip max-width="20rem">{{ description }}</q-tooltip>
-          </span>
-        </q-item-label>
+          </q-item>
+        </q-list>
       </q-item-section>
     </q-item>
   </div>

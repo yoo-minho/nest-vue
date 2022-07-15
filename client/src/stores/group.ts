@@ -31,7 +31,15 @@ export const useGroupStore = defineStore('group', {
       return Object.keys((await GroupApi.findById(id)) || {}).length > 0;
     },
     async getGroupData(id: string) {
-      this.currentGroup = await GroupApi.findById(id);
+      if (this.currentGroup.id === id) {
+        return this.currentGroup;
+      }
+      const currentData = await GroupApi.findById(id);
+      let { today = 0, total = 0 } = currentData;
+      today++;
+      total++;
+      await GroupApi.updateCount(id, { today, total });
+      this.currentGroup = { ...currentData, today: today, total: total };
       return this.currentGroup;
     },
     async save(title: string, id: string, description: string, tags: string[]) {

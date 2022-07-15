@@ -14,7 +14,7 @@ const tab = ref('urls');
 const { getGroupData } = useGroupStore();
 const props = defineProps<{ id: string }>();
 const currentGroupData = await getGroupData(props.id);
-const { links } = currentGroupData;
+const { links, today, total } = currentGroupData;
 const rssResult = await Promise.all(links.map(RssAPI.index));
 const posts = rssResult.flat().sort((x, y) => y.created - x.created);
 
@@ -27,7 +27,11 @@ await delay(500);
     <q-page-container>
       <q-scroll-area :visible="false" class="without-header">
         <q-page class="max-width">
-          <GroupCard :group-data="currentGroupData" :detail="true" />
+          <div class="q-pt-md q-px-md row justify-between">
+            <q-badge color="primary" :label="'today : ' + today" />
+            <q-badge color="green-4" :label="'total : ' + total" />
+          </div>
+          <GroupCard mode="HEADER" :group-data="currentGroupData" :detail="true" />
           <q-tabs
             v-model="tab"
             dense

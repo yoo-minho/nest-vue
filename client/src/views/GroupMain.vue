@@ -56,8 +56,13 @@ const clickGroup = (id: string) => router.push({ path: `/@${id}` });
         <q-page class="q-pa-md">
           <p v-for="groupData in groups" :key="groupData.index">
             <q-card>
-              <q-card-section style="padding: 0">
-                <GroupCard :group-data="groupData" class="cursor-pointer" @click="clickGroup(groupData.id)" />
+              <q-card-section class="q-pa-none">
+                <GroupCard
+                  mode="LIST-ITEM"
+                  :group-data="groupData"
+                  class="cursor-pointer"
+                  @click="clickGroup(groupData.id)"
+                />
                 <LinkList :links="groupData.links" />
               </q-card-section>
             </q-card>

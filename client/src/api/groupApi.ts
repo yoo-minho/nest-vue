@@ -1,4 +1,4 @@
-import { Group } from '../types/common';
+import { Group, GroupCount } from '../types/common';
 import GroupTagApi from './groupTagApi';
 
 const tableName = 'group';
@@ -15,6 +15,12 @@ export default {
   async findById(id: string): Promise<Group> {
     const groups = await this.findAll();
     return groups.filter((groupData: Group) => groupData.id === id)[0];
+  },
+  async updateCount(id: string, { today, total }: GroupCount) {
+    const groups = await this.findAll();
+    const idx = groups.findIndex((group) => group.id === id);
+    groups[idx] = { ...groups[idx], today, total };
+    localStorage.setItem(tableName, JSON.stringify(groups));
   },
   async create(group: Group) {
     const groups = await this.findAll();

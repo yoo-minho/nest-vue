@@ -10,18 +10,27 @@ const tab = 'urls';
     <q-page-container>
       <q-scroll-area :visible="false" class="without-header">
         <q-page class="max-width">
-          <q-item>
-            <q-item-section>
-              <q-item-label>
-                <q-item style="padding: 0; min-height: 0">
-                  <q-skeleton type="text" width="40%" height="30px" />
-                </q-item>
-              </q-item-label>
-              <q-item-label caption>
-                <q-skeleton type="text" width="60%" />
-              </q-item-label>
-            </q-item-section>
-          </q-item>
+          <div class="q-pt-md q-px-md row justify-between">
+            <q-skeleton type="text" width="15%" height="20px" />
+            <q-skeleton type="text" width="15%" height="20px" />
+          </div>
+          <div>
+            <q-item>
+              <q-item-section>
+                <q-list>
+                  <q-item class="q-pa-none row justify-center" style="min-height: 0">
+                    <q-skeleton type="text" width="30%" height="20px" />
+                  </q-item>
+                  <q-item class="q-pa-none row justify-center" style="min-height: 0">
+                    <q-skeleton type="text" width="40%" height="30px" />
+                  </q-item>
+                  <q-item class="q-pa-none row justify-center" style="min-height: 0">
+                    <q-skeleton type="text" width="60%" height="20px" />
+                  </q-item>
+                </q-list>
+              </q-item-section>
+            </q-item>
+          </div>
           <q-tabs
             v-model="tab"
             dense
