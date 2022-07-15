@@ -17,6 +17,8 @@ export type Group = {
   links: Link[];
   tags: string[];
   created_at: Date;
+  today?: number;
+  total?: number;
 };
 export type GroupTag = {
   index: number;

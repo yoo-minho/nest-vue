@@ -43,6 +43,8 @@ export const useGroupStore = defineStore('group', {
         links: this.links,
         tags,
         created_at: new Date(),
+        today: 0,
+        total: 0,
       };
       await GroupApi.create(groupData);
     },
