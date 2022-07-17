@@ -40,7 +40,7 @@ await delay(500);
             indicator-color="primary"
             narrow-indicator
           >
-            <q-tab name="urls" :label="`링크 (${links.length})`" />
+            <q-tab name="urls" :label="`플랫폼 (${links.length})`" />
             <q-tab name="posts" :label="`포스트 (${posts.length})`" />
             <q-tab name="stat" label="통계" />
           </q-tabs>
