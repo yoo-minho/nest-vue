@@ -46,6 +46,15 @@
     "githubStar": "⭐ 39.3k"
   },
   {
+    "name": "Prisma",
+    "label": "Prisma",
+    "version": "",
+    "description": "Build data-driven JavaScript & TypeScript apps in less time",
+    "path": "stacks/prisma.png",
+    "url": "www.prisma.io",
+    "githubStar": "⭐ 24.2k"
+  },
+  {
     "name": "Quasar",
     "label": "Quasar",
     "version": "",

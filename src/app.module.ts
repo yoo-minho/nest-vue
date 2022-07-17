@@ -5,6 +5,9 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { OpenGraphTagModule } from './open-graph-tag/open-graph-tag.module';
 import { RssModule } from './rss/rss.module';
+import { UserService } from './user.service';
+import { PostService } from './post.service';
+import { PrismaService } from './prisma.service';
 
 @Module({
   imports: [
@@ -15,6 +18,6 @@ import { RssModule } from './rss/rss.module';
     RssModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, UserService, PostService, PrismaService],
 })
 export class AppModule {}
