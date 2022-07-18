@@ -1,14 +1,11 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 generator erd {
   provider = "prisma-erd-generator"
-  output = "./ERD.png"
-  theme = "neutral"
+  output   = "./ERD.png"
+  theme    = "neutral"
 }
 
 datasource db {
@@ -17,71 +14,71 @@ datasource db {
 }
 
 model User {
-  id    Int     @default(autoincrement()) @id
-  email String  @unique
-  name  String?
-  groups Group[]
+  id     Int     @id @default(autoincrement())
+  email  String  @unique
+  name   String?
+  groups Group?
 }
 
 model Group {
-  id    Int     @default(autoincrement()) @id
-  email String  @unique
-  name  String?
-  published Boolean? @default(false)
-  creater User @relation(fields: [createrId], references: [id])
-  createrId Int @unique
-  createdAt  DateTime @default(now())
-  links LinksOnGroups[]
-  tags TagOnGroups[]
-  counter Count @relation(fields: [counterId], references: [id])
-  counterId Int @unique
+  id        Int            @id @default(autoincrement())
+  domain    String         @unique
+  name      String?
+  published Boolean?       @default(false)
+  createrId Int            @unique
+  createdAt DateTime       @default(now())
+  counterId Int            @unique
+  counter   Count          @relation(fields: [counterId], references: [id])
+  creater   User           @relation(fields: [createrId], references: [id])
+  links     LinksOnGroups?
+  tags      TagOnGroups?
 }
 
 model Count {
-  id    Int     @default(autoincrement()) @id
-  date  String  @unique //8자리
-  count Int
-  groups Group[]
+  id     Int    @id @default(autoincrement())
+  date   String @unique
+  count  Int
+  groups Group?
 }
 
 model Link {
-  id      Int     @default(autoincrement()) @id
-  url     String  @unique
-  name    String?
-  groups  LinksOnGroups[]
-  posts   Post[]
+  id     Int             @id @default(autoincrement())
+  url    String          @unique
+  name   String?
+  groups LinksOnGroups[]
+  posts  Post[]
 }
 
 model LinksOnGroups {
-  group       Group    @relation(fields: [groupId], references: [id])
-  groupId     Int @unique
-  link        Link @relation(fields: [linkId], references: [id])
-  linkId      Int
-  assignedAt  DateTime @default(now())
+  groupId    Int      @unique
+  linkId     Int
+  assignedAt DateTime @default(now())
+  group      Group    @relation(fields: [groupId], references: [id])
+  link       Link     @relation(fields: [linkId], references: [id])
 
   @@id([groupId, linkId])
 }
 
 model Tag {
-  id      Int     @default(autoincrement()) @id
-  name    String @unique
-  groups  TagOnGroups[]
+  id     Int           @id @default(autoincrement())
+  name   String        @unique
+  groups TagOnGroups[]
 }
 
 model TagOnGroups {
-  group       Group    @relation(fields: [groupId], references: [id])
-  groupId     Int @unique
-  link        Tag @relation(fields: [tagId], references: [id])
+  groupId    Int      @unique
   tagId      Int
-  assignedAt  DateTime @default(now())
+  assignedAt DateTime @default(now())
+  group      Group    @relation(fields: [groupId], references: [id])
+  link       Tag      @relation(fields: [tagId], references: [id])
 
   @@id([groupId, tagId])
 }
 
 model Post {
-  id        Int      @default(autoincrement()) @id
-  title     String @unique
-  content   String?
-  link      Link @relation(fields: [linkId], references: [id])
-  linkId    Int
+  id      Int     @id @default(autoincrement())
+  title   String  @unique
+  content String?
+  linkId  Int
+  link    Link    @relation(fields: [linkId], references: [id])
 }
