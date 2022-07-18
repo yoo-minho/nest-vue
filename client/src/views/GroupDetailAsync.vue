@@ -1,16 +1,14 @@
 <script setup lang="ts">
 import GroupCard from '../components/GroupCard.vue';
 import HeaderItem from '../components/HeaderItem.vue';
-import GroupDetailLinkCard from '../components/GroupDetailLinkCard.vue';
-import GroupDetailPostCard from '../components/GroupDetailPostCard.vue';
-import GroupDetailStat from '../components/GroupDetailStat.vue';
 
 import RssAPI from '../api/rssApi';
 import { useGroupStore } from '../stores/group';
 import { ref } from 'vue';
 import { delay } from '../util';
+import { useRoute, useRouter } from 'vue-router';
 
-const tab = ref('urls');
+const router = useRouter();
 const { getGroupData } = useGroupStore();
 const props = defineProps<{ id: string }>();
 const currentGroupData = await getGroupData(props.id);
@@ -18,7 +16,17 @@ const { links, today, total } = currentGroupData;
 const rssResult = await Promise.all(links.map(RssAPI.index));
 const posts = rssResult.flat().sort((x, y) => y.created - x.created);
 
-await delay(500);
+const route = useRoute();
+const selectTab = ref();
+selectTab.value = route.name;
+
+const tabArr = [
+  { name: 'Link', label: `플랫폼 (${links.length})` },
+  { name: 'Post', label: `포스트 (${posts.length})` },
+  { name: 'Stat', label: `통계` },
+];
+
+await delay(1000);
 </script>
 
 <template>
@@ -31,43 +39,25 @@ await delay(500);
             <q-badge color="primary" :label="'today : ' + today" />
             <q-badge color="green-4" :label="'total : ' + total" />
           </div>
-          <GroupCard mode="HEADER" :group-data="currentGroupData" :detail="true" />
+          <GroupCard mode="HEADER" :group-data="currentGroupData" />
           <q-tabs
-            v-model="tab"
+            v-model="selectTab"
             dense
             class="text-grey"
             active-color="primary"
             indicator-color="primary"
             narrow-indicator
           >
-            <q-tab name="urls" :label="`플랫폼 (${links.length})`" />
-            <q-tab name="posts" :label="`포스트 (${posts.length})`" />
-            <q-tab name="stat" label="통계" />
+            <q-tab
+              v-for="(tab, idx) in tabArr"
+              :key="idx"
+              :name="`GroupDetail${tab.name}`"
+              :label="tab.label"
+              @click="router.push({ name: `GroupDetail${tab.name}` })"
+            />
           </q-tabs>
-
           <q-separator />
-
-          <q-tab-panels v-model="tab" animated>
-            <q-tab-panel name="urls">
-              <q-item style="padding: 0; min-height: 0">
-                <q-item-section>
-                  <GroupDetailLinkCard v-for="(link, i) in links" :key="i" :link="link" />
-                </q-item-section>
-              </q-item>
-            </q-tab-panel>
-
-            <q-tab-panel name="posts">
-              <q-item style="padding: 0; min-height: 0">
-                <q-item-section>
-                  <GroupDetailPostCard v-for="(post, i) in posts" :key="i" :post="post" />
-                </q-item-section>
-              </q-item>
-            </q-tab-panel>
-
-            <q-tab-panel name="stat">
-              <GroupDetailStat :links="links" :rss-result="rssResult" />
-            </q-tab-panel>
-          </q-tab-panels>
+          <router-view :links="links" :posts="posts" :rss-result="rssResult" />
         </q-page>
       </q-scroll-area>
     </q-page-container>

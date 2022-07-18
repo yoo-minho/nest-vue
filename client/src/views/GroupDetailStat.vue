@@ -81,7 +81,7 @@ watch(
 </script>
 
 <template>
-  <div>
+  <div class="q-pa-md">
     <div class="row q-col-gutter-md">
       <div class="col-12">
         <q-card class="jandi-card step-3">

@@ -20,14 +20,68 @@ model User {
   id    Int     @default(autoincrement()) @id
   email String  @unique
   name  String?
-  posts Post[]
+  groups Group[]
+}
+
+model Group {
+  id    Int     @default(autoincrement()) @id
+  email String  @unique
+  name  String?
+  published Boolean? @default(false)
+  creater User @relation(fields: [createrId], references: [id])
+  createrId Int @unique
+  createdAt  DateTime @default(now())
+  links LinksOnGroups[]
+  tags TagOnGroups[]
+  counter Count @relation(fields: [counterId], references: [id])
+  counterId Int @unique
+}
+
+model Count {
+  id    Int     @default(autoincrement()) @id
+  date  String  @unique //8자리
+  count Int
+  groups Group[]
+}
+
+model Link {
+  id      Int     @default(autoincrement()) @id
+  url     String  @unique
+  name    String?
+  groups  LinksOnGroups[]
+  posts   Post[]
+}
+
+model LinksOnGroups {
+  group       Group    @relation(fields: [groupId], references: [id])
+  groupId     Int @unique
+  link        Link @relation(fields: [linkId], references: [id])
+  linkId      Int
+  assignedAt  DateTime @default(now())
+
+  @@id([groupId, linkId])
+}
+
+model Tag {
+  id      Int     @default(autoincrement()) @id
+  name    String @unique
+  groups  TagOnGroups[]
+}
+
+model TagOnGroups {
+  group       Group    @relation(fields: [groupId], references: [id])
+  groupId     Int @unique
+  link        Tag @relation(fields: [tagId], references: [id])
+  tagId      Int
+  assignedAt  DateTime @default(now())
+
+  @@id([groupId, tagId])
 }
 
 model Post {
   id        Int      @default(autoincrement()) @id
-  title     String
+  title     String @unique
   content   String?
-  published Boolean? @default(false)
-  author    User?    @relation(fields: [authorId], references: [id])
-  authorId  Int?
+  link      Link @relation(fields: [linkId], references: [id])
+  linkId    Int
 }

@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router';
 import GroupDetailAsync from './GroupDetailAsync.vue';
 import GroupDetailLoading from './GroupDetailLoading.vue';
 
-const route = useRoute();
-const id = String(route.params.id);
+const props = defineProps<{ id: string }>();
+
+console.log({ props });
+
+const id = String(props.id);
 </script>
 
 <template>

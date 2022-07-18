@@ -9,7 +9,25 @@ const routes = [
   {
     path: '/@:id',
     name: 'GroupDetail',
+    props: true,
     component: () => import('./views/GroupDetail.vue'),
+    children: [
+      {
+        path: '',
+        name: 'GroupDetailLink',
+        component: () => import('./views/GroupDetailLink.vue'),
+      },
+      {
+        path: 'post',
+        name: 'GroupDetailPost',
+        component: () => import('./views/GroupDetailPost.vue'),
+      },
+      {
+        path: 'stat',
+        name: 'GroupDetailStat',
+        component: () => import('./views/GroupDetailStat.vue'),
+      },
+    ],
   },
 ];
 

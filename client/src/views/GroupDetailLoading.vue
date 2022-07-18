@@ -39,9 +39,9 @@ const tab = 'urls';
             indicator-color="primary"
             narrow-indicator
           >
-            <q-tab name="urls" :label="`urls`" />
-            <q-tab name="posts" :label="`posts`" />
-            <q-tab name="stat" label="STAT" />
+            <q-tab name="urls" :label="`플랫폼`" />
+            <q-tab name="posts" :label="`포스트`" />
+            <q-tab name="stat" label="통계" />
           </q-tabs>
 
           <q-separator />
