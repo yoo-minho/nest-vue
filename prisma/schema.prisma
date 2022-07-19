@@ -17,7 +17,7 @@ model User {
   id     Int     @id @default(autoincrement())
   email  String  @unique
   name   String?
-  groups Group?
+  groups Group[]
 }
 
 model Group {
@@ -27,18 +27,18 @@ model Group {
   published Boolean?       @default(false)
   createrId Int            @unique
   createdAt DateTime       @default(now())
-  counterId Int            @unique
-  counter   Count          @relation(fields: [counterId], references: [id])
   creater   User           @relation(fields: [createrId], references: [id])
+  counts    Count?
   links     LinksOnGroups?
   tags      TagOnGroups?
 }
 
 model Count {
-  id     Int    @id @default(autoincrement())
-  date   String @unique
-  count  Int
-  groups Group?
+  id      Int    @id @default(autoincrement())
+  date    String @unique
+  count   Int
+  groupId Int    @unique
+  Group   Group  @relation(fields: [groupId], references: [id])
 }
 
 model Link {
