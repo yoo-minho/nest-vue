@@ -8,6 +8,7 @@ import { RssModule } from './rss/rss.module';
 import { UserService } from './user.service';
 import { PostService } from './post.service';
 import { PrismaService } from './prisma.service';
+import { GroupModule } from './group/group.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { PrismaService } from './prisma.service';
     }),
     OpenGraphTagModule,
     RssModule,
+    GroupModule,
   ],
   controllers: [AppController],
   providers: [AppService, UserService, PostService, PrismaService],

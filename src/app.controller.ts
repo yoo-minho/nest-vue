@@ -11,11 +11,6 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Get('erd')
-  getErd(): string {
-    return `<img src="${__dirname}/../erd.svg">`;
-  }
-
   @Get('/welcome')
   async getWelcome(): Promise<any> {
     return await parse('https://rss.blog.naver.com/dellose.xml', {});

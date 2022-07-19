@@ -3,9 +3,6 @@ import GroupDetailAsync from './GroupDetailAsync.vue';
 import GroupDetailLoading from './GroupDetailLoading.vue';
 
 const props = defineProps<{ id: string }>();
-
-console.log({ props });
-
 const id = String(props.id);
 </script>
 
