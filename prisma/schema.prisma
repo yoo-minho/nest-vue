@@ -14,23 +14,24 @@ datasource db {
 }
 
 model User {
-  id     Int     @id @default(autoincrement())
+  id     String  @id @unique
   email  String  @unique
-  name   String?
-  groups Group[]
+  name   String
+  groups Group?
 }
 
 model Group {
-  id        Int            @id @default(autoincrement())
-  domain    String         @unique
-  name      String?
-  published Boolean?       @default(false)
-  createrId Int            @unique
-  createdAt DateTime       @default(now())
-  creater   User           @relation(fields: [createrId], references: [id])
-  counts    Count?
-  links     LinksOnGroups?
-  tags      TagOnGroups?
+  id          Int            @id @default(autoincrement())
+  domain      String         @unique
+  published   Boolean?       @default(false)
+  createrId   String         @unique
+  createdAt   DateTime       @default(now())
+  description String?
+  title       String
+  creater     User           @relation(fields: [createrId], references: [id])
+  counts      Count?
+  links       LinksOnGroups?
+  tags        TagOnGroups?
 }
 
 model Count {

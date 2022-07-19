@@ -1,5 +1,6 @@
 import { Group, GroupCount } from '../types/common';
 import GroupTagApi from './groupTagApi';
+import axiosClient from './base';
 
 const tableName = 'group';
 
@@ -23,6 +24,11 @@ export default {
     localStorage.setItem(tableName, JSON.stringify(groups));
   },
   async create(group: Group) {
+    const { id: domain, title, description, links, tags } = group;
+    const res = await axiosClient.post('group', { domain, title, description });
+    console.log(res);
+    return;
+
     const groups = await this.findAll();
     const index = groups.length;
     localStorage.setItem(
