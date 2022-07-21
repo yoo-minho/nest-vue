@@ -25,7 +25,7 @@ export default {
   },
   async create(group: Group) {
     const { id: domain, title, description, links, tags } = group;
-    const res = await axiosClient.post('group', { domain, title, description });
+    const res = await axiosClient.post('group', { domain, title, description, links, tags });
     console.log(res);
     return;
 

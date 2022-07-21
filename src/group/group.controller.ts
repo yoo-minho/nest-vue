@@ -17,13 +17,19 @@ export class GroupController {
 
   @Post()
   create(@Body() createGroupDto: CreateGroupDto) {
-    const { domain, title, description } = createGroupDto;
+    const { domain, title, description, tags } = createGroupDto;
     return this.groupService.createGroup({
       domain,
       title,
       description,
       creater: {
         connect: { id: 'dellose' },
+      },
+      published: true,
+      tags: {
+        create: tags.map((name) => ({
+          tag: { connectOrCreate: { where: { name }, create: { name } } },
+        })),
       },
     });
   }

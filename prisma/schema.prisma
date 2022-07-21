@@ -14,31 +14,31 @@ datasource db {
 }
 
 model User {
-  id     String  @id @unique
-  email  String  @unique
+  id     String @id @unique
+  email  String @unique
   name   String
-  groups Group?
+  groups Group[]
 }
 
 model Group {
   id          Int            @id @default(autoincrement())
   domain      String         @unique
   published   Boolean?       @default(false)
-  createrId   String         @unique
-  createdAt   DateTime       @default(now())
+  createrId   String         
+  createdAt   DateTime       @default(now()) @db.Timestamptz(3)
   description String?
   title       String
   creater     User           @relation(fields: [createrId], references: [id])
-  counts      Count?
-  links       LinksOnGroups?
-  tags        TagOnGroups?
+  counts      Count[]
+  links       LinksOnGroups[]
+  tags        TagsOnGroups[]
 }
 
 model Count {
   id      Int    @id @default(autoincrement())
-  date    String @unique
+  date    String 
   count   Int
-  groupId Int    @unique
+  groupId Int    
   Group   Group  @relation(fields: [groupId], references: [id])
 }
 
@@ -51,9 +51,9 @@ model Link {
 }
 
 model LinksOnGroups {
-  groupId    Int      @unique
+  groupId    Int      
   linkId     Int
-  assignedAt DateTime @default(now())
+  assignedAt DateTime @default(now()) @db.Timestamptz(3)
   group      Group    @relation(fields: [groupId], references: [id])
   link       Link     @relation(fields: [linkId], references: [id])
 
@@ -61,17 +61,17 @@ model LinksOnGroups {
 }
 
 model Tag {
-  id     Int           @id @default(autoincrement())
-  name   String        @unique
-  groups TagOnGroups[]
+  id     Int            @id @default(autoincrement())
+  name   String         @unique
+  groups TagsOnGroups[]
 }
 
-model TagOnGroups {
-  groupId    Int      @unique
+model TagsOnGroups {
+  groupId    Int     
   tagId      Int
-  assignedAt DateTime @default(now())
+  assignedAt DateTime @default(now()) @db.Timestamptz(3)
   group      Group    @relation(fields: [groupId], references: [id])
-  link       Tag      @relation(fields: [tagId], references: [id])
+  tag        Tag      @relation(fields: [tagId], references: [id])
 
   @@id([groupId, tagId])
 }
