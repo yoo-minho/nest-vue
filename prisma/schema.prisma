@@ -14,21 +14,21 @@ datasource db {
 }
 
 model User {
-  id     String @id @unique
-  email  String @unique
+  id     String  @id @unique
+  email  String  @unique
   name   String
   groups Group[]
 }
 
 model Group {
-  id          Int            @id @default(autoincrement())
-  domain      String         @unique
-  published   Boolean?       @default(false)
-  createrId   String         
-  createdAt   DateTime       @default(now()) @db.Timestamptz(3)
+  id          Int             @id @default(autoincrement())
+  domain      String          @unique
+  published   Boolean?        @default(false)
+  createrId   String
+  createdAt   DateTime        @default(now()) @db.Timestamptz(3)
   description String?
   title       String
-  creater     User           @relation(fields: [createrId], references: [id])
+  creater     User            @relation(fields: [createrId], references: [id])
   counts      Count[]
   links       LinksOnGroups[]
   tags        TagsOnGroups[]
@@ -36,22 +36,26 @@ model Group {
 
 model Count {
   id      Int    @id @default(autoincrement())
-  date    String 
+  date    String
   count   Int
-  groupId Int    
+  groupId Int
   Group   Group  @relation(fields: [groupId], references: [id])
 }
 
 model Link {
-  id     Int             @id @default(autoincrement())
-  url    String          @unique
-  name   String?
-  groups LinksOnGroups[]
-  posts  Post[]
+  id          Int             @id @default(autoincrement())
+  url         String          @unique
+  description String?
+  imagePath   String?
+  rssUrl      String?
+  title       String
+  type        String
+  groups      LinksOnGroups[]
+  posts       Post[]
 }
 
 model LinksOnGroups {
-  groupId    Int      
+  groupId    Int
   linkId     Int
   assignedAt DateTime @default(now()) @db.Timestamptz(3)
   group      Group    @relation(fields: [groupId], references: [id])
@@ -67,7 +71,7 @@ model Tag {
 }
 
 model TagsOnGroups {
-  groupId    Int     
+  groupId    Int
   tagId      Int
   assignedAt DateTime @default(now()) @db.Timestamptz(3)
   group      Group    @relation(fields: [groupId], references: [id])

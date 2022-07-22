@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
 import { Prisma, Group } from '@prisma/client';
@@ -9,9 +9,13 @@ export class GroupService {
   constructor(private prisma: PrismaService) {}
 
   async createGroup(data: Prisma.GroupCreateInput): Promise<Group> {
-    return this.prisma.group.create({
-      data,
-    });
+    try {
+      return await this.prisma.group.create({
+        data,
+      });
+    } catch (e) {
+      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+    }
   }
 
   create(createGroupDto: CreateGroupDto) {

@@ -11,7 +11,7 @@ const { links, rssResult } = toRaw(props);
 
 const linkFilterOptions = [
   { label: '전체 (링크 선택 가능)', value: -1 },
-  ...links.map((v, i) => ({ label: v.ogTitle, value: i })),
+  ...links.map((v, i) => ({ label: v.title, value: i })),
 ];
 const linkFilter = ref(linkFilterOptions[0]);
 
@@ -163,7 +163,7 @@ watch(
             <q-item v-for="(v, i) in lastPostitngDateByLink" :key="i" clickable>
               <q-item-section class="col-8">
                 <q-item-label class="text-weight-bold ellipsis text-subtitle2">
-                  {{ v.linkInfo.ogTitle }}
+                  {{ v.linkInfo.title }}
                 </q-item-label>
                 <q-item-label class="ellipsis text-grey-5">Last Date : {{ v.dateString }}</q-item-label>
               </q-item-section>

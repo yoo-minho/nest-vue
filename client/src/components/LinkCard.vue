@@ -4,7 +4,7 @@ import { toRaw } from 'vue';
 import { getImageByBlogType } from '../constants';
 
 const props = defineProps<{ linkData: Link; links?: boolean; posts?: boolean }>();
-const { ogImageUrl, ogTitle, url, type } = toRaw(props.linkData);
+const { imagePath = '', title, url, type } = toRaw(props.linkData);
 
 function isTextImage(url: string) {
   if (url === 'https://t1.daumcdn.net/tistory_admin/static/images/openGraph/opengraph.png') {
@@ -17,18 +17,18 @@ function isTextImage(url: string) {
 
 <template>
   <div>
-    <q-avatar v-if="isTextImage(ogImageUrl)" color="primary" text-color="white" rounded>
-      <div class="text-h6 non-selectable">{{ ogTitle.substring(0, 2) }}</div>
-      <q-tooltip>{{ ogTitle }}<br />{{ url }}</q-tooltip>
+    <q-avatar v-if="isTextImage(imagePath)" color="primary" text-color="white" rounded>
+      <div class="text-h6 non-selectable">{{ title.substring(0, 2) }}</div>
+      <q-tooltip>{{ title }}<br />{{ url }}</q-tooltip>
     </q-avatar>
     <q-avatar v-else rounded size="48px" class="shadow-1">
-      <q-img :src="ogImageUrl" :alt="ogTitle" class="image-48">
-        <template #error>{{ ogTitle.substring(0, 1) }}</template>
+      <q-img :src="imagePath" :alt="title" class="image-48">
+        <template #error>{{ title.substring(0, 1) }}</template>
       </q-img>
-      <q-tooltip>{{ ogTitle }}<br />{{ url }}</q-tooltip>
+      <q-tooltip>{{ title }}<br />{{ url }}</q-tooltip>
     </q-avatar>
     <q-avatar :class="{ 'blog-icon': true, 'shadow-2': true, posts, links }" rounded size="18px">
-      <img :src="getImageByBlogType(type)" :alt="ogTitle" />
+      <img :src="getImageByBlogType(type)" :alt="title" />
       <q-tooltip>{{ type }}</q-tooltip>
     </q-avatar>
   </div>

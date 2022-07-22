@@ -10,6 +10,7 @@ import {
 import { GroupService } from './group.service';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
+import { Prisma } from '@prisma/client';
 
 @Controller('group')
 export class GroupController {
@@ -17,7 +18,7 @@ export class GroupController {
 
   @Post()
   create(@Body() createGroupDto: CreateGroupDto) {
-    const { domain, title, description, tags } = createGroupDto;
+    const { domain, title, description, tags, links } = createGroupDto;
     return this.groupService.createGroup({
       domain,
       title,
@@ -29,6 +30,16 @@ export class GroupController {
       tags: {
         create: tags.map((name) => ({
           tag: { connectOrCreate: { where: { name }, create: { name } } },
+        })),
+      },
+      links: {
+        create: links.map((link) => ({
+          link: {
+            connectOrCreate: {
+              where: { url: link.url },
+              create: { ...link },
+            },
+          },
         })),
       },
     });

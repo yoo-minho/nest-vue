@@ -1,13 +1,12 @@
 export type ErrorMessage = string | boolean;
 export type TabName = string & ('group' | 'stack');
 export type Link = {
-  index: number;
   url: string;
   rssUrl?: string;
+  title: string;
+  description?: string;
   type: string;
-  ogTitle: string;
-  ogDescription: string;
-  ogImageUrl: string;
+  imagePath?: string;
 };
 export type Group = {
   index: number;

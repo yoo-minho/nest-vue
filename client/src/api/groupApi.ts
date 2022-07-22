@@ -24,9 +24,13 @@ export default {
     localStorage.setItem(tableName, JSON.stringify(groups));
   },
   async create(group: Group) {
-    const { id: domain, title, description, links, tags } = group;
-    const res = await axiosClient.post('group', { domain, title, description, links, tags });
-    console.log(res);
+    const { id: domain, title, description, tags, links } = group;
+    try {
+      const res = await axiosClient.post('group', { domain, title, description, links, tags });
+      console.log(res);
+    } catch (e) {
+      console.error(e);
+    }
     return;
 
     const groups = await this.findAll();

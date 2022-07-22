@@ -69,13 +69,12 @@ async function addBlogLink() {
   }
 
   addLink({
-    index: links.length + 1,
     url: url.value,
     rssUrl: rssUrl.value,
     type: getBlogType(url.value),
-    ogTitle: ogsData.ogTitle,
-    ogDescription: ogsData.ogDescription,
-    ogImageUrl: ogsData.ogImage.url,
+    title: ogsData.ogTitle,
+    description: ogsData.ogDescription,
+    imagePath: ogsData.ogImage.url,
   });
   closeLinkEditor();
 }
