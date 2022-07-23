@@ -1,6 +1,7 @@
 import { Group, GroupCount } from '../types/common';
 import GroupTagApi from './groupTagApi';
 import axiosClient from './base';
+import { AxiosError } from 'axios';
 
 const tableName = 'group';
 
@@ -26,10 +27,10 @@ export default {
   async create(group: Group) {
     const { id: domain, title, description, tags, links } = group;
     try {
-      const res = await axiosClient.post('group', { domain, title, description, links, tags });
-      console.log(res);
-    } catch (e) {
-      console.error(e);
+      await axiosClient.post('group', { domain, title, description, links, tags });
+    } catch (err) {
+      const { message } = err as AxiosError;
+      throw new Error(message);
     }
     return;
 

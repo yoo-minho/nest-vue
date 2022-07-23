@@ -5,10 +5,9 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { OpenGraphTagModule } from './open-graph-tag/open-graph-tag.module';
 import { RssModule } from './rss/rss.module';
-import { UserService } from './user.service';
-import { PostService } from './post.service';
-import { PrismaService } from './prisma.service';
 import { GroupModule } from './group/group.module';
+import { APP_FILTER } from '@nestjs/core';
+import { HttpExceptionFilter } from './http-exception.filter';
 
 @Module({
   imports: [
@@ -20,6 +19,12 @@ import { GroupModule } from './group/group.module';
     GroupModule,
   ],
   controllers: [AppController],
-  providers: [AppService, UserService, PostService, PrismaService],
+  providers: [
+    AppService,
+    {
+      provide: APP_FILTER,
+      useClass: HttpExceptionFilter,
+    },
+  ],
 })
 export class AppModule {}

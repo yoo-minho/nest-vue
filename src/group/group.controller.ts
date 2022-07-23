@@ -10,7 +10,6 @@ import {
 import { GroupService } from './group.service';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
-import { Prisma } from '@prisma/client';
 
 @Controller('group')
 export class GroupController {
@@ -35,10 +34,7 @@ export class GroupController {
       links: {
         create: links.map((link) => ({
           link: {
-            connectOrCreate: {
-              where: { url: link.url },
-              create: { ...link },
-            },
+            connectOrCreate: { where: { url: link.url }, create: { ...link } },
           },
         })),
       },
@@ -47,7 +43,9 @@ export class GroupController {
 
   @Get()
   findAll() {
-    return this.groupService.findAll();
+    return this.groupService.groups({
+      orderBy: { createdAt: 'desc' },
+    });
   }
 
   @Get(':id')

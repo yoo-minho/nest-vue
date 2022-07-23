@@ -83,6 +83,7 @@ async function saveGroup() {
     return;
   }
   await save(title.value, id.value, description.value, selectedTags.value);
+
   await getAllGroups();
   await getAllTags();
   closeGroupEditor();
@@ -154,7 +155,7 @@ async function saveGroup() {
 
           <q-list v-if="links.length > 0" bordered separator class="full-width">
             <div v-for="(v, i) in links" :key="i" :data-index="i">
-              <BlogCard :link="{ ...v, index: i }"></BlogCard>
+              <BlogCard :link="v"></BlogCard>
             </div>
           </q-list>
         </q-form>

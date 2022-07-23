@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
 import { Prisma, Group } from '@prisma/client';
@@ -10,20 +10,51 @@ export class GroupService {
 
   async createGroup(data: Prisma.GroupCreateInput): Promise<Group> {
     try {
-      return await this.prisma.group.create({
-        data,
-      });
+      return await this.prisma.group.create({ data });
     } catch (e) {
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+      throw new ForbiddenException(e);
     }
   }
 
-  create(createGroupDto: CreateGroupDto) {
-    return 'This action adds a new group';
+  async groups(params: {
+    skip?: number;
+    take?: number;
+    cursor?: Prisma.GroupWhereUniqueInput;
+    where?: Prisma.GroupWhereInput;
+    orderBy?: Prisma.GroupOrderByWithRelationInput;
+  }): Promise<Group[]> {
+    const { skip, take, cursor, where, orderBy } = params;
+    return this.prisma.group.findMany({
+      include: {
+        links: true,
+        tags: true,
+        counts: true,
+        creater: true,
+      },
+      skip,
+      take,
+      cursor,
+      where,
+      orderBy,
+    });
   }
 
-  findAll() {
-    return `This action returns all group`;
+  async findAll() {
+    try {
+      return await this.prisma.group.findMany({
+        include: {
+          links: true,
+          tags: true,
+          counts: true,
+          creater: true,
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+      });
+    } catch (e) {
+      throw new ForbiddenException(e);
+    }
   }
 
   findOne(id: number) {

@@ -18,7 +18,7 @@ const BLOG_EXPRESSION = {
   TWITCH: /https:\/\/www.twitch.tv\/([0-9a-zA-Z_-]*)/gi,
 };
 
-const { links, addLink } = useGroupStore();
+const { addLink } = useGroupStore();
 const { closeLinkEditor } = useSubpageStore();
 
 const linkRules = [(val: string): ErrorMessage => val.includes('https\:\/\/') || '링크에 https://를 포함해주세요!'];
@@ -29,7 +29,7 @@ const getErrorMessage = (v: string): string => {
   return '';
 };
 
-const url = ref('');
+const url = ref('https://naver.com');
 const rssUrl = ref('');
 const isShowRssUrl = ref(false);
 

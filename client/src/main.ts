@@ -20,4 +20,9 @@ myApp.use(Quasar, {
 
 myApp.use(createPinia());
 myApp.use(router);
+
+myApp.config.errorHandler = (error) => {
+  const { message } = error as Error;
+  Notify.create({ type: 'negative', message });
+};
 myApp.mount('#app');
