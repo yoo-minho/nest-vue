@@ -1,7 +1,7 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
-import { Prisma, Group } from '@prisma/client';
+import { Prisma, Group, Tag } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -16,6 +16,17 @@ export class GroupService {
     }
   }
 
+  async group(domain: string): Promise<Group> {
+    return this.prisma.group.findUnique({
+      include: {
+        links: true,
+      },
+      where: {
+        domain,
+      },
+    });
+  }
+
   async groups(params: {
     skip?: number;
     take?: number;
@@ -27,9 +38,6 @@ export class GroupService {
     return this.prisma.group.findMany({
       include: {
         links: true,
-        tags: true,
-        counts: true,
-        creater: true,
       },
       skip,
       take,
@@ -39,10 +47,23 @@ export class GroupService {
     });
   }
 
+  async groupTags() {
+    return this.prisma.tag.findMany({
+      include: {
+        _count: {
+          select: { groups: true },
+        },
+      },
+      orderBy: {
+        groups: { _count: 'desc' },
+      },
+    });
+  }
+
   async findAll() {
     try {
       return await this.prisma.group.findMany({
-        include: {
+        select: {
           links: true,
           tags: true,
           counts: true,

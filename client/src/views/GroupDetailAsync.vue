@@ -10,9 +10,10 @@ import { useRoute, useRouter } from 'vue-router';
 
 const router = useRouter();
 const { getGroupData } = useGroupStore();
-const props = defineProps<{ id: string }>();
-const currentGroupData = await getGroupData(props.id);
-const { links, today, total } = currentGroupData;
+const props = defineProps<{ domain: string }>();
+const currentGroupData = await getGroupData(props.domain);
+
+const { links } = currentGroupData;
 const rssResult = await Promise.all(links.map(RssAPI.index));
 const posts = rssResult.flat().sort((x, y) => y.created - x.created);
 
@@ -36,8 +37,8 @@ await delay(1000);
       <q-scroll-area :visible="false" class="without-header">
         <q-page class="max-width">
           <div class="q-pt-md q-px-md row justify-between">
-            <q-badge color="primary" :label="'today : ' + today" />
-            <q-badge color="green-4" :label="'total : ' + total" />
+            <q-badge color="primary" :label="'today : ' + 0" />
+            <q-badge color="green-4" :label="'total : ' + 0" />
           </div>
           <GroupCard mode="HEADER" :group-data="currentGroupData" />
           <q-tabs

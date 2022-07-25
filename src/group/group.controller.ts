@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { GroupService } from './group.service';
 import { CreateGroupDto } from './dto/create-group.dto';
@@ -44,15 +45,23 @@ export class GroupController {
   }
 
   @Get()
-  findAll() {
+  findAll(@Query() query) {
+    const { tag } = query;
+
     return this.groupService.groups({
+      where: { tags: { some: { tag: { name: tag } } } },
       orderBy: { createdAt: 'desc' },
     });
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.groupService.findOne(+id);
+  @Get('tags')
+  findAllTag() {
+    return this.groupService.groupTags();
+  }
+
+  @Get(':domain')
+  findOne(@Param('domain') domain: string) {
+    return this.groupService.group(domain);
   }
 
   @Patch(':id')

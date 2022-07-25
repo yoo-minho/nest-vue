@@ -3,20 +3,16 @@ import { storeToRefs } from 'pinia';
 import { QSelect, useQuasar } from 'quasar';
 import { onMounted, ref } from 'vue';
 import { useGroupStore } from '../stores/group';
-import { useGroupTagStore } from '../stores/groupTag';
 import { useSubpageStore } from '../stores/subpage';
 import BlogCard from './BlogCard.vue';
 import HeaderItem from './HeaderItem.vue';
 
 const groupStore = useGroupStore();
-const { initLinks, save, existsId, getAll: getAllGroups } = groupStore;
-const { links, linkCountMessage } = storeToRefs(groupStore);
+const { initLinks, save, existsId, getAll, getAllTag } = groupStore;
+const { links, linkCountMessage, TagNames } = storeToRefs(groupStore);
 
 const subpageStore = useSubpageStore();
 const { openLinkEditor, closeGroupEditor } = subpageStore;
-
-const groupTagStore = useGroupTagStore();
-const { getAll: getAllTags, activeTags } = groupTagStore;
 
 const title = ref('');
 const id = ref('');
@@ -32,7 +28,7 @@ const idRules = [
   (val: string) => new RegExp(/^[A-Za-z0-9_+]*$/).test(val) || '대소문자, 숫자, 언더바를 활용하여 입력해주세요!',
 ];
 
-const defaultOptions = activeTags;
+const defaultOptions = TagNames;
 const options = ref(defaultOptions);
 const tag = ref('');
 const selectedTags = ref([] as string[]);
@@ -44,7 +40,7 @@ onMounted(() => {
 type doneFn = (callbackFn: () => void, afterFn?: (ref: QSelect) => void) => void;
 
 function filterFn(val: string, update: doneFn) {
-  const filterVal = defaultOptions.filter((v) => v.toLowerCase().includes(val.toLowerCase()));
+  const filterVal = TagNames.value.filter((name) => name.includes(val.toLowerCase()));
   update(() => {
     options.value = filterVal.length > 0 ? filterVal : [val];
   });
@@ -84,8 +80,8 @@ async function saveGroup() {
   }
   await save(title.value, id.value, description.value, selectedTags.value);
 
-  await getAllGroups();
-  await getAllTags();
+  await getAll();
+  await getAllTag();
   closeGroupEditor();
 }
 </script>

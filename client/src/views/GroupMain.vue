@@ -6,34 +6,30 @@ import HeaderItem from '../components/HeaderItem.vue';
 import LinkList from '../components/LinkList.vue';
 
 import { useGroupStore } from '../stores/group';
-import { useGroupTagStore } from '../stores/groupTag';
 import { onMounted, watch } from 'vue';
 
 const groupStore = useGroupStore();
-const groupTagStore = useGroupTagStore();
-const { getAll: getAllGroups, getByTag } = groupStore;
-const { groups } = storeToRefs(groupStore);
-const { getAll: getAllTags, setCurrentTag } = groupTagStore;
-const { countGroupByTag, currentTag, isTotalTag } = storeToRefs(groupTagStore);
+const { getAll: getAllGroup, getByTag, getAllTag, setCurrentTag } = groupStore;
+const { groups, NavTags, currentTag, isTotalTag } = storeToRefs(groupStore);
 const router = useRouter();
 
 onMounted(() => {
-  getAllTags();
-  getAllGroups();
+  getAllTag();
+  getAllGroup();
 });
 
 watch(
   () => currentTag.value,
   (tag) => {
     if (isTotalTag.value) {
-      getAllGroups();
+      getAllGroup();
     } else {
       getByTag(tag);
     }
   },
 );
 
-const clickGroup = (id: string) => router.push({ path: `/@${id}` });
+const clickGroup = (domain: string) => router.push({ path: `/@${domain}` });
 </script>
 
 <template>
@@ -44,18 +40,18 @@ const clickGroup = (id: string) => router.push({ path: `/@${id}` });
         <q-scroll-area class="q-px-md q-pt-md" style="height: 50px; max-width: 900px" :thumb-style="{ opacity: '0' }">
           <div class="row no-wrap">
             <q-chip
-              v-for="(v, i) in countGroupByTag"
+              v-for="(tag, i) in NavTags"
               :key="i"
-              :class="{ active: currentTag === v.tag }"
+              :class="{ active: currentTag === tag.name }"
               clickable
-              @click="setCurrentTag(v.tag)"
-              >{{ v.tag }}
+              @click="setCurrentTag(tag.name)"
+              >{{ tag.name }}
             </q-chip>
           </div>
         </q-scroll-area>
         <q-page class="q-pa-md">
-          <p v-for="groupData in groups" :key="groupData.index">
-            <q-card class="cursor-pointer" @click="clickGroup(groupData.id)">
+          <p v-for="groupData in groups" :key="groupData.id">
+            <q-card class="cursor-pointer" @click="clickGroup(groupData.domain)">
               <q-card-section class="q-pa-none">
                 <GroupCard mode="LIST-ITEM" :group-data="groupData" />
                 <LinkList :links="groupData.links" />

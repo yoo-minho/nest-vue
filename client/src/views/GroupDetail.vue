@@ -2,14 +2,13 @@
 import GroupDetailAsync from './GroupDetailAsync.vue';
 import GroupDetailLoading from './GroupDetailLoading.vue';
 
-const props = defineProps<{ id: string }>();
-const id = String(props.id);
+const props = defineProps<{ domain: string }>();
 </script>
 
 <template>
   <Suspense>
     <template #default>
-      <GroupDetailAsync :id="id" />
+      <GroupDetailAsync :domain="props.domain" />
     </template>
     <template #fallback>
       <GroupDetailLoading />

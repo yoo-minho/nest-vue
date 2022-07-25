@@ -9,8 +9,8 @@ export type Link = {
   imagePath?: string;
 };
 export type Group = {
-  index: number;
-  id: string;
+  id?: number;
+  domain: string;
   title: string;
   description: string;
   links: Link[];

@@ -1,15 +1,22 @@
 import { defineStore } from 'pinia';
-import { Group, Link } from '../types/common';
+import { Group, GroupTag, Link } from '../types/common';
 import GroupApi from '../api/groupApi';
+
+const totalTag = '전체보기';
 
 export const useGroupStore = defineStore('group', {
   state: () => ({
     links: [] as Link[],
     groups: [] as Group[],
     currentGroup: {} as Group,
+    tags: [] as GroupTag[],
+    currentTag: totalTag,
   }),
   getters: {
-    linkCountMessage: (state) => (state.links.length > 0 ? `(${state.links.length}/10)` : ''),
+    linkCountMessage: ({ links }) => (links.length > 0 ? `(${links.length}/10)` : ''),
+    isTotalTag: (state) => state.currentTag === totalTag,
+    NavTags: ({ tags }) => [{ index: -1, groupId: '', name: totalTag }, ...tags],
+    TagNames: ({ tags }) => tags.map(({ name }) => name.toLowerCase()),
   },
   actions: {
     initLinks() {
@@ -27,25 +34,32 @@ export const useGroupStore = defineStore('group', {
     async getByTag(tag: string) {
       this.groups = await GroupApi.findByTag(tag);
     },
-    async existsId(id: string) {
-      return Object.keys((await GroupApi.findById(id)) || {}).length > 0;
+    async getAllTag() {
+      this.tags = await GroupApi.findAllTag();
     },
-    async getGroupData(id: string) {
-      if (this.currentGroup.id === id) {
+    setCurrentTag(tag: string) {
+      this.currentTag = tag;
+    },
+    async existsId(domain: string) {
+      return Object.keys((await GroupApi.findById(domain)) || {}).length > 0;
+    },
+    async getGroupData(domain: string) {
+      if (this.currentGroup.domain === domain) {
         return this.currentGroup;
       }
-      const currentData = await GroupApi.findById(id);
-      let { today = 0, total = 0 } = currentData;
-      today++;
-      total++;
-      await GroupApi.updateCount(id, { today, total });
-      this.currentGroup = { ...currentData, today: today, total: total };
-      return this.currentGroup;
+      return await GroupApi.findById(domain);
+
+      // const currentData = await GroupApi.findById(id);
+      // let { today = 0, total = 0 } = currentData;
+      // today++;
+      // total++;
+      // await GroupApi.updateCount(id, { today, total });
+      // this.currentGroup = { ...currentData, today: today, total: total };
+      // return this.currentGroup;
     },
-    async save(title: string, id: string, description: string, tags: string[]) {
+    async save(title: string, domain: string, description: string, tags: string[]) {
       const groupData = {
-        index: -1,
-        id,
+        domain,
         title,
         description,
         links: this.links,
