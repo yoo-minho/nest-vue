@@ -1,7 +1,5 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import { CreateGroupDto } from './dto/create-group.dto';
-import { UpdateGroupDto } from './dto/update-group.dto';
-import { Prisma, Group, Tag } from '@prisma/client';
+import { Prisma, Group } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -20,6 +18,7 @@ export class GroupService {
     return this.prisma.group.findUnique({
       include: {
         links: true,
+        counts: true,
       },
       where: {
         domain,
@@ -60,33 +59,15 @@ export class GroupService {
     });
   }
 
-  async findAll() {
+  async upsertCount(groupId: number) {
     try {
-      return await this.prisma.group.findMany({
-        select: {
-          links: true,
-          tags: true,
-          counts: true,
-          creater: true,
-        },
-        orderBy: {
-          createdAt: 'desc',
-        },
-      });
+      // return await this.prisma.count.upsert({
+      //   where: { groupId: 1, date: new Date().toDateString() },
+      //   create: { count: 0 },
+      //   update: { count: 1 },
+      // });
     } catch (e) {
       throw new ForbiddenException(e);
     }
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} group`;
-  }
-
-  update(id: number, updateGroupDto: UpdateGroupDto) {
-    return `This action updates a #${id} group`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} group`;
   }
 }
