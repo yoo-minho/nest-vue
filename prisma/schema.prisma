@@ -35,11 +35,13 @@ model Group {
 }
 
 model Count {
-  id      Int    @id @default(autoincrement())
   date    String
   count   Int
-  groupId Int
-  Group   Group  @relation(fields: [groupId], references: [id])
+  beforeCount Int
+  groupDomain String
+  Group   Group  @relation(fields: [groupDomain], references: [domain])
+
+  @@id([groupDomain, date])
 }
 
 model Link {
