@@ -1,8 +1,6 @@
-import { Group, GroupCount, GroupTag } from '../types/common';
+import { Group, GroupTag } from '../types/common';
 import axiosClient from './base';
 import { AxiosError } from 'axios';
-
-const tableName = 'group';
 
 export default {
   async findAll(): Promise<Group[]> {

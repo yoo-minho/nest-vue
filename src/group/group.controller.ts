@@ -50,7 +50,8 @@ export class GroupController {
   }
 
   @Get(':domain')
-  findOne(@Param('domain') domain: string) {
-    return this.groupService.group(domain);
+  async findOne(@Param('domain') domain: string) {
+    await this.groupService.upsertCount(domain);
+    return await this.groupService.group(domain);
   }
 }
