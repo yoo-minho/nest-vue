@@ -61,11 +61,11 @@ export class GroupService {
 
   async upsertCount(groupId: number) {
     try {
-      // return await this.prisma.count.upsert({
-      //   where: { groupId: 1, date: new Date().toDateString() },
-      //   create: { count: 0 },
-      //   update: { count: 1 },
-      // });
+      return await this.prisma.count.upsert({
+        where: { groupId, date: new Date().toDateString() },
+        create: { date: new Date().toDateString(), count: 0 },
+        update: { count: 1 },
+      });
     } catch (e) {
       throw new ForbiddenException(e);
     }
