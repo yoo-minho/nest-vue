@@ -1,5 +1,5 @@
 import * as dayjs from 'dayjs';
 
-export const isToday8 = () => {
+export const getToday8 = () => {
   return dayjs(new Date()).format('YYYYMMDD');
 };

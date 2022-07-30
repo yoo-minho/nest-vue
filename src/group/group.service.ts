@@ -1,7 +1,7 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { Prisma, Group } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { isToday8 } from 'src/plugin/dayjs';
+import { getToday8 } from 'src/plugin/dayjs';
 
 @Injectable()
 export class GroupService {
@@ -22,7 +22,7 @@ export class GroupService {
     return this.prisma.group.findUnique({
       include: {
         links: true,
-        counts: true,
+        counts: { where: { date: getToday8() } },
       },
       where: {
         domain,
@@ -63,14 +63,33 @@ export class GroupService {
     });
   }
 
-  async upsertCount(groupDomain: string) {
-    const date = isToday8();
+  async updateTotalViews(groupDomain: string) {
+    const date = getToday8();
+    try {
+      const { _sum } = await this.prisma.views.aggregate({
+        _sum: { count: true },
+        where: {
+          groupDomain,
+          date: { lt: date },
+        },
+      });
+      await this.prisma.group.update({
+        where: { domain: groupDomain },
+        data: { totalViews: _sum.count || 0 },
+      });
+    } catch (e) {
+      throw new ForbiddenException(e);
+    }
+  }
+
+  async upsertDailyViews(groupDomain: string) {
+    const date = getToday8();
     try {
       const { count = 1 } =
-        (await this.prisma.count.findUnique({
+        (await this.prisma.views.findUnique({
           where: { groupDomain_date: { groupDomain, date } },
         })) || {};
-      return await this.prisma.count.upsert({
+      return await this.prisma.views.upsert({
         where: { groupDomain_date: { groupDomain, date } },
         create: { count: 1, date, Group: { connect: { domain: groupDomain } } },
         update: { count: count + 1 },

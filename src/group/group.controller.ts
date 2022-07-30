@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Query, Res } from '@nestjs/common';
 import { GroupService } from './group.service';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { ApiTags } from '@nestjs/swagger';
@@ -35,9 +35,7 @@ export class GroupController {
   }
 
   @Get()
-  findAll(@Query() query) {
-    const { tag } = query;
-
+  findAll(@Query() { tag }) {
     return this.groupService.groups({
       where: { tags: { some: { tag: { name: tag } } } },
       orderBy: { createdAt: 'desc' },
@@ -51,7 +49,12 @@ export class GroupController {
 
   @Get(':domain')
   async findOne(@Param('domain') domain: string) {
-    await this.groupService.upsertCount(domain);
-    return await this.groupService.group(domain);
+    await this.groupService.upsertDailyViews(domain);
+    await this.groupService.updateTotalViews(domain);
+
+    const groupData = await this.groupService.group(domain);
+    groupData['dailyViews'] = groupData['counts'][0]['count'];
+    delete groupData['counts'];
+    return groupData;
   }
 }

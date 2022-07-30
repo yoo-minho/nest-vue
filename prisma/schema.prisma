@@ -28,20 +28,18 @@ model Group {
   createdAt   DateTime        @default(now()) @db.Timestamptz(3)
   description String?
   title       String
-  totalHits       Int
+  totalViews  Int             @default(0)
   creater     User            @relation(fields: [createrId], references: [id])
-  counts      Count[]
   links       LinksOnGroups[]
   tags        TagsOnGroups[]
+  counts      Views[]
 }
 
-model Count {
-  date    String
-  count   Int
-  beforeCount Int
+model Views {
+  date        String
+  count       Int
   groupDomain String
-  Group   Group  @relation(fields: [groupDomain], references: [domain])
-
+  Group       Group  @relation(fields: [groupDomain], references: [domain])
   @@id([groupDomain, date])
 }
 
