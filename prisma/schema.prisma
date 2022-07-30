@@ -28,6 +28,7 @@ model Group {
   createdAt   DateTime        @default(now()) @db.Timestamptz(3)
   description String?
   title       String
+  totalHits       Int
   creater     User            @relation(fields: [createrId], references: [id])
   counts      Count[]
   links       LinksOnGroups[]
