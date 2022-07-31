@@ -31,14 +31,17 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     this.$on('query', async ({ query, params }) => {
-      console.info(`[Nest] QUERY : ${query}`);
-      console.info(`[Nest] PARAM : ${params}`);
+      console.info(`== QUERY : ${query}`);
+      console.info(`== PARAM : ${params}`);
     });
     this.$use(async (params, next) => {
       const before = Date.now();
       const result = await next(params);
       const after = Date.now();
-      console.info(`[Nest] TIMES : ${after - before}ms`);
+      const { model, action } = params;
+      console.info(`== MODEL : ${model}.${action}`);
+      console.info(`== TIMES : ${after - before}ms`);
+      console.info(`==========================================`);
       return result;
     });
   }

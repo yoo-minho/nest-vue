@@ -16,10 +16,8 @@ export type Group = {
   links: Link[];
   tags: string[];
   created_at: Date;
-} & GroupCount;
-export type GroupCount = {
-  today: number;
-  total: number;
+  dailyViews?: number;
+  totalViews?: number;
 };
 export type GroupTag = {
   index: number;

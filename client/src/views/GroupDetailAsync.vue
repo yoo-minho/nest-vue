@@ -13,7 +13,7 @@ const { getGroupData } = useGroupStore();
 const props = defineProps<{ domain: string }>();
 const currentGroupData = await getGroupData(props.domain);
 
-const { links } = currentGroupData;
+const { links, totalViews, dailyViews } = currentGroupData;
 const rssResult = await Promise.all(links.map(RssAPI.index));
 const posts = rssResult.flat().sort((x, y) => y.created - x.created);
 
@@ -37,8 +37,8 @@ await delay(1000);
       <q-scroll-area :visible="false" class="without-header">
         <q-page class="max-width">
           <div class="q-pt-md q-px-md row justify-between">
-            <q-badge color="primary" :label="'today : ' + 0" />
-            <q-badge color="green-4" :label="'total : ' + 0" />
+            <q-badge color="primary" :label="'today : ' + dailyViews" />
+            <q-badge color="green-4" :label="'total : ' + totalViews" />
           </div>
           <GroupCard mode="HEADER" :group-data="currentGroupData" />
           <q-tabs
