@@ -16,7 +16,7 @@ const { link } = toRaw(props);
       </q-item-section>
       <q-item-section class="col-9">
         <q-item-label class="text-weight-bold ellipsis text-subtitle2">{{ link.title }}</q-item-label>
-        <q-item-label class="ellipsis-2-lines">{{ link.de || 'ㅤ' }}</q-item-label>
+        <q-item-label class="ellipsis-2-lines">{{ link.description || 'ㅤ' }}</q-item-label>
         <q-item-label class="ellipsis text-grey-5">{{ link.url }}</q-item-label>
       </q-item-section>
     </q-item>
