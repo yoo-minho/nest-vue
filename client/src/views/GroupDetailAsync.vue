@@ -13,8 +13,8 @@ const { getGroupData } = useGroupStore();
 const props = defineProps<{ domain: string }>();
 const currentGroupData = await getGroupData(props.domain);
 
-const { links, totalViews, dailyViews } = currentGroupData;
-const rssResult = await Promise.all(links.map(RssAPI.index));
+const { links = [], totalViews, dailyViews } = currentGroupData;
+const rssResult = await Promise.all(links.map(({ link }) => RssAPI.index(link)));
 const posts = rssResult.flat().sort((x, y) => y.created - x.created);
 
 const route = useRoute();

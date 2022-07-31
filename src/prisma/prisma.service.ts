@@ -1,5 +1,6 @@
 import { INestApplication, Injectable, OnModuleInit } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
+import { format } from 'sql-formatter';
 
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit {
@@ -31,8 +32,14 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     this.$on('query', async ({ query, params }) => {
-      console.info(`== QUERY : ${query}`);
-      console.info(`== PARAM : ${params}`);
+      console.info(
+        `=== QUERY === \n${format(query, {
+          language: 'postgresql',
+          tabWidth: 2,
+          linesBetweenQueries: 2,
+        }).replace(/"public"./g, '')}`,
+      );
+      console.info('== PARAM', JSON.parse(params));
     });
     this.$use(async (params, next) => {
       const before = Date.now();

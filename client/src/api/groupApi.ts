@@ -1,4 +1,4 @@
-import { Group, GroupTag } from '../types/common';
+import { Group, GroupTag, Link } from '../types/common';
 import axiosClient from './base';
 import { AxiosError } from 'axios';
 
@@ -45,12 +45,13 @@ export default {
   //   groups[idx] = { ...groups[idx], today, total };
   //   localStorage.setItem(tableName, JSON.stringify(groups));
   // },
-  async create(group: Group) {
-    const { id: domain, title, description, tags, links } = group;
+  async create(group: Group, links: Link[]) {
+    const { domain, title, description, tags } = group;
     try {
       await axiosClient.post('group', { domain, title, description, links, tags });
-    } catch (err) {
-      const { message } = err as AxiosError;
+    } catch (axiosError) {
+      const err = axiosError as AxiosError<{ res: { message: string } }>;
+      const message = err.response?.data?.res?.message || err.message;
       throw new Error(message);
     }
   },

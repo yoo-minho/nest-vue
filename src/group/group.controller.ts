@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Param, Query, Res } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Query,
+  ConflictException,
+} from '@nestjs/common';
 import { GroupService } from './group.service';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { ApiTags } from '@nestjs/swagger';
@@ -9,8 +17,12 @@ export class GroupController {
   constructor(private readonly groupService: GroupService) {}
 
   @Post()
-  create(@Body() createGroupDto: CreateGroupDto) {
+  async create(@Body() createGroupDto: CreateGroupDto) {
     const { domain, title, description, tags, links } = createGroupDto;
+    const groupData = await this.groupService.group(domain);
+    if (groupData !== null) {
+      throw new ConflictException('중복된 도메인이 존재합니다!');
+    }
     return this.groupService.createGroup({
       domain,
       title,
@@ -36,10 +48,13 @@ export class GroupController {
 
   @Get()
   findAll(@Query() { tag }) {
-    return this.groupService.groups({
-      where: { tags: { some: { tag: { name: tag } } } },
-      orderBy: { createdAt: 'desc' },
-    });
+    if (tag) {
+      return this.groupService.groups({
+        where: { tags: { some: { tag: { name: tag } } } },
+        orderBy: { createdAt: 'desc' },
+      });
+    }
+    return this.groupService.groups({ orderBy: { createdAt: 'desc' } });
   }
 
   @Get('tags')

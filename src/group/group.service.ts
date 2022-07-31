@@ -16,12 +16,9 @@ export class GroupService {
   }
 
   async group(domain: string): Promise<Group> {
-    //카운트가 오늘의 값과 전체의 값을 가져와야되다보니
-    //개별쿼리로 작성하는게 더 가독성이 나을 수도 있을 것 같음
-    //그럼 도메인은 어떻게 짜지?
     return this.prisma.group.findUnique({
       include: {
-        links: true,
+        links: { select: { link: true } },
         counts: { where: { date: getToday8() } },
       },
       where: {
@@ -40,7 +37,7 @@ export class GroupService {
     const { skip, take, cursor, where, orderBy } = params;
     return this.prisma.group.findMany({
       include: {
-        links: true,
+        links: { select: { link: true } },
       },
       skip,
       take,

@@ -15,8 +15,8 @@ const { link } = toRaw(props);
         <LinkCard :link-data="link" :posts="true"></LinkCard>
       </q-item-section>
       <q-item-section class="col-9">
-        <q-item-label class="text-weight-bold ellipsis text-subtitle2">{{ link.ogTitle }}</q-item-label>
-        <q-item-label class="ellipsis-2-lines">{{ link.ogDescription || 'ㅤ' }}</q-item-label>
+        <q-item-label class="text-weight-bold ellipsis text-subtitle2">{{ link.title }}</q-item-label>
+        <q-item-label class="ellipsis-2-lines">{{ link.de || 'ㅤ' }}</q-item-label>
         <q-item-label class="ellipsis text-grey-5">{{ link.url }}</q-item-label>
       </q-item-section>
     </q-item>

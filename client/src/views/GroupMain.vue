@@ -54,7 +54,7 @@ const clickGroup = (domain: string) => router.push({ path: `/@${domain}` });
             <q-card class="cursor-pointer" @click="clickGroup(groupData.domain)">
               <q-card-section class="q-pa-none">
                 <GroupCard mode="LIST-ITEM" :group-data="groupData" />
-                <LinkList :links="groupData.links" />
+                <LinkList :links="groupData.links || []" />
               </q-card-section>
             </q-card>
           </p>

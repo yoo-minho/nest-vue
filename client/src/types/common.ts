@@ -12,10 +12,10 @@ export type Group = {
   id?: number;
   domain: string;
   title: string;
-  description: string;
-  links: Link[];
-  tags: string[];
-  created_at: Date;
+  description?: string;
+  links?: { link: Link }[];
+  tags?: string[];
+  created_at?: Date;
   dailyViews?: number;
   totalViews?: number;
 };

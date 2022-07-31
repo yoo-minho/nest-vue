@@ -72,12 +72,12 @@ async function saveGroup() {
     $q.notify({ type: 'negative', message: '최소 1개의 url이 필요합니다.' });
     return;
   }
-  const isDuplicatedById = await existsId(id.value);
-  if (isDuplicatedById) {
-    $q.notify({ type: 'negative', message: '중복 도메인이 존재합니다.' });
-    idRef.value.focus();
-    return;
-  }
+  // const isDuplicatedById = await existsId(id.value);
+  // if (isDuplicatedById) {
+  //   $q.notify({ type: 'negative', message: '중복 도메인이 존재합니다.' });
+  //   idRef.value.focus();
+  //   return;
+  // }
   await save(title.value, id.value, description.value, selectedTags.value);
 
   await getAll();
@@ -151,7 +151,7 @@ async function saveGroup() {
 
           <q-list v-if="links.length > 0" bordered separator class="full-width">
             <div v-for="(v, i) in links" :key="i" :data-index="i">
-              <BlogCard :link="v"></BlogCard>
+              <BlogCard :index="i" :link="v"></BlogCard>
             </div>
           </q-list>
         </q-form>

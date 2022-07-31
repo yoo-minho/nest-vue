@@ -29,7 +29,7 @@ const getErrorMessage = (v: string): string => {
   return '';
 };
 
-const url = ref('https://naver.com');
+const url = ref('https://blog.naver.com/dellose');
 const rssUrl = ref('');
 const isShowRssUrl = ref(false);
 
