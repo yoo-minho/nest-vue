@@ -40,9 +40,6 @@ export const useGroupStore = defineStore('group', {
     setCurrentTag(tag: string) {
       this.currentTag = tag;
     },
-    async existsId(domain: string) {
-      return Object.keys((await GroupApi.findById(domain)) || {}).length > 0;
-    },
     async getGroupData(domain: string) {
       if (this.currentGroup.domain === domain) {
         return this.currentGroup;
@@ -50,13 +47,15 @@ export const useGroupStore = defineStore('group', {
       return await GroupApi.findById(domain);
     },
     async save(title: string, domain: string, description: string, tags: string[]) {
-      const groupData = {
-        domain,
-        title,
-        description,
-        tags,
-      };
-      await GroupApi.create(groupData, this.links);
+      await GroupApi.create(
+        {
+          domain,
+          title,
+          description,
+          tags,
+        },
+        this.links,
+      );
     },
   },
 });

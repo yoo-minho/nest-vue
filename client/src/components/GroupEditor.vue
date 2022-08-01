@@ -8,7 +8,7 @@ import BlogCard from './BlogCard.vue';
 import HeaderItem from './HeaderItem.vue';
 
 const groupStore = useGroupStore();
-const { initLinks, save, existsId, getAll, getAllTag } = groupStore;
+const { initLinks, save, getAll, getAllTag } = groupStore;
 const { links, linkCountMessage, TagNames } = storeToRefs(groupStore);
 
 const subpageStore = useSubpageStore();
