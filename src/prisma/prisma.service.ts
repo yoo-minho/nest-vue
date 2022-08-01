@@ -1,6 +1,7 @@
 import { INestApplication, Injectable, OnModuleInit } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { format } from 'sql-formatter';
+import { jsonParse } from 'src/util';
 
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit {
@@ -39,7 +40,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
           linesBetweenQueries: 2,
         }).replace(/"public"./g, '')}`,
       );
-      console.info('== PARAM', JSON.parse(params));
+      console.info('== PARAM', jsonParse(params));
     });
     this.$use(async (params, next) => {
       const before = Date.now();

@@ -3,6 +3,7 @@ import GroupCard from '../components/GroupCard.vue';
 import HeaderItem from '../components/HeaderItem.vue';
 
 import RssAPI from '../api/rssApi';
+import PostAPI from '../api/postApi';
 import { useGroupStore } from '../stores/group';
 import { ref } from 'vue';
 import { delay } from '../util';
@@ -14,8 +15,13 @@ const props = defineProps<{ domain: string }>();
 const currentGroupData = await getGroupData(props.domain);
 
 const { links = [], totalViews, dailyViews } = currentGroupData;
-const rssResult = await Promise.all(links.map(({ link }) => RssAPI.index(link)));
-const posts = rssResult.flat().sort((x, y) => y.created - x.created);
+
+await Promise.all(links.map(({ link }) => RssAPI.scrap(link)));
+const rssResult = await Promise.all(links.map(({ link }) => PostAPI.findAllPosts(link.id || 0)));
+//const posts = rssResult.flat().sort((x, y) => y.createdAt - x.createdAt);
+
+const linksBundle = links.map(({ link }) => ({ linkId: link.id || 0 }));
+const posts = await PostAPI.findAllPosts2(linksBundle);
 
 const route = useRoute();
 const selectTab = ref();

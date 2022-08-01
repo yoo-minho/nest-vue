@@ -40,6 +40,7 @@ model Views {
   count       Int
   groupDomain String
   Group       Group  @relation(fields: [groupDomain], references: [domain])
+
   @@id([groupDomain, date])
 }
 
@@ -82,9 +83,11 @@ model TagsOnGroups {
 }
 
 model Post {
-  id      Int     @id @default(autoincrement())
-  title   String  @unique
-  content String?
-  linkId  Int
-  link    Link    @relation(fields: [linkId], references: [id])
+  id          Int      @id @default(autoincrement())
+  title       String
+  linkId      Int
+  createdAt   DateTime
+  description String?
+  url         String   @unique
+  link        Link     @relation(fields: [linkId], references: [id])
 }

@@ -8,6 +8,7 @@ import { RssModule } from './rss/rss.module';
 import { GroupModule } from './group/group.module';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './http-exception.filter';
+import { PostModule } from './post/post.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { HttpExceptionFilter } from './http-exception.filter';
     OpenGraphTagModule,
     RssModule,
     GroupModule,
+    PostModule,
   ],
   controllers: [AppController],
   providers: [

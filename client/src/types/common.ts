@@ -1,6 +1,7 @@
 export type ErrorMessage = string | boolean;
 export type TabName = string & ('group' | 'stack');
 export type Link = {
+  id?: number;
   url: string;
   rssUrl?: string;
   title: string;
@@ -25,19 +26,21 @@ export type GroupTag = {
   name: string;
 };
 export type RssItem = {
-  category: string[];
   created: number;
   description?: string;
   content?: string;
   link: string;
-  media: object;
-  published: number;
   title: string;
 };
-export type Post = RssItem & {
-  createdStr: string;
-  dateString: string;
-  linkInfo: Link;
+
+export type Post = {
+  createdAt: Date;
+  description?: string;
+  content?: string;
+  linkId: number;
+  link: Link;
+  url: string;
+  title: string;
 };
 export type CountGroup = {
   [key: string]: number;
