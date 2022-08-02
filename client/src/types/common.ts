@@ -32,7 +32,6 @@ export type RssItem = {
   link: string;
   title: string;
 };
-
 export type Post = {
   createdAt: Date;
   description?: string;
@@ -41,6 +40,13 @@ export type Post = {
   link: Link;
   url: string;
   title: string;
+};
+export type LastPost = {
+  linkId: number;
+  createdAt: string;
+  title: string;
+  dateString: string;
+  agoString: string;
 };
 export type CountGroup = {
   [key: string]: number;

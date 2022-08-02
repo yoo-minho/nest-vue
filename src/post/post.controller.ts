@@ -10,7 +10,6 @@ import {
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
-import { UpdatePostDto } from './dto/update-post.dto';
 import { Prisma } from '@prisma/client';
 import { link } from 'fs';
 
@@ -41,6 +40,19 @@ export class PostController {
     return this.postService.posts({
       where: { linkId: { in: linkArr } },
       orderBy: { createdAt: 'desc' },
+    });
+  }
+
+  @Post('last')
+  async findAllLast(@Body() { linkIds }) {
+    const linkArr = linkIds.map(({ linkId }) => linkId);
+    const lastPostArr = await this.postService.lastPosts(linkArr);
+    return lastPostArr.map(({ _max, linkId }) => {
+      return {
+        linkId,
+        createdAt: _max.createdAt,
+        title: linkIds.find((v) => v.linkId === linkId).title,
+      };
     });
   }
 }

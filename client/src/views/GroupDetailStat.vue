@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { enumerateDaysFromNMonths, getDateStringByMs, getAgoStringByMs, isToday } from '../plugin/dayjs';
-import { CountGroup, DaysCount, Link, Post } from '../types/common';
+import { enumerateDaysFromNMonths, isToday } from '../plugin/dayjs';
+import { CountGroup, DaysCount, LastPost, Link, Post } from '../types/common';
 import { computed, reactive, ref, toRaw, watch } from 'vue';
+
+import PostAPI from '../api/postApi';
 
 const medal = (i: number) => ['🥇', '🥈', '🥉'][i] || '';
 const isRank = (i: number) => i < 3;
 
-const props = defineProps<{ links: Link[]; rssResult: Post[][] }>();
+const props = defineProps<{ links: { link: Link }[]; rssResult: Post[][] }>();
 const { links, rssResult } = toRaw(props);
 
 const linkFilterOptions = [
@@ -16,23 +18,30 @@ const linkFilterOptions = [
 const linkFilter = ref(linkFilterOptions[0]);
 
 const orderOptions = [
-  { label: '오래된순', value: 1 },
-  { label: '최신순', value: -1 },
+  { label: '최신순', value: 'asc' },
+  { label: '오래된순', value: 'desc' },
 ];
 const order = ref(orderOptions[0]);
 
-const getLastPostitngDateByLink = (rssResult: Post[][], order: number) =>
-  rssResult
-    .map((rss) => rss[0] || {})
-    .map(({ created, linkInfo }) => ({
-      linkInfo: linkInfo || {},
-      lastPostitngDate: created,
-      dateString: getDateStringByMs(created),
-      agoString: getAgoStringByMs(created),
-    }))
-    .sort((x, y) => (x.lastPostitngDate - y.lastPostitngDate) * order);
+const linksBundle = links.map(({ link }) => ({ linkId: link.id || 0, title: link.title }));
+const lastPosts = await PostAPI.findLast(linksBundle);
+const sortPost = (array: LastPost[], orderType: string) => {
+  const time = (date: string) => new Date(date).getTime();
+  const z = orderType === 'desc' ? 1 : -1;
+  return [...array].sort((x, y) => z * (time(x.createdAt) - time(y.createdAt)));
+};
 
-const lastPostitngDateByLink = reactive(getLastPostitngDateByLink(rssResult, 1));
+const lastPostitngDateByLink = ref(sortPost(lastPosts, order.value.value));
+
+watch(
+  () => order.value,
+  (json: { value: string }) => {
+    if (json === null) return;
+    lastPostitngDateByLink.value = sortPost(lastPosts, json.value);
+  },
+);
+
+/////
 
 const getJandiData = (posts: Post[]): DaysCount[] => {
   const postCounts = posts.reduce((total: CountGroup, { dateString }) => {
@@ -58,15 +67,6 @@ const manyPostingDays = computed(() => {
   });
   return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][dayOfWeek] || '-';
 });
-
-watch(
-  () => order.value,
-  (json: { value: number }) => {
-    if (json === null) return;
-    lastPostitngDateByLink.length = 0;
-    lastPostitngDateByLink.push(...getLastPostitngDateByLink(rssResult, json.value));
-  },
-);
 
 watch(
   () => linkFilter.value,
@@ -157,23 +157,23 @@ watch(
     <q-select v-model="order" :options="orderOptions" filled label="Last Posting Date Ranking" class="q-my-md" />
 
     <q-card class="jandi-card">
-      <q-card-section>
-        <div class="text-white">
-          <q-list dark bordered separator>
-            <q-item v-for="(v, i) in lastPostitngDateByLink" :key="i" clickable>
+      <q-card-section class="text-white">
+        <q-list dark bordered separator>
+          <div v-for="(v, i) in lastPostitngDateByLink" :key="i" clickable>
+            <q-item>
               <q-item-section class="col-8">
                 <q-item-label class="text-weight-bold ellipsis text-subtitle2">
-                  {{ v.linkInfo.title }}
+                  {{ v.title }}
                 </q-item-label>
                 <q-item-label class="ellipsis text-grey-5">Last Date : {{ v.dateString }}</q-item-label>
               </q-item-section>
               <q-item-section class="col-4">
-                <q-item-label :class="{ 'rank-stirng': isRank(i) }"> Rank {{ i + 1 }} {{ medal(i) }} </q-item-label>
+                <q-item-label :class="{ 'rank-stirng': isRank(i) }"> Rank {{ i + 1 }} {{ medal(i) }}</q-item-label>
                 <q-item-label :class="{ 'ago-string': isRank(i) }">{{ v.agoString }}</q-item-label>
               </q-item-section>
             </q-item>
-          </q-list>
-        </div>
+          </div>
+        </q-list>
       </q-card-section>
     </q-card>
   </div>

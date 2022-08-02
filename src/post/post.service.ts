@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Prisma, Post } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 
@@ -31,6 +31,23 @@ export class PostService {
       cursor,
       where,
       orderBy,
+    });
+  }
+
+  async lastPosts(linkArr) {
+    return this.prisma.post.groupBy({
+      by: ['linkId'],
+      where: {
+        linkId: {
+          in: linkArr,
+        },
+      },
+      _max: { createdAt: true },
+      orderBy: {
+        _max: {
+          createdAt: 'desc',
+        },
+      },
     });
   }
 }

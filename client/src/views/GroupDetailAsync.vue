@@ -18,9 +18,8 @@ const { links = [], totalViews, dailyViews } = currentGroupData;
 
 await Promise.all(links.map(({ link }) => RssAPI.scrap(link)));
 const rssResult = await Promise.all(links.map(({ link }) => PostAPI.findAllPosts(link.id || 0)));
-//const posts = rssResult.flat().sort((x, y) => y.createdAt - x.createdAt);
 
-const linksBundle = links.map(({ link }) => ({ linkId: link.id || 0 }));
+const linksBundle = links.map(({ link }) => ({ linkId: link.id || 0, title: link.title }));
 const posts = await PostAPI.findAllPosts2(linksBundle);
 
 const route = useRoute();

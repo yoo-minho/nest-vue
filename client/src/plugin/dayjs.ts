@@ -4,6 +4,9 @@ import { Days } from '../types/common';
 
 dayjs.extend(relativeTime);
 
+export const getDateString = (dateStr: Date) => dayjs(dateStr).format('YYYY-MM-DD HH:mm (ddd)');
+export const getAgoString = (dateStr: Date) => dayjs(dateStr).fromNow();
+
 export const isToday = (dateString: string) => dateString === dayjs(new Date()).format('YYYY-MM-DD');
 export const getDateStringByMs = (ms: number) => dayjs(new Date(ms)).format('YYYY-MM-DD');
 export const getAgoStringByMs = (ms: number) => dayjs(new Date(ms)).fromNow();

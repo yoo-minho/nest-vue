@@ -3,6 +3,7 @@ import { Post } from '../types/common';
 import { toRaw } from 'vue';
 import LinkCard from './LinkCard.vue';
 import { openUrl } from '../util';
+import { getDateString } from '../plugin/dayjs';
 
 const props = defineProps<{ post: Post }>();
 const { post } = toRaw(props);
@@ -14,7 +15,7 @@ const { post } = toRaw(props);
       <q-item-section class="col-9">
         <q-item-label class="text-weight-bold ellipsis text-subtitle2">{{ post.title }}</q-item-label>
         <q-item-label class="ellipsis-2-lines">{{ post.description || 'ㅤ' }}</q-item-label>
-        <q-item-label class="text-grey-5">{{ post.createdAt }}</q-item-label>
+        <q-item-label class="text-grey-5">{{ getDateString(post.createdAt) }}</q-item-label>
       </q-item-section>
       <q-item-section class="col-3" style="align-items: center">
         <LinkCard :link-data="post.link" :posts="true"></LinkCard>
