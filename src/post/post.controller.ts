@@ -1,17 +1,7 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  Query,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Query } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { Prisma } from '@prisma/client';
-import { link } from 'fs';
 
 @Controller('post')
 export class PostController {
@@ -54,5 +44,11 @@ export class PostController {
         title: linkIds.find((v) => v.linkId === linkId).title,
       };
     });
+  }
+
+  @Post('count/date')
+  async countByDate(@Body() { linkIds }) {
+    const linkArr = linkIds.map(({ linkId }) => linkId);
+    return await this.postService.postCountByDate(linkArr);
   }
 }

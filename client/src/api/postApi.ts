@@ -13,16 +13,7 @@ export default {
       throw new Error(message);
     }
   },
-  async findAllPosts(linkId: number) {
-    try {
-      const { data } = await axiosClient.get('post', { params: { linkId } });
-      return data;
-    } catch (err) {
-      console.error(err);
-      return [];
-    }
-  },
-  async findAllPosts2(linkIds: { linkId: number }[]) {
+  async findAllPosts(linkIds: { linkId: number }[]) {
     try {
       const { data } = await axiosClient.post('post/in', { linkIds });
       return data;
@@ -39,6 +30,15 @@ export default {
         dateString: getDateString(new Date(post.createdAt)),
         agoString: getAgoString(new Date(post.createdAt)),
       }));
+    } catch (err) {
+      console.error(err);
+      return [];
+    }
+  },
+  async countByDate(linkIds: { linkId: number }[]) {
+    try {
+      const { data } = await axiosClient.post('post/count/date', { linkIds });
+      return data;
     } catch (err) {
       console.error(err);
       return [];

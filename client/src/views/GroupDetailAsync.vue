@@ -13,14 +13,11 @@ const router = useRouter();
 const { getGroupData } = useGroupStore();
 const props = defineProps<{ domain: string }>();
 const currentGroupData = await getGroupData(props.domain);
-
 const { links = [], totalViews, dailyViews } = currentGroupData;
-
 await Promise.all(links.map(({ link }) => RssAPI.scrap(link)));
-const rssResult = await Promise.all(links.map(({ link }) => PostAPI.findAllPosts(link.id || 0)));
 
 const linksBundle = links.map(({ link }) => ({ linkId: link.id || 0, title: link.title }));
-const posts = await PostAPI.findAllPosts2(linksBundle);
+const posts = await PostAPI.findAllPosts(linksBundle);
 
 const route = useRoute();
 const selectTab = ref();
@@ -63,7 +60,7 @@ await delay(1000);
             />
           </q-tabs>
           <q-separator />
-          <router-view :links="links" :posts="posts" :rss-result="rssResult" />
+          <router-view :links="links" :posts="posts" />
         </q-page>
       </q-scroll-area>
     </q-page-container>

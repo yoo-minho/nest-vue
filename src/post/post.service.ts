@@ -1,5 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma, Post } from '@prisma/client';
+import {
+  getBeforeMonth,
+  getFormatString,
+  enumerateDaysFromNMonths,
+} from 'src/plugin/dayjs';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -49,5 +54,35 @@ export class PostService {
         },
       },
     });
+  }
+
+  async postCountByDate(linkArr) {
+    const posts = await this.prisma.post.findMany({
+      select: {
+        linkId: true,
+        createdAt: true,
+      },
+      where: {
+        linkId: {
+          in: linkArr,
+        },
+        createdAt: {
+          gte: getBeforeMonth(3),
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+    const postCounts = {};
+    posts.forEach(({ linkId, createdAt }) => {
+      const day8 = getFormatString(createdAt, 'YYYY-MM-DD');
+      postCounts[day8] = { ['totalCount']: 0 };
+      postCounts[day8]['totalCount'] = postCounts[day8]['totalCount'] + 1;
+      const key = `linkCountBy${linkId}`;
+      postCounts[day8][key] = (postCounts[day8][key] || 0) + 1;
+    });
+    const days = enumerateDaysFromNMonths(3, 'YYYY-MM-DD');
+    return days.map((v) => ({ ...v, count: postCounts[v.date] }));
   }
 }

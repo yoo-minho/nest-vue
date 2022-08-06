@@ -59,6 +59,20 @@ export type Days = {
 export type DaysCount = Days & {
   count: number;
 };
+export type DaysAllCounts = {
+  date: string;
+  day: number;
+  month: string;
+  count: {
+    [key: string]: number;
+  };
+};
+export type DaysCounts = {
+  date: string;
+  day: number;
+  month: string;
+  count: number;
+};
 export type StackJson = {
   name: string;
   label: string;

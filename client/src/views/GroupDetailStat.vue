@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import { enumerateDaysFromNMonths, isToday } from '../plugin/dayjs';
-import { CountGroup, DaysCount, LastPost, Link, Post } from '../types/common';
-import { computed, reactive, ref, toRaw, watch } from 'vue';
+import { isToday } from '../plugin/dayjs';
+import { CountGroup, DaysCount, LastPost, Link, DaysAllCounts } from '../types/common';
+import { computed, ref, toRaw, watch } from 'vue';
 
 import PostAPI from '../api/postApi';
 
 const medal = (i: number) => ['🥇', '🥈', '🥉'][i] || '';
 const isRank = (i: number) => i < 3;
 
-const props = defineProps<{ links: { link: Link }[]; rssResult: Post[][] }>();
-const { links, rssResult } = toRaw(props);
+const props = defineProps<{ links: { link: Link }[] }>();
+const { links } = toRaw(props);
 
 const linkFilterOptions = [
   { label: '전체 (링크 선택 가능)', value: -1 },
-  ...links.map((v, i) => ({ label: v.title, value: i })),
+  ...links.map(({ link }) => ({ label: link.title, value: link.id || -1 })),
 ];
 const linkFilter = ref(linkFilterOptions[0]);
 
@@ -24,15 +24,14 @@ const orderOptions = [
 const order = ref(orderOptions[0]);
 
 const linksBundle = links.map(({ link }) => ({ linkId: link.id || 0, title: link.title }));
+
 const lastPosts = await PostAPI.findLast(linksBundle);
 const sortPost = (array: LastPost[], orderType: string) => {
   const time = (date: string) => new Date(date).getTime();
   const z = orderType === 'desc' ? 1 : -1;
   return [...array].sort((x, y) => z * (time(x.createdAt) - time(y.createdAt)));
 };
-
 const lastPostitngDateByLink = ref(sortPost(lastPosts, order.value.value));
-
 watch(
   () => order.value,
   (json: { value: string }) => {
@@ -41,41 +40,31 @@ watch(
   },
 );
 
-/////
-
-const getJandiData = (posts: Post[]): DaysCount[] => {
-  const postCounts = posts.reduce((total: CountGroup, { dateString }) => {
-    total[dateString] = (total[dateString] || 0) + 1;
-    return total;
-  }, {});
-  return enumerateDaysFromNMonths(3).map((v) => ({ ...v, count: postCounts[v.date] || 0 }));
+const countBundle = await PostAPI.countByDate(linksBundle);
+const filterCount = (linkId = -1) => {
+  const key = linkId > 0 ? `linkCountBy${linkId}` : 'totalCount';
+  return countBundle.map((v: DaysAllCounts) => ({ ...v, count: v.count ? v.count[key] || 0 : 0 }));
 };
-const jandiData = reactive(getJandiData(rssResult.flat()));
-const jandiCount = computed(() => jandiData.reduce((total, val: DaysCount) => total + val.count, 0));
+const jandiData = ref(filterCount());
+const jandiCount = computed(() => jandiData.value.reduce((total: number, val: DaysCount) => total + val.count, 0));
 const dayUntilNextPost = computed(() =>
-  jandiCount.value === 0 ? '-' : Math.round((90 / jandiCount.value) * 100) / 100 + '일',
+  jandiCount.value > 0 ? `${Math.round((90 / jandiCount.value) * 100) / 100}일` : '-',
 );
 const manyPostingDays = computed(() => {
-  let dayOfWeek = -1;
-  const total = {} as CountGroup;
-  jandiData.forEach(({ day, count }) => {
-    if (count === 0) return;
-    total[day] = (total[day] || 0) + 1;
-    if (dayOfWeek === -1 || total[dayOfWeek] < total[day]) {
-      dayOfWeek = day;
-    }
-  });
-  return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][dayOfWeek] || '-';
+  const data = jandiData.value.filter(({ count }: CountGroup) => count > 0);
+  const MMM = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const day = [0, 1, 2, 3, 4, 5, 6];
+  const dayOfWeek = day
+    .map((d) => ({ day: d, count: data.filter(({ day }: CountGroup) => day === d).length }))
+    .sort((x, y) => x.count - y.count)[0].day;
+  return MMM[dayOfWeek] || '-';
 });
 
 watch(
   () => linkFilter.value,
   (json: { value: number }) => {
     if (json === null) return;
-    const idx = json.value;
-    const isTotal = idx === -1;
-    jandiData.length = 0;
-    jandiData.push(...getJandiData(isTotal ? rssResult.flat() : rssResult[idx]));
+    jandiData.value = filterCount(json.value);
   },
 );
 </script>
