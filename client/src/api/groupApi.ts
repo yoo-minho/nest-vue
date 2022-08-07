@@ -39,12 +39,6 @@ export default {
       throw new Error(message);
     }
   },
-  // async updateCount(id: string, { today, total }: GroupCount) {
-  //   const groups = await this.findAll();
-  //   const idx = groups.findIndex((group) => group.id === id);
-  //   groups[idx] = { ...groups[idx], today, total };
-  //   localStorage.setItem(tableName, JSON.stringify(groups));
-  // },
   async create(group: Group, links: Link[]) {
     const { domain, title, description, tags } = group;
     try {
