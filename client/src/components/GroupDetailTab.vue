@@ -2,14 +2,13 @@
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
-const props = defineProps<{ linkCount: number; postCount: number }>();
 const router = useRouter();
 const route = useRoute();
 const selectTab = ref();
 selectTab.value = route.name;
 const tabArr = [
-  { name: 'Link', label: `플랫폼 (${props.linkCount})` },
-  { name: 'Post', label: `포스트 (${props.postCount})` },
+  { name: 'Link', label: `플랫폼` },
+  { name: 'Post', label: `포스트` },
   { name: 'Stat', label: `통계` },
 ];
 </script>

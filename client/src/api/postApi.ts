@@ -23,9 +23,10 @@ export default {
       return [];
     }
   },
-  async findLast(linkIds: { linkId: number }[]) {
+  async findLast(links: { link: Link }[]) {
+    const linksBundle = links.map(({ link }) => ({ linkId: link.id || 0, title: link.title }));
     try {
-      const { data } = await axiosClient.post('post/last', { linkIds });
+      const { data } = await axiosClient.post('post/last', { linkIds: linksBundle });
       return data.map((post: LastPost) => ({
         ...post,
         dateString: getDateString(new Date(post.createdAt)),
@@ -36,9 +37,10 @@ export default {
       return [];
     }
   },
-  async countByDate(linkIds: { linkId: number }[]) {
+  async countByDate(links: { link: Link }[]) {
+    const linksBundle = links.map(({ link }) => ({ linkId: link.id || 0, title: link.title }));
     try {
-      const { data } = await axiosClient.post('post/count/date', { linkIds });
+      const { data } = await axiosClient.post('post/count/date', { linkIds: linksBundle });
       return data;
     } catch (err) {
       console.error(err);

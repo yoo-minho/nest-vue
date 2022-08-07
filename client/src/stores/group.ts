@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia';
-import { Group, GroupTag, Link } from '../types/common';
+import { Group, GroupTag, Link, Post } from '../types/common';
 import GroupApi from '../api/groupApi';
+import PostAPI from '../api/postApi';
+import RssAPI from '../api/rssApi';
 
 const totalTag = '전체보기';
 
@@ -11,6 +13,7 @@ export const useGroupStore = defineStore('group', {
     currentGroup: {} as Group,
     tags: [] as GroupTag[],
     currentTag: totalTag,
+    posts: [] as Post[],
   }),
   getters: {
     linkCountMessage: ({ links }) => (links.length > 0 ? `(${links.length}/10)` : ''),
@@ -40,11 +43,9 @@ export const useGroupStore = defineStore('group', {
     setCurrentTag(tag: string) {
       this.currentTag = tag;
     },
-    async getGroupData(domain: string) {
-      if (this.currentGroup.domain === domain) {
-        return this.currentGroup;
-      }
-      return await GroupApi.findById(domain);
+    async loadGroup(domain: string) {
+      if (this.currentGroup.domain === domain) return;
+      this.currentGroup = await GroupApi.findById(domain);
     },
     async save(title: string, domain: string, description: string, tags: string[]) {
       await GroupApi.create(
@@ -56,6 +57,10 @@ export const useGroupStore = defineStore('group', {
         },
         this.links,
       );
+    },
+    async loadPosts(links: { link: Link }[]) {
+      await Promise.all(links.map(({ link }: { link: Link }) => RssAPI.scrap(link)));
+      this.posts = await PostAPI.findAllPosts(links);
     },
   },
 });
