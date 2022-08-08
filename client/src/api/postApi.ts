@@ -1,7 +1,8 @@
-import axiosClient from './base';
+import axiosClient, { useAxiosPost } from './base';
 import { AxiosError } from 'axios';
 import { LastPost, Link, RssItem } from '../types/common';
 import { getAgoString, getDateString } from '../plugin/dayjs';
+import { delay } from '../util';
 
 export default {
   async createPosts(linkId: number, items: RssItem[]) {
@@ -14,13 +15,13 @@ export default {
     }
   },
   async findAllPosts(links: { link: Link }[]) {
+    await delay(1000);
     const linksBundle = links.map(({ link }) => ({ linkId: link.id || 0 }));
     try {
-      const { data } = await axiosClient.post('post/in', { linkIds: linksBundle });
-      return data;
+      return await useAxiosPost('post/in', { linkIds: linksBundle });
     } catch (err) {
-      console.error(err);
-      return [];
+      const { message } = err as AxiosError;
+      throw new Error(message);
     }
   },
   async findLast(links: { link: Link }[]) {

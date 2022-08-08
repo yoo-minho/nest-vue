@@ -17,7 +17,7 @@ const { post } = toRaw(props);
         <q-item-label class="ellipsis-2-lines">{{ post.description || 'ㅤ' }}</q-item-label>
         <q-item-label class="text-grey-5">{{ getDateString(post.createdAt) }}</q-item-label>
       </q-item-section>
-      <q-item-section class="col-3" style="align-items: center">
+      <q-item-section class="col-3 items-center">
         <LinkCard :link-data="post.link" :posts="true"></LinkCard>
       </q-item-section>
     </q-item>

@@ -1,12 +1,13 @@
 import { Group, GroupTag, Link } from '../types/common';
-import axiosClient from './base';
+import axiosClient, { useAxiosGet } from './base';
 import { AxiosError } from 'axios';
+import { delay } from '../util';
 
 export default {
   async findAll(): Promise<Group[]> {
     try {
-      const { data } = await axiosClient.get('group');
-      return data;
+      const { data } = await useAxiosGet('group');
+      return data.value;
     } catch (err) {
       console.error(err);
       return [];
@@ -30,10 +31,10 @@ export default {
       return [];
     }
   },
-  async findById(domain: string): Promise<Group> {
+  async findById(domain: string) {
+    await delay(1000);
     try {
-      const { data } = await axiosClient.get(`group/${domain}`);
-      return data;
+      return await useAxiosGet(`group/${domain}`);
     } catch (err) {
       const { message } = err as AxiosError;
       throw new Error(message);

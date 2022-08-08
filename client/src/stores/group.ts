@@ -10,10 +10,12 @@ export const useGroupStore = defineStore('group', {
   state: () => ({
     links: [] as Link[],
     groups: [] as Group[],
+    groupLoading: true,
     currentGroup: {} as Group,
     tags: [] as GroupTag[],
     currentTag: totalTag,
     posts: [] as Post[],
+    postLoading: true,
   }),
   getters: {
     linkCountMessage: ({ links }) => (links.length > 0 ? `(${links.length}/10)` : ''),
@@ -45,7 +47,9 @@ export const useGroupStore = defineStore('group', {
     },
     async loadGroup(domain: string) {
       if (this.currentGroup.domain === domain) return;
-      this.currentGroup = await GroupApi.findById(domain);
+      const { data, isLoading } = await GroupApi.findById(domain);
+      this.groupLoading = isLoading.value;
+      this.currentGroup = data.value;
     },
     async save(title: string, domain: string, description: string, tags: string[]) {
       await GroupApi.create(
@@ -60,7 +64,9 @@ export const useGroupStore = defineStore('group', {
     },
     async loadPosts(links: { link: Link }[]) {
       await Promise.all(links.map(({ link }: { link: Link }) => RssAPI.scrap(link)));
-      this.posts = await PostAPI.findAllPosts(links);
+      const { data, isLoading } = await PostAPI.findAllPosts(links);
+      this.posts = data.value;
+      this.postLoading = isLoading.value;
     },
   },
 });

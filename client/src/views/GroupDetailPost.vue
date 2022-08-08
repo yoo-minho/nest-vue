@@ -3,32 +3,44 @@ import GroupDetailPostCard from '../components/GroupDetailPostCard.vue';
 
 import { useGroupStore } from '../stores/group';
 import { storeToRefs } from 'pinia';
-
-import { onMounted, ref } from 'vue';
+import { watch } from 'vue';
 import { Link } from '../types/common';
-import { delay } from '../util';
 
-const props = defineProps<{ links: { link: Link }[] }>();
-const loading = ref(true);
-
+const props = defineProps<{ links: { link: Link }[]; loading: boolean }>();
 const groupStore = useGroupStore();
 const { loadPosts } = groupStore;
-const { posts } = storeToRefs(groupStore);
+const { posts, postLoading } = storeToRefs(groupStore);
 
-onMounted(async () => {
-  await loadPosts(props.links);
-  await delay(1000);
-  loading.value = false;
-});
+watch(
+  () => props.links,
+  (links) => {
+    loadPosts(links);
+  },
+);
 </script>
 
 <template>
-  <div v-if="loading">
-    <q-skeleton type="text" width="15%" height="20px" />
-  </div>
-  <q-item v-else class="q-pa-none q-pt-md" style="min-height: 0">
+  <q-item class="q-pa-none q-pt-md" style="min-height: 0">
     <q-item-section>
-      <GroupDetailPostCard v-for="(post, i) in posts" :key="i" :post="post" />
+      <div v-if="loading || postLoading">
+        <q-item-label v-for="n in 6" :key="n">
+          <q-item class="row q-col-gutter-sm" style="margin-top: -16px">
+            <q-item-section class="col-9">
+              <q-skeleton type="text" width="70%" height="28px" />
+              <q-skeleton type="text" width="90%" height="20px" />
+              <q-skeleton type="text" width="90%" height="20px" />
+              <q-skeleton type="text" width="60%" height="20px" />
+            </q-item-section>
+            <q-item-section avatar class="col-3" style="padding: 0; align-items: center">
+              <q-skeleton size="48px" />
+            </q-item-section>
+          </q-item>
+          <q-separator spaced />
+        </q-item-label>
+      </div>
+      <div v-else class="max-width">
+        <GroupDetailPostCard v-for="(post, i) in posts" :key="i" :post="post" />
+      </div>
     </q-item-section>
   </q-item>
 </template>

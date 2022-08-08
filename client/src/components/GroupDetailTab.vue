@@ -6,6 +6,7 @@ const router = useRouter();
 const route = useRoute();
 const selectTab = ref();
 selectTab.value = route.name;
+
 const tabArr = [
   { name: 'Link', label: `플랫폼` },
   { name: 'Post', label: `포스트` },
