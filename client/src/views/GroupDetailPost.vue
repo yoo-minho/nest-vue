@@ -3,7 +3,7 @@ import GroupDetailPostCard from '../components/GroupDetailPostCard.vue';
 
 import { useGroupStore } from '../stores/group';
 import { storeToRefs } from 'pinia';
-import { watch } from 'vue';
+import { onMounted, watch } from 'vue';
 import { Link } from '../types/common';
 
 const props = defineProps<{ links: { link: Link }[]; loading: boolean }>();
@@ -11,9 +11,15 @@ const groupStore = useGroupStore();
 const { loadPosts } = groupStore;
 const { posts, postLoading } = storeToRefs(groupStore);
 
+onMounted(() => {
+  if (props.links.length === 0) return;
+  loadPosts(props.links);
+});
+
 watch(
   () => props.links,
   (links) => {
+    if (links.length === 0) return;
     loadPosts(links);
   },
 );

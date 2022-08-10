@@ -31,5 +31,5 @@ axiosClient.interceptors.response.use(
 
 export default axiosClient;
 export const useAxiosGet = (url: string) => useAxios(url, { method: 'GET' }, axiosClient);
-export const useAxiosPost = (url: string, data: any) => useAxios(url, { method: 'POST', data }, axiosClient);
+export const useAxiosPost = (url: string, data: object) => useAxios(url, { method: 'POST', data }, axiosClient);
 export const useAxiosDelete = (url: string) => useAxios(url, { method: 'DELETE' }, axiosClient);

@@ -3,14 +3,21 @@ import GroupDetailStatLast from '../components/GroupDetailStatLast.vue';
 import GroupDetailStatJandi from '../components/GroupDetailStatJandi.vue';
 
 import { Link } from '../types/common';
-import { toRaw } from 'vue';
+import { toRefs } from 'vue';
 
-const props = defineProps<{ links: { link: Link }[] }>();
-const { links } = toRaw(props);
+const props = defineProps<{ links: { link: Link }[]; loading: boolean }>();
+const { links } = toRefs(props);
 </script>
 
 <template>
-  <div class="q-pa-md">
+  <div v-if="loading">
+    <div class="row q-col-gutter-md q-pa-md">
+      <div v-for="n in 6" :key="n" class="col-12">
+        <q-skeleton height="4rem" />
+      </div>
+    </div>
+  </div>
+  <div v-else class="q-pa-md">
     <div class="row q-col-gutter-md">
       <div class="col-12">
         <q-card class="jandi-card step-3">
