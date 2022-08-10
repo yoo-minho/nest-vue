@@ -32,7 +32,7 @@ export default {
     }
   },
   async findById(domain: string) {
-    await delay(1000);
+    await delay();
     try {
       return await useAxiosGet(`group/${domain}`);
     } catch (err) {

@@ -27,9 +27,35 @@ onMounted(async () => {
         <q-page class="max-width">
           <GroupDetailProfile :loading="groupLoading" />
           <GroupDetailTab />
-          <router-view :links="links" :loading="groupLoading" />
+          <router-view v-slot="{ Component, route }" :links="links" :loading="groupLoading">
+            <transition name="tab">
+              <component :is="Component" :key="route.path" style="position: absolute" />
+            </transition>
+          </router-view>
+          <!-- <transition name="tab">
+            <router-view :links="links" :loading="groupLoading" />
+          </transition> -->
         </q-page>
       </q-scroll-area>
     </q-page-container>
   </q-layout>
 </template>
+
+<style scoped>
+.tab-enter-from,
+.tab-leave-to {
+  opacity: 0;
+  transform: translateX(-50px);
+}
+
+.tab-enter-active,
+.tab-leave-active {
+  transition: all 0.5s ease;
+}
+
+.tab-enter-to,
+.tab-leave-from {
+  opacity: 1;
+  transform: translateX(0px);
+}
+</style>

@@ -23,9 +23,13 @@ const sortPost = (order: 1 | -1) => {
 };
 const lastPostitngDateByLink = ref();
 let lastPosts: LastPost[];
+const isJandiLoading = ref(true);
 
 onMounted(async () => {
-  lastPosts = await PostAPI.findLast(links);
+  const { isLoading, data } = await PostAPI.findLast(links);
+  console.log('findLast2', { isLoading, data });
+  lastPosts = data;
+  isJandiLoading.value = isLoading.value;
   lastPostitngDateByLink.value = sortPost(currentOrder.value.order);
 });
 
@@ -43,6 +47,7 @@ watch(
     <q-card class="jandi-card">
       <q-card-section class="text-white">
         <q-list dark bordered separator>
+          <div v-if="isJandiLoading">로딩중...</div>
           <div v-for="(v, i) in lastPostitngDateByLink" :key="i" clickable>
             <q-item>
               <q-item-section class="col-8">
