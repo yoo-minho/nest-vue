@@ -1,51 +1,38 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, toRaw, watch } from 'vue';
-import { DaysAllCounts, DaysCount, Link } from '../types/common';
-import PostAPI from '../api/postApi';
+import { onMounted, ref, watch } from 'vue';
+import { Link } from '../types/common';
 import { isToday } from '../plugin/dayjs';
 
-const MMM = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-const day = [0, 1, 2, 3, 4, 5, 6];
-const countKey = (linkId: number) => (linkId > 0 ? `linkCountBy${linkId}` : 'totalCount');
+import { useGroupStore } from '../stores/group';
+import { storeToRefs } from 'pinia';
+
+const groupStore = useGroupStore();
+const { loadJandis } = groupStore;
+const { jandis, jandiLoading, activeJandisCount, nextPostingDay, manyPostingMMM } = storeToRefs(groupStore);
 
 const props = defineProps<{ links: { link: Link }[] }>();
-const { links } = toRaw(props);
 
 const defaultOption = { label: '전체 (링크 선택 가능)', value: -1 };
-const linkFilterOptions = [defaultOption, ...links.map(({ link }) => ({ label: link.title, value: link.id || -1 }))];
-const linkFilter = ref();
-linkFilter.value = defaultOption;
+const linkFilterOptions = ref([defaultOption]);
+const linkFilter = ref(defaultOption);
 
-const jandiData = ref([] as DaysCount[]);
-const activeJandi = computed(() => jandiData.value.filter(({ count }) => count > 0));
-const jandiCnt = computed(() => activeJandi.value.reduce((total: number, val: DaysCount) => total + val.count, 0));
-const NextPostingDay = computed(() => ((c) => (c > 0 ? `${Math.round((90 / c) * 100) / 100}일` : '-'))(jandiCnt.value));
-const ManyPostingMMM = computed(() => {
-  const dayOfWeek = day
-    .map((d) => ({ day: d, count: activeJandi.value.filter(({ day }) => day === d).length }))
-    .sort((x, y) => x.count - y.count)[0].day;
-  return MMM[dayOfWeek] || '-';
-});
-
-let countBundle: DaysAllCounts[];
-const filterCount = (linkId = -1) => {
-  jandiData.value = countBundle.map((v: DaysAllCounts) => ({
-    ...v,
-    count: v.count ? v.count[countKey(linkId)] || 0 : 0,
-  }));
+const filterCount = async (linkId = -1) => {
+  if (props.links.length === 0) return;
+  await loadJandis(props.links, linkId);
+  linkFilterOptions.value = [
+    defaultOption,
+    ...props.links.map(({ link }) => ({ label: link.title, value: link.id || -1 })),
+  ];
 };
 
-onMounted(async () => {
-  countBundle = await PostAPI.countByDate(links);
-  filterCount();
-});
-
+onMounted(() => filterCount());
+watch(
+  () => props.links,
+  () => filterCount(),
+);
 watch(
   () => linkFilter.value,
-  (json: { value: number }) => {
-    if (json === null) return;
-    filterCount(json.value);
-  },
+  (json) => filterCount(json.value),
 );
 </script>
 <template>
@@ -57,7 +44,10 @@ watch(
         <q-card class="jandi-card">
           <q-card-section class="column text-white justify-center items-center">
             <div style="font-size: 12px">다음 포스팅까지</div>
-            <div class="text-h5">{{ NextPostingDay }}</div>
+            <div v-if="jandiLoading" class="text-h5">
+              <q-spinner color="white" size="1.2em" />
+            </div>
+            <div v-else class="text-h5">{{ nextPostingDay }}</div>
           </q-card-section>
         </q-card>
       </div>
@@ -65,7 +55,10 @@ watch(
         <q-card class="jandi-card">
           <q-card-section class="column text-white justify-center items-center">
             <div style="font-size: 12px">포스팅 많은 요일</div>
-            <div class="text-h5">{{ ManyPostingMMM }}</div>
+            <div v-if="jandiLoading" class="text-h5">
+              <q-spinner color="white" size="1.2em" />
+            </div>
+            <div v-else class="text-h5">{{ manyPostingMMM }}</div>
           </q-card-section>
         </q-card>
       </div>
@@ -74,8 +67,11 @@ watch(
     <q-card class="jandi-card">
       <q-card-section class="row" style="align-items: center; justify-content: center">
         <div>
-          <div class="column jandi-area">
-            <div v-for="(v, i) in jandiData" :key="i" class="jandi-wrap">
+          <div v-if="jandiLoading" class="column jandi-area justify-center items-center">
+            <q-spinner color="white" size="6em" :thickness="3" />
+          </div>
+          <div v-else class="column jandi-area">
+            <div v-for="(v, i) in jandis" :key="i" class="jandi-wrap">
               <div class="jandi-month">{{ v.month }}</div>
               <div :class="{ jandi: true, [`step-${v.count}`]: true }">
                 <q-tooltip>
@@ -98,7 +94,7 @@ watch(
             <div class="jandi-comment">More</div>
           </div>
           <div class="q-gutter-xs jandi-bottom">
-            <div class="jandi-comment">{{ jandiCnt }} posting in the last 3 months</div>
+            <div class="jandi-comment">{{ activeJandisCount }} posting in the last 3 months</div>
           </div>
         </div>
       </q-card-section>

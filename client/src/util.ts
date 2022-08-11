@@ -1,5 +1,5 @@
 export const openUrl = (url: string) => window.open(url);
-const timeout = 1000;
+const timeout = 500;
 export const delay = () => new Promise((res) => setTimeout(res, timeout));
 export const pipe =
   (...funcs: any[]) =>

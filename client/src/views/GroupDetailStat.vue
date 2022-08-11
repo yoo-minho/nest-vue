@@ -11,14 +11,7 @@ const { links } = toRefs(props);
 
 <template>
   <div class="max-width">
-    <div v-if="loading">
-      <div class="row q-col-gutter-md q-pa-md">
-        <div v-for="n in 6" :key="n" class="col-12">
-          <q-skeleton height="4rem" />
-        </div>
-      </div>
-    </div>
-    <div v-else class="q-pa-md">
+    <div class="q-pa-md">
       <div class="row q-col-gutter-md">
         <div class="col-12">
           <q-card class="jandi-card step-3">
@@ -29,9 +22,9 @@ const { links } = toRefs(props);
         </div>
       </div>
       <q-separator class="q-my-md" />
-      <GroupDetailStatJandi :links="links" />
+      <GroupDetailStatJandi :links="links" :loading="loading" />
       <q-separator class="q-mt-md" />
-      <GroupDetailStatLast :links="links" />
+      <GroupDetailStatLast :links="links" :loading="loading" />
     </div>
   </div>
 </template>

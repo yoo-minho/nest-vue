@@ -3,7 +3,7 @@ import { AxiosError } from 'axios';
 import { LastPost, Link, RssItem } from '../types/common';
 import { getAgoString, getDateString } from '../plugin/dayjs';
 import { delay } from '../util';
-import { Ref } from 'vue';
+import { ref } from 'vue';
 
 export default {
   async createPosts(linkId: number, items: RssItem[]) {
@@ -25,19 +25,19 @@ export default {
       throw new Error(message);
     }
   },
-  async findLast(links: { link: Link }[]): Promise<{ isLoading: Ref; data: any }> {
+  async findLast(links: { link: Link }[]) {
     await delay();
     const linksBundle = links.map(({ link }) => ({ linkId: link.id || 0, title: link.title }));
     try {
       const { isLoading, data } = await useAxiosPost('post/last', { linkIds: linksBundle });
-      console.log('findLast', { isLoading, data });
+      const _data = data.value.map((post: LastPost) => ({
+        ...post,
+        dateString: getDateString(new Date(post.createdAt)),
+        agoString: getAgoString(new Date(post.createdAt)),
+      }));
       return {
         isLoading,
-        data: data.value.map((post: LastPost) => ({
-          ...post,
-          dateString: getDateString(new Date(post.createdAt)),
-          agoString: getAgoString(new Date(post.createdAt)),
-        })),
+        data: ref(_data),
       };
     } catch (err) {
       const { message } = err as AxiosError;
@@ -48,14 +48,10 @@ export default {
     await delay();
     const linksBundle = links.map(({ link }) => ({ linkId: link.id || 0, title: link.title }));
     try {
-      const { data } = await axiosClient.post('post/count/date', { linkIds: linksBundle });
-      return data;
+      return await useAxiosPost('post/count/date', { linkIds: linksBundle });
     } catch (err) {
-      console.error(err);
-      return [];
+      const { message } = err as AxiosError;
+      throw new Error(message);
     }
   },
 };
-function ref(arg0: any) {
-  throw new Error('Function not implemented.');
-}
