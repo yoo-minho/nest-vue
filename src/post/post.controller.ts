@@ -16,20 +16,13 @@ export class PostController {
     return this.postService.createPosts(postDtos);
   }
 
-  @Get()
-  findAll(@Query() { linkId }) {
-    return this.postService.posts({
-      where: { linkId: +linkId },
-      orderBy: { createdAt: 'desc' },
-    });
-  }
-
-  @Post('in')
-  findAllIn(@Body() { linkIds }) {
+  @Post()
+  findAll(@Body() { linkIds }) {
     const linkArr = linkIds.map(({ linkId }) => linkId);
     return this.postService.posts({
       where: { linkId: { in: linkArr } },
       orderBy: { createdAt: 'desc' },
+      take: 100,
     });
   }
 
