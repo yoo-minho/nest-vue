@@ -8,8 +8,8 @@ import BlogCard from './BlogCard.vue';
 import HeaderItem from './HeaderItem.vue';
 
 const groupStore = useGroupStore();
-const { initLinks, save, getAll, getAllTag } = groupStore;
-const { links, linkCountMessage, TagNames } = storeToRefs(groupStore);
+const { initLinks, save, getAll, loadAllTag } = groupStore;
+const { linksOnEditor, linkCountMessage, TagNames } = storeToRefs(groupStore);
 
 const subpageStore = useSubpageStore();
 const { openLinkEditor, closeGroupEditor } = subpageStore;
@@ -28,8 +28,7 @@ const idRules = [
   (val: string) => new RegExp(/^[A-Za-z0-9_+]*$/).test(val) || '대소문자, 숫자, 언더바를 활용하여 입력해주세요!',
 ];
 
-const defaultOptions = TagNames;
-const options = ref(defaultOptions);
+const options = ref(TagNames.value);
 const tag = ref('');
 const selectedTags = ref([] as string[]);
 
@@ -40,9 +39,9 @@ onMounted(() => {
 type doneFn = (callbackFn: () => void, afterFn?: (ref: QSelect) => void) => void;
 
 function filterFn(val: string, update: doneFn) {
-  const filterVal = TagNames.value.filter((name) => name.includes(val.toLowerCase()));
+  const filterVal = TagNames.value.filter((name: string) => name.includes(val.toLowerCase()));
   update(() => {
-    options.value = filterVal.length > 0 ? filterVal : [val];
+    options.value = filterVal.length > 0 ? filterVal : val === '' ? [] : [val];
   });
 }
 
@@ -68,20 +67,14 @@ async function saveGroup() {
     idRef.value.focus();
     return;
   }
-  if (links.value.length === 0) {
+  if (linksOnEditor.value.length === 0) {
     $q.notify({ type: 'negative', message: '최소 1개의 url이 필요합니다.' });
     return;
   }
-  // const isDuplicatedById = await existsId(id.value);
-  // if (isDuplicatedById) {
-  //   $q.notify({ type: 'negative', message: '중복 도메인이 존재합니다.' });
-  //   idRef.value.focus();
-  //   return;
-  // }
   await save(title.value, id.value, description.value, selectedTags.value);
 
   await getAll();
-  await getAllTag();
+  await loadAllTag();
   closeGroupEditor();
 }
 </script>
@@ -112,7 +105,7 @@ async function saveGroup() {
             counter
             maxlength="20"
             placeholder="전용 링크 추가"
-            prefix="https://inglog.io/@"
+            prefix="https://onebylog.com/@"
             :rules="idRules"
           />
           <q-input
@@ -139,7 +132,13 @@ async function saveGroup() {
             :options="options"
             @filter="filterFn"
             @update:model-value="selectOption"
-          ></q-select>
+          >
+            <template #no-option>
+              <q-item>
+                <q-item-section class="text-grey"> If you are writing in Korean, please hit enter </q-item-section>
+              </q-item>
+            </template>
+          </q-select>
 
           <div class="row">
             <q-chip v-for="(v, i) in selectedTags" :key="i" dense>{{ v }}</q-chip>
@@ -149,8 +148,8 @@ async function saveGroup() {
             <span class="q-ml-sm">{{ linkCountMessage }}</span>
           </q-btn>
 
-          <q-list v-if="links.length > 0" bordered separator class="full-width">
-            <div v-for="(v, i) in links" :key="i" :data-index="i">
+          <q-list v-if="linksOnEditor.length > 0" bordered separator class="full-width">
+            <div v-for="(v, i) in linksOnEditor" :key="i" :data-index="i">
               <BlogCard :index="i" :link="v"></BlogCard>
             </div>
           </q-list>

@@ -4,31 +4,29 @@ import { AxiosError } from 'axios';
 import { delay } from '../util';
 
 export default {
-  async findAll(): Promise<Group[]> {
+  async findAll() {
     try {
-      const { data } = await useAxiosGet('group');
-      return data.value;
+      return await useAxiosGet('group');
     } catch (err) {
-      console.error(err);
-      return [];
+      const { message } = err as AxiosError;
+      throw new Error(message);
     }
   },
-  async findByTag(tag: string): Promise<Group[]> {
+  async findByTag(tag: string) {
     try {
-      const { data } = await axiosClient.get('group', { params: { tag } });
-      return data;
+      return await useAxiosGet('group', { params: { tag } });
     } catch (err) {
-      console.error(err);
-      return [];
+      const { message } = err as AxiosError;
+      throw new Error(message);
     }
   },
-  async findAllTag(): Promise<GroupTag[]> {
+  async findAllTag() {
+    await delay();
     try {
-      const { data } = await axiosClient.get('group/tags');
-      return data;
+      return await useAxiosGet('group/tags');
     } catch (err) {
-      console.error(err);
-      return [];
+      const { message } = err as AxiosError;
+      throw new Error(message);
     }
   },
   async findById(domain: string) {

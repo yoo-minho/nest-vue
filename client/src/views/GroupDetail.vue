@@ -14,8 +14,9 @@ const { groupLoading, currentGroup } = storeToRefs(groupStore);
 const props = defineProps<{ domain: string }>();
 const links = computed(() => currentGroup.value?.links || []);
 
-onMounted(async () => {
-  await loadGroup(props.domain);
+onMounted(() => {
+  groupLoading.value = true;
+  loadGroup(props.domain);
 });
 </script>
 
@@ -32,9 +33,6 @@ onMounted(async () => {
               <component :is="Component" :key="route.path" style="position: absolute" />
             </transition>
           </router-view>
-          <!-- <transition name="tab">
-            <router-view :links="links" :loading="groupLoading" />
-          </transition> -->
         </q-page>
       </q-scroll-area>
     </q-page-container>

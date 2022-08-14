@@ -15,7 +15,7 @@ const remain = computed(() => links.length - LIMIT);
 </script>
 
 <template>
-  <q-item dense>
+  <q-item class="link-list">
     <q-item-section>
       <q-item-label>
         <div v-if="links.length > LIMIT" class="row" style="align-items: center">
@@ -39,4 +39,8 @@ const remain = computed(() => links.length - LIMIT);
   </q-item>
 </template>
 
-<style scoped></style>
+<style scoped>
+.link-list {
+  height: 80px;
+}
+</style>

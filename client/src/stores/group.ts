@@ -11,10 +11,12 @@ const countKey = (linkId: number) => (linkId > 0 ? `linkCountBy${linkId}` : 'tot
 
 export const useGroupStore = defineStore('group', {
   state: () => ({
-    links: [] as Link[],
+    linksOnEditor: [] as Link[],
+    groupsLoading: true,
     groups: [] as Group[],
     groupLoading: true,
     currentGroup: {} as Group,
+    tagsLoading: true,
     tags: [] as GroupTag[],
     currentTag: totalTag,
     posts: [] as Post[],
@@ -25,7 +27,7 @@ export const useGroupStore = defineStore('group', {
     lastLoading: true,
   }),
   getters: {
-    linkCountMessage: ({ links }) => (links.length > 0 ? `(${links.length}/10)` : ''),
+    linkCountMessage: ({ linksOnEditor: links }) => (links.length > 0 ? `(${links.length}/10)` : ''),
     isTotalTag: (state) => state.currentTag === totalTag,
     NavTags: ({ tags }) => [{ index: -1, groupId: '', name: totalTag }, ...tags],
     TagNames: ({ tags }) => tags.map(({ name }) => name.toLowerCase()),
@@ -48,30 +50,39 @@ export const useGroupStore = defineStore('group', {
   },
   actions: {
     initLinks() {
-      this.links.length = 0;
+      this.linksOnEditor.length = 0;
     },
     addLink(v: Link) {
-      this.links.push(v);
+      this.linksOnEditor.push(v);
     },
     deleteLink(idx: number) {
-      this.links.splice(idx, 1);
+      this.linksOnEditor.splice(idx, 1);
     },
-    async getAll() {
-      this.groups = await GroupApi.findAll();
+    async loadAllGroup() {
+      const { data } = await GroupApi.findAll();
+      this.groups = data.value;
+      this.groupsLoading = false;
     },
     async getByTag(tag: string) {
-      this.groups = await GroupApi.findByTag(tag);
+      const { data } = await GroupApi.findByTag(tag);
+      this.groups = data.value;
+      this.groupsLoading = false;
     },
-    async getAllTag() {
-      this.tags = await GroupApi.findAllTag();
+    async loadAllTag() {
+      const { data } = await GroupApi.findAllTag();
+      this.tags = data.value;
+      this.tagsLoading = false;
     },
     setCurrentTag(tag: string) {
       this.currentTag = tag;
     },
     async loadGroup(domain: string) {
-      if (this.currentGroup.domain === domain) return;
-      const { data, isLoading } = await GroupApi.findById(domain);
-      this.groupLoading = isLoading.value;
+      if (this.currentGroup.domain === domain) {
+        this.groupLoading = false;
+        return;
+      }
+      const { data } = await GroupApi.findById(domain);
+      this.groupLoading = false;
       this.currentGroup = data.value;
     },
     async save(title: string, domain: string, description: string, tags: string[]) {
@@ -82,7 +93,7 @@ export const useGroupStore = defineStore('group', {
           description,
           tags,
         },
-        this.links,
+        this.linksOnEditor,
       );
     },
     async loadPosts(links: { link: Link }[]) {
