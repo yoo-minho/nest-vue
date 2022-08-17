@@ -8,7 +8,7 @@ import BlogCard from './BlogCard.vue';
 import HeaderItem from './HeaderItem.vue';
 
 const groupStore = useGroupStore();
-const { initLinks, save, getAll, loadAllTag } = groupStore;
+const { initLinks, save, loadAllGroup, loadAllTag } = groupStore;
 const { linksOnEditor, linkCountMessage, TagNames } = storeToRefs(groupStore);
 
 const subpageStore = useSubpageStore();
@@ -73,7 +73,7 @@ async function saveGroup() {
   }
   await save(title.value, id.value, description.value, selectedTags.value);
 
-  await getAll();
+  await loadAllGroup();
   await loadAllTag();
   closeGroupEditor();
 }
