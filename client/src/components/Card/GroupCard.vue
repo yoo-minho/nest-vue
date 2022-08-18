@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { Group } from '../types/common';
-import { useQuasar } from 'quasar';
 import { toRaw, computed } from 'vue';
+import { useQuasar } from 'quasar';
+
+import { Group } from '@/types/common';
 
 const $q = useQuasar();
 

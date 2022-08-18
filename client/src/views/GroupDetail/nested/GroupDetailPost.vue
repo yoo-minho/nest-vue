@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import GroupDetailPostCard from '../components/GroupDetailPostCard.vue';
-
-import { useGroupStore } from '../stores/group';
-import { storeToRefs } from 'pinia';
 import { onMounted, watch } from 'vue';
-import { Link } from '../types/common';
+import { storeToRefs } from 'pinia';
+
+import GroupDetailPostCard from '../components/GroupDetailPostCard.vue';
+import { useGroupStore } from '@/stores/group';
+import { Link } from '@/types/common';
 
 const props = defineProps<{ links: { link: Link }[]; loading: boolean }>();
 const groupStore = useGroupStore();

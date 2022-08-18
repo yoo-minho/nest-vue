@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { toRaw } from 'vue';
-import { getImageByBlogType } from '../constants';
-import { useGroupStore } from '../stores/group';
-import { Link } from '../types/common';
+import { getImageByBlogType } from '@/constants';
+import { useGroupStore } from '@/stores/group';
+import { Link } from '@/types/common';
 
 const props = defineProps<{ link: Link; index: number }>();
 const { url, title, description, type, imagePath = getImageByBlogType(type) } = toRaw(props.link);

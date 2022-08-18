@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { Link } from '../types/common';
 import { toRaw } from 'vue';
-import LinkCard from './LinkCard.vue';
-import { openUrl } from '../util';
+import { Link } from '@/types/common';
+import LinkCard from '@/components/Card/LinkCard.vue';
+import { openUrl } from '@/util';
 
 const props = defineProps<{ link: Link }>();
 const { title, description, url } = toRaw(props.link);

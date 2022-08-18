@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { Link } from '../types/common';
 import { toRaw } from 'vue';
-import { getImageByBlogType } from '../constants';
+import { Link } from '@/types/common';
+import { getImageByBlogType } from '@/constants';
 
 const props = defineProps<{ linkData: Link; links?: boolean; posts?: boolean }>();
 const { imagePath = '', title, url, type } = toRaw(props.linkData);

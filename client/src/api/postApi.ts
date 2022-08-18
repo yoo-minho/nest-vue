@@ -17,7 +17,7 @@ export default {
   async findAllPosts(links: { link: Link }[]) {
     const linksBundle = links.map(({ link }) => ({ linkId: link.id || 0 }));
     try {
-      return await useAxiosPost('post', { linkIds: linksBundle });
+      return await useAxiosPost('post/in', { linkIds: linksBundle });
     } catch (err) {
       const { message } = err as AxiosError;
       throw new Error(message);

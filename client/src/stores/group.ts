@@ -99,8 +99,10 @@ export const useGroupStore = defineStore('group', {
     async loadPosts(links: { link: Link }[]) {
       this.postLoading = true;
       await Promise.all(links.map(({ link }: { link: Link }) => RssAPI.scrap(link)));
+      console.log('xxxxxxxxxxxxxxxxxx');
       const { data, isLoading } = await PostAPI.findAllPosts(links);
       this.posts = data.value;
+      console.log({ posts: this.posts });
       this.postLoading = isLoading.value;
     },
     async loadJandis(links: { link: Link }[], linkId: number) {

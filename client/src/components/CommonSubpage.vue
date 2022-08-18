@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import GroupEditor from './GroupEditor.vue';
-import LinkEditor from './LinkEditor.vue';
-import SettingMain from './SettingMain.vue';
-import StackMain from './StackMain.vue';
-
-import { storeToRefs } from 'pinia';
-import { useSubpageStore } from '../stores/subpage';
-import stackArray from '../data/stack.json';
-import platformArray from '../data/platform.json';
 import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
+
+import GroupEditor from '@/components/Editor/GroupEditor.vue';
+import LinkEditor from '@/components/Editor/LinkEditor.vue';
+import SettingMain from '@/components/Setting/SettingMain.vue';
+import StackMain from '@/components/Setting/StackMain.vue';
+
+import { useSubpageStore } from '@/stores/subpage';
+import stackArray from '@/data/stack.json';
+import platformArray from '@/data/platform.json';
 
 const subpageStore = useSubpageStore();
 const { stack, isOpenGroupEditor, isOpenLinkEditor, isOpenSettingMain, isOpenStackMain } = storeToRefs(subpageStore);

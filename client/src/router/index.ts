@@ -4,28 +4,28 @@ const routes = [
   {
     path: '/',
     name: 'Group',
-    component: () => import('./views/GroupMain.vue'),
+    component: () => import('@/views/GroupMain/GroupMain.vue'),
   },
   {
     path: '/@:domain',
     name: 'GroupDetail',
     props: true,
-    component: () => import('./views/GroupDetail.vue'),
+    component: () => import('@/views/GroupDetail/GroupDetail.vue'),
     children: [
       {
         path: '',
         name: 'GroupDetailLink',
-        component: () => import('./views/GroupDetailLink.vue'),
+        component: () => import('@/views/GroupDetail/nested/GroupDetailLink.vue'),
       },
       {
         path: 'post',
         name: 'GroupDetailPost',
-        component: () => import('./views/GroupDetailPost.vue'),
+        component: () => import('@/views/GroupDetail/nested/GroupDetailPost.vue'),
       },
       {
         path: 'stat',
         name: 'GroupDetailStat',
-        component: () => import('./views/GroupDetailStat.vue'),
+        component: () => import('@/views/GroupDetail/nested/GroupDetailStat.vue'),
       },
     ],
   },

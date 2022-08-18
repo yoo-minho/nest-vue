@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import GroupDetailCounter from '../components/GroupDetailCounter.vue';
-import GroupCard from '../components/GroupCard.vue';
-
 import { computed } from 'vue';
-import { useGroupStore } from '../stores/group';
 import { storeToRefs } from 'pinia';
+
+import GroupCard from '@/components/Card/GroupCard.vue';
+import GroupDetailCounter from './GroupDetailCounter.vue';
+
+import { useGroupStore } from '@/stores/group';
 
 const groupStore = useGroupStore();
 const { currentGroup } = storeToRefs(groupStore);

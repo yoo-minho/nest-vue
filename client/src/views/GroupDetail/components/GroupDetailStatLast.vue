@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { Link } from '../types/common';
 import { onMounted, ref, watch } from 'vue';
-
-import { useGroupStore } from '../stores/group';
 import { storeToRefs } from 'pinia';
+
+import { useGroupStore } from '@/stores/group';
+import { Link } from '@/types/common';
 
 const groupStore = useGroupStore();
 const { loadLastPosts } = groupStore;

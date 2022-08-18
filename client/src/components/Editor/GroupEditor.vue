@@ -1,11 +1,13 @@
 <script setup lang="ts">
+import { onMounted, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { QSelect, useQuasar } from 'quasar';
-import { onMounted, ref } from 'vue';
-import { useGroupStore } from '../stores/group';
-import { useSubpageStore } from '../stores/subpage';
-import BlogCard from './BlogCard.vue';
-import HeaderItem from './HeaderItem.vue';
+
+import { useGroupStore } from '@/stores/group';
+import { useSubpageStore } from '@/stores/subpage';
+
+import HeaderItem from '@/components/Menu/HeaderItem.vue';
+import BlogCard from '@/components/Card/BlogCard.vue';
 
 const groupStore = useGroupStore();
 const { initLinks, save, loadAllGroup, loadAllTag } = groupStore;

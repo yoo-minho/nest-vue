@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import HeaderItem from './HeaderItem.vue';
-import { useGroupStore } from '../stores/group';
-import { useSubpageStore } from '../stores/subpage';
-import { useQuasar } from 'quasar';
-import { getBlogType } from '../constants';
 import { ref } from 'vue';
-import { ErrorMessage } from '../types/common';
-import OpenGraphTagAPI from '../api/openGraphTagApi';
+import { useQuasar } from 'quasar';
+
+import { useGroupStore } from '@/stores/group';
+import { useSubpageStore } from '@/stores/subpage';
+import { getBlogType } from '@/constants';
+import { ErrorMessage } from '@/types/common';
+import OpenGraphTagAPI from '@/api/openGraphTagApi';
+
+import HeaderItem from '@/components/Menu/HeaderItem.vue';
 
 const BLOG_EXPRESSION = {
   NAVER: /https:\/\/blog.naver.com\/([0-9a-zA-Z_-]*)(\/)?([0-9a-zA-Z]*)/gi,

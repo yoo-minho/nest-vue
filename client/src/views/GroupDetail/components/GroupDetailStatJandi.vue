@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
-import { Link } from '../types/common';
-import { isToday } from '../plugin/dayjs';
-
-import { useGroupStore } from '../stores/group';
 import { storeToRefs } from 'pinia';
+
+import { Link } from '@/types/common';
+import { isToday } from '@/plugin/dayjs';
+import { useGroupStore } from '@/stores/group';
 
 const groupStore = useGroupStore();
 const { loadJandis } = groupStore;

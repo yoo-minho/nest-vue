@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import HeaderItem from '@/components/Menu/HeaderItem.vue';
+import { useSubpageStore } from '@/stores/subpage';
+import { StackJson } from '@/types/common';
 import StackCard from './StackCard.vue';
-import HeaderItem from './HeaderItem.vue';
-import { useSubpageStore } from '../stores/subpage';
-import { StackJson } from '../types/common';
 
 const subpageStore = useSubpageStore();
 const { closeStackMain } = subpageStore;

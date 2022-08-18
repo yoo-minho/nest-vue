@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import CommonSubpage from './components/CommonSubpage.vue';
+import CommonSubpage from '@/components/CommonSubpage.vue';
 </script>
 
 <template>

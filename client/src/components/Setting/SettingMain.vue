@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import HeaderItem from './HeaderItem.vue';
-import SettingCard from './SettingCard.vue';
 import { useRouter } from 'vue-router';
-import { useSubpageStore } from '../stores/subpage';
+
+import { useSubpageStore } from '@/stores/subpage';
+import HeaderItem from '@/components/MENU/HeaderItem.vue';
+import SettingCard from './SettingCard.vue';
 
 const subpageStore = useSubpageStore();
 const { closeSettingMain, openStackMain, openPlatformMain } = subpageStore;

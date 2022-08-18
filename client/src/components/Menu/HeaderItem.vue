@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { toRaw } from 'vue';
 import { useRouter } from 'vue-router';
-import { useSubpageStore } from '../stores/subpage';
+import { useSubpageStore } from '@/stores/subpage';
 
 const subpageStore = useSubpageStore();
 const { openGroupEditor, openSettingMain } = subpageStore;

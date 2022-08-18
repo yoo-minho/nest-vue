@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Query } from '@nestjs/common';
+import { Controller, Post, Body } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { Prisma } from '@prisma/client';
@@ -9,14 +9,15 @@ export class PostController {
 
   @Post()
   create(@Body() createPostDto: CreatePostDto) {
-    const { linkId, items } = createPostDto;
+    const { linkId, items = [] } = createPostDto;
+    if (items.length === 0) return;
     const postDtos = items.map(
       (item): Prisma.PostCreateManyInput => ({ linkId, ...item }),
     );
     return this.postService.createPosts(postDtos);
   }
 
-  @Post()
+  @Post('in')
   findAll(@Body() { linkIds }) {
     const linkArr = linkIds.map(({ linkId }) => linkId);
     return this.postService.posts({

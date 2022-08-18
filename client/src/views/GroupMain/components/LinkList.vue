@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { computed } from '@vue/reactivity';
-import { toRaw } from 'vue';
-import LinkCard from '../components/LinkCard.vue';
-import { Link } from '../types/common';
+import { computed, toRaw } from 'vue';
+import LinkCard from '@/components/Card/LinkCard.vue';
+import { Link } from '@/types/common';
 
 const props = defineProps<{ links: { link: Link }[] }>();
 const { links } = toRaw(props);

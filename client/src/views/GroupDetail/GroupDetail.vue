@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import HeaderItem from '../components/HeaderItem.vue';
-import GroupDetailTab from '../components/GroupDetailTab.vue';
-import GroupDetailProfile from '../components/GroupDetailProfile.vue';
-
-import { useGroupStore } from '../stores/group';
 import { onMounted, computed } from 'vue';
 import { storeToRefs } from 'pinia';
+
+import { useGroupStore } from '@/stores/group';
+import HeaderItem from '@/components/Menu/HeaderItem.vue';
+
+import GroupDetailTab from './components/GroupDetailTab.vue';
+import GroupDetailProfile from './components/GroupDetailProfile.vue';
 
 const groupStore = useGroupStore();
 const { loadGroup } = groupStore;

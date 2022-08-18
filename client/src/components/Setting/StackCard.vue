@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { toRaw } from 'vue';
-import { getImage } from '../constants';
-import { StackJson } from '../types/common';
+
+import { getImage } from '@/constants';
+import { StackJson } from '@/types/common';
 
 const props = defineProps<{ stackJson: StackJson }>();
 const { label, version, description, path, url, githubStar } = toRaw(props.stackJson);

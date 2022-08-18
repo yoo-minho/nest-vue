@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { Link } from '@/types/common';
 import GroupDetailLinkCard from '../components/GroupDetailLinkCard.vue';
-import { Link } from '../types/common';
 
 const props = defineProps<{ links: { link: Link }[]; loading: boolean }>();
 </script>

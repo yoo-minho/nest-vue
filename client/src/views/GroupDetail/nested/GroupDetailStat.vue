@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import { toRefs } from 'vue';
+
+import { Link } from '@/types/common';
 import GroupDetailStatLast from '../components/GroupDetailStatLast.vue';
 import GroupDetailStatJandi from '../components/GroupDetailStatJandi.vue';
-
-import { Link } from '../types/common';
-import { toRefs } from 'vue';
 
 const props = defineProps<{ links: { link: Link }[]; loading: boolean }>();
 const { links } = toRefs(props);

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { Post } from '../types/common';
 import { toRaw } from 'vue';
-import LinkCard from './LinkCard.vue';
-import { openUrl } from '../util';
-import { getDateString } from '../plugin/dayjs';
+import { Post } from '@/types/common';
+import LinkCard from '@/components/Card/LinkCard.vue';
+import { openUrl } from '@/util';
+import { getDateString } from '@/plugin/dayjs';
 
 const props = defineProps<{ post: Post }>();
 const { post } = toRaw(props);

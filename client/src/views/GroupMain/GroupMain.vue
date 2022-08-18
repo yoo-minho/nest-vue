@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia';
-import { useRouter } from 'vue-router';
-import GroupCard from '../components/GroupCard.vue';
-import HeaderItem from '../components/HeaderItem.vue';
-import LinkList from '../components/LinkList.vue';
-import { useGroupStore } from '../stores/group';
 import { onMounted, watch } from 'vue';
+import { useRouter } from 'vue-router';
+import { storeToRefs } from 'pinia';
+
+import { useGroupStore } from '@/stores/group';
+import GroupCard from '@/components/Card/GroupCard.vue';
+import HeaderItem from '@/components/Menu/HeaderItem.vue';
+
+import LinkList from './components/LinkList.vue';
 
 const groupStore = useGroupStore();
 const { loadAllGroup, getByTag, loadAllTag, setCurrentTag } = groupStore;
