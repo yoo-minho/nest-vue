@@ -9,7 +9,7 @@ import GroupDetailTab from './components/GroupDetailTab.vue';
 import GroupDetailProfile from './components/GroupDetailProfile.vue';
 
 const groupStore = useGroupStore();
-const { loadGroup } = groupStore;
+const { fetchGroup } = groupStore;
 const { groupLoading, currentGroup } = storeToRefs(groupStore);
 
 const props = defineProps<{ domain: string }>();
@@ -17,7 +17,7 @@ const links = computed(() => currentGroup.value?.links || []);
 
 onMounted(() => {
   groupLoading.value = true;
-  loadGroup(props.domain);
+  fetchGroup(props.domain);
 });
 </script>
 

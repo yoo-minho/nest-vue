@@ -58,17 +58,17 @@ export const useGroupStore = defineStore('group', {
     deleteLink(idx: number) {
       this.linksOnEditor.splice(idx, 1);
     },
-    async loadAllGroup() {
+    async fetchAllGroup() {
       const { data } = await GroupApi.findAll();
       this.groups = data.value;
       this.groupsLoading = false;
     },
-    async getByTag(tag: string) {
+    async fetchByTag(tag: string) {
       const { data } = await GroupApi.findByTag(tag);
       this.groups = data.value;
       this.groupsLoading = false;
     },
-    async loadAllTag() {
+    async fetchAllTag() {
       const { data } = await GroupApi.findAllTag();
       this.tags = data.value;
       this.tagsLoading = false;
@@ -76,7 +76,7 @@ export const useGroupStore = defineStore('group', {
     setCurrentTag(tag: string) {
       this.currentTag = tag;
     },
-    async loadGroup(domain: string) {
+    async fetchGroup(domain: string) {
       if (this.currentGroup.domain === domain) {
         this.groupLoading = false;
         return;
@@ -96,16 +96,14 @@ export const useGroupStore = defineStore('group', {
         this.linksOnEditor,
       );
     },
-    async loadPosts(links: { link: Link }[]) {
+    async fetchPosts(links: { link: Link }[]) {
       this.postLoading = true;
       await Promise.all(links.map(({ link }: { link: Link }) => RssAPI.scrap(link)));
-      console.log('xxxxxxxxxxxxxxxxxx');
       const { data, isLoading } = await PostAPI.findAllPosts(links);
       this.posts = data.value;
-      console.log({ posts: this.posts });
       this.postLoading = isLoading.value;
     },
-    async loadJandis(links: { link: Link }[], linkId: number) {
+    async fetchJandis(links: { link: Link }[], linkId: number) {
       this.jandiLoading = true;
       const { data, isLoading } = await PostAPI.countByDate(links);
       this.jandis = data.value.map((v: DaysAllCounts) => ({
@@ -114,7 +112,7 @@ export const useGroupStore = defineStore('group', {
       }));
       this.jandiLoading = isLoading.value;
     },
-    async loadLastPosts(links: { link: Link }[], order: 1 | -1) {
+    async fetchLastPosts(links: { link: Link }[], order: 1 | -1) {
       this.lastLoading = true;
       const { data, isLoading } = await PostAPI.findLast(links);
       const time = (date: string) => new Date(date).getTime();

@@ -7,7 +7,7 @@ import { isToday } from '@/plugin/dayjs';
 import { useGroupStore } from '@/stores/group';
 
 const groupStore = useGroupStore();
-const { loadJandis } = groupStore;
+const { fetchJandis } = groupStore;
 const { jandis, jandiLoading, activeJandisCount, nextPostingDay, manyPostingMMM } = storeToRefs(groupStore);
 
 const props = defineProps<{ links: { link: Link }[] }>();
@@ -18,7 +18,7 @@ const linkFilter = ref(defaultOption);
 
 const filterCount = async (linkId = -1) => {
   if (props.links.length === 0) return;
-  await loadJandis(props.links, linkId);
+  await fetchJandis(props.links, linkId);
   linkFilterOptions.value = [
     defaultOption,
     ...props.links.map(({ link }) => ({ label: link.title, value: link.id || -1 })),

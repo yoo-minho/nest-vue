@@ -1,18 +1,10 @@
 <script setup lang="ts">
 import { toRaw } from 'vue';
 import { Link } from '@/types/common';
-import { getImageByBlogType } from '@/constants';
+import { getImageByBlogType, isTextImage } from '@/util/ImageUtil';
 
 const props = defineProps<{ linkData: Link; links?: boolean; posts?: boolean }>();
 const { imagePath = '', title, url, type } = toRaw(props.linkData);
-
-function isTextImage(url: string) {
-  if (url === 'https://t1.daumcdn.net/tistory_admin/static/images/openGraph/opengraph.png') {
-    return true;
-  } else {
-    return false;
-  }
-}
 </script>
 
 <template>

@@ -6,7 +6,7 @@ import { useGroupStore } from '@/stores/group';
 import { Link } from '@/types/common';
 
 const groupStore = useGroupStore();
-const { loadLastPosts } = groupStore;
+const { fetchLastPosts } = groupStore;
 const { lastPosts, lastLoading } = storeToRefs(groupStore);
 
 type OrderType = 1 | -1;
@@ -24,7 +24,7 @@ const currentOrder = ref(orderOptions[0]);
 
 const sortPost = async (order: -1 | 1 = 1) => {
   if (props.links.length === 0) return;
-  await loadLastPosts(props.links, order);
+  await fetchLastPosts(props.links, order);
 };
 
 onMounted(() => sortPost());

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, watch } from 'vue';
+import { watch } from 'vue';
 import { storeToRefs } from 'pinia';
 
 import GroupDetailPostCard from '../components/GroupDetailPostCard.vue';
@@ -8,20 +8,16 @@ import { Link } from '@/types/common';
 
 const props = defineProps<{ links: { link: Link }[]; loading: boolean }>();
 const groupStore = useGroupStore();
-const { loadPosts } = groupStore;
+const { fetchPosts } = groupStore;
 const { posts, postLoading } = storeToRefs(groupStore);
-
-onMounted(() => {
-  if (props.links.length === 0) return;
-  loadPosts(props.links);
-});
 
 watch(
   () => props.links,
   (links) => {
     if (links.length === 0) return;
-    loadPosts(links);
+    fetchPosts(links);
   },
+  { immediate: true },
 );
 </script>
 

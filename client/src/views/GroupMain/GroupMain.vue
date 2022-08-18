@@ -10,13 +10,13 @@ import HeaderItem from '@/components/Menu/HeaderItem.vue';
 import LinkList from './components/LinkList.vue';
 
 const groupStore = useGroupStore();
-const { loadAllGroup, getByTag, loadAllTag, setCurrentTag } = groupStore;
+const { fetchAllGroup, fetchByTag, fetchAllTag, setCurrentTag } = groupStore;
 const { groups, groupsLoading, NavTags, currentTag, isTotalTag, tagsLoading } = storeToRefs(groupStore);
 const router = useRouter();
 
 onMounted(() => {
-  loadAllTag();
-  loadAllGroup();
+  fetchAllTag();
+  fetchAllGroup();
 });
 
 watch(
@@ -25,9 +25,9 @@ watch(
     console.log({ tag, isTotalTag: isTotalTag.value });
     groupsLoading.value = true;
     if (isTotalTag.value) {
-      loadAllGroup();
+      fetchAllGroup();
     } else {
-      getByTag(tag);
+      fetchByTag(tag);
     }
     console.log(groups.value);
   },

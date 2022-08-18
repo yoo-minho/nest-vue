@@ -1,19 +1,17 @@
 <script setup lang="ts">
 import { toRaw, computed } from 'vue';
 import { useQuasar } from 'quasar';
-
 import { Group } from '@/types/common';
-
-const $q = useQuasar();
 
 const props = defineProps<{ mode: 'HEADER' | 'LIST-ITEM'; groupData: Group }>();
 const isHeader = props.mode === 'HEADER';
 
 const { title, description, domain } = toRaw(props.groupData);
 const url = computed(() => `https://inglog.io/@${domain}`);
+
 const copyUrl = async () => {
   await navigator.clipboard.writeText(url.value);
-  $q.notify({ type: 'positive', message: 'Copy Completed!' });
+  useQuasar().notify({ type: 'positive', message: 'Copy Completed!' });
 };
 </script>
 
