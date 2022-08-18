@@ -1,8 +1,10 @@
-import axiosClient, { useAxiosPost } from './base';
-import { AxiosError } from 'axios';
-import { LastPost, Link, RssItem } from '../types/common';
-import { getAgoString, getDateString } from '../plugin/dayjs';
 import { ref } from 'vue';
+import { AxiosError } from 'axios';
+
+import axiosClient, { useAxiosPost } from './base';
+
+import { LastPost, Link, RssItem } from '@/types/common';
+import { getAgoString, getDateString } from '@/plugin/dayjs';
 
 export default {
   async createPosts(linkId: number, items: RssItem[]) {
