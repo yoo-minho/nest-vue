@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { toRaw } from 'vue';
-import { getImageByBlogType } from '@/constants';
+import { getImageByBlogType } from '@/util/ImageUtil';
 import { useGroupStore } from '@/stores/group';
 import { Link } from '@/types/common';
 

@@ -4,7 +4,7 @@ import { useQuasar } from 'quasar';
 
 import { useGroupStore } from '@/stores/group';
 import { useSubpageStore } from '@/stores/subpage';
-import { getBlogType } from '@/constants';
+import { getBlogType } from '@/util/ImageUtil';
 import { ErrorMessage } from '@/types/common';
 import OpenGraphTagAPI from '@/api/openGraphTagApi';
 
