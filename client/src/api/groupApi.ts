@@ -1,7 +1,6 @@
-import { Group, GroupTag, Link } from '../types/common';
+import { Group, Link } from '../types/common';
 import axiosClient, { useAxiosGet } from './base';
 import { AxiosError } from 'axios';
-import { delay } from '../util';
 
 export default {
   async findAll() {
@@ -21,7 +20,6 @@ export default {
     }
   },
   async findAllTag() {
-    await delay();
     try {
       return await useAxiosGet('group/tags');
     } catch (err) {
@@ -30,7 +28,6 @@ export default {
     }
   },
   async findById(domain: string) {
-    await delay();
     try {
       return await useAxiosGet(`group/${domain}`);
     } catch (err) {

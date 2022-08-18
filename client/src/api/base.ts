@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useAxios } from '@vueuse/integrations/useAxios';
+import { delay } from '../util';
 
 const axiosClient = axios.create({
   baseURL: 'http://localhost:5000/api',
@@ -19,7 +20,8 @@ axiosClient.interceptors.request.use(
 );
 
 axiosClient.interceptors.response.use(
-  function (response) {
+  async function (response) {
+    await delay(1000);
     //console.log('axios.interceptors.response1', { response });
     return response;
   },
@@ -30,6 +32,6 @@ axiosClient.interceptors.response.use(
 );
 
 export default axiosClient;
-export const useAxiosGet = (url: string, data?: object) => useAxios(url, { method: 'GET', data }, axiosClient);
+export const useAxiosGet = (url: string, data?: object) => useAxios(url, { method: 'GET', ...data }, axiosClient);
 export const useAxiosPost = (url: string, data: object) => useAxios(url, { method: 'POST', data }, axiosClient);
 export const useAxiosDelete = (url: string) => useAxios(url, { method: 'DELETE' }, axiosClient);

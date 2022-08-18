@@ -2,7 +2,6 @@ import axiosClient, { useAxiosPost } from './base';
 import { AxiosError } from 'axios';
 import { LastPost, Link, RssItem } from '../types/common';
 import { getAgoString, getDateString } from '../plugin/dayjs';
-import { delay } from '../util';
 import { ref } from 'vue';
 
 export default {
@@ -16,7 +15,6 @@ export default {
     }
   },
   async findAllPosts(links: { link: Link }[]) {
-    await delay();
     const linksBundle = links.map(({ link }) => ({ linkId: link.id || 0 }));
     try {
       return await useAxiosPost('post', { linkIds: linksBundle });
@@ -26,7 +24,6 @@ export default {
     }
   },
   async findLast(links: { link: Link }[]) {
-    await delay();
     const linksBundle = links.map(({ link }) => ({ linkId: link.id || 0, title: link.title }));
     try {
       const { isLoading, data } = await useAxiosPost('post/last', { linkIds: linksBundle });
@@ -45,7 +42,6 @@ export default {
     }
   },
   async countByDate(links: { link: Link }[]) {
-    await delay();
     const linksBundle = links.map(({ link }) => ({ linkId: link.id || 0, title: link.title }));
     try {
       return await useAxiosPost('post/count/date', { linkIds: linksBundle });
