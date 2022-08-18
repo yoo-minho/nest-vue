@@ -4,7 +4,6 @@ import { useRouter } from 'vue-router';
 import GroupCard from '../components/GroupCard.vue';
 import HeaderItem from '../components/HeaderItem.vue';
 import LinkList from '../components/LinkList.vue';
-
 import { useGroupStore } from '../stores/group';
 import { onMounted, watch } from 'vue';
 
@@ -21,11 +20,14 @@ onMounted(() => {
 watch(
   () => currentTag.value,
   (tag) => {
+    console.log({ tag, isTotalTag: isTotalTag.value });
+    groupsLoading.value = true;
     if (isTotalTag.value) {
       loadAllGroup();
     } else {
       getByTag(tag);
     }
+    console.log(groups.value);
   },
 );
 
@@ -55,8 +57,8 @@ const clickGroup = (domain: string) => router.push({ path: `/@${domain}` });
           </div>
         </q-scroll-area>
         <q-page class="q-pa-md">
-          <template v-if="tagsLoading">
-            <q-skeleton v-for="n in 3" :key="n" :type="'QChip'" class="q-ma-xs" />
+          <template v-if="groupsLoading">
+            <q-skeleton v-for="n in 1" :key="n" :type="'QChip'" class="q-ma-xs" />
           </template>
           <template v-else>
             <p v-for="groupData in groups" :key="groupData.id">
