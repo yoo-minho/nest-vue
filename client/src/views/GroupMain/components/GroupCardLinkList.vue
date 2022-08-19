@@ -16,7 +16,7 @@ const moreLinksTooltip = computed(() => hiddenLinks.value.map(({ link: { title }
   <q-item class="link-list">
     <q-item-section>
       <q-item-label>
-        <div class="row" style="align-items: center">
+        <div class="row items-center">
           <div v-for="({ link }, i) in showingLinks" :key="i" class="col-3">
             <link-info :link-data="link" :links="true" />
           </div>
