@@ -97,6 +97,7 @@ export const useGroupStore = defineStore('group', {
       );
     },
     async fetchPosts(links: { link: Link }[]) {
+      if (links.length === 0) return;
       this.postLoading = true;
       await Promise.all(links.map(({ link }: { link: Link }) => RssAPI.scrap(link)));
       const { data, isLoading } = await PostAPI.findAllPosts(links);

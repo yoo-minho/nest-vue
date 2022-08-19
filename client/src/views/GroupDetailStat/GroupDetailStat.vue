@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { toRefs } from 'vue';
-
 import { Link } from '@/types/common';
+import GroupDetailStatBanner from './components/GroupDetailStatBanner.vue';
 import GroupDetailStatLast from './components/GroupDetailStatLast.vue';
 import GroupDetailStatJandi from './components/GroupDetailStatJandi.vue';
 
@@ -12,28 +12,11 @@ const { links } = toRefs(props);
 <template>
   <div class="max-width">
     <div class="q-pa-md">
-      <div class="row q-col-gutter-md">
-        <div class="col-12">
-          <q-card class="jandi-card step-3">
-            <q-card-section class="column text-white justify-center items-center">
-              <div style="font-size: 1rem">꾸준한 기록이 경쟁력 💪</div>
-            </q-card-section>
-          </q-card>
-        </div>
-      </div>
+      <group-detail-stat-banner />
       <q-separator class="q-my-md" />
-      <GroupDetailStatJandi :links="links" :loading="loading" />
+      <group-detail-stat-jandi :links="links" :loading="loading" />
       <q-separator class="q-mt-md" />
-      <GroupDetailStatLast :links="links" :loading="loading" />
+      <group-detail-stat-last :links="links" :loading="loading" />
     </div>
   </div>
 </template>
-<style scoped>
-.jandi-card {
-  background: #161b22;
-}
-
-.step-3 {
-  background: #26a641;
-}
-</style>

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { toRaw } from 'vue';
 import { Post } from '@/types/common';
-import LinkCard from '@/components/Card/LinkCard.vue';
 import { openUrl } from '@/util';
 import { getDateString } from '@/plugin/dayjs';
+import LinkInfo from '@/components/Info/LinkInfo.vue';
 
 const props = defineProps<{ post: Post }>();
 const { post } = toRaw(props);
@@ -18,7 +18,7 @@ const { post } = toRaw(props);
         <q-item-label class="text-grey-5">{{ getDateString(post.createdAt) }}</q-item-label>
       </q-item-section>
       <q-item-section class="col-3 items-center">
-        <LinkCard :link-data="post.link" :posts="true"></LinkCard>
+        <link-info :link-data="post.link" :posts="true" />
       </q-item-section>
     </q-item>
     <q-separator spaced />

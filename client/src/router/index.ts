@@ -1,4 +1,5 @@
 import { createWebHistory, createRouter } from 'vue-router';
+import DetailLayout from '@/layouts/DetailLayout.vue';
 
 const routes = [
   {
@@ -10,7 +11,7 @@ const routes = [
     path: '/@:domain',
     name: 'GroupDetail',
     props: true,
-    component: () => import('@/layouts/DetailLayout.vue'),
+    component: DetailLayout,
     children: [
       {
         path: '',

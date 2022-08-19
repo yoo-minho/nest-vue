@@ -1,39 +1,31 @@
 <script setup lang="ts">
 import { onMounted, watch } from 'vue';
-import { useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
 
 import { useGroupStore } from '@/stores/group';
-import GroupCard from '@/components/Card/GroupCard.vue';
 import HeaderItem from '@/components/Menu/HeaderItem.vue';
-
-import LinkList from './components/LinkList.vue';
+import GroupCard from './components/GroupCard.vue';
 
 const groupStore = useGroupStore();
 const { fetchAllGroup, fetchByTag, fetchAllTag, setCurrentTag } = groupStore;
-const { groups, groupsLoading, NavTags, currentTag, isTotalTag, tagsLoading } = storeToRefs(groupStore);
-const router = useRouter();
+const { groups, groupsLoading, currentTag, isTotalTag, NavTags, tagsLoading } = storeToRefs(groupStore);
 
 onMounted(() => {
   fetchAllTag();
-  fetchAllGroup();
 });
 
 watch(
   () => currentTag.value,
   (tag) => {
-    console.log({ tag, isTotalTag: isTotalTag.value });
     groupsLoading.value = true;
     if (isTotalTag.value) {
       fetchAllGroup();
     } else {
       fetchByTag(tag);
     }
-    console.log(groups.value);
   },
+  { immediate: true },
 );
-
-const clickGroup = (domain: string) => router.push({ path: `/@${domain}` });
 </script>
 
 <template>
@@ -41,7 +33,7 @@ const clickGroup = (domain: string) => router.push({ path: `/@${domain}` });
     <HeaderItem :logo="true" :editor="true" :setting="true" />
     <q-page-container class="max-width">
       <q-scroll-area :visible="false" class="max-width without-header">
-        <q-scroll-area class="q-px-md q-pt-md" style="height: 50px; max-width: 900px" :thumb-style="{ opacity: '0' }">
+        <q-scroll-area class="q-px-md q-pt-md tag-area" :thumb-style="{ opacity: '0' }">
           <div class="row no-wrap">
             <template v-if="tagsLoading">
               <q-skeleton v-for="n in 3" :key="n" :type="'QChip'" class="q-ma-xs" />
@@ -63,14 +55,7 @@ const clickGroup = (domain: string) => router.push({ path: `/@${domain}` });
             <q-skeleton v-for="n in 1" :key="n" :type="'QChip'" class="q-ma-xs" />
           </template>
           <template v-else>
-            <p v-for="groupData in groups" :key="groupData.id">
-              <q-card class="cursor-pointer" @click="clickGroup(groupData.domain)">
-                <q-card-section class="q-pa-none">
-                  <GroupCard mode="LIST-ITEM" :group-data="groupData" />
-                  <LinkList :links="groupData.links || []" />
-                </q-card-section>
-              </q-card>
-            </p>
+            <group-card v-for="group in groups" :key="group.id" :group="group" />
           </template>
         </q-page>
       </q-scroll-area>
@@ -79,6 +64,10 @@ const clickGroup = (domain: string) => router.push({ path: `/@${domain}` });
 </template>
 
 <style scope>
+.tag-area {
+  height: 50px;
+  max-width: 900px;
+}
 .active {
   color: white;
   background-color: black;
