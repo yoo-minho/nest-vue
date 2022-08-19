@@ -3,7 +3,7 @@ import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
 
 import GroupCard from '@/components/Card/GroupCard.vue';
-import GroupDetailCounter from './GroupDetailCounter.vue';
+import GroupDetailCounter from '@/components/Counter/GroupDetailCounter.vue';
 
 import { useGroupStore } from '@/stores/group';
 

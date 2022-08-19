@@ -2,8 +2,8 @@
 import { toRefs } from 'vue';
 
 import { Link } from '@/types/common';
-import GroupDetailStatLast from '../components/GroupDetailStatLast.vue';
-import GroupDetailStatJandi from '../components/GroupDetailStatJandi.vue';
+import GroupDetailStatLast from './components/GroupDetailStatLast.vue';
+import GroupDetailStatJandi from './components/GroupDetailStatJandi.vue';
 
 const props = defineProps<{ links: { link: Link }[]; loading: boolean }>();
 const { links } = toRefs(props);

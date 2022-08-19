@@ -11,7 +11,7 @@ export const getBlogImagePath = (type: string) => {
 };
 
 export const getImage = (path: string) =>
-  new URL(`./assets/images/${path || 'platform/rss.png'}`, import.meta.url).toString();
+  new URL(`../assets/images/${path || 'platform/rss.png'}`, import.meta.url).toString();
 
 export const getImageByBlogType = (type: string): string => getImage(getBlogImagePath(type));
 

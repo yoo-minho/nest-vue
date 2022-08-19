@@ -2,9 +2,10 @@
 import { watch } from 'vue';
 import { storeToRefs } from 'pinia';
 
-import GroupDetailPostCard from '../components/GroupDetailPostCard.vue';
 import { useGroupStore } from '@/stores/group';
 import { Link } from '@/types/common';
+
+import GroupDetailPostCard from './components/GroupDetailPostCard.vue';
 
 const props = defineProps<{ links: { link: Link }[]; loading: boolean }>();
 const groupStore = useGroupStore();
