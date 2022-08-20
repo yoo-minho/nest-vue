@@ -4,8 +4,8 @@ import { storeToRefs } from 'pinia';
 
 import { useGroupStore } from '@/stores/group';
 import DefaultLayout from '@/layouts/DefaultLayout.vue';
-import GroupDetailTab from '@/components/GroupDetail/GroupDetailTab.vue';
-import GroupDetailTop from '@/components/GroupDetail/GroupDetailTop.vue';
+import GroupDetailTab from './components/GroupDetailTab.vue';
+import GroupDetailTop from './components/GroupDetailTop.vue';
 
 const groupStore = useGroupStore();
 const { fetchGroup } = groupStore;
@@ -22,15 +22,13 @@ onMounted(() => {
 
 <template>
   <DefaultLayout>
-    <q-page class="max-width">
-      <group-detail-top :loading="groupLoading" />
-      <group-detail-tab />
-      <router-view v-slot="{ Component, route }" :links="links" :loading="groupLoading">
-        <transition name="tab">
-          <component :is="Component" :key="route.path" style="position: absolute" />
-        </transition>
-      </router-view>
-    </q-page>
+    <group-detail-top :loading="groupLoading" />
+    <group-detail-tab />
+    <router-view v-slot="{ Component, route }" :links="links" :loading="groupLoading">
+      <transition name="tab">
+        <component :is="Component" :key="route.path" style="position: absolute" />
+      </transition>
+    </router-view>
   </DefaultLayout>
 </template>
 
