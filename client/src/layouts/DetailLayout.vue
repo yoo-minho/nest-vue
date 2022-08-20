@@ -3,7 +3,7 @@ import { onMounted, computed } from 'vue';
 import { storeToRefs } from 'pinia';
 
 import { useGroupStore } from '@/stores/group';
-import HeaderItem from '@/components/Menu/HeaderItem.vue';
+import DefaultLayout from '@/layouts/DefaultLayout.vue';
 import GroupDetailTab from '@/components/GroupDetail/GroupDetailTab.vue';
 import GroupDetailTop from '@/components/GroupDetail/GroupDetailTop.vue';
 
@@ -21,22 +21,17 @@ onMounted(() => {
 </script>
 
 <template>
-  <q-layout class="max-width">
-    <HeaderItem :logo="true" :setting="true" />
-    <q-page-container>
-      <q-scroll-area :visible="false" class="without-header">
-        <q-page class="max-width">
-          <group-detail-top :loading="groupLoading" />
-          <group-detail-tab />
-          <router-view v-slot="{ Component, route }" :links="links" :loading="groupLoading">
-            <transition name="tab">
-              <component :is="Component" :key="route.path" style="position: absolute" />
-            </transition>
-          </router-view>
-        </q-page>
-      </q-scroll-area>
-    </q-page-container>
-  </q-layout>
+  <DefaultLayout>
+    <q-page class="max-width">
+      <group-detail-top :loading="groupLoading" />
+      <group-detail-tab />
+      <router-view v-slot="{ Component, route }" :links="links" :loading="groupLoading">
+        <transition name="tab">
+          <component :is="Component" :key="route.path" style="position: absolute" />
+        </transition>
+      </router-view>
+    </q-page>
+  </DefaultLayout>
 </template>
 
 <style scoped>
