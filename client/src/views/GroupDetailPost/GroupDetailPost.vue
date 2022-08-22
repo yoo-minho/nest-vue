@@ -1,22 +1,21 @@
 <script setup lang="ts">
 import { watch } from 'vue';
 import { storeToRefs } from 'pinia';
-import { useGroupStore } from '@/stores/group';
-import { Link } from '@/types/common';
+import { usePostStore } from '@/stores/post';
+
+import { LinkWrap } from '@/types/common';
 import ContentsLayout from '@/layouts/ContentsLayout.vue';
 import GroupDetailPostLoader from '@/components/Loader/GroupDetailPostLoader.vue';
 import GroupDetailPostCard from './components/GroupDetailPostCard.vue';
 
-const props = defineProps<{ links: { link: Link }[]; loading: boolean }>();
-const groupStore = useGroupStore();
-const { fetchPosts } = groupStore;
-const { posts, postLoading } = storeToRefs(groupStore);
+const props = defineProps<{ links: LinkWrap[]; loading: boolean }>();
+const postStore = usePostStore();
+const { fetchPosts } = postStore;
+const { posts, postLoading } = storeToRefs(postStore);
 
 watch(
   () => props.links,
-  (links) => {
-    fetchPosts(links);
-  },
+  (links) => fetchPosts(links),
   { immediate: true },
 );
 </script>

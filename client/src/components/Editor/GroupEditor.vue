@@ -6,7 +6,7 @@ import { QSelect, useQuasar } from 'quasar';
 import { useGroupStore } from '@/stores/group';
 import { useSubpageStore } from '@/stores/subpage';
 
-import HeaderItem from '@/components/Menu/HeaderItem.vue';
+import EditorLayout from '@/layouts/EditorLayout.vue';
 import BlogCard from '@/components/Card/BlogCard.vue';
 
 const groupStore = useGroupStore();
@@ -82,83 +82,76 @@ async function saveGroup() {
 </script>
 
 <template>
-  <q-layout class="subpage max-width">
-    <HeaderItem :close="closeGroupEditor" :title="'그룹 만들기'" :save="saveGroup" />
-    <q-page-container class="max-width">
-      <q-page class="q-pa-md">
-        <q-form class="q-gutter-y-md column">
-          <q-input
-            v-model="title"
-            placeholder="그룹 이름 추가"
-            label="그룹 이름"
-            counter
-            maxlength="20"
-            stack-label
-            autofocus
-            hide-bottom-space
-            :rules="titleRules"
-          />
-          <q-input
-            ref="idRef"
-            v-model="id"
-            label="전용 링크"
-            type="email"
-            stack-label
-            counter
-            maxlength="20"
-            placeholder="전용 링크 추가"
-            prefix="https://onebylog.com/@"
-            :rules="idRules"
-          />
-          <q-input
-            v-model="description"
-            stack-label
-            autogrow
-            clearable
-            counter
-            maxlength="100"
-            type="textarea"
-            label="그룹 설명"
-            placeholder="(선택) 그룹 설명을 적어주세요!"
-            hide-bottom-space
-          />
-          <q-select
-            ref="selectRef"
-            v-model="tag"
-            stack-label
-            label="태그 추가"
-            use-input
-            input-debounce="0"
-            maxlength="10"
-            counter
-            :options="options"
-            @filter="filterFn"
-            @update:model-value="selectOption"
-          >
-            <template #no-option>
-              <q-item>
-                <q-item-section class="text-grey"> If you are writing in Korean, please hit enter </q-item-section>
-              </q-item>
-            </template>
-          </q-select>
+  <EditorLayout title="그룹 만들기" @save="saveGroup" @close="closeGroupEditor">
+    <q-input
+      v-model="title"
+      placeholder="그룹 이름 추가"
+      label="그룹 이름"
+      counter
+      maxlength="20"
+      stack-label
+      autofocus
+      hide-bottom-space
+      :rules="titleRules"
+    />
+    <q-input
+      ref="idRef"
+      v-model="id"
+      label="전용 링크"
+      type="email"
+      stack-label
+      counter
+      maxlength="20"
+      placeholder="전용 링크 추가"
+      prefix="https://onebylog.com/@"
+      :rules="idRules"
+    />
+    <q-input
+      v-model="description"
+      stack-label
+      autogrow
+      clearable
+      counter
+      maxlength="100"
+      type="textarea"
+      label="그룹 설명"
+      placeholder="(선택) 그룹 설명을 적어주세요!"
+      hide-bottom-space
+    />
+    <q-select
+      ref="selectRef"
+      v-model="tag"
+      stack-label
+      label="태그 추가"
+      use-input
+      input-debounce="0"
+      maxlength="10"
+      counter
+      :options="options"
+      @filter="filterFn"
+      @update:model-value="selectOption"
+    >
+      <template #no-option>
+        <q-item>
+          <q-item-section class="text-grey"> If you are writing in Korean, please hit enter </q-item-section>
+        </q-item>
+      </template>
+    </q-select>
 
-          <div class="row">
-            <q-chip v-for="(v, i) in selectedTags" :key="i" dense>{{ v }}</q-chip>
-          </div>
+    <div class="row">
+      <q-chip v-for="(v, i) in selectedTags" :key="i" dense>{{ v }}</q-chip>
+    </div>
 
-          <q-btn color="primary" class="full-width" label="블로그 링크 추가" @click="openLinkEditor">
-            <span class="q-ml-sm">{{ linkCountMessage }}</span>
-          </q-btn>
+    <q-btn color="primary" class="full-width" label="블로그 링크 추가" @click="openLinkEditor">
+      <span class="q-ml-sm">{{ linkCountMessage }}</span>
+    </q-btn>
 
-          <q-list v-if="linksOnEditor.length > 0" bordered separator class="full-width">
-            <div v-for="(v, i) in linksOnEditor" :key="i" :data-index="i">
-              <BlogCard :index="i" :link="v"></BlogCard>
-            </div>
-          </q-list>
-        </q-form>
-      </q-page>
-    </q-page-container>
-  </q-layout>
+    <q-list v-if="linksOnEditor.length > 0" bordered separator class="full-width">
+      <div v-for="(v, i) in linksOnEditor" :key="i" :data-index="i">
+        <BlogCard :index="i" :link="v"></BlogCard>
+      </div>
+    </q-list>
+  </EditorLayout>
 </template>
 
 <style></style>

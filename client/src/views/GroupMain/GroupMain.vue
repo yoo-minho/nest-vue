@@ -5,6 +5,7 @@ import { storeToRefs } from 'pinia';
 import { useGroupStore } from '@/stores/group';
 
 import DefaultLayout from '@/layouts/DefaultLayout.vue';
+import GroupMainLoader from '@/components/Loader/GroupMainLoader.vue';
 import GroupCard from './components/GroupCard.vue';
 
 const groupStore = useGroupStore();
@@ -17,12 +18,12 @@ onMounted(() => {
 
 watch(
   () => currentTag.value,
-  (tag) => {
+  async (tag) => {
     groupsLoading.value = true;
     if (isTotalTag.value) {
-      fetchAllGroup();
+      await fetchAllGroup();
     } else {
-      fetchByTag(tag);
+      await fetchByTag(tag);
     }
   },
   { immediate: true },
@@ -50,10 +51,10 @@ watch(
     </q-scroll-area>
     <q-page class="q-pa-md">
       <template v-if="groupsLoading">
-        <q-skeleton v-for="n in 1" :key="n" :type="'QChip'" class="q-ma-xs" />
+        <GroupMainLoader />
       </template>
       <template v-else>
-        <group-card v-for="group in groups" :key="group.id" :group="group" />
+        <GroupCard v-for="group in groups" :key="group.id" :group="group" />
       </template>
     </q-page>
   </DefaultLayout>

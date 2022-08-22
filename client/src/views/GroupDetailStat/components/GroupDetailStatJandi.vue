@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
-import { Link } from '@/types/common';
-import { useGroupStore } from '@/stores/group';
+import { LinkWrap } from '@/types/common';
+import { usePostStore } from '@/stores/post';
 import GroupDetailStatJandiTip from './GroupDetailStatJandiTip.vue';
 import GroupDetailStatJandiBox from './GroupDetailStatJandiBox.vue';
 import GroupDetailStatJandiContents from './GroupDetailStatJandiContents.vue';
 
-const groupStore = useGroupStore();
-const { fetchJandis } = groupStore;
-const { jandis, jandiLoading, activeJandisCount, nextPostingDay, manyPostingMMM } = storeToRefs(groupStore);
+const postStore = usePostStore();
+const { fetchJandis } = postStore;
+const { jandis, jandiLoading, activeJandisCount, nextPostingDay, manyPostingMMM } = storeToRefs(postStore);
 
-const props = defineProps<{ links: { link: Link }[] }>();
+const props = defineProps<{ links: LinkWrap[] }>();
 
 const defaultOption = { label: '전체 (링크 선택 가능)', value: -1 };
 const linkFilterOptions = ref([defaultOption]);
