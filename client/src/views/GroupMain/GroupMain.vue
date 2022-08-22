@@ -5,7 +5,6 @@ import { storeToRefs } from 'pinia';
 import { useGroupStore } from '@/stores/group';
 
 import DefaultLayout from '@/layouts/DefaultLayout.vue';
-import HeaderItem from '@/components/Menu/HeaderItem.vue';
 import GroupCard from './components/GroupCard.vue';
 
 const groupStore = useGroupStore();
