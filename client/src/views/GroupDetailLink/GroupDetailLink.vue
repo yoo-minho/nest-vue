@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { Link } from '@/types/common';
+import { LinkWrap } from '@/types/common';
 import ContentsLayout from '@/layouts/ContentsLayout.vue';
 import GroupDetailLinkLoader from '@/components/Loader/GroupDetailLinkLoader.vue';
 import GroupDetailLinkCard from './components/GroupDetailLinkCard.vue';
 
-const props = defineProps<{ links: { link: Link }[]; loading: boolean }>();
+const props = defineProps<{ links: LinkWrap[]; loading: boolean }>();
 </script>
 
 <template>

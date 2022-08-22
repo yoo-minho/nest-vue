@@ -2,7 +2,7 @@
 import { useRouter } from 'vue-router';
 
 import { useSubpageStore } from '@/stores/subpage';
-import HeaderItem from '@/components/MENU/HeaderItem.vue';
+import SettingLayout from '@/layouts/SettingLayout.vue';
 import SettingCard from './SettingCard.vue';
 
 const subpageStore = useSubpageStore();
@@ -21,24 +21,19 @@ const ETC_CATEGORY = [{ icon: 'military_tech', title: '기술 스택', clickEven
 </script>
 
 <template>
-  <q-layout class="subpage max-width">
-    <HeaderItem :back="closeSettingMain" :title="'더 보기'" />
-    <q-page-container class="max-width">
-      <q-list padding class="rounded-borders">
-        <q-item-label header>서비스</q-item-label>
-        <div v-for="(v, i) in SERVICE_CATEGORY" :key="i">
-          <SettingCard :setting-json="v"></SettingCard>
-        </div>
-
-        <q-separator spaced />
-
-        <q-item-label header>기타</q-item-label>
-        <div v-for="(v, i) in ETC_CATEGORY" :key="i">
-          <SettingCard :setting-json="v"></SettingCard>
-        </div>
-      </q-list>
-    </q-page-container>
-  </q-layout>
+  <SettingLayout title="더보기" @back="closeSettingMain">
+    <q-list padding class="rounded-borders">
+      <q-item-label header>서비스</q-item-label>
+      <div v-for="(v, i) in SERVICE_CATEGORY" :key="i">
+        <SettingCard :setting-json="v" />
+      </div>
+      <q-separator spaced />
+      <q-item-label header>기타</q-item-label>
+      <div v-for="(v, i) in ETC_CATEGORY" :key="i">
+        <SettingCard :setting-json="v" />
+      </div>
+    </q-list>
+  </SettingLayout>
 </template>
 
 <style></style>

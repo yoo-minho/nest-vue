@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { reactive, ref } from 'vue';
+import { ref } from 'vue';
 import { Link } from '../types/common';
 
 export const useOpenGraphTagStore = defineStore('openGraphTag', () => {
@@ -11,10 +11,10 @@ export const useOpenGraphTagStore = defineStore('openGraphTag', () => {
   const openLinkEditor = () => (isOpenLinkEditor.value = true);
   const closeLinkEditor = () => (isOpenLinkEditor.value = false);
 
-  const links: Link[] = reactive([]);
-  const initLinks = () => (links.length = 0);
-  const addLink = (v: Link) => links.push(v);
-  const deleteLink = (idx: number) => links.splice(idx, 1);
+  const links = ref([] as Link[]);
+  const initLinks = () => (links.value.length = 0);
+  const addLink = (v: Link) => links.value.push(v);
+  const deleteLink = (idx: number) => links.value.splice(idx, 1);
 
   return {
     isOpenGroupEditor,

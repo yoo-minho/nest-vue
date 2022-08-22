@@ -1,10 +1,6 @@
-<script setup lang="ts">
-import CommonSubpage from '@/components/CommonSubpage.vue';
-</script>
-
 <template>
   <div class="max-width">
-    <CommonSubpage />
+    <div id="subpage"></div>
     <router-view />
   </div>
 </template>
@@ -42,5 +38,11 @@ ul {
   color: white;
   line-height: 48px;
   text-align: center;
+}
+
+.subpage {
+  position: absolute;
+  z-index: 3000;
+  background-color: white;
 }
 </style>

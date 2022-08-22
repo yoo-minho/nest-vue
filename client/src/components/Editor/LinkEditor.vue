@@ -7,8 +7,7 @@ import { useSubpageStore } from '@/stores/subpage';
 import { getBlogType } from '@/util/ImageUtil';
 import { ErrorMessage } from '@/types/common';
 import OpenGraphTagAPI from '@/api/openGraphTagApi';
-
-import HeaderItem from '@/components/Menu/HeaderItem.vue';
+import EditorLayout from '@/layouts/EditorLayout.vue';
 
 const BLOG_EXPRESSION = {
   NAVER: /https:\/\/blog.naver.com\/([0-9a-zA-Z_-]*)(\/)?([0-9a-zA-Z]*)/gi,
@@ -31,7 +30,7 @@ const getErrorMessage = (v: string): string => {
   return '';
 };
 
-const url = ref('https://blog.naver.com/dellose');
+const url = ref('');
 const rssUrl = ref('');
 const isShowRssUrl = ref(false);
 
@@ -83,40 +82,33 @@ async function addBlogLink() {
 </script>
 
 <template>
-  <q-layout class="max-width subpage">
-    <HeaderItem :back="closeLinkEditor" :title="'링크 추가'" :save="addBlogLink" />
-    <q-page-container class="max-width">
-      <q-page class="q-pa-md">
-        <q-form class="q-gutter-y-md column">
-          <q-input
-            v-model.trim="url"
-            bottom-slots
-            stack-label
-            placeholder="링크를 적어주세요"
-            label="링크"
-            autofocus
-            :rules="linkRules"
-            @update:model-value="checkUrl"
-            @keypress.enter.prevent="addBlogLink"
-          >
-            <template #hint> ※ 'https://' 포함한 블로그 주소를 입력해주세요! </template>
-          </q-input>
-          <q-input
-            v-if="isShowRssUrl"
-            v-model.trim="rssUrl"
-            bottom-slots
-            stack-label
-            placeholder="RSS링크가 필요합니다."
-            label="RSS 링크"
-            :rules="linkRules"
-            @keypress.enter.prevent="addBlogLink"
-          >
-            <template #hint> ※ 스크래핑이 어려워 rss url을 별도로 입력해주세요! </template>
-          </q-input>
-        </q-form>
-      </q-page>
-    </q-page-container>
-  </q-layout>
+  <EditorLayout title="링크 추가" @save="addBlogLink" @close="closeLinkEditor">
+    <q-input
+      v-model.trim="url"
+      bottom-slots
+      stack-label
+      placeholder="링크를 적어주세요"
+      label="링크"
+      autofocus
+      :rules="linkRules"
+      @update:model-value="checkUrl"
+      @keypress.enter.prevent="addBlogLink"
+    >
+      <template #hint> ※ 'https://' 포함한 블로그 주소를 입력해주세요! </template>
+    </q-input>
+    <q-input
+      v-if="isShowRssUrl"
+      v-model.trim="rssUrl"
+      bottom-slots
+      stack-label
+      placeholder="RSS링크가 필요합니다."
+      label="RSS 링크"
+      :rules="linkRules"
+      @keypress.enter.prevent="addBlogLink"
+    >
+      <template #hint> ※ 스크래핑이 어려워 rss url을 별도로 입력해주세요! </template>
+    </q-input>
+  </EditorLayout>
 </template>
 
 <style></style>

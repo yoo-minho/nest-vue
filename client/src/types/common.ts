@@ -1,5 +1,4 @@
 export type ErrorMessage = string | boolean;
-export type TabName = string & ('group' | 'stack');
 export type Link = {
   id?: number;
   url: string;
@@ -9,12 +8,13 @@ export type Link = {
   type: string;
   imagePath?: string;
 };
+export type LinkWrap = { link: Link };
 export type Group = {
   id?: number;
   domain: string;
   title: string;
   description?: string;
-  links?: { link: Link }[];
+  links?: LinkWrap[];
   tags?: string[];
   created_at?: Date;
   dailyViews?: number;
@@ -48,9 +48,6 @@ export type LastPost = {
   dateString: string;
   agoString: string;
 };
-export type CountGroup = {
-  [key: string]: number;
-};
 export type Days = {
   date: string;
   day: number;
@@ -82,3 +79,4 @@ export type StackJson = {
   url: string;
   githubStar: string;
 };
+export type OrderType = 1 | -1;

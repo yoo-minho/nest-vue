@@ -26,6 +26,7 @@ export const useSubpageStore = defineStore('subpage', {
       this.isOpenSettingMain = true;
     },
     closeSettingMain() {
+      console.log('closeSettingMain', this.isOpenSettingMain);
       this.isOpenSettingMain = false;
     },
     openStackMain() {

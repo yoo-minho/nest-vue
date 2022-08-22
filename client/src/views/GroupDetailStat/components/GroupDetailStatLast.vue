@@ -2,30 +2,24 @@
 import { onMounted, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 
-import { useGroupStore } from '@/stores/group';
-import { Link } from '@/types/common';
+import { usePostStore } from '@/stores/post';
+import { LinkWrap, OrderType } from '@/types/common';
 
-const groupStore = useGroupStore();
-const { fetchLastPosts } = groupStore;
-const { lastPosts, lastLoading } = storeToRefs(groupStore);
-
-type OrderType = 1 | -1;
+const postStore = usePostStore();
+const { fetchLastPosts } = postStore;
+const { lastPosts, lastLoading } = storeToRefs(postStore);
 
 const medal = (i: number) => ['🥇', '🥈', '🥉'][i] || '';
 const isRank = (i: number) => i < 3;
 
-const props = defineProps<{ links: { link: Link }[] }>();
+const props = defineProps<{ links: LinkWrap[] }>();
 
 const orderOptions = [
   { label: '최신순', value: 'asc', order: 1 },
   { label: '오래된순', value: 'desc', order: -1 },
 ] as { label: string; value: string; order: OrderType }[];
 const currentOrder = ref(orderOptions[0]);
-
-const sortPost = async (order: -1 | 1 = 1) => {
-  if (props.links.length === 0) return;
-  await fetchLastPosts(props.links, order);
-};
+const sortPost = (order: OrderType = 1) => fetchLastPosts(props.links, order);
 
 onMounted(() => sortPost());
 watch(

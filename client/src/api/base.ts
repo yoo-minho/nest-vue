@@ -21,7 +21,7 @@ axiosClient.interceptors.request.use(
 
 axiosClient.interceptors.response.use(
   async function (response) {
-    await delay(1000);
+    //await delay(1000);
     //console.log('axios.interceptors.response1', { response });
     return response;
   },

@@ -20,6 +20,9 @@ interface HeaderOption {
 
 const props = defineProps<HeaderOption>();
 const { logo, editor, setting } = toRaw(props);
+const reload = () => {
+  router.replace({ name: 'Group' });
+};
 </script>
 
 <template>
@@ -27,7 +30,7 @@ const { logo, editor, setting } = toRaw(props);
     <q-toolbar>
       <q-btn v-if="close" flat round dense icon="close" @click="close" />
       <q-btn v-if="back" flat round dense icon="keyboard_backspace" @click="back" />
-      <q-toolbar-title v-if="logo" class="logo-font logo-style logo-common q-ml-sm" @click="router.push('/')">
+      <q-toolbar-title v-if="logo" class="logo-font logo-style logo-common q-ml-sm" @click="reload">
         onebylog
       </q-toolbar-title>
       <q-toolbar-title v-if="title">{{ title }}</q-toolbar-title>
@@ -42,15 +45,9 @@ const { logo, editor, setting } = toRaw(props);
 .logo-font {
   font-family: Arial;
 }
-.logo-style {
-  font-style: italic;
-}
 .logo-common {
   color: white;
   font-weight: bold;
   cursor: pointer;
-}
-.logo-style:hover {
-  font-style: normal;
 }
 </style>
