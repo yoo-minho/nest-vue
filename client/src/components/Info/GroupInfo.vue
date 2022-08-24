@@ -33,5 +33,3 @@ const copyUrl = async () => {
     </q-item-section>
   </q-item>
 </template>
-
-<style scoped></style>
