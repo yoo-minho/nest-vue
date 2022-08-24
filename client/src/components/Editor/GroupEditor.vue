@@ -7,10 +7,10 @@ import { useGroupStore } from '@/stores/group';
 import { useSubpageStore } from '@/stores/subpage';
 
 import EditorLayout from '@/layouts/EditorLayout.vue';
-import BlogCard from '@/components/Card/BlogCard.vue';
+import LinkCard from '@/components/Card/LinkCard.vue';
 
 const groupStore = useGroupStore();
-const { initLinks, save, fetchAllGroup, fetchAllTag } = groupStore;
+const { initLinks, save, fetchAllGroup, fetchAllTag, deleteLink } = groupStore;
 const { linksOnEditor, linkCountMessage, TagNames } = storeToRefs(groupStore);
 
 const subpageStore = useSubpageStore();
@@ -148,7 +148,7 @@ async function saveGroup() {
 
     <q-list v-if="linksOnEditor.length > 0" bordered separator class="full-width">
       <div v-for="(v, i) in linksOnEditor" :key="i" :data-index="i">
-        <BlogCard :index="i" :link="v"></BlogCard>
+        <LinkCard :link="v" icon-name="clear" @click-icon="() => deleteLink(i)" />
       </div>
     </q-list>
   </EditorLayout>

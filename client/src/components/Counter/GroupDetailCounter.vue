@@ -8,5 +8,3 @@ const props = defineProps<{ dailyViews: number; totalViews: number }>();
     <q-badge color="green-4" :label="'total : ' + props.totalViews" />
   </div>
 </template>
-
-<style scoped></style>

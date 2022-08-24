@@ -10,7 +10,7 @@ const { post } = toRaw(props);
 </script>
 
 <template>
-  <q-item-label @click="openUrl(post.url)">
+  <q-item-label class="cursor-pointer" @click="openUrl(post.url)">
     <q-item class="row q-col-gutter-sm">
       <q-item-section class="col-9">
         <q-item-label class="text-weight-bold ellipsis text-subtitle2">{{ post.title }}</q-item-label>
