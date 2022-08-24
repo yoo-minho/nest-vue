@@ -18,11 +18,9 @@ const { post } = toRaw(props);
         <q-item-label class="text-grey-5">{{ getDateString(post.createdAt) }}</q-item-label>
       </q-item-section>
       <q-item-section class="col-3 items-center">
-        <link-info :link-data="post.link" :posts="true" />
+        <LinkInfo :link-data="post.link" :posts="true" />
       </q-item-section>
     </q-item>
     <q-separator spaced />
   </q-item-label>
 </template>
-
-<style scoped></style>

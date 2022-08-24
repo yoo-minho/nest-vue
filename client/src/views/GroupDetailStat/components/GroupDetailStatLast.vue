@@ -34,7 +34,7 @@ watch(
 <template>
   <div>
     <q-select v-model="currentOrder" :options="orderOptions" filled label="Last Posting Date Ranking" class="q-my-md" />
-    <q-card class="jandi-card">
+    <q-card class="bg-dark">
       <q-card-section class="text-white">
         <div v-if="lastLoading" class="text-center">
           <q-spinner color="white" size="3em" />
@@ -50,8 +50,10 @@ watch(
                   <q-item-label class="ellipsis text-grey-5">Last Date : {{ v.dateString }}</q-item-label>
                 </q-item-section>
                 <q-item-section class="col-4">
-                  <q-item-label :class="{ 'rank-stirng': isRank(i) }"> Rank {{ i + 1 }} {{ medal(i) }}</q-item-label>
-                  <q-item-label :class="{ 'ago-string': isRank(i) }">{{ v.agoString }}</q-item-label>
+                  <q-item-label :class="{ 'text-green-5': isRank(i), 'text-weight-bold': isRank(i) }">
+                    Rank {{ i + 1 }} {{ medal(i) }}
+                  </q-item-label>
+                  <q-item-label :class="{ 'text-green-4': isRank(i) }">{{ v.agoString }}</q-item-label>
                 </q-item-section>
               </q-item>
             </div>
@@ -61,17 +63,3 @@ watch(
     </q-card>
   </div>
 </template>
-<style scoped>
-.jandi-card {
-  background: #161b22;
-}
-
-.rank-stirng {
-  font-weight: bold;
-  color: #39d353;
-}
-
-.ago-string {
-  color: #26a641;
-}
-</style>

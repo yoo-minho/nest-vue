@@ -40,19 +40,14 @@ watch(
   <div>
     <q-select v-model="linkFilter" :options="linkFilterOptions" filled label="Posting Graph By" class="q-my-md" />
     <div class="row q-col-gutter-md q-mb-md">
-      <group-detail-stat-jandi-box :loading="jandiLoading" :label="'다음 포스팅까지'" :value="nextPostingDay" />
-      <group-detail-stat-jandi-box :loading="jandiLoading" :label="'포스팅 많은 요일'" :value="manyPostingMMM" />
+      <GroupDetailStatJandiBox :loading="jandiLoading" :label="'다음 포스팅까지'" :value="nextPostingDay" />
+      <GroupDetailStatJandiBox :loading="jandiLoading" :label="'포스팅 많은 요일'" :value="manyPostingMMM" />
     </div>
-    <q-card class="jandi-card">
+    <q-card class="bg-green-1">
       <q-card-section class="row" style="align-items: center; justify-content: center">
-        <group-detail-stat-jandi-contents :loading="jandiLoading" :data="jandis" />
-        <group-detail-stat-jandi-tip :count="activeJandisCount" />
+        <GroupDetailStatJandiContents :loading="jandiLoading" :data="jandis" />
+        <GroupDetailStatJandiTip :count="activeJandisCount" />
       </q-card-section>
     </q-card>
   </div>
 </template>
-<style scoped>
-.jandi-card {
-  background: #161b22;
-}
-</style>

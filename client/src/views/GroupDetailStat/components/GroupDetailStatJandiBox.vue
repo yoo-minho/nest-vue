@@ -3,7 +3,7 @@ const props = defineProps<{ loading: boolean; label: string; value: string }>();
 </script>
 <template>
   <div class="col-6">
-    <q-card class="jandi-card">
+    <q-card class="bg-green-1">
       <q-card-section class="column text-white justify-center items-center">
         <div style="font-size: 12px">{{ props.label }}</div>
         <div v-if="loading" class="text-h5"><q-spinner color="white" size="1.2em" /></div>
@@ -12,8 +12,3 @@ const props = defineProps<{ loading: boolean; label: string; value: string }>();
     </q-card>
   </div>
 </template>
-<style scoped>
-.jandi-card {
-  background: #161b22;
-}
-</style>

@@ -11,13 +11,16 @@ const { links } = toRefs(props);
 </script>
 
 <template>
-  <contents-layout>
-    <div class="q-px-md q-pb-md">
-      <group-detail-stat-banner />
+  <ContentsLayout>
+    <div class="q-px-md q-pb-md stat-area">
+      <GroupDetailStatBanner />
       <q-separator class="q-my-md" />
-      <group-detail-stat-jandi :links="links" :loading="loading" />
+      <GroupDetailStatJandi :links="links" :loading="loading" />
       <q-separator class="q-mt-md" />
-      <group-detail-stat-last :links="links" :loading="loading" />
+      <GroupDetailStatLast :links="links" :loading="loading" />
     </div>
-  </contents-layout>
+  </ContentsLayout>
 </template>
+<style lang="scss">
+@import './styles/_group-detail-stat.scss';
+</style>

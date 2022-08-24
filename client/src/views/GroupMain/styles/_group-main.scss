@@ -1,0 +1,12 @@
+@charset "UTF-8";
+
+.tag-area {
+  height: 50px;
+  max-width: 900px;
+
+  .active {
+    color: white;
+    background-color: $primary;
+    font-weight: bolder;
+  }
+}

@@ -60,14 +60,6 @@ watch(
   </DefaultLayout>
 </template>
 
-<style scope>
-.tag-area {
-  height: 50px;
-  max-width: 900px;
-}
-.active {
-  color: white;
-  background-color: black;
-  font-weight: bolder;
-}
+<style lang="scss">
+@import './styles/_group-main.scss';
 </style>
