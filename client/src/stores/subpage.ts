@@ -4,8 +4,8 @@ export const useSubpageStore = defineStore('subpage', {
   state: () => ({
     isOpenGroupEditor: false,
     isOpenLinkEditor: false,
-    isOpenSettingMain: false,
-    isOpenStackMain: false,
+    isOpenSettingSubpage: false,
+    isOpenDataSubpage: false,
     stack: 'stack',
   }),
   getters: {},
@@ -23,22 +23,21 @@ export const useSubpageStore = defineStore('subpage', {
       this.isOpenLinkEditor = false;
     },
     openSettingMain() {
-      this.isOpenSettingMain = true;
+      this.isOpenSettingSubpage = true;
     },
     closeSettingMain() {
-      console.log('closeSettingMain', this.isOpenSettingMain);
-      this.isOpenSettingMain = false;
+      this.isOpenSettingSubpage = false;
     },
     openStackMain() {
       this.stack = 'stack';
-      this.isOpenStackMain = true;
+      this.isOpenDataSubpage = true;
     },
     openPlatformMain() {
       this.stack = 'platform';
-      this.isOpenStackMain = true;
+      this.isOpenDataSubpage = true;
     },
     closeStackMain() {
-      this.isOpenStackMain = false;
+      this.isOpenDataSubpage = false;
     },
   },
 });

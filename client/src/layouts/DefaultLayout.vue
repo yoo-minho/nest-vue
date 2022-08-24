@@ -1,38 +1,25 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useSubpageStore } from '@/stores/subpage';
 
 import HeaderItem from '@/components/Menu/HeaderItem.vue';
 import GroupEditor from '@/components/Editor/GroupEditor.vue';
 import LinkEditor from '@/components/Editor/LinkEditor.vue';
-import SettingMain from '@/components/Setting/SettingMain.vue';
-import StackMain from '@/components/Setting/StackMain.vue';
-
-import stackArray from '@/data/stack.json';
-import platformArray from '@/data/platform.json';
+import SettingSubpage from '@/components/Setting/SettingSubpage.vue';
+import DataSubpage from '@/components/Setting/DataSubpage.vue';
 
 const subpageStore = useSubpageStore();
-const { stack, isOpenGroupEditor, isOpenLinkEditor, isOpenSettingMain, isOpenStackMain } = storeToRefs(subpageStore);
-
-const array = computed(() => (stack.value === 'stack' ? stackArray : platformArray));
-const title = computed(() => (stack.value === 'stack' ? '기술 스택' : '허용가능한 플랫폼'));
+const { isOpenGroupEditor, isOpenLinkEditor, isOpenSettingSubpage, isOpenDataSubpage } = storeToRefs(subpageStore);
 </script>
 
 <template>
   <q-layout>
     <Teleport to="#subpage">
-      <transition-group enter-active-class="animated fadeInUp" leave-active-class="animated fadeOutDown">
+      <transition-group name="subpage">
         <GroupEditor v-if="isOpenGroupEditor" />
-      </transition-group>
-      <transition-group enter-active-class="animated fadeInRight" leave-active-class="animated fadeOutRight">
         <LinkEditor v-if="isOpenLinkEditor" />
-      </transition-group>
-      <transition-group enter-active-class="animated fadeInRight" leave-active-class="animated fadeOutRight">
-        <SettingMain v-if="isOpenSettingMain" />
-      </transition-group>
-      <transition-group enter-active-class="animated fadeInRight" leave-active-class="animated fadeOutRight">
-        <StackMain v-if="isOpenStackMain" :stack-array="array" :title="title" />
+        <SettingSubpage v-if="isOpenSettingSubpage" />
+        <DataSubpage v-if="isOpenDataSubpage" />
       </transition-group>
     </Teleport>
     <HeaderItem :logo="true" :editor="true" :setting="true" />
@@ -44,4 +31,19 @@ const title = computed(() => (stack.value === 'stack' ? '기술 스택' : '허�
   </q-layout>
 </template>
 
-<style></style>
+<style scoped>
+.subpage-enter-from,
+.subpage-leave-to {
+  transform: translateY(100vh);
+}
+
+.subpage-enter-active,
+.subpage-leave-active {
+  transition: all 0.5s;
+}
+
+.subpage-enter-to,
+.subpage-leave-from {
+  transform: translateY(0);
+}
+</style>
