@@ -1,8 +1,7 @@
-import qs from 'qs';
 import { ref } from 'vue';
 import { AxiosError } from 'axios';
 
-import axiosClient, { useAxiosGet, useAxiosPost } from './base';
+import axiosClient, { useAxiosGetArray, useAxiosPost } from './base';
 
 import { LastPost, LinkWrap, RssItem } from '@/types/common';
 import { getAgoString, getDateString } from '@/plugin/dayjs';
@@ -19,9 +18,8 @@ export default {
   },
   async findAllPosts(links: LinkWrap[]) {
     try {
-      return await useAxiosGet('post', {
+      return await useAxiosGetArray('post', {
         params: { linkIds: links.map(({ link }) => link.id) },
-        paramsSerializer: (params: []) => qs.stringify(params),
       });
     } catch (err) {
       const { message } = err as AxiosError;

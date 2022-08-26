@@ -1,3 +1,4 @@
+import qs from 'qs';
 import axios from 'axios';
 import { useAxios } from '@vueuse/integrations/useAxios';
 
@@ -31,8 +32,9 @@ axiosClient.interceptors.response.use(
 );
 
 export default axiosClient;
-export const useAxiosGet = (url: string, data?: object) => {
-  return useAxios(url, { method: 'GET', ...data }, axiosClient);
+export const useAxiosGetArray = (url: string, data?: object) => {
+  return useAxiosGet(url, { ...data, paramsSerializer: qs.stringify });
 };
+export const useAxiosGet = (url: string, data?: object) => useAxios(url, { method: 'GET', ...data }, axiosClient);
 export const useAxiosPost = (url: string, data: object) => useAxios(url, { method: 'POST', data }, axiosClient);
 export const useAxiosDelete = (url: string) => useAxios(url, { method: 'DELETE' }, axiosClient);
