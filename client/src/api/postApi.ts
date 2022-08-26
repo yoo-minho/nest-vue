@@ -1,9 +1,10 @@
+import qs from 'qs';
 import { ref } from 'vue';
 import { AxiosError } from 'axios';
 
-import axiosClient, { useAxiosPost } from './base';
+import axiosClient, { useAxiosGet, useAxiosPost } from './base';
 
-import { LastPost, Link, RssItem } from '@/types/common';
+import { LastPost, LinkWrap, RssItem } from '@/types/common';
 import { getAgoString, getDateString } from '@/plugin/dayjs';
 
 export default {
@@ -16,16 +17,18 @@ export default {
       throw new Error(message);
     }
   },
-  async findAllPosts(links: { link: Link }[]) {
-    const linksBundle = links.map(({ link }) => ({ linkId: link.id || 0 }));
+  async findAllPosts(links: LinkWrap[]) {
     try {
-      return await useAxiosPost('post/in', { linkIds: linksBundle });
+      return await useAxiosGet('post', {
+        params: { linkIds: links.map(({ link }) => link.id) },
+        paramsSerializer: (params: []) => qs.stringify(params),
+      });
     } catch (err) {
       const { message } = err as AxiosError;
       throw new Error(message);
     }
   },
-  async findLast(links: { link: Link }[]) {
+  async findLast(links: LinkWrap[]) {
     const linksBundle = links.map(({ link }) => ({ linkId: link.id || 0, title: link.title }));
     try {
       const { isLoading, data } = await useAxiosPost('post/last', { linkIds: linksBundle });
@@ -43,7 +46,7 @@ export default {
       throw new Error(message);
     }
   },
-  async countByDate(links: { link: Link }[]) {
+  async countByDate(links: LinkWrap[]) {
     const linksBundle = links.map(({ link }) => ({ linkId: link.id || 0, title: link.title }));
     try {
       return await useAxiosPost('post/count/date', { linkIds: linksBundle });

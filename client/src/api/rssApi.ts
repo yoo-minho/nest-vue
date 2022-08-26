@@ -10,12 +10,12 @@ export default {
     const _items = res.data.items || [];
     const postItems = _items.map(({ title, description, content, created, link }: RssItem) => {
       const _description = pipe(
-        removeHtmlTag,
         htmlDecode,
         htmlDecode,
-        removeSpecialTag,
-        removeNewLine,
         removeBlank,
+        removeNewLine,
+        removeHtmlTag,
+        trim,
         substring100,
       )(description || content || '');
       return {
@@ -29,14 +29,17 @@ export default {
   },
 };
 
-function htmlDecode(input: string): string {
-  const doc = new DOMParser().parseFromString(input, 'text/html');
-  return doc.documentElement.textContent || '';
+function trim(input: string) {
+  return input.trim();
 }
 
-function removeSpecialTag(input: string) {
-  const rex = /(\<div class=\"revenue_unit_wrap)(.*?)(<\/div>)/gi;
-  return input.replace(rex, '');
+function htmlDecode(input: string): string {
+  const doc = new DOMParser().parseFromString(input, 'text/html');
+  const elements = doc.documentElement.getElementsByClassName('revenue_unit_wrap');
+  while (elements.length > 0) {
+    elements[0].parentNode?.removeChild(elements[0]);
+  }
+  return doc.documentElement.textContent || '';
 }
 
 function removeHtmlTag(input: string) {

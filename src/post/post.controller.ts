@@ -1,4 +1,11 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Query,
+  ParseArrayPipe,
+} from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { Prisma } from '@prisma/client';
@@ -17,11 +24,13 @@ export class PostController {
     return this.postService.createPosts(postDtos);
   }
 
-  @Post('in')
-  findAll(@Body() { linkIds }) {
-    const linkArr = linkIds.map(({ linkId }) => linkId);
+  @Get()
+  findAll(
+    @Query('linkIds', new ParseArrayPipe({ items: Number, separator: ',' }))
+    linkIds: number[],
+  ) {
     return this.postService.posts({
-      where: { linkId: { in: linkArr } },
+      where: { linkId: { in: linkIds } },
       orderBy: { createdAt: 'desc' },
       take: 100,
     });
