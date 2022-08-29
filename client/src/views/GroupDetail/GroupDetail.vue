@@ -22,8 +22,8 @@ onMounted(() => {
 
 <template>
   <DefaultLayout>
-    <group-detail-top :loading="groupLoading" />
-    <group-detail-tab />
+    <GroupDetailTop :loading="groupLoading" />
+    <GroupDetailTab />
     <router-view v-slot="{ Component, route }" :links="links" :loading="groupLoading">
       <transition name="tab">
         <component :is="Component" :key="route.path" style="position: absolute" />
