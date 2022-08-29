@@ -1,6 +1,5 @@
-import { Module } from '@nestjs/common';
+import { CacheModule, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { OpenGraphTagModule } from './open-graph-tag/open-graph-tag.module';
@@ -19,10 +18,10 @@ import { PostModule } from './post/post.module';
     RssModule,
     GroupModule,
     PostModule,
+    CacheModule.register({ isGlobal: true }),
   ],
   controllers: [AppController],
   providers: [
-    AppService,
     {
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,

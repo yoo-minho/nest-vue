@@ -28,7 +28,7 @@ export default {
   },
   async findLast(links: LinkWrap[]) {
     try {
-      const { isLoading, data } = await useAxiosGetArray('post/last', { linkIds: getIds(links) });
+      const { isLoading, data } = await useAxiosGetArray('post/last', { params: { linkIds: getIds(links) } });
       const _data = data.value.map((post: LastPost) => ({
         ...post,
         dateString: getDateString(new Date(post.createdAt)),
@@ -45,7 +45,7 @@ export default {
   },
   async countByDate(links: LinkWrap[]) {
     try {
-      return await useAxiosGetArray('post/count/date', { linkIds: getIds(links) });
+      return await useAxiosGetArray('post/count/date', { params: { linkIds: getIds(links) } });
     } catch (err) {
       const { message } = err as AxiosError;
       throw new Error(message);

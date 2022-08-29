@@ -10,11 +10,15 @@ import {
 import { GroupService } from './group.service';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { CacheService } from 'src/cache/cache.service';
 
 @ApiTags('group')
 @Controller('group')
 export class GroupController {
-  constructor(private readonly groupService: GroupService) {}
+  constructor(
+    private readonly groupService: GroupService,
+    private readonly cacheService: CacheService,
+  ) {}
 
   @Post()
   async create(@Body() createGroupDto: CreateGroupDto) {
@@ -66,12 +70,12 @@ export class GroupController {
   async findOne(@Param('domain') domain: string) {
     await this.groupService.upsertDailyViews(domain);
     await this.groupService.updateTotalViews(domain);
-
     const groupData = await this.groupService.group(domain);
-    const dailyViews = groupData['counts'][0]['count'];
+    this.cacheService.setGroupLinks(groupData.links);
+    const dailyViews = groupData.counts[0].count;
     groupData['dailyViews'] = dailyViews;
     groupData.totalViews = groupData.totalViews + dailyViews;
-    delete groupData['counts'];
+    delete groupData.counts;
     return groupData;
   }
 }

@@ -10,7 +10,7 @@ const props = defineProps<{ links: LinkWrap[]; loading: boolean }>();
 <template>
   <ContentsLayout>
     <template v-if="props.loading">
-      <group-detail-link-loader />
+      <GroupDetailLinkLoader />
     </template>
     <template v-else>
       <GroupDetailLinkCard v-for="({ link }, i) in props.links" :key="i" :link="link" />

@@ -1,5 +1,5 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import { Prisma, Group } from '@prisma/client';
+import { Prisma, Group, Link, Views } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { getToday8 } from 'src/plugin/dayjs';
 
@@ -15,7 +15,9 @@ export class GroupService {
     }
   }
 
-  async group(domain: string): Promise<Group> {
+  async group(
+    domain: string,
+  ): Promise<Group & { links: { link: Link }[]; counts: Views[] }> {
     return this.prisma.group.findUnique({
       include: {
         links: { select: { link: true } },
