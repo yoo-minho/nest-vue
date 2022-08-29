@@ -7,6 +7,7 @@ export type Link = {
   description?: string;
   type: string;
   imagePath?: string;
+  scrapAt?: Date | string;
 };
 export type LinkWrap = { link: Link };
 export type Group = {

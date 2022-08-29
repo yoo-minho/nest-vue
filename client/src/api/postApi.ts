@@ -10,6 +10,7 @@ const getIds = (links: LinkWrap[]) => links.map(({ link }) => link.id);
 
 export default {
   async createPosts(linkId: number, items: RssItem[]) {
+    if (items.length === 0) return;
     try {
       await axiosClient.post('post', { linkId, items });
     } catch (axiosError) {

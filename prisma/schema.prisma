@@ -52,6 +52,7 @@ model Link {
   rssUrl      String?
   title       String
   type        String
+  scrapAt     DateTime        @default(now()) @db.Timestamptz(3)
   groups      LinksOnGroups[]
   posts       Post[]
 }

@@ -6,7 +6,7 @@ import { pipe } from '../util';
 export default {
   async scrap(_link: Link): Promise<void> {
     const scrapUrl = _link.rssUrl || _link.url;
-    const res = await axiosClient.get('rss', { params: { url: scrapUrl } });
+    const res = await axiosClient.get('rss', { params: { url: scrapUrl, scrapAt: _link.scrapAt } });
     const _items = res.data.items || [];
     const postItems = _items.map(({ title, description, content, created, link }: RssItem) => {
       const _description = pipe(

@@ -4,6 +4,25 @@ import * as cheerio from 'cheerio';
 import { firstValueFrom } from 'rxjs';
 import { parse } from 'rss-to-json';
 
+type RssRes = {
+  title?: string;
+  description?: string;
+  link?: string;
+  image?: string;
+  category?: string;
+  items?: RssResItem[];
+  success?: boolean;
+  message?: Error;
+};
+
+type RssResItem = {
+  title?: string;
+  description?: string;
+  content?: string;
+  created?: Date;
+  link?: string;
+};
+
 const BLOG_EXPRESSION = {
   NAVER: /https:\/\/blog.naver.com\/([0-9a-zA-Z_-]*)(\/)?([0-9a-zA-Z]*)/gi,
   TISTORY: /https:\/\/([0-9a-zA-Z_-]*)\.tistory.com(\/)?([0-9a-zA-Z]*)/gi,
@@ -19,11 +38,14 @@ const BLOG_EXPRESSION = {
 export class RssService {
   constructor(private httpService: HttpService) {}
 
-  async findOne(url: string) {
+  async findOne(url: string, scrapAt: Date) {
     const rssUrl = await convertRssUrl(url, this.httpService);
-    let result;
+    let result: RssRes;
     try {
       result = await parse(rssUrl, {});
+      result.items = result.items.filter(
+        (item) => new Date(item.created) > scrapAt,
+      );
     } catch (e) {
       result = { success: false, message: e };
     }
