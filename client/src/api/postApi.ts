@@ -32,8 +32,8 @@ export default {
       const { isLoading, data } = await useAxiosGetArray('post/last', { params: { linkIds: getIds(links) } });
       const _data = data.value.map((post: LastPost) => ({
         ...post,
-        dateString: getDateString(new Date(post.createdAt)),
-        agoString: getAgoString(new Date(post.createdAt)),
+        dateString: getDateString(post.createdAt),
+        agoString: getAgoString(post.createdAt),
       }));
       return {
         isLoading,

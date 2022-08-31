@@ -7,6 +7,7 @@ import 'quasar/src/css/index.sass';
 
 import App from './App.vue';
 import router from './router';
+import { mainLog } from './util/ConsoleUtil';
 
 const myApp = createApp(App);
 myApp.use(Quasar, {
@@ -21,3 +22,5 @@ myApp.config.errorHandler = (error) => {
   Notify.create({ type: 'negative', message });
 };
 myApp.mount('#app');
+
+mainLog();

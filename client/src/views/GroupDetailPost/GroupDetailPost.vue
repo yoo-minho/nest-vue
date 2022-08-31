@@ -15,7 +15,7 @@ const { posts, postLoading } = storeToRefs(postStore);
 
 watch(
   () => props.links,
-  (links) => fetchPosts(links),
+  (links) => fetchPosts(links, true),
   { immediate: true },
 );
 </script>

@@ -33,8 +33,9 @@ export default axiosClient;
 export const useAxiosGetArray = (url: string, data?: object) =>
   useAxiosGet(url, { ...data, paramsSerializer: qs.stringify });
 export const useAxiosGet = (url: string, data?: object) => useAxios(url, { method: 'GET', ...data }, axiosClient);
-export const useAxiosPost = (url: string, data: object) => useAxios(url, { method: 'POST', data }, axiosClient);
+export const useAxiosPost = (url: string, data?: object) => useAxios(url, { method: 'POST', ...data }, axiosClient);
 export const useAxiosDelete = (url: string) => useAxios(url, { method: 'DELETE' }, axiosClient);
+export const useAxiosPatch = (url: string, data?: object) => useAxios(url, { method: 'PATCH', ...data }, axiosClient);
 
 const isoDateFormat = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d*)?Z$/gi;
 const handleDates = (body: any) => {

@@ -8,6 +8,7 @@ import { GroupModule } from './group/group.module';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './http-exception.filter';
 import { PostModule } from './post/post.module';
+import { LinkModule } from './link/link.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { PostModule } from './post/post.module';
     GroupModule,
     PostModule,
     CacheModule.register({ isGlobal: true }),
+    LinkModule,
   ],
   controllers: [AppController],
   providers: [

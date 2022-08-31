@@ -7,7 +7,7 @@ export type Link = {
   description?: string;
   type: string;
   imagePath?: string;
-  scrapAt?: Date | string;
+  scrapAt?: Date;
 };
 export type LinkWrap = { link: Link };
 export type Group = {
@@ -17,7 +17,7 @@ export type Group = {
   description?: string;
   links?: LinkWrap[];
   tags?: string[];
-  created_at?: Date;
+  createdAt?: Date;
   dailyViews?: number;
   totalViews?: number;
 };
@@ -44,7 +44,7 @@ export type Post = {
 };
 export type LastPost = {
   linkId: number;
-  createdAt: string;
+  createdAt: Date;
   title: string;
   dateString: string;
   agoString: string;

@@ -3,6 +3,8 @@ import { DaysAllCounts, DaysCount, LastPost, LinkWrap, OrderType, Post } from '.
 import PostAPI from '../api/postApi';
 import RssAPI from '../api/rssApi';
 
+import { isTodayByDate } from '@/plugin/dayjs';
+
 const MMM = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const day = [0, 1, 2, 3, 4, 5, 6];
 const countKey = (linkId: number) => (linkId > 0 ? `linkCountBy${linkId}` : 'totalCount');
@@ -34,14 +36,13 @@ export const usePostStore = defineStore('post', {
     },
   },
   actions: {
-    async fetchPosts(links: LinkWrap[]) {
+    async fetchPosts(links: LinkWrap[], isScrapOncePerDay: boolean) {
       if (links.length === 0) return;
       this.postLoading = true;
       await Promise.all(
         links.map(({ link }: LinkWrap) => {
-          //console.log('typeof link.scrapAt', new Date(link.scrapAt?.toString()));
-          //isTodayByDate(new Date(link.scrapAt);
-
+          if (isScrapOncePerDay && isTodayByDate(link.scrapAt)) return;
+          console.log('scrap', link.url, isScrapOncePerDay, link.scrapAt, isTodayByDate(link.scrapAt));
           return RssAPI.scrap(link);
         }),
       );

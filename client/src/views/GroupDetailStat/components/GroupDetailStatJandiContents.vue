@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { isToday } from '@/plugin/dayjs';
+import { isTodayByString } from '@/plugin/dayjs';
 import { DaysCounts } from '@/types/common';
 const props = defineProps<{ loading: boolean; data: DaysCounts[] }>();
 const countClass = (count: number) => `bg-green-${(count > 4 ? 4 : count) + 1}`;
 const tooltip = ({ count, date }: DaysCounts) =>
-  `${count === 0 ? 'No' : count} posting on ${date} ${isToday(date) ? '(Today)' : ''}`;
+  `${count === 0 ? 'No' : count} posting on ${date} ${isTodayByString(date) ? '(Today)' : ''}`;
 </script>
 <template>
   <div>
@@ -14,7 +14,7 @@ const tooltip = ({ count, date }: DaysCounts) =>
     <div v-else class="column jandi-area">
       <div v-for="(v, i) in props.data" :key="i" class="jandi-wrap">
         <div class="jandi-month text-grey-2">{{ v.month }}</div>
-        <div :class="{ jandi: true, [countClass(v.count)]: true, 'jandi-today': isToday(v.date) }">
+        <div :class="{ jandi: true, [countClass(v.count)]: true, 'jandi-today': isTodayByString(v.date) }">
           <q-tooltip>{{ tooltip(v) }}</q-tooltip>
         </div>
       </div>

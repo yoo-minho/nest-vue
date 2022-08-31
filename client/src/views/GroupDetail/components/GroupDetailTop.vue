@@ -5,23 +5,11 @@ import { useGroupStore } from '@/stores/group';
 import GroupInfo from '@/components/Info/GroupInfo.vue';
 import GroupDetailCounter from '@/components/Counter/GroupDetailCounter.vue';
 import GroupDetailTopLoader from '@/components/Loader/GroupDetailTopLoader.vue';
-import { getDateString } from '@/plugin/dayjs';
 
 const groupStore = useGroupStore();
-const { currentGroup } = storeToRefs(groupStore);
+const { currentGroup, minScrapAt } = storeToRefs(groupStore);
 const dailyViews = computed(() => currentGroup.value?.dailyViews || 0);
 const totalViews = computed(() => currentGroup.value?.totalViews || 0);
-const minScrapAt = computed(() => {
-  return getDateString(
-    currentGroup.value?.links
-      ?.map(({ link }) => ({
-        time: new Date(link.scrapAt as string).getTime() || 0,
-        scrapAt: new Date(link.scrapAt as string),
-      }))
-      .sort((x, y) => x.time - y.time)
-      .splice(0, 1)[0].scrapAt || new Date(),
-  );
-});
 
 const props = defineProps<{ loading: boolean }>();
 </script>

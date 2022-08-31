@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { Group, GroupTag, Link } from '../types/common';
 import GroupApi from '../api/groupApi';
+import { getDateString } from '@/plugin/dayjs';
 
 const totalTag = '전체보기';
 
@@ -20,6 +21,15 @@ export const useGroupStore = defineStore('group', {
     isTotalTag: (state) => state.currentTag === totalTag,
     NavTags: ({ tags }) => [{ index: -1, groupId: '', name: totalTag }, ...tags],
     TagNames: ({ tags }) => tags.map(({ name }) => name.toLowerCase()),
+    minScrapAt: ({ currentGroup }) => {
+      if (!currentGroup.links) return;
+      return getDateString(
+        currentGroup.links
+          .map(({ link }) => ({ time: link.scrapAt?.getTime() || 0, scrapAt: link.scrapAt }))
+          .sort((x, y) => x.time - y.time)
+          .splice(0, 1)[0].scrapAt || new Date(),
+      );
+    },
   },
   actions: {
     initLinks() {
@@ -57,6 +67,12 @@ export const useGroupStore = defineStore('group', {
       const { data } = await GroupApi.findById(domain);
       this.groupLoading = false;
       this.currentGroup = data.value;
+    },
+    updateMinScrapAt() {
+      this.currentGroup.links = this.currentGroup.links?.map(({ link }) => {
+        link.scrapAt = new Date();
+        return { link };
+      });
     },
     async save(title: string, domain: string, description: string, tags: string[]) {
       await GroupApi.create(

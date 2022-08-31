@@ -1,13 +1,20 @@
 import { Link, RssItem } from '../types/common';
 import axiosClient from './base';
 import PostAPI from './postApi';
+import LinkAPI from './linkApi';
+
 import { pipe } from '../util';
 
 export default {
-  async scrap(_link: Link): Promise<void> {
+  async scrap(_link: Link) {
     const scrapUrl = _link.rssUrl || _link.url;
     const res = await axiosClient.get('rss', { params: { url: scrapUrl, scrapAt: _link.scrapAt } });
     const _items = res.data.items || [];
+    if (_items.length === 0) {
+      if (!_link.id) return;
+      await LinkAPI.updateScrapAt(_link.id);
+      return;
+    }
     const postItems = _items.map(({ title, description, content, created, link }: RssItem) => {
       const _description = pipe(
         htmlDecode,
@@ -25,7 +32,9 @@ export default {
         url: link,
       };
     });
-    await PostAPI.createPosts(_link.id || 0, postItems);
+    if (!_link.id) return;
+    await PostAPI.createPosts(_link.id, postItems);
+    await LinkAPI.updateScrapAt(_link.id);
   },
 };
 

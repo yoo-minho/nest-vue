@@ -7,8 +7,8 @@ dayjs.extend(relativeTime);
 export const getDateString = (dateStr: Date) => dayjs(dateStr).format('YYYY-MM-DD HH:mm (ddd)');
 export const getAgoString = (dateStr: Date) => dayjs(dateStr).fromNow();
 
-export const isTodayByDate = (v: Date) => dayjs(v).format('YYYYMMDD') === dayjs(new Date()).format('YYYYMMDD');
-export const isToday = (dateString: string) => dateString === dayjs(new Date()).format('YYYY-MM-DD');
+export const isTodayByString = (dateString: string) => dateString === dayjs(new Date()).format('YYYY-MM-DD');
+export const isTodayByDate = (v = new Date()) => dayjs(v).format('YYYYMMDD') === dayjs(new Date()).format('YYYYMMDD');
 export const getDateStringByMs = (ms: number) => dayjs(new Date(ms)).format('YYYY-MM-DD');
 export const getAgoStringByMs = (ms: number) => dayjs(new Date(ms)).fromNow();
 export const getlocaleStr = (ms: number) => new Date(ms).toLocaleString();
