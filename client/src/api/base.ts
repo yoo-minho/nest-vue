@@ -21,20 +21,27 @@ axiosClient.interceptors.request.use(
 
 axiosClient.interceptors.response.use(
   async function (response) {
-    //await delay(1000);
-    //console.log('axios.interceptors.response1', { response });
+    handleDates(response.data);
     return response;
   },
   function (error) {
-    //console.log('axios.interceptors.response2', { error });
     return Promise.reject(error);
   },
 );
 
 export default axiosClient;
-export const useAxiosGetArray = (url: string, data?: object) => {
-  return useAxiosGet(url, { ...data, paramsSerializer: qs.stringify });
-};
+export const useAxiosGetArray = (url: string, data?: object) =>
+  useAxiosGet(url, { ...data, paramsSerializer: qs.stringify });
 export const useAxiosGet = (url: string, data?: object) => useAxios(url, { method: 'GET', ...data }, axiosClient);
 export const useAxiosPost = (url: string, data: object) => useAxios(url, { method: 'POST', data }, axiosClient);
 export const useAxiosDelete = (url: string) => useAxios(url, { method: 'DELETE' }, axiosClient);
+
+const isoDateFormat = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d*)?Z$/gi;
+const handleDates = (body: any) => {
+  if (body === null || body === undefined || typeof body !== 'object') return body;
+  for (const key of Object.keys(body)) {
+    const value = body[key];
+    if (isoDateFormat.test(value)) body[key] = new Date(value);
+    else if (typeof value === 'object') handleDates(value);
+  }
+};

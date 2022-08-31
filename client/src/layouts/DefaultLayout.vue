@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { useSubpageStore } from '@/stores/subpage';
 
@@ -8,8 +9,13 @@ import LinkEditor from '@/components/Editor/LinkEditor.vue';
 import SettingSubpage from '@/components/Setting/SettingSubpage.vue';
 import DataSubpage from '@/components/Setting/DataSubpage.vue';
 
+const route = useRoute();
+
 const subpageStore = useSubpageStore();
 const { isOpenGroupEditor, isOpenLinkEditor, isOpenSettingSubpage, isOpenDataSubpage } = storeToRefs(subpageStore);
+
+const editor = String(route.name) === 'Group';
+const refresh = String(route.name).includes('GroupDetail');
 </script>
 
 <template>
@@ -22,7 +28,7 @@ const { isOpenGroupEditor, isOpenLinkEditor, isOpenSettingSubpage, isOpenDataSub
         <DataSubpage v-if="isOpenDataSubpage" />
       </transition-group>
     </Teleport>
-    <HeaderItem :logo="true" :editor="true" :setting="true" />
+    <HeaderItem :logo="true" :editor="editor" :refresh="refresh" :setting="true" />
     <q-page-container class="max-width">
       <q-scroll-area :visible="false" class="max-width without-header">
         <slot></slot>

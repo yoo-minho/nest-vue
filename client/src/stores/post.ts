@@ -37,7 +37,14 @@ export const usePostStore = defineStore('post', {
     async fetchPosts(links: LinkWrap[]) {
       if (links.length === 0) return;
       this.postLoading = true;
-      await Promise.all(links.map(({ link }: LinkWrap) => RssAPI.scrap(link)));
+      await Promise.all(
+        links.map(({ link }: LinkWrap) => {
+          //console.log('typeof link.scrapAt', new Date(link.scrapAt?.toString()));
+          //isTodayByDate(new Date(link.scrapAt);
+
+          return RssAPI.scrap(link);
+        }),
+      );
       const { data, isLoading } = await PostAPI.findAllPosts(links);
       this.posts = data.value;
       this.postLoading = isLoading.value;

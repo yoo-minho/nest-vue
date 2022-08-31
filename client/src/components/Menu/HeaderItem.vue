@@ -13,6 +13,7 @@ interface HeaderOption {
   back?: () => void;
   logo?: boolean;
   title?: string;
+  refresh?: boolean;
   editor?: boolean;
   setting?: boolean;
   save?: () => void;
@@ -34,8 +35,10 @@ const reload = () => {
         onebylog
       </q-toolbar-title>
       <q-toolbar-title v-if="title">{{ title }}</q-toolbar-title>
+
+      <q-btn v-if="refresh" icon="sync" flat round dense @click="openGroupEditor" />
       <q-btn v-if="editor" icon="add_circle_outline" flat round dense @click="openGroupEditor" />
-      <q-btn v-if="setting" flat round dense icon="menu" @click="openSettingMain" />
+      <q-btn v-if="setting" icon="menu" flat round dense @click="openSettingMain" />
       <q-btn v-if="save" flat round dense icon="done" @click="save" />
     </q-toolbar>
   </q-header>
