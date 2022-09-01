@@ -4,6 +4,7 @@ import PostAPI from '../api/postApi';
 import RssAPI from '../api/rssApi';
 
 import { isTodayByDate } from '@/plugin/dayjs';
+import { delay } from '@/util';
 
 const MMM = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const day = [0, 1, 2, 3, 4, 5, 6];
@@ -11,12 +12,13 @@ const countKey = (linkId: number) => (linkId > 0 ? `linkCountBy${linkId}` : 'tot
 
 export const usePostStore = defineStore('post', {
   state: () => ({
+    scrapLoading: false,
     posts: [] as Post[],
-    postLoading: true,
+    postLoading: false,
     jandis: [] as DaysCount[],
-    jandiLoading: true,
+    jandiLoading: false,
     lastPosts: [] as LastPost[],
-    lastLoading: true,
+    lastLoading: false,
   }),
   getters: {
     activeJandis: ({ jandis }) => jandis.filter(({ count }) => count > 0) || [],
@@ -36,23 +38,39 @@ export const usePostStore = defineStore('post', {
     },
   },
   actions: {
-    async fetchPosts(links: LinkWrap[], isScrapOncePerDay: boolean) {
+    async scrapPosts(links: LinkWrap[], isScrapOncePerDay: boolean) {
       if (links.length === 0) return;
-      this.postLoading = true;
+      this.scrapLoading = true;
+      await delay(1000);
       await Promise.all(
         links.map(({ link }: LinkWrap) => {
           if (isScrapOncePerDay && isTodayByDate(link.scrapAt)) return;
-          console.log('scrap', link.url, isScrapOncePerDay, link.scrapAt, isTodayByDate(link.scrapAt));
           return RssAPI.scrap(link);
         }),
       );
-      const { data, isLoading } = await PostAPI.findAllPosts(links);
+      if (isScrapOncePerDay === false) {
+        this.posts = [];
+        this.jandis = [];
+        this.lastPosts = [];
+      }
+      this.scrapLoading = false;
+    },
+    async fetchPosts(links: LinkWrap[]) {
+      if (links.length === 0) return;
+
+      this.postLoading = this.posts.length === 0;
+      if (this.postLoading === false) return;
+
+      const { data } = await PostAPI.findAllPosts(links);
       this.posts = data.value;
-      this.postLoading = isLoading.value;
+      this.postLoading = false;
     },
     async fetchJandis(links: LinkWrap[], linkId: number) {
       if (links.length === 0) return;
-      this.jandiLoading = true;
+
+      this.jandiLoading = this.jandis.length === 0;
+      if (this.jandiLoading === false) return;
+
       const { data, isLoading } = await PostAPI.countByDate(links);
       this.jandis = data.value.map((v: DaysAllCounts) => ({
         ...v,
@@ -62,7 +80,10 @@ export const usePostStore = defineStore('post', {
     },
     async fetchLastPosts(links: LinkWrap[], order: OrderType) {
       if (links.length === 0) return;
-      this.lastLoading = true;
+
+      this.lastLoading = this.lastPosts.length === 0;
+      if (this.lastLoading === false) return;
+
       const { data, isLoading } = await PostAPI.findLast(links);
       const time = (date: string) => new Date(date).getTime();
       this.lastPosts = [...data.value].sort((x, y) => order * (time(y.createdAt) - time(x.createdAt)));

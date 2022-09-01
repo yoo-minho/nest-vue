@@ -3,6 +3,7 @@ import { onMounted, computed } from 'vue';
 import { storeToRefs } from 'pinia';
 
 import { useGroupStore } from '@/stores/group';
+import { usePostStore } from '@/stores/post';
 import DefaultLayout from '@/layouts/DefaultLayout.vue';
 import GroupDetailTab from './components/GroupDetailTab.vue';
 import GroupDetailTop from './components/GroupDetailTop.vue';
@@ -11,12 +12,19 @@ const groupStore = useGroupStore();
 const { fetchGroup } = groupStore;
 const { groupLoading, currentGroup } = storeToRefs(groupStore);
 
+const postStore = usePostStore();
+const { scrapPosts } = postStore;
+
 const props = defineProps<{ domain: string }>();
 const links = computed(() => currentGroup.value?.links || []);
 
-onMounted(() => {
+onMounted(async () => {
   groupLoading.value = true;
-  fetchGroup(props.domain);
+
+  await fetchGroup(props.domain);
+  const links = currentGroup.value.links;
+  if (!links) return;
+  await scrapPosts(links, true);
 });
 </script>
 

@@ -8,7 +8,9 @@ import { storeToRefs } from 'pinia';
 import { useQuasar } from 'quasar';
 
 const postStore = usePostStore();
-const { fetchPosts } = postStore;
+
+const { scrapLoading } = storeToRefs(postStore);
+const { scrapPosts } = postStore;
 
 const subpageStore = useSubpageStore();
 const { openGroupEditor, openSettingMain } = subpageStore;
@@ -36,11 +38,17 @@ const $q = useQuasar();
 const reload = () => {
   router.replace({ name: 'Group' });
 };
-const xxx = async () => {
+const scrapPostsAndAction = async () => {
   const links = currentGroup.value.links;
   if (!links) return;
-  await fetchPosts(links, false);
-  await updateMinScrapAt();
+
+  if (scrapLoading.value) {
+    $q.notify({ type: 'nagative', message: 'Wait for a moment!' });
+    return;
+  }
+
+  await scrapPosts(links, false);
+  updateMinScrapAt();
   $q.notify({ type: 'positive', message: 'Refresh Competed!' });
 };
 </script>
@@ -55,7 +63,7 @@ const xxx = async () => {
       </q-toolbar-title>
       <q-toolbar-title v-if="title">{{ title }}</q-toolbar-title>
 
-      <q-btn v-if="refresh" icon="sync" flat round dense @click="xxx" />
+      <q-btn v-if="refresh" icon="sync" flat round dense @click="scrapPostsAndAction" />
       <q-btn v-if="editor" icon="add_circle_outline" flat round dense @click="openGroupEditor" />
       <q-btn v-if="setting" icon="menu" flat round dense @click="openSettingMain" />
       <q-btn v-if="save" flat round dense icon="done" @click="save" />
