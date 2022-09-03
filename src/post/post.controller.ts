@@ -42,11 +42,9 @@ export class PostController {
   @Get('last')
   async findAllLast(@Query('linkIds', numbersPipe) linkIds: number[]) {
     const lastPostArr = await this.postService.lastPosts(linkIds);
-    const groupLinks = await this.cacheService.getGroupLinks();
     return lastPostArr.map(({ _max, linkId }) => ({
       linkId,
       createdAt: _max.createdAt,
-      title: groupLinks.find(({ link }) => link.id === linkId).link.title,
     }));
   }
 

@@ -10,7 +10,7 @@ import { useQuasar } from 'quasar';
 const postStore = usePostStore();
 
 const { scrapLoading } = storeToRefs(postStore);
-const { scrapPosts } = postStore;
+const { initPostData, scrapPosts } = postStore;
 
 const subpageStore = useSubpageStore();
 const { openGroupEditor, openSettingMain } = subpageStore;
@@ -47,6 +47,7 @@ const scrapPostsAndAction = async () => {
     return;
   }
 
+  initPostData();
   await scrapPosts(links, false);
   updateMinScrapAt();
   $q.notify({ type: 'positive', message: 'Refresh Competed!' });

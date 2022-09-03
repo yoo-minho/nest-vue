@@ -2,8 +2,8 @@
 import { toRefs } from 'vue';
 import { LinkWrap } from '@/types/common';
 import GroupDetailStatBanner from './components/GroupDetailStatBanner.vue';
-import GroupDetailStatLast from './components/GroupDetailStatLast.vue';
-import GroupDetailStatJandi from './components/GroupDetailStatJandi.vue';
+import GroupDetailStatLast from './components/GroupDetailStatLast/GroupDetailStatLast.vue';
+import GroupDetailStatJandi from './components/GroupDetailStatJandi/GroupDetailStatJandi.vue';
 import ContentsLayout from '@/layouts/ContentsLayout.vue';
 
 const props = defineProps<{ links: LinkWrap[]; loading: boolean }>();

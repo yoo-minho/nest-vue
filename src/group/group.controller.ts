@@ -6,10 +6,9 @@ import {
   Param,
   Query,
   ConflictException,
-  Res,
-  Req,
+  Ip,
 } from '@nestjs/common';
-import { Request, Response } from 'express';
+import { RealIP } from 'nestjs-real-ip';
 import { GroupService } from './group.service';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { ApiTags } from '@nestjs/swagger';
@@ -70,7 +69,13 @@ export class GroupController {
   }
 
   @Get(':domain')
-  async findOne(@Param('domain') domain: string) {
+  async findOne(
+    @Param('domain') domain: string,
+    @Ip() ip: string,
+    @RealIP() realIp: string,
+  ) {
+    console.log('xxxx', ip, realIp);
+
     if (await this.cacheService.isUpdatableViewsByGroupDomain(domain)) {
       console.log('record views');
       await this.groupService.upsertDailyViews(domain);
@@ -78,8 +83,6 @@ export class GroupController {
     }
 
     const groupData = await this.groupService.group(domain);
-    this.cacheService.setGroupLinks(groupData.links);
-
     groupData.dailyViews = groupData.counts[0].count;
     groupData.totalViews = groupData.totalViews + groupData.dailyViews;
     delete groupData.counts;

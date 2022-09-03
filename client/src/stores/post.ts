@@ -38,6 +38,11 @@ export const usePostStore = defineStore('post', {
     },
   },
   actions: {
+    initPostData() {
+      this.posts = [];
+      this.jandis = [];
+      this.lastPosts = [];
+    },
     async scrapPosts(links: LinkWrap[], isScrapOncePerDay: boolean) {
       if (links.length === 0) return;
       this.scrapLoading = true;
@@ -48,11 +53,6 @@ export const usePostStore = defineStore('post', {
           return RssAPI.scrap(link);
         }),
       );
-      if (isScrapOncePerDay === false) {
-        this.posts = [];
-        this.jandis = [];
-        this.lastPosts = [];
-      }
       this.scrapLoading = false;
     },
     async fetchPosts(links: LinkWrap[]) {

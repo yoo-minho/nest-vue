@@ -45,7 +45,7 @@ export type Post = {
 export type LastPost = {
   linkId: number;
   createdAt: Date;
-  title: string;
+  title?: string;
   dateString: string;
   agoString: string;
 };
