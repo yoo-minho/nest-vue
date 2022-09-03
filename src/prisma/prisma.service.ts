@@ -33,23 +33,23 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     this.$on('query', async ({ query, params }) => {
-      console.info(
-        `=== QUERY === \n${format(query, {
-          language: 'postgresql',
-          tabWidth: 2,
-          linesBetweenQueries: 2,
-        }).replace(/"public"./g, '')}`,
-      );
-      console.info('== PARAM', jsonParse(params));
+      // console.info(
+      //   `=== QUERY === \n${format(query, {
+      //     language: 'postgresql',
+      //     tabWidth: 2,
+      //     linesBetweenQueries: 2,
+      //   }).replace(/"public"./g, '')}`,
+      // );
+      // console.info('== PARAM', jsonParse(params));
     });
     this.$use(async (params, next) => {
       const before = Date.now();
       const result = await next(params);
       const after = Date.now();
       const { model, action } = params;
-      console.info(`== MODEL : ${model}.${action}`);
-      console.info(`== TIMES : ${after - before}ms`);
-      console.info(`==========================================`);
+      // console.info(`== MODEL : ${model}.${action}`);
+      // console.info(`== TIMES : ${after - before}ms`);
+      // console.info(`==========================================`);
       return result;
     });
   }

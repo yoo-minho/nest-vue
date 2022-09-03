@@ -6,7 +6,10 @@ import {
   Param,
   Query,
   ConflictException,
+  Res,
+  Req,
 } from '@nestjs/common';
+import { Request, Response } from 'express';
 import { GroupService } from './group.service';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { ApiTags } from '@nestjs/swagger';
@@ -68,13 +71,17 @@ export class GroupController {
 
   @Get(':domain')
   async findOne(@Param('domain') domain: string) {
-    await this.groupService.upsertDailyViews(domain);
-    await this.groupService.updateTotalViews(domain);
+    if (await this.cacheService.isUpdatableViewsByGroupDomain(domain)) {
+      console.log('record views');
+      await this.groupService.upsertDailyViews(domain);
+      await this.groupService.updateTotalViews(domain);
+    }
+
     const groupData = await this.groupService.group(domain);
     this.cacheService.setGroupLinks(groupData.links);
-    const dailyViews = groupData.counts[0].count;
-    groupData['dailyViews'] = dailyViews;
-    groupData.totalViews = groupData.totalViews + dailyViews;
+
+    groupData.dailyViews = groupData.counts[0].count;
+    groupData.totalViews = groupData.totalViews + groupData.dailyViews;
     delete groupData.counts;
     return groupData;
   }

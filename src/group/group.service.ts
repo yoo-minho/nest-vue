@@ -3,6 +3,12 @@ import { Prisma, Group, Link, Views } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { getToday8 } from 'src/plugin/dayjs';
 
+type GroupResponseDto = Group & {
+  links: { link: Link }[];
+  counts: Views[];
+  dailyViews?: number;
+};
+
 @Injectable()
 export class GroupService {
   constructor(private prisma: PrismaService) {}
@@ -15,9 +21,7 @@ export class GroupService {
     }
   }
 
-  async group(
-    domain: string,
-  ): Promise<Group & { links: { link: Link }[]; counts: Views[] }> {
+  async group(domain: string): Promise<GroupResponseDto> {
     return this.prisma.group.findUnique({
       include: {
         links: { select: { link: true } },
