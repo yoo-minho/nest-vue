@@ -18,7 +18,6 @@ export class CacheService {
 
   async isUpdatableViewsByGroupDomain(domain: string): Promise<boolean> {
     const visitGroup = (await this.getVisitGroups()) || {};
-    console.log(this.getSecondfromNow(visitGroup[domain]));
     if (this.getSecondfromNow(visitGroup[domain]) < 30) {
       return false;
     }
