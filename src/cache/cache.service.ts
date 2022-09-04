@@ -16,12 +16,19 @@ export class CacheService {
     this.cacheManager.set('group-links', data, { ttl: 0 });
   }
 
-  async isUpdatableViewsByGroupDomain(domain: string): Promise<boolean> {
+  async isUpdatableViewsByGroupDomain(
+    domain: string,
+    ip: string,
+  ): Promise<boolean> {
+    const UPDATE_CYCLE_SEC = 60 * 10; //10min
     const visitGroup = (await this.getVisitGroups()) || {};
-    if (this.getSecondfromNow(visitGroup[domain]) < 30) {
+    if (
+      visitGroup[domain] &&
+      this.getSecondfromNow(visitGroup[domain][ip]) < UPDATE_CYCLE_SEC
+    ) {
       return false;
     }
-    await this.setVisitGroups(domain);
+    await this.setVisitGroups(domain, ip);
     return true;
   }
 
@@ -29,9 +36,13 @@ export class CacheService {
     return this.cacheManager.get('visit-group');
   }
 
-  private async setVisitGroups(domain: string) {
-    const visitGroup = (await this.getVisitGroups()) || {};
-    visitGroup[domain] = new Date();
+  private async setVisitGroups(domain: string, ip: string) {
+    let visitGroup = ((await this.getVisitGroups()) || {}) as object;
+    if (visitGroup[domain]) {
+      visitGroup[domain][ip] = new Date();
+    } else {
+      visitGroup = { ...visitGroup, [domain]: { [ip]: new Date() } };
+    }
     await this.cacheManager.set('visit-group', visitGroup, { ttl: 0 });
   }
 

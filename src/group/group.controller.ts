@@ -8,7 +8,6 @@ import {
   ConflictException,
   Ip,
 } from '@nestjs/common';
-import { RealIP } from 'nestjs-real-ip';
 import { GroupService } from './group.service';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { ApiTags } from '@nestjs/swagger';
@@ -69,15 +68,8 @@ export class GroupController {
   }
 
   @Get(':domain')
-  async findOne(
-    @Param('domain') domain: string,
-    @Ip() ip: string,
-    @RealIP() realIp: string,
-  ) {
-    console.log('xxxx', ip, realIp);
-
-    if (await this.cacheService.isUpdatableViewsByGroupDomain(domain)) {
-      console.log('record views');
+  async findOne(@Param('domain') domain: string, @Ip() ip: string) {
+    if (await this.cacheService.isUpdatableViewsByGroupDomain(domain, ip)) {
       await this.groupService.upsertDailyViews(domain);
       await this.groupService.updateTotalViews(domain);
     }
