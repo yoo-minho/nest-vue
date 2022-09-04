@@ -53,6 +53,10 @@ export class GroupService {
     });
   }
 
+  async count() {
+    return await this.prisma.group.count();
+  }
+
   async groupTags() {
     return this.prisma.tag.findMany({
       include: {
