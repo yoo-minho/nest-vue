@@ -19,6 +19,10 @@ export class PostService {
     }
   }
 
+  async count() {
+    return await this.prisma.post.count();
+  }
+
   async posts(params: {
     skip?: number;
     take?: number;

@@ -11,6 +11,14 @@ export default {
       throw new Error(message);
     }
   },
+  async count() {
+    try {
+      return await useAxiosGet('group/counts');
+    } catch (err) {
+      const { message } = err as AxiosError;
+      throw new Error(message);
+    }
+  },
   async findByTag(tag: string) {
     try {
       return await useAxiosGet('group', { params: { tag } });

@@ -15,4 +15,8 @@ export class LinkService {
       throw new ForbiddenException(e);
     }
   }
+
+  async count() {
+    return await this.prisma.link.count();
+  }
 }

@@ -3,7 +3,9 @@ import { useRouter } from 'vue-router';
 
 import { useSubpageStore } from '@/stores/subpage';
 import SettingLayout from '@/layouts/SettingLayout.vue';
+import GroupApi from '@/api/groupApi';
 import SettingCard from './SettingCard.vue';
+import { onMounted, ref } from 'vue';
 
 const subpageStore = useSubpageStore();
 const { closeSettingMain, openStackMain, openPlatformMain } = subpageStore;
@@ -18,11 +20,35 @@ const SERVICE_CATEGORY = [
   { icon: 'reviews', title: '의견 및 오류 제공', clickEvent: routerPush('/') },
 ];
 const ETC_CATEGORY = [{ icon: 'military_tech', title: '기술 스택', clickEvent: openStackMain }];
+
+const groupCount = ref(0);
+const linkCount = ref(0);
+const postCount = ref(0);
+
+onMounted(async () => {
+  const { data } = await GroupApi.count();
+  groupCount.value = data.value.groupCount;
+  linkCount.value = data.value.linkCount;
+  postCount.value = data.value.postCount;
+  console.log(data.value);
+});
 </script>
 
 <template>
   <SettingLayout title="더보기" @back="closeSettingMain">
     <q-list padding class="rounded-borders">
+      <q-item-label header>누적 데이터</q-item-label>
+      <div class="row q-px-md q-mb-md">
+        <div class="col-4">
+          <q-chip class="count-chip" color="green-2" text-color="white"> {{ groupCount }} groups </q-chip>
+        </div>
+        <div class="col-4">
+          <q-chip class="count-chip" color="green-3" text-color="white"> {{ linkCount }} links </q-chip>
+        </div>
+        <div class="col-4">
+          <q-chip square class="count-chip" color="green-4" text-color="white"> {{ postCount }} posts</q-chip>
+        </div>
+      </div>
       <q-item-label header>서비스</q-item-label>
       <div v-for="(v, i) in SERVICE_CATEGORY" :key="i">
         <SettingCard :setting-json="v" />
@@ -36,4 +62,9 @@ const ETC_CATEGORY = [{ icon: 'military_tech', title: '기술 스택', clickEven
   </SettingLayout>
 </template>
 
-<style></style>
+<style scope>
+.count-chip {
+  width: 100%;
+  border-radius: 0;
+}
+</style>

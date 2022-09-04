@@ -12,6 +12,8 @@ import { GroupService } from './group.service';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { CacheService } from 'src/cache/cache.service';
+import { LinkService } from 'src/link/link.service';
+import { PostService } from 'src/post/post.service';
 
 @ApiTags('group')
 @Controller('group')
@@ -19,6 +21,8 @@ export class GroupController {
   constructor(
     private readonly groupService: GroupService,
     private readonly cacheService: CacheService,
+    private readonly linkService: LinkService,
+    private readonly postService: PostService,
   ) {}
 
   @Post()
@@ -65,6 +69,16 @@ export class GroupController {
   @Get('tags')
   findAllTag() {
     return this.groupService.groupTags();
+  }
+
+  @Get('counts')
+  async countGroupNLinkNPost() {
+    const [groupCount, linkCount, postCount] = await Promise.all([
+      this.groupService.count(),
+      this.linkService.count(),
+      this.postService.count(),
+    ]);
+    return { groupCount, linkCount, postCount };
   }
 
   @Get(':domain')
