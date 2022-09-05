@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { BLOG_TYPE } from '@prisma/client';
 import {
   IsBoolean,
   IsNotEmpty,
@@ -32,7 +33,7 @@ export class CreateGroupDto {
     rssUrl: string;
     title: string;
     description: string;
-    type: string;
+    type: BLOG_TYPE;
     imagePath: string;
   }[];
 }

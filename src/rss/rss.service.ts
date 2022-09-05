@@ -38,18 +38,19 @@ const BLOG_EXPRESSION = {
 export class RssService {
   constructor(private httpService: HttpService) {}
 
-  async findOne(url: string, scrapAt: Date) {
+  async findOne(url: string, scrapAt?: Date) {
     const rssUrl = await convertRssUrl(url, this.httpService);
-    let result: RssRes;
     try {
-      result = await parse(rssUrl, {});
-      result.items = result.items.filter(
-        (item) => new Date(item.created) > scrapAt,
-      );
+      const result: RssRes = await parse(rssUrl, {});
+      if (scrapAt) {
+        result.items = result.items.filter(
+          (item) => new Date(item.created) > scrapAt,
+        );
+      }
+      return result;
     } catch (e) {
-      result = { success: false, message: e };
+      return { success: false, message: e };
     }
-    return result;
   }
 }
 

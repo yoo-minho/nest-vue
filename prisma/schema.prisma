@@ -22,7 +22,7 @@ model User {
 
 model Group {
   id          Int             @id @default(autoincrement())
-  domain      String          @unique
+  domain      String          @unique @db.VarChar(20)
   published   Boolean?        @default(false)
   createrId   String
   createdAt   DateTime        @default(now()) @db.Timestamptz(3)
@@ -51,8 +51,8 @@ model Link {
   imagePath   String?
   rssUrl      String?
   title       String
-  type        String
-  scrapAt     DateTime        @default(now()) @db.Timestamptz(3)
+  scrapAt     DateTime?
+  type        BLOG_TYPE?
   groups      LinksOnGroups[]
   posts       Post[]
 }
@@ -91,4 +91,13 @@ model Post {
   description String?
   url         String   @unique
   link        Link     @relation(fields: [linkId], references: [id])
+}
+
+enum BLOG_TYPE {
+  NAVER
+  VELOG
+  TISTORY
+  BRUNCH
+  MEDIUM
+  TWIITCH
 }

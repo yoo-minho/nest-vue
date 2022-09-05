@@ -5,7 +5,7 @@ export type Link = {
   rssUrl?: string;
   title: string;
   description?: string;
-  type: string;
+  type: BlogType;
   imagePath?: string;
   scrapAt?: Date;
 };
@@ -81,3 +81,4 @@ export type StackJson = {
   githubStar: string;
 };
 export type OrderType = 1 | -1;
+export type BlogType = string & ('BRUNCH' | 'MEDIUM' | 'NAVER' | 'TISTORY' | 'VELOG' | 'TWIITCH' | '');

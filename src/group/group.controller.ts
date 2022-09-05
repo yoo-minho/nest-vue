@@ -37,7 +37,7 @@ export class GroupController {
       title,
       description,
       creater: {
-        connect: { id: 'dellose' },
+        connect: { id: 'dellose@naver.com' },
       },
       published: true,
       tags: {
