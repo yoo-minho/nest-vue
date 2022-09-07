@@ -14,9 +14,9 @@ datasource db {
 }
 
 model User {
-  id     String  @id @unique
-  email  String  @unique
-  name   String
+  id     String  @id @unique @db.VarChar(100)
+  email  String  @unique @db.VarChar(100)
+  name   String  @db.VarChar(50)
   groups Group[]
 }
 
@@ -24,10 +24,10 @@ model Group {
   id          Int             @id @default(autoincrement())
   domain      String          @unique @db.VarChar(20)
   published   Boolean?        @default(false)
-  createrId   String
+  createrId   String          @db.VarChar(100)
   createdAt   DateTime        @default(now()) @db.Timestamptz(3)
-  description String?
-  title       String
+  description String?         @db.VarChar(100)
+  title       String          @db.VarChar(20)
   totalViews  Int             @default(0)
   creater     User            @relation(fields: [createrId], references: [id])
   links       LinksOnGroups[]
@@ -36,9 +36,9 @@ model Group {
 }
 
 model Views {
-  date        String
+  date        String @db.VarChar(8)
   count       Int
-  groupDomain String
+  groupDomain String @db.VarChar(20)
   Group       Group  @relation(fields: [groupDomain], references: [domain])
 
   @@id([groupDomain, date])
@@ -47,10 +47,10 @@ model Views {
 model Link {
   id          Int             @id @default(autoincrement())
   url         String          @unique
-  description String?
-  imagePath   String?
-  rssUrl      String?
-  title       String
+  description String?         @db.VarChar(100)
+  imagePath   String?         @db.VarChar(500)
+  rssUrl      String?         @db.VarChar(500)
+  title       String          @db.VarChar(20)
   scrapAt     DateTime?
   type        BLOG_TYPE?
   groups      LinksOnGroups[]
@@ -69,7 +69,7 @@ model LinksOnGroups {
 
 model Tag {
   id     Int            @id @default(autoincrement())
-  name   String         @unique
+  name   String         @unique @db.VarChar(20)
   groups TagsOnGroups[]
 }
 
@@ -85,10 +85,10 @@ model TagsOnGroups {
 
 model Post {
   id          Int      @id @default(autoincrement())
-  title       String
+  title       String   @db.VarChar(20)
   linkId      Int
   createdAt   DateTime
-  description String?
+  description String?  @db.VarChar(100)
   url         String   @unique
   link        Link     @relation(fields: [linkId], references: [id])
 }

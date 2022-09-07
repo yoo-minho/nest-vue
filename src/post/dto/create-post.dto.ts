@@ -1,10 +1,26 @@
+import { IsOptional, IsNumber, IsString, MaxLength } from 'class-validator';
+
 export class CreatePostDto {
+  @IsNumber()
   linkId: number;
-  items: {
-    id?: number;
-    title: string;
-    createdAt: string | Date;
-    description?: string;
-    url: string;
-  }[];
+  items: PostItemDto[];
+}
+
+class PostItemDto {
+  @IsOptional()
+  @IsNumber()
+  id?: number;
+
+  @MaxLength(20)
+  @IsString()
+  title: string;
+
+  createdAt: string | Date;
+
+  @MaxLength(100)
+  @IsString()
+  description?: string;
+
+  @IsString()
+  url: string;
 }

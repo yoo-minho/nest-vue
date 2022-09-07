@@ -3,9 +3,9 @@ CREATE TYPE "BLOG_TYPE" AS ENUM ('NAVER', 'VELOG', 'TISTORY', 'BRUNCH', 'MEDIUM'
 
 -- CreateTable
 CREATE TABLE "User" (
-    "id" TEXT NOT NULL,
-    "email" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
+    "id" VARCHAR(100) NOT NULL,
+    "email" VARCHAR(100) NOT NULL,
+    "name" VARCHAR(50) NOT NULL,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -15,10 +15,10 @@ CREATE TABLE "Group" (
     "id" SERIAL NOT NULL,
     "domain" VARCHAR(20) NOT NULL,
     "published" BOOLEAN DEFAULT false,
-    "createrId" TEXT NOT NULL,
+    "createrId" VARCHAR(100) NOT NULL,
     "createdAt" TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "description" TEXT,
-    "title" TEXT NOT NULL,
+    "description" VARCHAR(100),
+    "title" VARCHAR(20) NOT NULL,
     "totalViews" INTEGER NOT NULL DEFAULT 0,
 
     CONSTRAINT "Group_pkey" PRIMARY KEY ("id")
@@ -26,9 +26,9 @@ CREATE TABLE "Group" (
 
 -- CreateTable
 CREATE TABLE "Views" (
-    "date" TEXT NOT NULL,
+    "date" VARCHAR(8) NOT NULL,
     "count" INTEGER NOT NULL,
-    "groupDomain" TEXT NOT NULL,
+    "groupDomain" VARCHAR(20) NOT NULL,
 
     CONSTRAINT "Views_pkey" PRIMARY KEY ("groupDomain","date")
 );
@@ -37,11 +37,11 @@ CREATE TABLE "Views" (
 CREATE TABLE "Link" (
     "id" SERIAL NOT NULL,
     "url" TEXT NOT NULL,
-    "description" TEXT,
-    "imagePath" TEXT,
-    "rssUrl" TEXT,
-    "title" TEXT NOT NULL,
-    "scrapAt" TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "description" VARCHAR(100),
+    "imagePath" VARCHAR(500),
+    "rssUrl" VARCHAR(500),
+    "title" VARCHAR(20) NOT NULL,
+    "scrapAt" TIMESTAMP(3),
     "type" "BLOG_TYPE",
 
     CONSTRAINT "Link_pkey" PRIMARY KEY ("id")
@@ -59,7 +59,7 @@ CREATE TABLE "LinksOnGroups" (
 -- CreateTable
 CREATE TABLE "Tag" (
     "id" SERIAL NOT NULL,
-    "name" TEXT NOT NULL,
+    "name" VARCHAR(20) NOT NULL,
 
     CONSTRAINT "Tag_pkey" PRIMARY KEY ("id")
 );
@@ -76,10 +76,10 @@ CREATE TABLE "TagsOnGroups" (
 -- CreateTable
 CREATE TABLE "Post" (
     "id" SERIAL NOT NULL,
-    "title" TEXT NOT NULL,
+    "title" VARCHAR(20) NOT NULL,
     "linkId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL,
-    "description" TEXT,
+    "description" VARCHAR(100),
     "url" TEXT NOT NULL,
 
     CONSTRAINT "Post_pkey" PRIMARY KEY ("id")
