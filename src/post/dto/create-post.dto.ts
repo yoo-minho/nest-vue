@@ -1,10 +1,14 @@
-import { IsOptional, IsNumber, IsString, MaxLength } from 'class-validator';
-
-export class CreatePostDto {
-  @IsNumber()
-  linkId: number;
-  items: PostItemDto[];
-}
+import { Type } from 'class-transformer';
+import {
+  IsOptional,
+  IsNumber,
+  IsString,
+  MaxLength,
+  IsDefined,
+  IsArray,
+  ArrayNotEmpty,
+  ValidateNested,
+} from 'class-validator';
 
 class PostItemDto {
   @IsOptional()
@@ -15,6 +19,7 @@ class PostItemDto {
   @IsString()
   title: string;
 
+  @IsString()
   createdAt: string | Date;
 
   @MaxLength(100)
@@ -23,4 +28,16 @@ class PostItemDto {
 
   @IsString()
   url: string;
+}
+
+export class CreatePostDto {
+  @IsNumber()
+  linkId: number;
+
+  @IsDefined()
+  @IsArray()
+  @ArrayNotEmpty()
+  @ValidateNested()
+  @Type(() => PostItemDto)
+  items: PostItemDto[];
 }

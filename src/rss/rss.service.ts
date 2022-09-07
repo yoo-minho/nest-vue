@@ -13,6 +13,8 @@ type RssRes = {
   items?: RssResItem[];
   success?: boolean;
   message?: Error;
+  scrapAt?: Date;
+  itemLength?: number;
 };
 
 type RssResItem = {
@@ -39,6 +41,7 @@ export class RssService {
   constructor(private httpService: HttpService) {}
 
   async findOne(url: string, scrapAt?: Date) {
+    scrapAt = scrapAt == undefined ? null : scrapAt;
     const rssUrl = await convertRssUrl(url, this.httpService);
     try {
       const result: RssRes = await parse(rssUrl, {});
@@ -47,9 +50,11 @@ export class RssService {
           (item) => new Date(item.created) > scrapAt,
         );
       }
+      result.scrapAt = scrapAt;
+      result.itemLength = result.items.length;
       return result;
     } catch (e) {
-      return { success: false, message: e };
+      return { success: false, message: e, items: [], scrapAt };
     }
   }
 }

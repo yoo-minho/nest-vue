@@ -41,12 +41,12 @@ export class GroupController {
       },
       published: true,
       tags: {
-        create: tags.map((name) => ({
+        create: tags?.map((name) => ({
           tag: { connectOrCreate: { where: { name }, create: { name } } },
         })),
       },
       links: {
-        create: links.map((link) => ({
+        create: links?.map((link) => ({
           link: {
             connectOrCreate: { where: { url: link.url }, create: { ...link } },
           },
