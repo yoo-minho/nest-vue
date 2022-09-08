@@ -1,10 +1,11 @@
 import { Transform } from 'class-transformer';
-import { IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 export class RssQueryDto {
   @IsString()
   url: string;
 
+  @IsOptional()
   @Transform(({ value }) => new Date(value))
   scrapAt?: Date;
 }

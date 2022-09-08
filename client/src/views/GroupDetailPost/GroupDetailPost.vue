@@ -5,6 +5,7 @@ import { usePostStore } from '@/stores/post';
 
 import { LinkWrap } from '@/types/common';
 import ContentsLayout from '@/layouts/ContentsLayout.vue';
+import GroupDetailPostEmpty from '@/components/Empty/GroupDetailPostEmpty.vue';
 import GroupDetailPostLoader from '@/components/Loader/GroupDetailPostLoader.vue';
 import GroupDetailPostCard from './components/GroupDetailPostCard.vue';
 
@@ -24,6 +25,9 @@ watch(
   <ContentsLayout>
     <template v-if="loading || postLoading">
       <GroupDetailPostLoader />
+    </template>
+    <template v-else-if="posts.length === 0">
+      <GroupDetailPostEmpty />
     </template>
     <template v-else>
       <GroupDetailPostCard v-for="(post, i) in posts" :key="i" :post="post" />
