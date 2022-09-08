@@ -3,7 +3,7 @@ import { Group, GroupTag, Link } from '../types/common';
 import GroupApi from '../api/groupApi';
 import { getDateString } from '@/plugin/dayjs';
 
-const totalTag = '전체보기';
+const totalTag = 'All';
 
 export const useGroupStore = defineStore('group', {
   state: () => ({
@@ -23,11 +23,13 @@ export const useGroupStore = defineStore('group', {
     TagNames: ({ tags }) => tags.map(({ name }) => name.toLowerCase()),
     minScrapAt: ({ currentGroup }) => {
       if (!currentGroup.links) return;
-      return getDateString(
-        currentGroup.links
-          .map(({ link }) => ({ time: link.scrapAt?.getTime() || 0, scrapAt: link.scrapAt }))
-          .sort((x, y) => x.time - y.time)
-          .splice(0, 1)[0].scrapAt || new Date(),
+      return (
+        getDateString(
+          currentGroup.links
+            .map(({ link }) => ({ time: link.scrapAt?.getTime() || 0, scrapAt: link.scrapAt }))
+            .sort((x, y) => x.time - y.time)
+            .splice(0, 1)[0].scrapAt,
+        ) || 'fail to scrap ...'
       );
     },
   },

@@ -40,20 +40,25 @@ export const usePostStore = defineStore('post', {
   actions: {
     initPostData() {
       this.posts = [];
+      this.postLoading = true;
       this.jandis = [];
       this.lastPosts = [];
     },
     async scrapPosts(links: LinkWrap[], isScrapOncePerDay: boolean) {
       if (links.length === 0) return;
       this.scrapLoading = true;
-      await delay(1000);
-      await Promise.all(
-        links.map(({ link }: LinkWrap) => {
-          if (isScrapOncePerDay && isTodayByDate(link.scrapAt)) return;
-          return RssAPI.scrap(link);
-        }),
-      );
-      this.scrapLoading = false;
+      // await delay(1000);
+      try {
+        await Promise.all(
+          links
+            .filter(({ link }: LinkWrap) => !(isScrapOncePerDay && isTodayByDate(link.scrapAt)))
+            .map(({ link }: LinkWrap) => RssAPI.scrap(link)),
+        );
+      } catch (e) {
+        throw new Error(String(e));
+      } finally {
+        this.scrapLoading = false;
+      }
     },
     async fetchPosts(links: LinkWrap[]) {
       if (links.length === 0) return;

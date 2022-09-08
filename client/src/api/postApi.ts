@@ -2,6 +2,7 @@ import { ref } from 'vue';
 import { AxiosError } from 'axios';
 
 import axiosClient, { useAxiosGetArray } from './base';
+import { ErrorMessage, AxiosErrorType } from './error';
 
 import { LastPost, LinkWrap, RssItem } from '@/types/common';
 import { getAgoString, getDateString } from '@/plugin/dayjs';
@@ -13,10 +14,8 @@ export default {
     if (items.length === 0) return;
     try {
       await axiosClient.post('post', { linkId, items });
-    } catch (axiosError) {
-      const err = axiosError as AxiosError<{ res: { message: string } }>;
-      const message = err.response?.data?.res?.message || err.message;
-      throw new Error(message);
+    } catch (e) {
+      throw new Error(ErrorMessage(e as AxiosErrorType));
     }
   },
   async findAllPosts(links: LinkWrap[]) {

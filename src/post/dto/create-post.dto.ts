@@ -1,4 +1,4 @@
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import {
   IsOptional,
   IsNumber,
@@ -8,6 +8,7 @@ import {
   IsArray,
   ArrayNotEmpty,
   ValidateNested,
+  IsDate,
 } from 'class-validator';
 
 class PostItemDto {
@@ -19,8 +20,9 @@ class PostItemDto {
   @IsString()
   title: string;
 
-  @IsString()
-  createdAt: string | Date;
+  @IsDate()
+  @Transform(({ value }) => new Date(value))
+  createdAt: Date;
 
   @MaxLength(100)
   @IsString()

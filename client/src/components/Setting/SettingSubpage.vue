@@ -37,7 +37,7 @@ onMounted(async () => {
 <template>
   <SettingLayout title="더보기" @back="closeSettingMain">
     <q-list padding class="rounded-borders">
-      <q-item-label header>누적 데이터</q-item-label>
+      <q-item-label header>Total</q-item-label>
       <div class="row q-px-md q-mb-md">
         <div class="col-4">
           <q-chip class="count-chip" color="green-2" text-color="white"> {{ groupCount }} groups </q-chip>
@@ -49,12 +49,12 @@ onMounted(async () => {
           <q-chip square class="count-chip" color="green-4" text-color="white"> {{ postCount }} posts</q-chip>
         </div>
       </div>
-      <q-item-label header>서비스</q-item-label>
+      <q-item-label header>Service</q-item-label>
       <div v-for="(v, i) in SERVICE_CATEGORY" :key="i">
         <SettingCard :setting-json="v" />
       </div>
       <q-separator spaced />
-      <q-item-label header>기타</q-item-label>
+      <q-item-label header>Etc</q-item-label>
       <div v-for="(v, i) in ETC_CATEGORY" :key="i">
         <SettingCard :setting-json="v" />
       </div>

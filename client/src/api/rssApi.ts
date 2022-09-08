@@ -26,7 +26,7 @@ export default {
         substring100,
       )(description || content || '');
       return {
-        title: substring30(scrapUrl.includes('twitch') ? decodeHtmlEntity(title) : title),
+        title: substring20(scrapUrl.includes('twitch') ? decodeHtmlEntity(title) : title),
         description: _description,
         createdAt: new Date(created),
         url: link,
@@ -63,8 +63,8 @@ function removeNewLine(input: string) {
   return input.replace(/\n/g, ' ');
 }
 
-function substring30(input: string) {
-  return input.substring(0, 30);
+function substring20(input: string) {
+  return input.substring(0, 20);
 }
 
 function substring100(input: string) {
