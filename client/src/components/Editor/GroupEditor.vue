@@ -103,7 +103,7 @@ async function saveGroup() {
       counter
       maxlength="20"
       placeholder="전용 링크 추가"
-      prefix="https://onebylog.com/@"
+      prefix="https://teamlog.io/@"
       :rules="idRules"
     />
     <q-input
