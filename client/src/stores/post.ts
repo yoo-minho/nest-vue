@@ -4,7 +4,6 @@ import PostAPI from '../api/postApi';
 import RssAPI from '../api/rssApi';
 
 import { isTodayByDate } from '@/plugin/dayjs';
-import { delay } from '@/util';
 
 const MMM = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const day = [0, 1, 2, 3, 4, 5, 6];
