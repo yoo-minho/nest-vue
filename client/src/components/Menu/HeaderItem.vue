@@ -26,6 +26,7 @@ interface HeaderOption {
   back?: () => void;
   logo?: boolean;
   title?: string;
+  share?: boolean;
   refresh?: boolean;
   editor?: boolean;
   setting?: boolean;
@@ -52,6 +53,17 @@ const scrapPostsAndAction = async () => {
   updateMinScrapAt();
   $q.notify({ type: 'positive', message: 'Refresh Competed!' });
 };
+
+const shareUrl = () => {
+  if (typeof navigator === 'undefined') {
+    $q.notify({ type: 'nagative', message: 'Non-shareable environment!' });
+    return;
+  }
+  navigator.share({
+    title: location.href,
+    url: location.href,
+  });
+};
 </script>
 
 <template>
@@ -64,6 +76,7 @@ const scrapPostsAndAction = async () => {
       </q-toolbar-title>
       <q-toolbar-title v-if="title">{{ title }}</q-toolbar-title>
 
+      <q-btn v-if="share" icon="share" flat round dense @click="shareUrl" />
       <q-btn v-if="refresh" icon="sync" flat round dense @click="scrapPostsAndAction" />
       <q-btn v-if="editor" icon="add_circle_outline" flat round dense @click="openGroupEditor" />
       <q-btn v-if="setting" icon="menu" flat round dense @click="openSettingMain" />

@@ -29,6 +29,7 @@ export class GroupService {
       },
       where: {
         domain,
+        //active
       },
     });
   }

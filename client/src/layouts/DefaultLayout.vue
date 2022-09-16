@@ -14,8 +14,8 @@ const route = useRoute();
 const subpageStore = useSubpageStore();
 const { isOpenGroupEditor, isOpenLinkEditor, isOpenSettingSubpage, isOpenDataSubpage } = storeToRefs(subpageStore);
 
-const editor = String(route.name) === 'Group';
-const refresh = String(route.name).includes('GroupDetail');
+const groupMain = String(route.name) === 'Group';
+const groupDetail = String(route.name).includes('GroupDetail');
 </script>
 
 <template>
@@ -28,7 +28,7 @@ const refresh = String(route.name).includes('GroupDetail');
         <DataSubpage v-if="isOpenDataSubpage" />
       </transition-group>
     </Teleport>
-    <HeaderItem :logo="true" :editor="editor" :refresh="refresh" :setting="true" />
+    <HeaderItem :logo="true" :editor="groupMain" :share="groupDetail" :refresh="groupDetail" :setting="true" />
     <q-page-container class="max-width">
       <q-scroll-area :visible="false" class="max-width without-header">
         <slot></slot>
