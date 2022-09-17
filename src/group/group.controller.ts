@@ -39,7 +39,7 @@ export class GroupController {
       creater: {
         connect: { id: 'dellose@naver.com' },
       },
-      published: true,
+      published: false,
       tags: {
         create: tags?.map((name) => ({
           tag: { connectOrCreate: { where: { name }, create: { name } } },
@@ -59,11 +59,14 @@ export class GroupController {
   findAll(@Query() { tag }) {
     if (tag) {
       return this.groupService.groups({
-        where: { tags: { some: { tag: { name: tag } } } },
+        where: { published: true, tags: { some: { tag: { name: tag } } } },
         orderBy: { createdAt: 'desc' },
       });
     }
-    return this.groupService.groups({ orderBy: { createdAt: 'desc' } });
+    return this.groupService.groups({
+      where: { published: true },
+      orderBy: { createdAt: 'desc' },
+    });
   }
 
   @Get('tags')

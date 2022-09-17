@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { toRaw } from 'vue';
+import { ref, toRaw } from 'vue';
 import { useRouter } from 'vue-router';
 import { useSubpageStore } from '@/stores/subpage';
 import { usePostStore } from '@/stores/post';
@@ -33,6 +33,8 @@ interface HeaderOption {
   save?: () => void;
 }
 
+const rotate = ref(false);
+
 const props = defineProps<HeaderOption>();
 const { logo, editor, setting } = toRaw(props);
 const $q = useQuasar();
@@ -48,10 +50,14 @@ const scrapPostsAndAction = async () => {
     return;
   }
 
+  rotate.value = true;
+
   initPostData();
   await scrapPosts(links, false);
   updateMinScrapAt();
   $q.notify({ type: 'positive', message: 'Refresh Competed!' });
+
+  setTimeout(() => (rotate.value = false), 400);
 };
 
 const shareUrl = () => {
@@ -77,7 +83,15 @@ const shareUrl = () => {
       <q-toolbar-title v-if="title">{{ title }}</q-toolbar-title>
 
       <q-btn v-if="share" icon="share" flat round dense @click="shareUrl" />
-      <q-btn v-if="refresh" icon="sync" flat round dense @click="scrapPostsAndAction" />
+      <q-btn
+        v-if="refresh"
+        :class="{ loading_arrow: rotate }"
+        icon="refresh"
+        flat
+        round
+        dense
+        @click="scrapPostsAndAction"
+      />
       <q-btn v-if="editor" icon="add_circle_outline" flat round dense @click="openGroupEditor" />
       <q-btn v-if="setting" icon="menu" flat round dense @click="openSettingMain" />
       <q-btn v-if="save" flat round dense icon="done" @click="save" />
@@ -93,5 +107,43 @@ const shareUrl = () => {
   color: white;
   font-weight: bold;
   cursor: pointer;
+}
+.loading_arrow {
+  -webkit-animation: rotation 0.5s infinite linear;
+  -moz-animation: rotation 0.5s infinite linear;
+  -o-animation: rotation 0.5s infinite linear;
+  animation: rotation 0.5s infinite linear;
+}
+@-webkit-keyframes rotation {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(359deg);
+  }
+}
+@-moz-keyframes rotation {
+  from {
+    -moz-transform: rotate(0deg);
+  }
+  to {
+    -moz-transform: rotate(359deg);
+  }
+}
+@-o-keyframes rotation {
+  from {
+    -o-transform: rotate(0deg);
+  }
+  to {
+    -o-transform: rotate(359deg);
+  }
+}
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
 }
 </style>

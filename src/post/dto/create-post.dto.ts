@@ -16,7 +16,7 @@ class PostItemDto {
   @IsNumber()
   id?: number;
 
-  @MaxLength(20)
+  @MaxLength(50)
   @IsString()
   title: string;
 

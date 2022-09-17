@@ -27,9 +27,8 @@ model Group {
   createrId   String          @db.VarChar(100)
   createdAt   DateTime        @default(now()) @db.Timestamptz(3)
   description String?         @db.VarChar(100)
-  title       String          @db.VarChar(20)
+  title       String          @db.VarChar(50)
   totalViews  Int             @default(0)
-  active      Boolean         @default(false)
   creater     User            @relation(fields: [createrId], references: [id])
   links       LinksOnGroups[]
   tags        TagsOnGroups[]
@@ -51,7 +50,7 @@ model Link {
   description String?         @db.VarChar(100)
   imagePath   String?         @db.VarChar(500)
   rssUrl      String?         @db.VarChar(500)
-  title       String          @db.VarChar(20)
+  title       String          @db.VarChar(50)
   scrapAt     DateTime?
   type        BLOG_TYPE?
   groups      LinksOnGroups[]
@@ -86,7 +85,7 @@ model TagsOnGroups {
 
 model Post {
   id          Int      @id @default(autoincrement())
-  title       String   @db.VarChar(20)
+  title       String   @db.VarChar(50)
   linkId      Int
   createdAt   DateTime
   description String?  @db.VarChar(100)
