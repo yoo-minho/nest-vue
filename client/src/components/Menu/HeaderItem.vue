@@ -61,7 +61,7 @@ const scrapPostsAndAction = async () => {
 };
 
 const shareUrl = () => {
-  if (typeof navigator === 'undefined') {
+  if (typeof navigator.share === 'undefined') {
     $q.notify({ type: 'nagative', message: 'Non-shareable environment!' });
     return;
   }
