@@ -5,6 +5,13 @@ const routes = [
     path: '/',
     name: 'Group',
     component: () => import('@/views/GroupMain/GroupMain.vue'),
+    // meta: { transition: 'subpage' },
+  },
+  {
+    path: '/group-editor',
+    name: 'GroupEditor',
+    component: () => import('@/views/GroupEditor/GroupEditor.vue'),
+    // meta: { transition: 'subpage' },
   },
   {
     path: '/@:domain',

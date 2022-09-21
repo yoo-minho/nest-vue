@@ -13,7 +13,7 @@ const { scrapLoading } = storeToRefs(postStore);
 const { initPostData, scrapPosts } = postStore;
 
 const subpageStore = useSubpageStore();
-const { openGroupEditor, openSettingMain } = subpageStore;
+const { openSettingMain } = subpageStore;
 
 const groupStore = useGroupStore();
 const { currentGroup } = storeToRefs(groupStore);
@@ -40,6 +40,9 @@ const { logo, editor, setting } = toRaw(props);
 const $q = useQuasar();
 const reload = () => {
   router.replace({ name: 'Group' });
+};
+const openGroupEditor = () => {
+  router.push({ name: 'GroupEditor' });
 };
 const scrapPostsAndAction = async () => {
   const links = currentGroup.value.links;

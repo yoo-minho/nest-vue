@@ -37,19 +37,40 @@ const groupDetail = String(route.name).includes('GroupDetail');
   </q-layout>
 </template>
 
-<style scoped>
-.subpage-enter-from,
+<style>
 .subpage-leave-to {
   transform: translateY(100vh);
 }
 
-.subpage-enter-active,
 .subpage-leave-active {
-  transition: all 0.5s;
+  transition: all 5s;
 }
 
-.subpage-enter-to,
 .subpage-leave-from {
+  transform: translateY(0);
+}
+
+.subpage2-enter-to {
+  transform: translateY(0);
+}
+
+.subpage2-enter-active {
+  transition: all 5s;
+}
+
+.subpage2-enter-from {
+  transform: translateY(100vh);
+}
+
+.stay-leave-to {
+  transform: translateY(10);
+}
+
+.stay-leave-active {
+  transition: all 5s;
+}
+
+.stay-leave-from {
   transform: translateY(0);
 }
 </style>

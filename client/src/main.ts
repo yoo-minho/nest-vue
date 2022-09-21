@@ -15,6 +15,33 @@ myApp.use(Quasar, {
 });
 
 myApp.use(createPinia());
+
+router.beforeEach((to, from) => {
+  const goEditor = from.name === 'Group' && to.name === 'GroupEditor';
+  if (goEditor) {
+    from.meta.transitionName = 'stay';
+  }
+});
+
+router.afterEach((to, from) => {
+  // to.meta.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left';
+  // from.meta.transitionName = from.name === 'GroupEditor' || to.name === 'GroupEditor' ? '' : ''; //켤떄
+  const goGroup = from.name === 'GroupEditor' && to.name === 'Group';
+  const goEditor = from.name === 'Group' && to.name === 'GroupEditor';
+
+  if (goGroup) {
+    to.meta.transitionName = 'subpage';
+  } else if (goEditor) {
+    to.meta.transitionName = 'subpage2';
+    from.meta.transitionName = 'stay';
+  }
+
+  // from.meta.transitionName = goEditor ? 'subpage2' : '';
+  console.log('afterEach =================================');
+  console.log('from', from.name, from.meta);
+  console.log('to', to.name, to.meta);
+});
+
 myApp.use(router);
 
 myApp.config.errorHandler = (error) => {
@@ -24,21 +51,6 @@ myApp.config.errorHandler = (error) => {
 myApp.mount('#app');
 
 mainLog();
-
-window.onpageshow = function (event) {
-  if (event.persisted) {
-    alert('onpageshow');
-  }
-};
-
-window.onhashchange = function (event) {
-  alert('onhashchange');
-};
-
-window.onpopstate = function () {
-  alert('onpopstate');
-};
-
 /*
   문제1. 메인 => 디테일 => 메인 에서 뒤로가기하면 디테일로 감 (홈오면 초기화)
   문제2. 메인에서 백버튼 누르면 그냥 바로 꺼짐 (바로 안꺼지게 해야될듯)

@@ -3,7 +3,8 @@ import axios from 'axios';
 import { useAxios } from '@vueuse/integrations/useAxios';
 
 const axiosClient = axios.create({
-  baseURL: '/api',
+  baseURL: 'http://localhost:5000/api',
+  //baseURL: '/api',
   timeout: 5000,
   headers: { Accept: 'application/json' },
 });
