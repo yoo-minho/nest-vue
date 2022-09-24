@@ -13,7 +13,7 @@ const { scrapLoading } = storeToRefs(postStore);
 const { initPostData, scrapPosts } = postStore;
 
 const subpageStore = useSubpageStore();
-const { openSettingMain } = subpageStore;
+const { openSettingMain, openGroupEditor } = subpageStore;
 
 const groupStore = useGroupStore();
 const { currentGroup } = storeToRefs(groupStore);
@@ -41,8 +41,9 @@ const $q = useQuasar();
 const reload = () => {
   router.replace({ name: 'Group' });
 };
-const openGroupEditor = () => {
-  router.push({ name: 'GroupEditor' });
+const _openGroupEditor = () => {
+  router.push({ hash: '#GroupEditor' });
+  openGroupEditor();
 };
 const scrapPostsAndAction = async () => {
   const links = currentGroup.value.links;
@@ -95,7 +96,7 @@ const shareUrl = () => {
         dense
         @click="scrapPostsAndAction"
       />
-      <q-btn v-if="editor" icon="add_circle_outline" flat round dense @click="openGroupEditor" />
+      <q-btn v-if="editor" icon="add_circle_outline" flat round dense @click="_openGroupEditor" />
       <q-btn v-if="setting" icon="menu" flat round dense @click="openSettingMain" />
       <q-btn v-if="save" flat round dense icon="done" @click="save" />
     </q-toolbar>

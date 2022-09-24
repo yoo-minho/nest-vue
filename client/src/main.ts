@@ -14,32 +14,36 @@ myApp.use(Quasar, {
   plugins: { Notify, Dialog },
 });
 
-myApp.use(createPinia());
+const pinia = createPinia();
+myApp.use(pinia);
 
-router.beforeEach((to, from) => {
-  const goEditor = from.name === 'Group' && to.name === 'GroupEditor';
-  if (goEditor) {
-    from.meta.transitionName = 'stay';
-  }
-});
-
-router.afterEach((to, from) => {
+router.beforeEach((to, from, next) => {
   // to.meta.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left';
   // from.meta.transitionName = from.name === 'GroupEditor' || to.name === 'GroupEditor' ? '' : ''; //켤떄
   const goGroup = from.name === 'GroupEditor' && to.name === 'Group';
   const goEditor = from.name === 'Group' && to.name === 'GroupEditor';
 
-  if (goGroup) {
-    to.meta.transitionName = 'subpage';
-  } else if (goEditor) {
-    to.meta.transitionName = 'subpage2';
-    from.meta.transitionName = 'stay';
-  }
+  // if (from.name === undefined && to.name === 'Group') {
+  //   to.meta.transitionName = 'stay'; //group
+  // } else if (goEditor) {
+  //   // from.meta.transitionName = 'stay'; //group
+  //   to.meta.transition = 'subpage';
+  // } else if (goGroup) {
+  //   to.meta.transitionName = 'subpage'; //group
+  // }
 
   // from.meta.transitionName = goEditor ? 'subpage2' : '';
   console.log('afterEach =================================');
-  console.log('from', from.name, from.meta);
-  console.log('to', to.name, to.meta);
+  console.log('from', from.name, from.meta, from);
+  console.log('to', to.name, to.meta, to);
+
+  if (from.hash === '#GroupEditor' && to.name === 'Group') {
+    // router.replace({ name: 'Group' });
+    // next
+    //next({ name: 'Group' });
+  }
+
+  next();
 });
 
 myApp.use(router);
