@@ -14,6 +14,7 @@ export const useSubpageStore = defineStore('subpage', {
       this.isOpenGroupEditor = true;
     },
     closeGroupEditor() {
+      console.log('closeGroupEditor');
       this.isOpenGroupEditor = false;
     },
     openLinkEditor() {
