@@ -106,7 +106,7 @@ async function saveGroup() {
       counter
       maxlength="20"
       placeholder="전용 링크 추가"
-      prefix="https://teamlog.io/@"
+      prefix="https://teamlog.team/@"
       :rules="idRules"
     />
     <q-input

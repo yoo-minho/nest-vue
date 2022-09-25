@@ -73,8 +73,8 @@ async function addBlogLink() {
     url: url.value,
     rssUrl: rssUrl.value,
     type: getBlogType(url.value),
-    title: ogsData.ogTitle,
-    description: ogsData.ogDescription,
+    title: ogsData.ogTitle.substring(0, 50),
+    description: ogsData.ogDescription.substring(0, 100),
     imagePath: ogsData.ogImage.url,
   });
   closeLinkEditor();

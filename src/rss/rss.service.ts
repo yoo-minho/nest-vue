@@ -89,11 +89,13 @@ export class RssService {
   }
 
   async convertRssUrl(url: string): Promise<string> {
-    return Object.entries(this.BLOG_EXPRESSION)
-      .filter(([, { reg }]) => isTest(url, reg))
-      .map(([, { reg, rss, replacePipe }]) =>
-        rss(replacePipe ? url.replace(reg, '$1') : url),
-      )[0];
+    return (
+      Object.entries(this.BLOG_EXPRESSION)
+        .filter(([, { reg }]) => isTest(url, reg))
+        .map(([, { reg, rss, replacePipe }]) =>
+          rss(replacePipe ? url.replace(reg, '$1') : url),
+        )[0] || url
+    );
   }
 
   async rssBrunch(url: string) {
