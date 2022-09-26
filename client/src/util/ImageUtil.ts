@@ -2,7 +2,7 @@ import platformArray from '@/data/platform.json';
 import { BlogType } from '@/types/common';
 
 export const getBlogType = (url = ''): BlogType =>
-  (platformArray.map((p) => p.type).find((platform) => url.toUpperCase().includes(platform)) || '') as BlogType;
+  (platformArray.map((p) => p.type).find((platform) => url.toUpperCase().includes(platform)) || 'RSS') as BlogType;
 
 export const getBlogImagePath = (type: BlogType) => {
   const target = platformArray.filter((p) => p.type === type?.toUpperCase());

@@ -39,7 +39,7 @@ export class GroupController {
       creater: {
         connect: { id: 'dellose@naver.com' },
       },
-      published: false,
+      published: true, //TO-DO. 개발 true, 운영 false
       tags: {
         create: tags?.map((name) => ({
           tag: { connectOrCreate: { where: { name }, create: { name } } },
