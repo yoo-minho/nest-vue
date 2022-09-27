@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { QSelect, useQuasar } from 'quasar';
 
@@ -8,6 +9,8 @@ import { useSubpageStore } from '@/stores/subpage';
 
 import EditorLayout from '@/layouts/EditorLayout.vue';
 import LinkCard from '@/components/Card/LinkCard.vue';
+
+const router = useRouter();
 
 const groupStore = useGroupStore();
 const { initLinks, save, fetchAllGroup, fetchAllTag, deleteLink } = groupStore;
@@ -77,12 +80,17 @@ async function saveGroup() {
 
   await fetchAllGroup();
   await fetchAllTag();
+  closeEditor();
+}
+
+function closeEditor() {
+  router.push({ hash: '' });
   closeGroupEditor();
 }
 </script>
 
 <template>
-  <EditorLayout title="그룹 만들기" @save="saveGroup" @close="closeGroupEditor()">
+  <EditorLayout title="그룹 만들기" @save="saveGroup" @close="closeEditor()">
     <q-banner rounded class="bg-green-4 text-white text-body2">
       알파 버전에서는 마스터의 승인 전까진 그룹 목록에 추가되지 않습니다. 빠른 검토 후에서 승인하도록 하겠습니다!
     </q-banner>
@@ -106,7 +114,7 @@ async function saveGroup() {
       counter
       maxlength="20"
       placeholder="전용 링크 추가"
-      prefix="https://teamlog.team/@"
+      prefix="https://teamlog.teamo/@"
       :rules="idRules"
     />
     <q-input
@@ -145,7 +153,7 @@ async function saveGroup() {
       <q-chip v-for="(v, i) in selectedTags" :key="i" dense>{{ v }}</q-chip>
     </div>
 
-    <q-btn color="primary" class="full-width" label="블로그 링크 추가" @click="openLinkEditor">
+    <q-btn color="primary" class="full-width" label="블로그 링크 추가" @click="openLinkEditor()">
       <span class="q-ml-sm">{{ linkCountMessage }}</span>
     </q-btn>
 

@@ -44,7 +44,7 @@ const groupDetail = String(route.name).includes('GroupDetail');
 }
 
 .subpage-leave-active {
-  transition: ease-out 0.75s;
+  transition: ease-out 0.5s;
 }
 
 .subpage-leave-from {
@@ -58,25 +58,11 @@ const groupDetail = String(route.name).includes('GroupDetail');
 }
 
 .subpage-enter-active {
-  transition: ease-out 0.75s;
+  transition: ease-out 0.5s;
 }
 
 .subpage-enter-from {
   position: absolute;
   transform: translateY(100vh);
-}
-
-.stay-leave-to {
-  position: absolute;
-  transform: translateY(50vh);
-}
-
-.stay-leave-active {
-  transition: all 5s;
-}
-
-.stay-leave-from {
-  position: absolute;
-  transform: translateY(0);
 }
 </style>
