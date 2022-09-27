@@ -42,7 +42,7 @@ const reload = () => {
   router.replace({ name: 'Group' });
 };
 const _openGroupEditor = () => {
-  router.push({ hash: '#GroupEditor' });
+  router.push({ hash: '#Editor' });
   openGroupEditor();
 };
 const scrapPostsAndAction = async () => {
