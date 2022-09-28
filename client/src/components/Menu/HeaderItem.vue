@@ -45,6 +45,10 @@ const _openGroupEditor = () => {
   router.push({ hash: '#Editor' });
   openGroupEditor();
 };
+const _openSettingMain = () => {
+  router.push({ hash: '#Setting' });
+  openSettingMain();
+};
 const scrapPostsAndAction = async () => {
   const links = currentGroup.value.links;
   if (!links) return;
@@ -97,7 +101,7 @@ const shareUrl = () => {
         @click="scrapPostsAndAction"
       />
       <q-btn v-if="editor" icon="add_circle_outline" flat round dense @click="_openGroupEditor" />
-      <q-btn v-if="setting" icon="menu" flat round dense @click="openSettingMain" />
+      <q-btn v-if="setting" icon="menu" flat round dense @click="_openSettingMain" />
       <q-btn v-if="save" flat round dense icon="done" @click="save" />
     </q-toolbar>
   </q-header>

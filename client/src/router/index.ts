@@ -40,10 +40,10 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const subpageStore = useSubpageStore();
-  const { isOpenLinkEditor } = storeToRefs(subpageStore);
-  const { closeGroupEditor, closeLinkEditor } = subpageStore;
+  const { isOpenLinkEditor, isOpenDataSubpage } = storeToRefs(subpageStore);
+  const { closeGroupEditor, closeLinkEditor, closeSettingMain, closeStackMain } = subpageStore;
 
-  if (from.name === undefined && to.hash === '#Editor') {
+  if (from.name === undefined && ['#Editor', '#Setting'].includes(to.hash)) {
     router.replace({ hash: '' });
     return;
   }
@@ -54,6 +54,17 @@ router.beforeEach((to, from, next) => {
       next(false);
     } else {
       closeGroupEditor();
+      next();
+    }
+    return;
+  }
+
+  if (from.hash === '#Setting' && to.name === 'Group') {
+    if (isOpenDataSubpage.value) {
+      closeStackMain();
+      next(false);
+    } else {
+      closeSettingMain();
       next();
     }
     return;

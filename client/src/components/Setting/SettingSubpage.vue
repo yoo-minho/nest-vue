@@ -30,12 +30,16 @@ onMounted(async () => {
   groupCount.value = data.value.groupCount;
   linkCount.value = data.value.linkCount;
   postCount.value = data.value.postCount;
-  console.log(data.value);
 });
+
+function _closeSettingMain() {
+  router.replace({ hash: '' });
+  closeSettingMain();
+}
 </script>
 
 <template>
-  <SettingLayout title="더보기" @back="closeSettingMain">
+  <SettingLayout title="더보기" @back="_closeSettingMain">
     <q-list padding class="rounded-borders">
       <q-item-label header>Total</q-item-label>
       <div class="row q-px-md q-mb-md">
