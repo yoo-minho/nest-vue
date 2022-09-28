@@ -80,17 +80,17 @@ async function saveGroup() {
 
   await fetchAllGroup();
   await fetchAllTag();
-  closeEditor();
+  _closeGroupEditor();
 }
 
-function closeEditor() {
-  router.push({ hash: '' });
+function _closeGroupEditor() {
+  router.replace({ hash: '' });
   closeGroupEditor();
 }
 </script>
 
 <template>
-  <EditorLayout title="그룹 만들기" @save="saveGroup" @close="closeEditor()">
+  <EditorLayout title="그룹 만들기" @save="saveGroup" @close="_closeGroupEditor">
     <q-banner rounded class="bg-green-4 text-white text-body2">
       알파 버전에서는 마스터의 승인 전까진 그룹 목록에 추가되지 않습니다. 빠른 검토 후에서 승인하도록 하겠습니다!
     </q-banner>
