@@ -43,6 +43,8 @@ router.beforeEach((to, from, next) => {
   const { isOpenLinkEditor, isOpenDataSubpage } = storeToRefs(subpageStore);
   const { closeGroupEditor, closeLinkEditor, closeSettingMain, closeStackMain } = subpageStore;
 
+  console.log(to.hash, 'xxxxadsas');
+
   if (from.name === undefined && ['#Editor', '#Setting'].includes(to.hash)) {
     router.replace({ hash: '' });
     return;
