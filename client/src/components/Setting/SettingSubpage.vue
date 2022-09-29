@@ -44,10 +44,10 @@ function _closeSettingMain() {
       <q-item-label header>Total</q-item-label>
       <div class="row q-px-md q-mb-md">
         <div class="col-4">
-          <q-chip class="count-chip" color="green-2" text-color="white"> {{ groupCount }} groups </q-chip>
+          <q-chip class="count-chip" color="green-2" text-color="white"> {{ groupCount }} teams </q-chip>
         </div>
         <div class="col-4">
-          <q-chip class="count-chip" color="green-3" text-color="white"> {{ linkCount }} links </q-chip>
+          <q-chip class="count-chip" color="green-3" text-color="white"> {{ linkCount }} blogs </q-chip>
         </div>
         <div class="col-4">
           <q-chip square class="count-chip" color="green-4" text-color="white"> {{ postCount }} posts</q-chip>

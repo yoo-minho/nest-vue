@@ -1,12 +1,12 @@
 export const mainLog = () => {
   console.log(
     `
-    %c ██╗   ██╗███████╗██╗      ██████╗  ██████╗
-    %c ██║   ██║██╔════╝██║     ██╔═══██╗██╔════╝
-    %c ██║   ██║█████╗  ██║     ██║   ██║██║  ███╗
-    %c ╚██╗ ██╔╝██╔══╝  ██║     ██║   ██║██║   ██║
-    %c  ╚████╔╝ ███████╗███████╗╚██████╔╝╚██████╔╝
-    %c   ╚═══╝  ╚══════╝╚══════╝ ╚═════╝  ╚═════╝
+    %c TEAMLOG.TEAM
+    %c TEAMLOG.TEAM
+    %c TEAMLOG.TEAM
+    %c TEAMLOG.TEAM
+    %c TEAMLOG.TEAM
+    %c TEAMLOG.TEAM
     `,
     'color:#22577A',
     'color:#38A3A5',

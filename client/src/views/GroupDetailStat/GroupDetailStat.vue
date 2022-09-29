@@ -13,8 +13,8 @@ const { links } = toRefs(props);
 <template>
   <ContentsLayout>
     <div class="q-px-md q-pb-md stat-area">
-      <GroupDetailStatBanner />
-      <q-separator class="q-my-md" />
+      <!-- <GroupDetailStatBanner /> -->
+      <!-- <q-separator class="q-my-md" /> -->
       <GroupDetailStatJandi :links="links" :loading="loading" />
       <q-separator class="q-mt-md" />
       <GroupDetailStatLast :links="links" :loading="loading" />

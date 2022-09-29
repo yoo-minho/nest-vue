@@ -15,17 +15,17 @@ const routes = [
     component: () => import('@/views/GroupDetail/GroupDetail.vue'),
     children: [
       {
-        path: '',
+        path: 'blogs',
         name: 'GroupDetailLink',
         component: () => import('@/views/GroupDetailLink/GroupDetailLink.vue'),
       },
       {
-        path: 'post',
+        path: '',
         name: 'GroupDetailPost',
         component: () => import('@/views/GroupDetailPost/GroupDetailPost.vue'),
       },
       {
-        path: 'stat',
+        path: 'stats',
         name: 'GroupDetailStat',
         component: () => import('@/views/GroupDetailStat/GroupDetailStat.vue'),
       },
@@ -43,14 +43,12 @@ router.beforeEach((to, from, next) => {
   const { isOpenLinkEditor, isOpenDataSubpage } = storeToRefs(subpageStore);
   const { closeGroupEditor, closeLinkEditor, closeSettingMain, closeStackMain } = subpageStore;
 
-  console.log(to.hash, 'xxxxadsas');
-
   if (from.name === undefined && ['#Editor', '#Setting'].includes(to.hash)) {
     router.replace({ hash: '' });
     return;
   }
 
-  if (from.hash === '#Editor' && to.name === 'Group') {
+  if (from.hash === '#Editor') {
     if (isOpenLinkEditor.value) {
       closeLinkEditor();
       next(false);
@@ -61,7 +59,7 @@ router.beforeEach((to, from, next) => {
     return;
   }
 
-  if (from.hash === '#Setting' && to.name === 'Group') {
+  if (from.hash === '#Setting') {
     if (isOpenDataSubpage.value) {
       closeStackMain();
       next(false);

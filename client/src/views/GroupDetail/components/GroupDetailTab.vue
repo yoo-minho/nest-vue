@@ -8,7 +8,7 @@ const selectTab = ref();
 selectTab.value = route.name;
 
 const tabArr = [
-  { name: 'Link', label: `플랫폼` },
+  { name: 'Link', label: `블로그` },
   { name: 'Post', label: `포스트` },
   { name: 'Stat', label: `통계` },
 ];

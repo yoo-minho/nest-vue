@@ -54,7 +54,11 @@ export class GroupService {
   }
 
   async count() {
-    return await this.prisma.group.count();
+    return await this.prisma.group.count({
+      where: {
+        published: true,
+      },
+    });
   }
 
   async groupTags() {

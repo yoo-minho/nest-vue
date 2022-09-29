@@ -12,8 +12,8 @@ const { fetchLastPosts } = postStore;
 const { lastPosts, lastLoading } = storeToRefs(postStore);
 const props = defineProps<{ links: LinkWrap[] }>();
 const orderOptions: OrderOptions = [
-  { label: '최신순', value: 'asc', order: 1 },
-  { label: '오래된순', value: 'desc', order: -1 },
+  { label: '가장 최근에 작성한 블로그가 1등', value: 'asc', order: 1 },
+  { label: '가장 오래전에 작성한 블로그가 1등', value: 'desc', order: -1 },
 ];
 const currentOrder = ref(orderOptions[0]);
 const sortPost = (order: OrderType = 1) => fetchLastPosts(props.links, order);
@@ -30,7 +30,14 @@ watch(
 </script>
 <template>
   <div>
-    <q-select v-model="currentOrder" :options="orderOptions" filled label="Last Posting Date Ranking" class="q-my-md" />
+    <q-select
+      v-model="currentOrder"
+      :options="orderOptions"
+      filled
+      label="Last Posting Date Ranking"
+      label-color="green-4"
+      class="q-my-md"
+    />
     <q-card class="bg-dark">
       <q-card-section class="text-white">
         <div v-if="lastLoading" class="text-center">

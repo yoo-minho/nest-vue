@@ -13,7 +13,7 @@ const { jandis, jandiLoading, activeJandisCount, nextPostingDay, manyPostingMMM 
 
 const props = defineProps<{ links: LinkWrap[] }>();
 
-const defaultOption = { label: '전체 (링크 선택 가능)', value: -1 };
+const defaultOption = { label: '전체 (블로그별 필터 가능)', value: -1 };
 const linkFilterOptions = ref([defaultOption]);
 const linkFilter = ref(defaultOption);
 
@@ -38,7 +38,14 @@ watch(
 </script>
 <template>
   <div>
-    <q-select v-model="linkFilter" :options="linkFilterOptions" filled label="Posting Graph By" class="q-my-md" />
+    <q-select
+      v-model="linkFilter"
+      :options="linkFilterOptions"
+      filled
+      label="Posting Graph By"
+      label-color="green-4"
+      class="q-mb-md"
+    />
     <div class="row q-col-gutter-md q-mb-md">
       <GroupDetailStatJandiBox :loading="jandiLoading" :label="'다음 포스팅까지'" :value="nextPostingDay" />
       <GroupDetailStatJandiBox :loading="jandiLoading" :label="'포스팅 많은 요일'" :value="manyPostingMMM" />

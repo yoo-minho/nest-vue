@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, toRaw } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { useSubpageStore } from '@/stores/subpage';
 import { usePostStore } from '@/stores/post';
 import { useGroupStore } from '@/stores/group';
@@ -20,6 +20,7 @@ const { currentGroup } = storeToRefs(groupStore);
 const { updateMinScrapAt } = groupStore;
 
 const router = useRouter();
+const route = useRoute();
 
 interface HeaderOption {
   close?: () => void;
@@ -33,12 +34,16 @@ interface HeaderOption {
   save?: () => void;
 }
 
-const rotate = ref(false);
-
 const props = defineProps<HeaderOption>();
+const rotate = ref(false);
 const { logo, editor, setting } = toRaw(props);
 const $q = useQuasar();
+
 const reload = () => {
+  if (route.name === 'Group') {
+    router.go(0);
+    return;
+  }
   router.replace({ name: 'Group' });
 };
 const _openGroupEditor = () => {

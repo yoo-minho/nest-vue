@@ -18,9 +18,10 @@ const { scrapPosts, initPostData } = postStore;
 const props = defineProps<{ domain: string }>();
 const links = computed(() => currentGroup.value?.links || []);
 
+initPostData();
+groupLoading.value = true;
+
 onMounted(async () => {
-  groupLoading.value = true;
-  initPostData();
   await fetchGroup(props.domain);
   const links = currentGroup.value.links;
   if (!links) return;

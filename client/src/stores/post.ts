@@ -29,10 +29,12 @@ export const usePostStore = defineStore('post', {
     },
     manyPostingMMM() {
       const _active = this.activeJandis as DaysCount[];
+      if (_active.length === 0) return '-';
       const dayOfWeek = day
         .map((d) => ({ day: d, count: _active.filter(({ day }) => day === d).length }))
         .sort((x, y) => x.count - y.count)[0].day;
-      return MMM[dayOfWeek] || '-';
+      console.log({ _active });
+      return MMM[dayOfWeek];
     },
   },
   actions: {
@@ -45,7 +47,6 @@ export const usePostStore = defineStore('post', {
     async scrapPosts(links: LinkWrap[], isScrapOncePerDay: boolean) {
       if (links.length === 0) return;
       this.scrapLoading = true;
-      // await delay(1000);
       try {
         await Promise.all(
           links
@@ -62,6 +63,7 @@ export const usePostStore = defineStore('post', {
       if (links.length === 0) return;
 
       this.postLoading = this.posts.length === 0;
+
       if (this.postLoading === false) return;
 
       const { data } = await PostAPI.findAllPosts(links);
