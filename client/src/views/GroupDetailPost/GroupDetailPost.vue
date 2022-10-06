@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, watch } from 'vue';
+import { watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { usePostStore } from '@/stores/post';
 
@@ -13,13 +13,6 @@ const props = defineProps<{ links: LinkWrap[]; loading: boolean }>();
 const postStore = usePostStore();
 const { fetchPosts } = postStore;
 const { posts, postLoading } = storeToRefs(postStore);
-
-// onMounted(async () => {
-//   console.log('onMounted', postLoading.value, props);
-//   if (props.links.length > 0 && postLoading.value) {
-//     fetchPosts(props.links);
-//   }
-// });
 
 watch(
   () => props.links,

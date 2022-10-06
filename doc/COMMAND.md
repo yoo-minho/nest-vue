@@ -16,7 +16,8 @@ lt --port 5000 --subdomain onebylog
 
 Vue Pwa
 
--https://vite-pwa-org.netlify.app/guide/
+- https://vite-pwa-org.netlify.app/guide/
+- https://realfavicongenerator.net/
 
 ```shell
 vue add pwa
