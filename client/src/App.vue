@@ -2,7 +2,7 @@
   <div class="max-width">
     <div id="subpage"></div>
     <router-view v-slot="{ Component, route }">
-      <transition :name="route.meta.transitionName">
+      <transition :name="String(route.meta.transitionName)">
         <component :is="Component" />
       </transition>
     </router-view>

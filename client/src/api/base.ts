@@ -38,18 +38,18 @@ export const useAxiosPost = (url: string, data?: object) => useAxios(url, { meth
 export const useAxiosDelete = (url: string) => useAxios(url, { method: 'DELETE' }, axiosClient);
 export const useAxiosPatch = (url: string, data?: object) => useAxios(url, { method: 'PATCH', ...data }, axiosClient);
 
+type BodyObject = { [key: string]: string | Date | number | BodyObject };
+
 const isoDateFormat = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d*)?Z$/gi;
-const handleDates = (body: { [key: string]: any }) => {
-  if (typeof body === 'object') {
-    for (const key of Object.keys(body)) {
-      const value = body[key];
-      if (!value) {
-        //pass
-      } else if (isoDateFormat.test(value)) {
-        body[key] = new Date(value);
-      } else if (typeof value === 'object') {
-        handleDates(value);
-      }
+const handleDates = (body: BodyObject) => {
+  for (const key of Object.keys(body)) {
+    const value = body[key];
+    if (!value) {
+      //pass
+    } else if (typeof value === 'string' && isoDateFormat.test(value)) {
+      body[key] = new Date(value);
+    } else if (typeof value === 'object' && !(value instanceof Date)) {
+      handleDates(value);
     }
   }
 };
