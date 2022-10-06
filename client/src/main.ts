@@ -1,3 +1,5 @@
+import './registerServiceWorker';
+
 import { createApp } from 'vue';
 import { Quasar, Notify, Dialog } from 'quasar';
 import { createPinia } from 'pinia';
