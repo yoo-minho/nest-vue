@@ -7,7 +7,9 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
   define: {
-    'process.env': {},
+    'process.env': {
+      dev: 'dev',
+    },
   },
   plugins: [
     VitePWA({
