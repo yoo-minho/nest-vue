@@ -13,3 +13,9 @@ insert into "User" values ('dellose', 'dellose@naver.com', '유민호');
 ```shell
 lt --port 5000 --subdomain onebylog
 ```
+
+PWA 만들기
+
+- https://docs.google.com/presentation/d/1h2Ht8YB3yqXxLAdRFzmecOwbBAvYZH8mJljo-tNEv7w/edit?usp=sharing
+- https://www.remove.bg/ko/upload
+- https://realfavicongenerator.net/

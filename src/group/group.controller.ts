@@ -92,7 +92,7 @@ export class GroupController {
     }
 
     const groupData = await this.groupService.group(domain);
-    groupData.dailyViews = groupData.counts[0].count;
+    groupData.dailyViews = groupData.counts[0]?.count || 0;
     groupData.totalViews = groupData.totalViews + groupData.dailyViews;
     delete groupData.counts;
     return groupData;

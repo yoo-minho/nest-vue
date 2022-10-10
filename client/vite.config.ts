@@ -20,9 +20,9 @@ export default defineConfig({
       },
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
       manifest: {
-        name: 'My Awesome App',
-        short_name: 'MyApp',
-        description: 'My Awesome App description',
+        name: 'Teamlog',
+        short_name: 'Teamlog',
+        description: 'we log together!',
         theme_color: '#ffffff',
         icons: [
           {
@@ -31,8 +31,8 @@ export default defineConfig({
             type: 'image/png',
           },
           {
-            src: 'pwa-512x512.png',
-            sizes: '512x512',
+            src: 'pwa-256x256.png',
+            sizes: '256x256',
             type: 'image/png',
           },
         ],
