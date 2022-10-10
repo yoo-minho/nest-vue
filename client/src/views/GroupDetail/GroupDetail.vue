@@ -9,7 +9,7 @@ import GroupDetailTab from './components/GroupDetailTab.vue';
 import GroupDetailTop from './components/GroupDetailTop.vue';
 
 const groupStore = useGroupStore();
-const { fetchGroup } = groupStore;
+const { initGroupData, fetchGroup } = groupStore;
 const { groupLoading, currentGroup } = storeToRefs(groupStore);
 
 const postStore = usePostStore();
@@ -18,8 +18,8 @@ const { scrapPosts, initPostData } = postStore;
 const props = defineProps<{ domain: string }>();
 const links = computed(() => currentGroup.value?.links || []);
 
+initGroupData();
 initPostData();
-groupLoading.value = true;
 
 onMounted(async () => {
   await fetchGroup(props.domain);

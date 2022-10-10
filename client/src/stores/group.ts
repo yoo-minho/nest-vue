@@ -43,6 +43,10 @@ export const useGroupStore = defineStore('group', {
     deleteLink(idx: number) {
       this.linksOnEditor.splice(idx, 1);
     },
+    initGroupData() {
+      this.groupLoading = true;
+      this.currentGroup = {} as Group;
+    },
     async fetchAllGroup() {
       const { data } = await GroupApi.findAll();
       this.groups = data.value;

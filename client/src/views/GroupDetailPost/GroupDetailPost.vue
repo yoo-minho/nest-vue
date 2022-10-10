@@ -17,8 +17,14 @@ const { posts, postLoading, scrapLoading } = storeToRefs(postStore);
 watch(
   () => [props.links, scrapLoading],
   (curr, prev) => {
-    console.log('watch', { curr, prev });
-    if (scrapLoading) return;
+    console.log('watch', {
+      curr,
+      prev,
+      scrapLoading: scrapLoading.value,
+      links: props.links,
+      linksCount: props.links.length,
+    });
+    if (scrapLoading.value) return;
     if (props.links.length === 0) return;
     fetchPosts(props.links);
   },
