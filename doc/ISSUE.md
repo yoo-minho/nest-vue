@@ -1,1 +1,5 @@
 1. arr.sort() 는 원본 파일이 변해서 vue 반응형이 제대로 동작하지 않으니 [..arr] 복사해서 쓸 것!
+
+2. Deprecation Warning: Using / for division outside of calc() is deprecated and will be removed in Dart Sass 2.0.0.
+
+- "sass": "~1.55.0" => "sass": "~1.32.12"
