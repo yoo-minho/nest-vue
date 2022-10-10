@@ -12,12 +12,15 @@ import GroupDetailPostCard from './components/GroupDetailPostCard.vue';
 const props = defineProps<{ links: LinkWrap[]; loading: boolean }>();
 const postStore = usePostStore();
 const { fetchPosts } = postStore;
-const { posts, postLoading } = storeToRefs(postStore);
+const { posts, postLoading, scrapLoading } = storeToRefs(postStore);
 
 watch(
-  () => props.links,
-  (links) => {
-    fetchPosts(links);
+  () => [props.links, scrapLoading],
+  (curr, prev) => {
+    console.log('watch', { curr, prev });
+    if (scrapLoading) return;
+    if (props.links.length === 0) return;
+    fetchPosts(props.links);
   },
   { immediate: true },
 );

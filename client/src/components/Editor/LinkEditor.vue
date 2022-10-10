@@ -8,6 +8,7 @@ import { getBlogType } from '@/util/ImageUtil';
 import { ErrorMessage } from '@/types/common';
 import OpenGraphTagAPI from '@/api/openGraphTagApi';
 import EditorLayout from '@/layouts/EditorLayout.vue';
+import { minifyStr } from '@/util/CommUtil';
 
 const BLOG_EXPRESSION = {
   NAVER: /https:\/\/blog.naver.com\/([0-9a-zA-Z_-]*)(\/)?([0-9a-zA-Z]*)/gi,
@@ -73,8 +74,8 @@ async function addBlogLink() {
     url: url.value,
     rssUrl: rssUrl.value,
     type: getBlogType(url.value),
-    title: ogsData.ogTitle.substring(0, 50),
-    description: ogsData.ogDescription.substring(0, 100),
+    title: minifyStr(ogsData.ogTitle, 50),
+    description: minifyStr(ogsData.ogDescription, 100),
     imagePath: ogsData.ogImage.url,
   });
   closeLinkEditor();
