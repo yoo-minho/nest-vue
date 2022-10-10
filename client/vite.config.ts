@@ -22,7 +22,7 @@ export default defineConfig({
       manifest: {
         name: 'Teamlog',
         short_name: 'Teamlog',
-        description: 'we log together!',
+        description: 'We log together!',
         theme_color: '#ffffff',
         icons: [
           {

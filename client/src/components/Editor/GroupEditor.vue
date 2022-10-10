@@ -114,7 +114,7 @@ function _closeGroupEditor() {
       counter
       maxlength="20"
       placeholder="전용 링크 추가"
-      prefix="https://teamlog.teamo/@"
+      prefix="https://teamlog.team/@"
       :rules="idRules"
     />
     <q-input
