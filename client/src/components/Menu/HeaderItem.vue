@@ -17,7 +17,7 @@ const { openSettingMain, openGroupEditor } = subpageStore;
 
 const groupStore = useGroupStore();
 const { currentGroup } = storeToRefs(groupStore);
-const { updateMinScrapAt } = groupStore;
+const { updateLinksMinScrapAt } = groupStore;
 
 const router = useRouter();
 const route = useRoute();
@@ -67,7 +67,7 @@ const scrapPostsAndAction = async () => {
 
   initPostData();
   await scrapPosts(links, false);
-  updateMinScrapAt();
+  updateLinksMinScrapAt();
   $q.notify({ type: 'positive', message: 'Refresh Competed!' });
 
   setTimeout(() => (rotate.value = false), 400);
