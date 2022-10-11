@@ -33,7 +33,6 @@ export const usePostStore = defineStore('post', {
       const dayOfWeek = day
         .map((d) => ({ day: d, count: _active.filter(({ day }) => day === d).length }))
         .sort((x, y) => x.count - y.count)[0].day;
-      console.log({ _active });
       return MMM[dayOfWeek];
     },
   },
@@ -42,57 +41,63 @@ export const usePostStore = defineStore('post', {
       this.posts = [];
       this.postLoading = true;
       this.jandis = [];
+      this.jandiLoading = true;
       this.lastPosts = [];
+      this.lastLoading = true;
     },
     async scrapPosts(links: LinkWrap[], isScrapOncePerDay: boolean) {
-      if (links.length === 0) return;
+      if (links.length === 0) {
+        console.log('SKIP scrapPosts');
+        return 0;
+      }
+
       this.scrapLoading = true;
+      const scrapLinks = links.filter(({ link }: LinkWrap) => !(isScrapOncePerDay && isTodayByDate(link.scrapAt)));
       try {
-        await Promise.all(
-          links
-            .filter(({ link }: LinkWrap) => !(isScrapOncePerDay && isTodayByDate(link.scrapAt)))
-            .map(({ link }: LinkWrap) => RssAPI.scrap(link)),
-        );
+        await Promise.all(scrapLinks.map(({ link }: LinkWrap) => RssAPI.scrap(link)));
       } catch (e) {
         throw new Error(String(e));
       } finally {
         this.scrapLoading = false;
+        return scrapLinks.length;
       }
     },
     async fetchPosts(links: LinkWrap[]) {
-      if (links.length === 0) return;
+      if (links.length === 0) {
+        console.log('SKIP fetchPosts');
+        return;
+      }
 
-      this.postLoading = this.posts.length === 0;
-
-      if (this.postLoading === false) return;
-
+      this.postLoading = true;
       const { data } = await PostAPI.findAllPosts(links);
       this.posts = data.value;
       this.postLoading = false;
     },
     async fetchJandis(links: LinkWrap[], linkId: number) {
-      if (links.length === 0) return;
+      if (links.length === 0) {
+        console.log('SKIP fetchJandis');
+        return;
+      }
 
-      this.jandiLoading = this.jandis.length === 0;
-      if (this.jandiLoading === false) return;
-
-      const { data, isLoading } = await PostAPI.countByDate(links);
+      this.jandiLoading = true;
+      const { data } = await PostAPI.countByDate(links);
       this.jandis = data.value.map((v: DaysAllCounts) => ({
         ...v,
         count: v.count ? v.count[countKey(linkId)] || 0 : 0,
       }));
-      this.jandiLoading = isLoading.value;
+      this.jandiLoading = false;
     },
     async fetchLastPosts(links: LinkWrap[], order: OrderType) {
-      if (links.length === 0) return;
+      if (links.length === 0) {
+        console.log('SKIP fetchLastPosts');
+        return;
+      }
 
-      this.lastLoading = this.lastPosts.length === 0;
-      if (this.lastLoading === false) return;
-
-      const { data, isLoading } = await PostAPI.findLast(links);
+      this.lastLoading = true;
+      const { data } = await PostAPI.findLast(links);
       const time = (date: string) => new Date(date).getTime();
       this.lastPosts = [...data.value].sort((x, y) => order * (time(y.createdAt) - time(x.createdAt)));
-      this.lastLoading = isLoading.value;
+      this.lastLoading = false;
     },
   },
 });

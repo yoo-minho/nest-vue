@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { LinkWrap } from '@/types/common';
 import { usePostStore } from '@/stores/post';
@@ -26,10 +26,10 @@ const filterCount = async (linkId = -1) => {
   ];
 };
 
-onMounted(() => filterCount());
 watch(
   () => props.links,
   () => filterCount(),
+  { immediate: true },
 );
 watch(
   () => linkFilter.value,

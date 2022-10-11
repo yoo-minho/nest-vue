@@ -18,10 +18,10 @@ const orderOptions: OrderOptions = [
 const currentOrder = ref(orderOptions[0]);
 const sortPost = (order: OrderType = 1) => fetchLastPosts(props.links, order);
 
-onMounted(() => sortPost());
 watch(
   () => props.links,
   () => sortPost(),
+  { immediate: true },
 );
 watch(
   () => currentOrder.value,

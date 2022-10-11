@@ -5,6 +5,7 @@ import {
   ArrayNotEmpty,
   IsArray,
   IsDefined,
+  IsEmpty,
   IsNotEmpty,
   IsString,
   MaxLength,
@@ -16,6 +17,7 @@ class LinkItemDto {
   url: string;
 
   @IsString()
+  @IsEmpty()
   @MaxLength(500)
   rssUrl: string;
 
@@ -24,6 +26,7 @@ class LinkItemDto {
   title: string;
 
   @IsString()
+  @IsEmpty()
   @MaxLength(100)
   description: string;
 
@@ -31,6 +34,7 @@ class LinkItemDto {
   type: BLOG_TYPE;
 
   @IsString()
+  @IsEmpty()
   @MaxLength(500)
   imagePath: string;
 }
