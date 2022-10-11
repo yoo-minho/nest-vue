@@ -74,7 +74,7 @@ export const useGroupStore = defineStore('group', {
       this.groupLoading = false;
       this.currentGroup = data.value;
     },
-    updateMinScrapAt() {
+    updateLinksMinScrapAt() {
       this.currentGroup.links = this.currentGroup.links?.map(({ link }) => {
         link.scrapAt = new Date();
         return { link };
