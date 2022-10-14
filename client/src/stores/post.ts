@@ -68,7 +68,7 @@ export const usePostStore = defineStore('post', {
         return;
       }
 
-      this.postLoading = true;
+      this.postLoading = this.posts.length > 0 ? false : true;
       const { data } = await PostAPI.findAllPosts(links);
       this.posts = data.value;
       this.postLoading = false;
