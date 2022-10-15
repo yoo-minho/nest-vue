@@ -21,18 +21,19 @@ model User {
 }
 
 model Group {
-  id          Int             @id @default(autoincrement())
-  domain      String          @unique @db.VarChar(20)
-  published   Boolean?        @default(false)
-  createrId   String          @db.VarChar(100)
-  createdAt   DateTime        @default(now()) @db.Timestamptz(3)
-  description String?         @db.VarChar(100)
-  title       String          @db.VarChar(50)
-  totalViews  Int             @default(0)
-  creater     User            @relation(fields: [createrId], references: [id])
-  links       LinksOnGroups[]
-  tags        TagsOnGroups[]
-  counts      Views[]
+  id                Int             @id @default(autoincrement())
+  domain            String          @unique @db.VarChar(20)
+  published         Boolean?        @default(false)
+  createrId         String          @db.VarChar(100)
+  createdAt         DateTime        @default(now()) @db.Timestamptz(3)
+  description       String?         @db.VarChar(100)
+  title             String          @db.VarChar(50)
+  totalViews        Int             @default(0)
+  lastPostCreatedAt DateTime?
+  creater           User            @relation(fields: [createrId], references: [id])
+  links             LinksOnGroups[]
+  tags              TagsOnGroups[]
+  counts            Views[]
 }
 
 model Views {
