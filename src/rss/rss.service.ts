@@ -8,6 +8,7 @@ type RssRes = {
   title?: string;
   description?: string;
   link?: string;
+  url?: string;
   image?: string;
   category?: string;
   items?: RssResItem[];
@@ -15,13 +16,14 @@ type RssRes = {
   message?: Error;
   scrapAt?: Date;
   itemLength?: number;
+  lastPostCreateAt?: Date;
 };
 
 type RssResItem = {
   title?: string;
   description?: string;
   content?: string;
-  created?: Date;
+  created?: number;
   link?: string;
 };
 
@@ -75,6 +77,9 @@ export class RssService {
     const rssUrl = await this.convertRssUrl(url);
     try {
       const result: RssRes = await parse(rssUrl, {});
+      result.lastPostCreateAt = new Date(
+        Math.max(...result.items.map((item) => item.created)),
+      );
       if (scrapAt) {
         result.items = result.items.filter(
           (item) => new Date(item.created) > scrapAt,
@@ -82,8 +87,10 @@ export class RssService {
       }
       result.scrapAt = scrapAt;
       result.itemLength = result.items.length;
+      console.log('@@@@@@@@xxxxx', { result });
       return result;
     } catch (e) {
+      console.error(e);
       return { success: false, message: e, items: [], scrapAt };
     }
   }

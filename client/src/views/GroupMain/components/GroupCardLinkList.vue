@@ -22,7 +22,7 @@ const moreLinksTooltip = computed(() => hiddenLinks.value.map(({ link: { title }
           </div>
           <template v-if="hiddenLength > 0">
             <div class="col-3">
-              <q-item-label class="link-more"><q-icon name="add" size="36px" />{{ hiddenLength }}</q-item-label>
+              <q-item-label class="link-more"><q-icon name="add" size="36px" />{{ hiddenLength + 1 }}</q-item-label>
               <q-tooltip>{{ moreLinksTooltip }}</q-tooltip>
             </div>
           </template>

@@ -100,19 +100,12 @@ export class GroupController {
   }
 
   @Patch('last-post-create-at')
-  async updateLastPostCreateAt(@Body() updateLastPostCreateAt: ({ linkId?: number,lastPostCreateAt?: Date})[]) {
-    updateLastPostCreateAt.forEach(({linkId, lastPostCreateAt}) => {
-
-    }
-
-
+  async updateLastPostCreateAt(
+    @Body()
+    updateLastPostCreateAt: { linkId?: number; lastPostCreateAt?: Date }[],
+  ) {
     //링크별 최신포스트시간을 보내주면
     //연결된 uniq 그룹을 뽑아서 그룹의 시간보다 크면 기록하고 아니면 마
-
-
-
-
-
     console.log('@@@@ updateLastPostCreateAt', { updateLastPostCreateAt });
     return;
   }

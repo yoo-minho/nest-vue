@@ -1,4 +1,4 @@
-import { Link, RssItem } from '../types/common';
+import { Link, RssItem, ScrapItem, ScrapResult } from '../types/common';
 import axiosClient from './base';
 import PostAPI from './postApi';
 import LinkAPI from './linkApi';
@@ -6,37 +6,44 @@ import LinkAPI from './linkApi';
 import { pipe } from '../util';
 
 export default {
-  async scrap(_link: Link) {
+  async scrap(_link: Link): Promise<ScrapResult> {
     const scrapUrl = _link.rssUrl || _link.url;
+    if (!_link.id) {
+      throw Error('링크 아이디가 유효하지 않습니다!');
+    }
+    if (!scrapUrl) {
+      throw Error('링크 유알엘이 유효하지 않습니다!');
+    }
     const res = await axiosClient.get('rss', { params: { url: scrapUrl, scrapAt: _link.scrapAt } });
     const _items = res.data.items || [];
-    if (_items.length === 0) {
-      if (!_link.id) return;
-      await LinkAPI.updateScrapAt(_link.id);
-      return;
+    if (_items.length > 0) {
+      await PostAPI.createPosts(_link.id, convertItem(_items, scrapUrl));
     }
-    const postItems = _items.map(({ title, description, content, created, link }: RssItem) => {
-      const _description = pipe(
-        htmlDecode,
-        htmlDecode,
-        removeBlank,
-        removeNewLine,
-        removeHtmlTag,
-        trim,
-        substring100,
-      )(description || content || '');
-      return {
-        title: substring50(scrapUrl.includes('twitch') ? decodeHtmlEntity(title) : title),
-        description: _description,
-        createdAt: new Date(created),
-        url: link,
-      };
-    });
-    if (!_link.id) return;
-    await PostAPI.createPosts(_link.id, postItems);
     await LinkAPI.updateScrapAt(_link.id);
+    return { linkId: _link.id, lastPostCreateAt: res.data.lastPostCreateAt };
   },
 };
+
+function convertItem(_items: RssItem[], scrapUrl: string): ScrapItem[] {
+  return _items.map(({ title, description, content, created, link }) => {
+    const _description = pipe(
+      htmlDecode,
+      htmlDecode,
+      removeBlank,
+      removeNewLine,
+      removeHtmlTag,
+      trim,
+      substring100,
+    )(description || content || '');
+    return {
+      title: substring50(scrapUrl.includes('twitch') ? decodeHtmlEntity(title) : title),
+      description: _description,
+      created,
+      createdAt: new Date(created),
+      url: link,
+    };
+  });
+}
 
 function trim(input: string) {
   return input.trim();

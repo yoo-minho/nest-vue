@@ -109,4 +109,16 @@ export class GroupService {
       throw new ForbiddenException(e);
     }
   }
+
+  async updateLastPostCreateAt(groupDomain: string, lastPostCreatedAt: Date) {
+    try {
+      await this.prisma.group.update({
+        where: { domain: groupDomain },
+        data: { lastPostCreatedAt },
+      });
+    } catch (e) {
+      throw new ForbiddenException(e);
+    }
+  }
+
 }

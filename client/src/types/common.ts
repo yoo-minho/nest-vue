@@ -33,6 +33,17 @@ export type RssItem = {
   link: string;
   title: string;
 };
+export type ScrapItem = {
+  title: string;
+  description: string;
+  createdAt: Date;
+  created: number;
+  url: string;
+};
+export type ScrapResult = {
+  linkId?: number;
+  lastPostCreateAt?: Date;
+};
 export type Post = {
   createdAt: Date;
   description?: string;
