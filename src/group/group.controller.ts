@@ -7,6 +7,7 @@ import {
   Query,
   ConflictException,
   Ip,
+  Patch,
 } from '@nestjs/common';
 import { GroupService } from './group.service';
 import { CreateGroupDto } from './dto/create-group.dto';
@@ -96,5 +97,23 @@ export class GroupController {
     groupData.totalViews = groupData.totalViews + groupData.dailyViews;
     delete groupData.counts;
     return groupData;
+  }
+
+  @Patch('last-post-create-at')
+  async updateLastPostCreateAt(@Body() updateLastPostCreateAt: ({ linkId?: number,lastPostCreateAt?: Date})[]) {
+    updateLastPostCreateAt.forEach(({linkId, lastPostCreateAt}) => {
+
+    }
+
+
+    //링크별 최신포스트시간을 보내주면
+    //연결된 uniq 그룹을 뽑아서 그룹의 시간보다 크면 기록하고 아니면 마
+
+
+
+
+
+    console.log('@@@@ updateLastPostCreateAt', { updateLastPostCreateAt });
+    return;
   }
 }

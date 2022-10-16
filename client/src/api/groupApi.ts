@@ -1,4 +1,4 @@
-import { Group, Link } from '../types/common';
+import { Group, Link, ScrapResult } from '../types/common';
 import axiosClient, { useAxiosGet } from './base';
 import { AxiosError } from 'axios';
 
@@ -47,6 +47,15 @@ export default {
     const { domain, title, description, tags } = group;
     try {
       await axiosClient.post('group', { domain, title, description, links, tags });
+    } catch (axiosError) {
+      const err = axiosError as AxiosError<{ res: { message: string } }>;
+      const message = err.response?.data?.res?.message || err.message;
+      throw new Error(message);
+    }
+  },
+  async updateLastPostCreateAt(linksDto: ScrapResult[]) {
+    try {
+      await axiosClient.patch(`group/last-post-create-at`, { linksDto });
     } catch (axiosError) {
       const err = axiosError as AxiosError<{ res: { message: string } }>;
       const message = err.response?.data?.res?.message || err.message;

@@ -4,13 +4,13 @@ import { AxiosError } from 'axios';
 import axiosClient, { useAxiosGetArray } from './base';
 import { ErrorMessage, AxiosErrorType } from './error';
 
-import { LastPost, LinkWrap, RssItem } from '@/types/common';
+import { LastPost, LinkWrap, ScrapItem } from '@/types/common';
 import { getAgoString, getDateString } from '@/plugin/dayjs';
 
 const getIds = (links: LinkWrap[]) => links.map(({ link }) => link.id);
 
 export default {
-  async createPosts(linkId: number, items: RssItem[]) {
+  async createPosts(linkId: number, items: ScrapItem[]) {
     if (items.length === 0) return;
     try {
       await axiosClient.post('post', { linkId, items });
