@@ -9,7 +9,6 @@ import {
   ArrayNotEmpty,
   ValidateNested,
   IsDate,
-  IsNotEmpty,
 } from 'class-validator';
 
 class PostItemDto {
@@ -34,11 +33,6 @@ class PostItemDto {
 }
 
 export class CreatePostDto {
-  @IsString()
-  @IsNotEmpty()
-  @MaxLength(20)
-  groupDomain: string;
-
   @IsNumber()
   linkId: number;
 
