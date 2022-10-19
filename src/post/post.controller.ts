@@ -22,15 +22,11 @@ export class PostController {
 
   @Post()
   create(@Body() createPostDto: CreatePostDto) {
-    const { groupDomain, linkId, items = [] } = createPostDto;
+    const { linkId, items = [] } = createPostDto;
     if (items.length === 0) return;
     const postDtos = items.map(
       (item): Prisma.PostCreateManyInput => ({ linkId, ...item }),
     );
-    const lastPostCreatedAt = items
-      .map((item) => item.createdAt)
-      .sort((a, b) => b.getTime() - a.getTime())[0];
-    this.groupService.updateLastPostCreateAt(groupDomain, lastPostCreatedAt);
     return this.postService.createPosts(postDtos);
   }
 

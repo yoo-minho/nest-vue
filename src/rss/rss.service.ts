@@ -87,7 +87,6 @@ export class RssService {
       }
       result.scrapAt = scrapAt;
       result.itemLength = result.items.length;
-      console.log('@@@@@@@@xxxxx', { result });
       return result;
     } catch (e) {
       console.error(e);

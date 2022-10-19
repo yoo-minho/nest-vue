@@ -56,7 +56,6 @@ export const usePostStore = defineStore('post', {
       const scrapLinks = links.filter(({ link }: LinkWrap) => !(isScrapOncePerDay && isTodayByDate(link.scrapAt)));
       try {
         const res = await Promise.all(scrapLinks.map(({ link }: LinkWrap) => RssAPI.scrap(link)));
-        console.log('scrapPosts', res);
         await GroupAPI.updateLastPostCreateAt(res);
       } catch (e) {
         throw new Error(String(e));

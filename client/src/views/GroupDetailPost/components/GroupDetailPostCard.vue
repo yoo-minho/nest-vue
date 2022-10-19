@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { toRaw } from 'vue';
+import { toRefs } from 'vue';
 import { Post } from '@/types/common';
 import { openUrl } from '@/util';
 import { getDateString } from '@/plugin/dayjs';
 import LinkInfo from '@/components/Info/LinkInfo.vue';
 
 const props = defineProps<{ post: Post }>();
-const { post } = toRaw(props);
+const { post } = toRefs(props);
 </script>
 
 <template>
