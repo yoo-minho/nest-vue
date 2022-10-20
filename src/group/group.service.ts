@@ -53,6 +53,34 @@ export class GroupService {
     });
   }
 
+  async groupsByLinkId(links) {
+    return await this.prisma.group.groupBy({
+      by: ['id', 'lastPostCreatedAt'],
+      _count: {
+        id: true,
+      },
+      where: {
+        links: {
+          some: { OR: links },
+        },
+      },
+    });
+
+    return await this.prisma.group.findMany({
+      select: {
+        id: true,
+        lastPostCreatedAt: true,
+        links: true,
+      },
+      distinct: ['id', 'lastPostCreatedAt'],
+      where: {
+        links: {
+          some: { OR: links },
+        },
+      },
+    });
+  }
+
   async count() {
     return await this.prisma.group.count({
       where: {
@@ -120,5 +148,4 @@ export class GroupService {
       throw new ForbiddenException(e);
     }
   }
-
 }
