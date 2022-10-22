@@ -16,6 +16,16 @@ export class LinkService {
     }
   }
 
+  async updateFlag(id: number, lastPostCreatedAt: Date) {
+    return await this.prisma.link.update({
+      data: {
+        scrapAt: new Date(),
+        lastPostCreatedAt,
+      },
+      where: { id },
+    });
+  }
+
   async count() {
     return await this.prisma.link.count();
   }

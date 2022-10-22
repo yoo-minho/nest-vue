@@ -100,33 +100,7 @@ export class GroupController {
   }
 
   @Patch('last-post-create-at')
-  async updateLastPostCreateAt(
-    @Body('linksDto')
-    updateLastPostCreateAt: { linkId?: number; lastPostCreatdeAt?: Date }[],
-  ) {
-    //링크별 최신포스트시간을 보내주면
-    //연결된 uniq 그룹을 뽑아서 그룹의 시간보다 크면 기록하고 아니면 마
-
-    const res = await this.groupService.groupsByLinkId(
-      updateLastPostCreateAt.map(({ linkId }) => ({ linkId })),
-    );
-
-    // res.forEach((r) => {
-    //   r.links.forEach((link) => {
-    //     console.log(link.linkId);
-    //     updateLastPostCreateAt.forEach((l) => {
-    //       if(link.linkId === l.linkId){
-
-    //       }
-    //     });
-    //   });
-    // });
-
-    console.log(
-      '@@@@ updateLastPostCreateAt',
-      { updateLastPostCreateAt, res },
-      res,
-    );
-    return;
+  async updateLastPostCreateAt(@Body('groupId') groupId: number) {
+    return this.groupService.update22(groupId);
   }
 }

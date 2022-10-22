@@ -1,8 +1,6 @@
 import { Link, RssItem, ScrapItem, ScrapResult } from '../types/common';
 import axiosClient from './base';
 import PostAPI from './postApi';
-import LinkAPI from './linkApi';
-
 import { pipe } from '../util';
 
 export default {
@@ -14,12 +12,11 @@ export default {
     if (!scrapUrl) {
       throw Error('링크 유알엘이 유효하지 않습니다!');
     }
-    const res = await axiosClient.get('rss', { params: { url: scrapUrl, scrapAt: _link.scrapAt } });
+    const res = await axiosClient.post('rss', { linkId: _link.id, url: scrapUrl, scrapAt: _link.scrapAt });
     const _items = res.data.items || [];
     if (_items.length > 0) {
       await PostAPI.createPosts(_link.id, convertItem(_items, scrapUrl));
     }
-    await LinkAPI.updateScrapAt(_link.id);
     return { linkId: _link.id, lastPostCreateAt: res.data.lastPostCreateAt };
   },
 };

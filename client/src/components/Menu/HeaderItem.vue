@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { ref, toRaw } from 'vue';
+import { ref, toRefs } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useSubpageStore } from '@/stores/subpage';
 import { usePostStore } from '@/stores/post';
 import { useGroupStore } from '@/stores/group';
 import { storeToRefs } from 'pinia';
 import { useQuasar } from 'quasar';
+import GroupAPI from '@/api/groupApi';
 
 const postStore = usePostStore();
 
@@ -36,7 +37,7 @@ interface HeaderOption {
 
 const props = defineProps<HeaderOption>();
 const rotate = ref(false);
-const { logo, editor, setting } = toRaw(props);
+const { logo, editor, setting } = toRefs(props);
 const $q = useQuasar();
 
 const reload = () => {
@@ -55,7 +56,7 @@ const _openSettingMain = () => {
   openSettingMain();
 };
 const scrapPostsAndAction = async () => {
-  const links = currentGroup.value.links;
+  const { id: groupId, links } = currentGroup.value;
   if (!links) return;
 
   if (scrapLoading.value) {
@@ -67,6 +68,7 @@ const scrapPostsAndAction = async () => {
 
   initPostData();
   await scrapPosts(links, false);
+  await GroupAPI.updateLastPostCreateAt(groupId);
   updateLinksMinScrapAt();
   $q.notify({ type: 'positive', message: 'Refresh Competed!' });
 

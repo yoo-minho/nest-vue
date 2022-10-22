@@ -89,8 +89,7 @@ export class RssService {
       result.itemLength = result.items.length;
       return result;
     } catch (e) {
-      console.error(e);
-      return { success: false, message: e, items: [], scrapAt };
+      throw Error('Error in findOne');
     }
   }
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { toRaw } from 'vue';
+import { toRefs } from 'vue';
 
 interface SettingJson {
   icon: string;
@@ -7,7 +7,7 @@ interface SettingJson {
   clickEvent: () => void;
 }
 const props = defineProps<{ settingJson: SettingJson }>();
-const { icon, title, clickEvent } = toRaw(props.settingJson);
+const { icon, title, clickEvent } = toRefs(props.settingJson);
 </script>
 
 <template>

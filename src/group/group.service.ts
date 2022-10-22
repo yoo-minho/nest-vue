@@ -136,4 +136,22 @@ export class GroupService {
       throw new ForbiddenException(e);
     }
   }
+
+  async update22(groupId: number) {
+    try {
+      const res: { max: Date }[] = await this.prisma.$queryRaw`
+         SELECT MAX("Link"."lastPostCreatedAt") FROM "LinksOnGroups"
+            INNER JOIN "Link" ON "LinksOnGroups"."linkId" = "Link"."id"
+            WHERE "groupId" = ${groupId}
+      `;
+      await this.prisma.group.update({
+        where: { id: groupId },
+        data: { lastPostCreatedAt: res[0].max },
+      });
+      return { ...res, success: true };
+    } catch (e) {
+      throw Error(e);
+    }
+  }
 }
+``;

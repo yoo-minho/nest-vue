@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { toRaw } from 'vue';
+import { toRefs } from 'vue';
 import { Group } from '@/types/common';
 
 const props = defineProps<{ mode: 'HEADER' | 'LIST-ITEM'; groupData: Group }>();
 const isHeader = props.mode === 'HEADER';
 
-const { title, description, domain } = toRaw(props.groupData);
+const { title, description, domain } = toRefs(props.groupData);
 </script>
 
 <template>

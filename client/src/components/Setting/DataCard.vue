@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { toRaw } from 'vue';
+import { toRefs } from 'vue';
 
 import { getImage } from '@/util/ImageUtil';
 import { StackJson } from '@/types/common';
 
 const props = defineProps<{ stackJson: StackJson }>();
-const { label, version, description, path, url, githubStar } = toRaw(props.stackJson);
+const { label, version, description, path, url, githubStar } = toRefs(props.stackJson);
 const openUrl = (url: string) => window.open(url, 'stack');
 </script>
 

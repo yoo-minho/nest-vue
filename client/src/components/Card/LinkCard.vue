@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { toRaw } from 'vue';
+import { toRefs } from 'vue';
 import { Link } from '@/types/common';
 import LinkInfo from '../Info/LinkInfo.vue';
 
 const props = defineProps<{ link: Link; iconName: string }>();
-const { url, title, description } = toRaw(props.link);
+const { url, title, description } = toRefs(props.link);
 const emits = defineEmits<{ (eventName: 'clickIcon'): void }>();
 const emojiBundle = ['📕', '📊', '🔥', '🎯', '⚡', '🚀', '🏆', '📃', '💻', '📟', '📷', '🌍', '🌐'];
 const randomDesc = `Need a description like '${emojiBundle

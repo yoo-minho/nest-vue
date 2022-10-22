@@ -1,9 +1,12 @@
 import { Transform } from 'class-transformer';
-import { IsOptional, IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class RssQueryDto {
   @IsString()
   url: string;
+
+  @IsNumber()
+  linkId: number;
 
   @IsOptional()
   @Transform(({ value }) => new Date(value))

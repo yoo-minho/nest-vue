@@ -1,14 +1,20 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { RssQueryDto } from './dto/rss-query.dto';
 import { RssService } from './rss.service';
+import { LinkService } from '../link/link.service';
 
 @Controller('rss')
 export class RssController {
-  constructor(private readonly rssService: RssService) {}
+  constructor(
+    private readonly rssService: RssService,
+    private readonly linkService: LinkService,
+  ) {}
 
-  @Get()
-  findOne(@Query() queryDto: RssQueryDto) {
-    const { url, scrapAt } = queryDto;
-    return this.rssService.findOne(url, scrapAt);
+  @Post()
+  async findOne(@Body() queryDto: any) {
+    const { linkId, url, scrapAt } = queryDto;
+    const res = await this.rssService.findOne(url, scrapAt);
+    this.linkService.updateFlag(linkId, res.lastPostCreateAt);
+    return res;
   }
 }

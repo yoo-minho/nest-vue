@@ -46,16 +46,17 @@ model Views {
 }
 
 model Link {
-  id          Int             @id @default(autoincrement())
-  url         String          @unique
-  description String?         @db.VarChar(100)
-  imagePath   String?         @db.VarChar(500)
-  rssUrl      String?         @db.VarChar(500)
-  title       String          @db.VarChar(50)
-  scrapAt     DateTime?
-  type        BLOG_TYPE?
-  groups      LinksOnGroups[]
-  posts       Post[]
+  id                Int             @id @default(autoincrement())
+  url               String          @unique
+  description       String?         @db.VarChar(100)
+  imagePath         String?         @db.VarChar(500)
+  rssUrl            String?         @db.VarChar(500)
+  title             String          @db.VarChar(50)
+  scrapAt           DateTime?
+  type              BLOG_TYPE?
+  lastPostCreatedAt DateTime?
+  groups            LinksOnGroups[]
+  posts             Post[]
 }
 
 model LinksOnGroups {
