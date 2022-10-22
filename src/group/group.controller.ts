@@ -58,15 +58,14 @@ export class GroupController {
 
   @Get()
   findAll(@Query() { tag }) {
-    if (tag) {
-      return this.groupService.groups({
-        where: { published: true, tags: { some: { tag: { name: tag } } } },
-        orderBy: { createdAt: 'desc' },
-      });
-    }
+    const tagOption = tag
+      ? {
+          tags: { some: { tag: { name: tag } } },
+        }
+      : {};
     return this.groupService.groups({
-      where: { published: true },
-      orderBy: { createdAt: 'desc' },
+      where: { published: true, ...tagOption },
+      orderBy: { lastPostCreatedAt: 'desc' },
     });
   }
 

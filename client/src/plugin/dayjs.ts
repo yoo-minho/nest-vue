@@ -4,6 +4,7 @@ import { Days } from '../types/common';
 
 dayjs.extend(relativeTime);
 
+export const getFormatString = (dateStr?: Date, format?: string) => (dateStr ? dayjs(dateStr).format(format) : null);
 export const getDateString = (dateStr?: Date) => (dateStr ? dayjs(dateStr).format('YYYY-MM-DD HH:mm (ddd)') : null);
 export const getAgoString = (dateStr: Date) => dayjs(dateStr).fromNow();
 
@@ -12,6 +13,14 @@ export const isTodayByDate = (v = new Date()) => dayjs(v).format('YYYYMMDD') ===
 export const getDateStringByMs = (ms: number) => dayjs(new Date(ms)).format('YYYY-MM-DD');
 export const getAgoStringByMs = (ms: number) => dayjs(new Date(ms)).fromNow();
 export const getlocaleStr = (ms: number) => new Date(ms).toLocaleString();
+
+export const isWithinAWeek = (targetDate?: Date) => {
+  if (!targetDate) return false;
+  const today = dayjs();
+  const expired_at = dayjs(targetDate);
+  const result = expired_at.diff(today, 'day', true);
+  return Math.floor(result) > -7;
+};
 
 export const enumerateDaysFromNMonths = (n: number): Days[] => {
   const endDate = dayjs().endOf('week');

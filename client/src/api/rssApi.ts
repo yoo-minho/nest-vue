@@ -1,10 +1,10 @@
-import { Link, RssItem, ScrapItem, ScrapResult } from '../types/common';
+import { Link, RssItem, ScrapItem } from '../types/common';
 import axiosClient from './base';
 import PostAPI from './postApi';
 import { pipe } from '../util';
 
 export default {
-  async scrap(_link: Link): Promise<ScrapResult> {
+  async scrap(_link: Link) {
     const scrapUrl = _link.rssUrl || _link.url;
     if (!_link.id) {
       throw Error('링크 아이디가 유효하지 않습니다!');
@@ -12,12 +12,16 @@ export default {
     if (!scrapUrl) {
       throw Error('링크 유알엘이 유효하지 않습니다!');
     }
-    const res = await axiosClient.post('rss', { linkId: _link.id, url: scrapUrl, scrapAt: _link.scrapAt });
+
+    const res = await axiosClient.post('rss', {
+      linkId: _link.id,
+      url: scrapUrl,
+      lastPostCreatedAt: _link.lastPostCreatedAt,
+    });
     const _items = res.data.items || [];
-    if (_items.length > 0) {
-      await PostAPI.createPosts(_link.id, convertItem(_items, scrapUrl));
-    }
-    return { linkId: _link.id, lastPostCreateAt: res.data.lastPostCreateAt };
+    if (_items.length === 0) return;
+
+    await PostAPI.createPosts(_link.id, convertItem(_items, scrapUrl));
   },
 };
 

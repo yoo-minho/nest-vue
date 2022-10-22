@@ -10,5 +10,5 @@ export class RssQueryDto {
 
   @IsOptional()
   @Transform(({ value }) => new Date(value))
-  scrapAt?: Date;
+  lastPostCreatedAt?: Date;
 }

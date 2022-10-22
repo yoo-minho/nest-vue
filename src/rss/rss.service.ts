@@ -72,20 +72,20 @@ export class RssService {
   };
   constructor(public httpService: HttpService) {}
 
-  async findOne(url: string, scrapAt?: Date) {
-    scrapAt = scrapAt == undefined ? null : scrapAt;
+  async findOne(url: string, lastPostCreatedAt?: Date) {
+    lastPostCreatedAt =
+      lastPostCreatedAt == undefined ? null : lastPostCreatedAt;
     const rssUrl = await this.convertRssUrl(url);
     try {
       const result: RssRes = await parse(rssUrl, {});
       result.lastPostCreateAt = new Date(
         Math.max(...result.items.map((item) => item.created)),
       );
-      if (scrapAt) {
+      if (lastPostCreatedAt) {
         result.items = result.items.filter(
-          (item) => new Date(item.created) > scrapAt,
+          (item) => new Date(item.created) > lastPostCreatedAt,
         );
       }
-      result.scrapAt = scrapAt;
       result.itemLength = result.items.length;
       return result;
     } catch (e) {

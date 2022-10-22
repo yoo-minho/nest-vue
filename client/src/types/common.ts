@@ -8,6 +8,7 @@ export type Link = {
   type: BlogType;
   imagePath?: string;
   scrapAt?: Date;
+  lastPostCreatedAt?: Date;
 };
 export type LinkWrap = { link: Link };
 export type Group = {
@@ -20,6 +21,7 @@ export type Group = {
   createdAt?: Date;
   dailyViews?: number;
   totalViews?: number;
+  lastPostCreatedAt?: Date;
 };
 export type GroupTag = {
   index: number;
