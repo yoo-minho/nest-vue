@@ -1,8 +1,7 @@
 import { defineStore } from 'pinia';
-import { DaysAllCounts, DaysCount, LastPost, LinkWrap, OrderType, Post, ScrapItem } from '../types/common';
+import { DaysAllCounts, DaysCount, LastPost, LinkWrap, OrderType, Post } from '../types/common';
 import PostAPI from '../api/postApi';
 import RssAPI from '../api/rssApi';
-import GroupAPI from '../api/groupApi';
 import { isTodayByDate } from '@/plugin/dayjs';
 
 const MMM = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -55,8 +54,7 @@ export const usePostStore = defineStore('post', {
       this.scrapLoading = true;
       const scrapLinks = links.filter(({ link }: LinkWrap) => !(isScrapOncePerDay && isTodayByDate(link.scrapAt)));
       try {
-        const res = await Promise.all(scrapLinks.map(({ link }: LinkWrap) => RssAPI.scrap(link)));
-        await GroupAPI.updateLastPostCreateAt(res);
+        await Promise.all(scrapLinks.map(({ link }: LinkWrap) => RssAPI.scrap(link)));
       } catch (e) {
         throw new Error(String(e));
       } finally {
