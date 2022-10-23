@@ -9,7 +9,7 @@ import GroupDetailTab from './components/GroupDetailTab.vue';
 import GroupDetailTop from './components/GroupDetailTop.vue';
 
 const groupStore = useGroupStore();
-const { initGroupData, fetchGroup, updateLinksMinScrapAt } = groupStore;
+const { initGroupData, fetchGroup } = groupStore;
 const { groupLoading, currentGroup } = storeToRefs(groupStore);
 
 const postStore = usePostStore();
@@ -26,10 +26,7 @@ onMounted(async () => {
   const links = currentGroup.value.links;
   if (!links) return;
 
-  const scrapCount = await scrapPosts(links, true);
-  if (scrapCount > 0) {
-    updateLinksMinScrapAt();
-  }
+  await scrapPosts(links, true);
 });
 </script>
 

@@ -100,6 +100,6 @@ export class GroupController {
 
   @Patch('last-post-create-at')
   async updateLastPostCreateAt(@Body('groupId') groupId: number) {
-    return this.groupService.update22(groupId);
+    return this.groupService.updateLastPostCreatedAt(groupId);
   }
 }

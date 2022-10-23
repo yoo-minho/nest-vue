@@ -13,6 +13,7 @@ export const isTodayByDate = (v = new Date()) => dayjs(v).format('YYYYMMDD') ===
 export const getDateStringByMs = (ms: number) => dayjs(new Date(ms)).format('YYYY-MM-DD');
 export const getAgoStringByMs = (ms: number) => dayjs(new Date(ms)).fromNow();
 export const getlocaleStr = (ms: number) => new Date(ms).toLocaleString();
+export const isSameDate = (date1: Date = new Date(), date2: Date) => dayjs(date1).isSame(date2);
 
 export const isWithinAWeek = (targetDate?: Date) => {
   if (!targetDate) return false;

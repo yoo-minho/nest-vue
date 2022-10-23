@@ -137,7 +137,7 @@ export class GroupService {
     }
   }
 
-  async update22(groupId: number) {
+  async updateLastPostCreatedAt(groupId: number) {
     try {
       const res: { max: Date }[] = await this.prisma.$queryRaw`
          SELECT MAX("Link"."lastPostCreatedAt") FROM "LinksOnGroups"
@@ -148,7 +148,7 @@ export class GroupService {
         where: { id: groupId },
         data: { lastPostCreatedAt: res[0].max },
       });
-      return { ...res, success: true };
+      return { lastPostCreatedAt: res[0].max };
     } catch (e) {
       throw Error(e);
     }

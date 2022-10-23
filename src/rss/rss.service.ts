@@ -24,6 +24,7 @@ type RssResItem = {
   description?: string;
   content?: string;
   created?: number;
+  createdAt?: Date;
   link?: string;
 };
 
@@ -78,12 +79,16 @@ export class RssService {
     const rssUrl = await this.convertRssUrl(url);
     try {
       const result: RssRes = await parse(rssUrl, {});
+
       result.lastPostCreateAt = new Date(
         Math.max(...result.items.map((item) => item.created)),
       );
+      result.items.forEach((item) => {
+        item.createdAt = new Date(item.created);
+      });
       if (lastPostCreatedAt) {
         result.items = result.items.filter(
-          (item) => new Date(item.created) > lastPostCreatedAt,
+          (item) => item.createdAt > lastPostCreatedAt,
         );
       }
       result.itemLength = result.items.length;

@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { Group, GroupTag, Link } from '../types/common';
 import GroupApi from '../api/groupApi';
-import { getDateString } from '@/plugin/dayjs';
+import { getDateString, isSameDate } from '@/plugin/dayjs';
 
 const totalTag = 'All';
 
@@ -74,7 +74,11 @@ export const useGroupStore = defineStore('group', {
       this.groupLoading = false;
       this.currentGroup = data.value;
     },
-    updateLinksMinScrapAt() {
+    updateCurrentGroup({ lastPostCreatedAt }: { lastPostCreatedAt: Date }) {
+      if (isSameDate(this.currentGroup.lastPostCreatedAt, lastPostCreatedAt)) {
+        console.log('Todo. SKIP POST');
+      }
+      this.currentGroup.lastPostCreatedAt = new Date(lastPostCreatedAt);
       this.currentGroup.links = this.currentGroup.links?.map(({ link }) => {
         link.scrapAt = new Date();
         return { link };

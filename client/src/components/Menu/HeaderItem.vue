@@ -10,7 +10,7 @@ import GroupAPI from '@/api/groupApi';
 
 const postStore = usePostStore();
 
-const { scrapLoading } = storeToRefs(postStore);
+const { scrapLoading, postLoading } = storeToRefs(postStore);
 const { initPostData, scrapPosts } = postStore;
 
 const subpageStore = useSubpageStore();
@@ -18,7 +18,7 @@ const { openSettingMain, openGroupEditor } = subpageStore;
 
 const groupStore = useGroupStore();
 const { currentGroup } = storeToRefs(groupStore);
-const { updateLinksMinScrapAt } = groupStore;
+const { updateCurrentGroup } = groupStore;
 
 const router = useRouter();
 const route = useRoute();
@@ -68,10 +68,10 @@ const scrapPostsAndAction = async () => {
 
   initPostData();
   await scrapPosts(links, false);
-  await GroupAPI.updateLastPostCreateAt(groupId);
-  updateLinksMinScrapAt();
-  $q.notify({ type: 'positive', message: 'Refresh Competed!' });
+  const res = await GroupAPI.updateLastPostCreateAt(groupId);
+  updateCurrentGroup({ lastPostCreatedAt: new Date(res.lastPostCreatedAt) });
 
+  $q.notify({ type: 'positive', message: 'Refresh Competed!' });
   setTimeout(() => (rotate.value = false), 400);
 };
 
