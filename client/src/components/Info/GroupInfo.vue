@@ -40,7 +40,7 @@ const { title, description, domain, lastPostCreatedAt } = toRefs(props.groupData
           <q-tooltip max-width="20rem">{{ description }}</q-tooltip>
         </q-item>
 
-        <template v-if="scrapLoading">
+        <template v-if="isHeader && scrapLoading">
           <q-linear-progress dark rounded indeterminate color="green-4" class="q-mt-sm" />
           <q-linear-progress dark rounded query color="green-2" class="q-mt-sm" />
         </template>
