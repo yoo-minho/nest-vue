@@ -10,7 +10,7 @@ import GroupAPI from '@/api/groupApi';
 
 const postStore = usePostStore();
 
-const { scrapLoading, postLoading } = storeToRefs(postStore);
+const { scrapLoading } = storeToRefs(postStore);
 const { initPostData, scrapPosts } = postStore;
 
 const subpageStore = useSubpageStore();

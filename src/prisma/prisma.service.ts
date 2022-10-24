@@ -1,11 +1,13 @@
 import { INestApplication, Injectable, OnModuleInit } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { PrismaClient } from '@prisma/client';
 import { format } from 'sql-formatter';
 import { jsonParse } from 'src/util';
 
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit {
-  constructor() {
+  constructor(private readonly configService: ConfigService) {
+    //DATABASE_URL="postgresql://postgres:minho1010@localhost:5432/dellose_real"
     super({
       log: [
         {
@@ -25,6 +27,11 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
           level: 'warn',
         },
       ],
+      datasources: {
+        db: {
+          url: configService.get('DATABASE_URL'),
+        },
+      },
     });
   }
 
@@ -33,7 +40,6 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     this.$on('query', async ({ query, params }) => {
-      console.info('\n\n');
       console.info(
         `=== QUERY === \n${format(query, {
           language: 'postgresql',

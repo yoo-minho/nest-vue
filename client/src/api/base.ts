@@ -2,12 +2,9 @@ import qs from 'qs';
 import axios from 'axios';
 import { useAxios } from '@vueuse/integrations/useAxios';
 
-console.log('xxxx', process.env);
-
 const axiosClient = axios.create({
-  // baseURL: 'http://localhost:5000/api',
-  baseURL: '/api',
-  timeout: 5000,
+  baseURL: process.env.baseUrl,
+  timeout: 3000,
   headers: { Accept: 'application/json' },
 });
 
