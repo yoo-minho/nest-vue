@@ -6,7 +6,6 @@ import { usePostStore } from '@/stores/post';
 import { useGroupStore } from '@/stores/group';
 import { storeToRefs } from 'pinia';
 import { useQuasar } from 'quasar';
-import GroupAPI from '@/api/groupApi';
 
 const postStore = usePostStore();
 
@@ -18,7 +17,6 @@ const { openSettingMain, openGroupEditor } = subpageStore;
 
 const groupStore = useGroupStore();
 const { currentGroup } = storeToRefs(groupStore);
-const { updateCurrentGroup } = groupStore;
 
 const router = useRouter();
 const route = useRoute();
@@ -67,9 +65,7 @@ const scrapPostsAndAction = async () => {
   rotate.value = true;
 
   initPostData();
-  await scrapPosts(links, false);
-  const res = await GroupAPI.updateLastPostCreateAt(groupId);
-  updateCurrentGroup({ lastPostCreatedAt: new Date(res.lastPostCreatedAt) });
+  await scrapPosts(links, false, groupId);
 
   $q.notify({ type: 'positive', message: 'Refresh Competed!' });
   setTimeout(() => (rotate.value = false), 400);

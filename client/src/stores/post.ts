@@ -2,7 +2,12 @@ import { defineStore } from 'pinia';
 import { DaysAllCounts, DaysCount, LastPost, LinkWrap, OrderType, Post } from '../types/common';
 import PostAPI from '../api/postApi';
 import RssAPI from '../api/rssApi';
+import GroupAPI from '@/api/groupApi';
 import { isTodayByDate } from '@/plugin/dayjs';
+import { useGroupStore } from './group';
+
+const groupStore = useGroupStore();
+const { updateCurrentGroup } = groupStore;
 
 const MMM = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const day = [0, 1, 2, 3, 4, 5, 6];
@@ -45,10 +50,10 @@ export const usePostStore = defineStore('post', {
       this.lastPosts = [];
       this.lastLoading = true;
     },
-    async scrapPosts(links: LinkWrap[], isScrapOncePerDay: boolean) {
+    async scrapPosts(links: LinkWrap[], isScrapOncePerDay: boolean, groupId?: number) {
       if (links.length === 0) {
         console.log('SKIP scrapPosts');
-        return 0;
+        return;
       }
 
       this.scrapLoading = true;
@@ -59,7 +64,8 @@ export const usePostStore = defineStore('post', {
         throw new Error(String(e));
       } finally {
         this.scrapLoading = false;
-        return scrapLinks.length;
+        const res = await GroupAPI.updateLastPostCreateAt(groupId);
+        updateCurrentGroup({ lastPostCreatedAt: new Date(res.lastPostCreatedAt) });
       }
     },
     async fetchPosts(links: LinkWrap[]) {

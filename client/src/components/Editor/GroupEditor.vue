@@ -13,7 +13,7 @@ import LinkCard from '@/components/Card/LinkCard.vue';
 const router = useRouter();
 
 const groupStore = useGroupStore();
-const { initLinks, save, fetchAllGroup, fetchAllTag, deleteLink } = groupStore;
+const { initLinks, save, deleteLink } = groupStore;
 const { linksOnEditor, linkCountMessage, TagNames } = storeToRefs(groupStore);
 
 const subpageStore = useSubpageStore();
@@ -77,10 +77,8 @@ async function saveGroup() {
     return;
   }
   await save(title.value, id.value, description.value, selectedTags.value);
-
-  await fetchAllGroup();
-  await fetchAllTag();
-  _closeGroupEditor();
+  // _closeGroupEditor();
+  router.push({ path: `/@${id.value}` });
 }
 
 function _closeGroupEditor() {

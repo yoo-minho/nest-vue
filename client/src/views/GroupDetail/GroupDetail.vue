@@ -23,10 +23,10 @@ initPostData();
 
 onMounted(async () => {
   await fetchGroup(props.domain);
-  const links = currentGroup.value.links;
+  const { id: groupId, links } = currentGroup.value;
   if (!links) return;
 
-  await scrapPosts(links, true);
+  await scrapPosts(links, true, groupId);
 });
 </script>
 

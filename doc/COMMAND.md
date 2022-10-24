@@ -19,3 +19,12 @@ PWA 만들기
 - https://docs.google.com/presentation/d/1h2Ht8YB3yqXxLAdRFzmecOwbBAvYZH8mJljo-tNEv7w/edit?usp=sharing
 - https://www.remove.bg/ko/upload
 - https://realfavicongenerator.net/
+
+지우기 개어려움
+
+delete from "Group" where domain like 'velopert%';
+delete from "Link" where url like '%velopert%' or url like '%gttEItaP3MGrYKr2uBVYg%';
+delete from "LinksOnGroups" where "groupId" in (18,16,19,17);
+delete from "Post" where "linkId" in (27, 28, 29);
+delete from "Views" where "groupDomain" like 'velopert%';
+delete from "TagsOnGroups" where "groupId" in (18,16,19,17);
