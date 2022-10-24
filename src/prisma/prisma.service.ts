@@ -33,6 +33,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     this.$on('query', async ({ query, params }) => {
+      console.info('\n\n');
       console.info(
         `=== QUERY === \n${format(query, {
           language: 'postgresql',

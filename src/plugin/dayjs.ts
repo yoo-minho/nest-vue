@@ -1,4 +1,4 @@
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 
 export const getToday8 = (date?: Date) => {
   return dayjs(date ? date : new Date()).format('YYYYMMDD');

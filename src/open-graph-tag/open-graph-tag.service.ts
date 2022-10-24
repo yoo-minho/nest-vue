@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import * as ogs from 'open-graph-scraper';
+import ogs from 'open-graph-scraper';
 
 @Injectable()
 export class OpenGraphTagService {

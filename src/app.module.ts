@@ -1,17 +1,33 @@
 import { CacheModule, Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-import { OpenGraphTagModule } from './open-graph-tag/open-graph-tag.module';
-import { RssModule } from './rss/rss.module';
-import { GroupModule } from './group/group.module';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './http-exception.filter';
+
 import { PostModule } from './post/post.module';
 import { LinkModule } from './link/link.module';
+import { RssModule } from './rss/rss.module';
+import { GroupModule } from './group/group.module';
+import { OpenGraphTagModule } from './open-graph-tag/open-graph-tag.module';
+import Joi from 'joi';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: `${__dirname}/config/.${process.env.NODE_ENV}.env`,
+      validationSchema: Joi.object({
+        NODE_ENV: Joi.string()
+          .valid('development', 'production', 'test')
+          .required(),
+        // DATABASE_HOST: Joi.string().required(),
+        // DATABASE_PORT: Joi.string().required(),
+        // DATABASE_USER: Joi.string().required(),
+        // DATABASE_PASSWORD: Joi.string().required(),
+      }),
+    }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'client/dist'),
     }),
