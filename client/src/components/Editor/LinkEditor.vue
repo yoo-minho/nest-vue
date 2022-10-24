@@ -31,6 +31,14 @@ const getErrorMessage = (v: string): string => {
   return '';
 };
 
+const getOgImage = (ogImage: { url: string }) => {
+  console.log({ ogImage });
+  if (ogImage instanceof Array && ogImage.length) {
+    return ogImage[0].url;
+  }
+  return ogImage.url || 'no.png';
+};
+
 const url = ref('');
 const rssUrl = ref('');
 const isShowRssUrl = ref(false);
@@ -76,7 +84,7 @@ async function addBlogLink() {
     type: getBlogType(url.value),
     title: minifyStr(ogsData.ogTitle, 50),
     description: minifyStr(ogsData.ogDescription, 100),
-    imagePath: ogsData.ogImage.url,
+    imagePath: getOgImage(ogsData.ogImage),
   });
   closeLinkEditor();
 }

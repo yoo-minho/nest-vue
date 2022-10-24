@@ -5,7 +5,6 @@ import {
   ArrayNotEmpty,
   IsArray,
   IsDefined,
-  IsEmpty,
   IsNotEmpty,
   IsString,
   MaxLength,
@@ -17,26 +16,25 @@ class LinkItemDto {
   url: string;
 
   @IsString()
-  @IsEmpty()
   @MaxLength(500)
-  rssUrl: string;
+  rssUrl?: string;
 
   @IsString()
+  @IsNotEmpty()
   @MaxLength(50)
   title: string;
 
   @IsString()
-  @IsEmpty()
   @MaxLength(100)
-  description: string;
+  description?: string;
 
   @IsString()
+  @IsNotEmpty()
   type: BLOG_TYPE;
 
   @IsString()
-  @IsEmpty()
   @MaxLength(500)
-  imagePath: string;
+  imagePath?: string;
 }
 
 export class CreateGroupDto {

@@ -14,7 +14,7 @@ const isMobile = $q.platform.is.mobile;
     <HeaderItem :close="() => emits('close')" :title="props.title" :save="() => emits('save')" />
     <q-page-container class="max-width">
       <q-scroll-area :visible="false" class="max-width without-header">
-        <q-page :class="{ 'q-pa-md': true, 'width-100vw': isMobile }">
+        <q-page :class="{ 'q-pa-md': true, 'width-100vw': isMobile, 'max-width': true }">
           <q-form class="q-gutter-y-md column">
             <slot></slot>
           </q-form>
