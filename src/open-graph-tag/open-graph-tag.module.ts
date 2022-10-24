@@ -4,6 +4,6 @@ import { OpenGraphTagController } from './open-graph-tag.controller';
 
 @Module({
   controllers: [OpenGraphTagController],
-  providers: [OpenGraphTagService]
+  providers: [OpenGraphTagService],
 })
 export class OpenGraphTagModule {}

@@ -17,15 +17,12 @@ import Joi from 'joi';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: `${__dirname}/config/.${process.env.NODE_ENV}.env`,
+      envFilePath: `${__dirname}/../config/${process.env.NODE_ENV}.env`,
       validationSchema: Joi.object({
         NODE_ENV: Joi.string()
           .valid('development', 'production', 'test')
           .required(),
-        // DATABASE_HOST: Joi.string().required(),
-        // DATABASE_PORT: Joi.string().required(),
-        // DATABASE_USER: Joi.string().required(),
-        // DATABASE_PASSWORD: Joi.string().required(),
+        DATABASE_URL: Joi.string().required(),
       }),
     }),
     ServeStaticModule.forRoot({
