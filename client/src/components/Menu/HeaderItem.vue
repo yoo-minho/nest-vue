@@ -6,6 +6,7 @@ import { usePostStore } from '@/stores/post';
 import { useGroupStore } from '@/stores/group';
 import { storeToRefs } from 'pinia';
 import { useQuasar } from 'quasar';
+import { showBottomSheet } from '@/hooks/useSnsBottomSheeet';
 
 const postStore = usePostStore();
 
@@ -67,19 +68,8 @@ const scrapPostsAndAction = async () => {
   initPostData();
   await scrapPosts(links, false, groupId);
 
-  $q.notify({ type: 'positive', message: 'Refresh Competed!' });
+  $q.notify({ type: 'positive', message: 'Refresh Completed!' });
   setTimeout(() => (rotate.value = false), 400);
-};
-
-const shareUrl = () => {
-  if (typeof navigator.share === 'undefined') {
-    $q.notify({ type: 'nagative', message: 'Non-shareable environment!' });
-    return;
-  }
-  navigator.share({
-    title: location.href,
-    url: location.href,
-  });
 };
 </script>
 
@@ -93,7 +83,7 @@ const shareUrl = () => {
       </q-toolbar-title>
       <q-toolbar-title v-if="title">{{ title }}</q-toolbar-title>
 
-      <q-btn v-if="share" icon="share" flat round dense @click="shareUrl" />
+      <q-btn v-if="share" icon="share" flat round dense @click="showBottomSheet($q)" />
       <q-btn
         v-if="refresh"
         :class="{ loading_arrow: rotate }"
