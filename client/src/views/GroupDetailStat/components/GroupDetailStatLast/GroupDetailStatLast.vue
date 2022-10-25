@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { usePostStore } from '@/stores/post';
 import { LinkWrap, OrderType } from '@/types/common';

@@ -22,9 +22,11 @@ PWA 만들기
 
 지우기 개어려움
 
+```sql
 delete from "Group" where domain like 'velopert%';
 delete from "Link" where url like '%velopert%' or url like '%gttEItaP3MGrYKr2uBVYg%';
 delete from "LinksOnGroups" where "groupId" in (18,16,19,17);
 delete from "Post" where "linkId" in (27, 28, 29);
 delete from "Views" where "groupDomain" like 'velopert%';
 delete from "TagsOnGroups" where "groupId" in (18,16,19,17);
+```
