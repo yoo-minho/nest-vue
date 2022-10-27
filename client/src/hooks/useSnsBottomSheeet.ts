@@ -1,5 +1,8 @@
 import { getImage } from '@/util/ImageUtil';
 import { QVueGlobals } from 'quasar';
+import { useKakao } from 'vue3-kakao-sdk';
+
+const { kakao } = useKakao();
 
 export const showBottomSheet = ($q: QVueGlobals) => {
   $q.bottomSheet({
@@ -43,7 +46,8 @@ export const showBottomSheet = ($q: QVueGlobals) => {
     const title = encodeURIComponent('팀로그');
     switch (action.id) {
       case 'kakao':
-        return shareUrl($q);
+        shareKakao();
+        return;
       case 'facebook':
         window.open(`http://www.facebook.com/sharer/sharer.php?u=${sharedUrl}`, '', 'width=400, height=500');
         return;
@@ -69,6 +73,16 @@ export const showBottomSheet = ($q: QVueGlobals) => {
         shareUrl($q);
         return;
     }
+  });
+};
+
+const shareKakao = () => {
+  kakao.value.Link.sendCustom({
+    templateId: 82775,
+    templateArgs: {
+      title: '라이언이 즐겨먹던 바로 그 틴케이스 치즈볼',
+      description: '바라만 봐도 즐거워지는 힐링 패키지에는 시크릿 스토리가 숨어있어요.',
+    },
   });
 };
 
