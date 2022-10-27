@@ -38,47 +38,38 @@ export const showBottomSheet = ($q: QVueGlobals) => {
         id: 'share',
       },
     ],
-  })
-    .onOk((action) => {
-      const sharedUrl = encodeURIComponent(location.href);
-      const title = encodeURIComponent('팀로그');
-      switch (action.id) {
-        case 'kakao':
-          return shareUrl($q);
-        case 'facebook':
-          window.open(`http://www.facebook.com/sharer/sharer.php?u=${sharedUrl}`, '', 'width=400, height=500');
-          return;
-        case 'twitter':
-          window.open(
-            `http://twitter.com/share?url=${sharedUrl}&text=${title}`,
-            'tweetPop',
-            'width=400, height=500, scrollbars=yes',
-          );
-          return;
-        case 'band':
-          window.open(
-            `http://www.band.us/plugin/share?body=${title}&route=${sharedUrl}`,
-            'shareBand',
-            'width=400, height=500, resizable=yes',
-          );
-          return;
-        case 'copy':
-          navigator.clipboard.writeText(location.href).then(() => {
-            $q.notify({ type: 'positive', message: 'Copy Completed!' });
-          });
-          return;
-        case 'share':
-        default:
-          shareUrl($q);
-          return;
-      }
-    })
-    .onCancel(() => {
-      //   console.log('Dismissed');
-    })
-    .onDismiss(() => {
-      //   console.log('I am triggered on both OK and Cancel');
-    });
+  }).onOk((action) => {
+    const sharedUrl = encodeURIComponent(location.href);
+    const title = encodeURIComponent('팀로그');
+    switch (action.id) {
+      case 'kakao':
+        return shareUrl($q);
+      case 'facebook':
+        window.open(`http://www.facebook.com/sharer/sharer.php?u=${sharedUrl}`, '', 'width=400, height=500');
+        return;
+      case 'twitter':
+        window.open(
+          `http://twitter.com/share?url=${sharedUrl}&text=${title}`,
+          'tweetPop',
+          'width=400, height=500, scrollbars=yes',
+        );
+        return;
+      case 'band':
+        window.open(
+          `http://www.band.us/plugin/share?body=${title}&route=${sharedUrl}`,
+          'shareBand',
+          'width=400, height=500, resizable=yes',
+        );
+        return;
+      case 'copy':
+        copyUrl($q);
+        return;
+      case 'share':
+      default:
+        shareUrl($q);
+        return;
+    }
+  });
 };
 
 const shareUrl = ($q: QVueGlobals) => {
@@ -90,4 +81,18 @@ const shareUrl = ($q: QVueGlobals) => {
     title: location.href,
     url: location.href,
   });
+};
+
+const copyUrl = async ($q: QVueGlobals) => {
+  if (typeof navigator.clipboard === 'undefined') {
+    const dummy = document.createElement('input');
+    document.body.appendChild(dummy);
+    dummy.value = location.href;
+    dummy.select();
+    document.execCommand('copy');
+    document.body.removeChild(dummy);
+  } else {
+    await navigator.clipboard.writeText(location.href);
+  }
+  $q.notify({ type: 'positive', message: 'Copy Completed!' });
 };
