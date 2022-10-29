@@ -1,7 +1,6 @@
 import { getImage } from '@/util/ImageUtil';
-import { QVueGlobals } from 'quasar';
 
-export const showBottomSheet = ($q: QVueGlobals) => {
+export const showBottomSheet = ($q) => {
   $q.bottomSheet({
     message: '공유하기',
     grid: false,
@@ -74,74 +73,30 @@ export const showBottomSheet = ($q: QVueGlobals) => {
 };
 
 const shareKakao = () => {
-  Kakao.Share.sendDefault({
+  window.Kakao.Share.sendDefault({
     objectType: 'feed',
     content: {
-      title: '오늘의 디저트',
-      description: '아메리카노, 빵, 케익',
-      imageUrl: 'https://mud-kage.kakao.com/dn/NTmhS/btqfEUdFAUf/FjKzkZsnoeE4o19klTOVI1/openlink_640x640s.jpg',
+      title: '팀로그',
+      description: '기록해요',
+      imageUrl: `${location.origin}/pwa-256x256.png`,
       link: {
-        mobileWebUrl: 'https://developers.kakao.com',
-        webUrl: 'https://developers.kakao.com',
+        mobileWebUrl: location.href,
+        webUrl: location.href,
       },
-    },
-    itemContent: {
-      profileText: 'Kakao',
-      profileImageUrl:
-        'https://mud-kage.kakao.com/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png',
-      titleImageUrl: 'https://mud-kage.kakao.com/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png',
-      titleImageText: 'Cheese cake',
-      titleImageCategory: 'Cake',
-      items: [
-        {
-          item: 'Cake1',
-          itemOp: '1000원',
-        },
-        {
-          item: 'Cake2',
-          itemOp: '2000원',
-        },
-        {
-          item: 'Cake3',
-          itemOp: '3000원',
-        },
-        {
-          item: 'Cake4',
-          itemOp: '4000원',
-        },
-        {
-          item: 'Cake5',
-          itemOp: '5000원',
-        },
-      ],
-      sum: '총 결제금액',
-      sumOp: '15000원',
-    },
-    social: {
-      likeCount: 10,
-      commentCount: 20,
-      sharedCount: 30,
     },
     buttons: [
       {
-        title: '웹으로 이동',
+        title: '이동',
         link: {
-          mobileWebUrl: 'https://developers.kakao.com',
-          webUrl: 'https://developers.kakao.com',
-        },
-      },
-      {
-        title: '앱으로 이동',
-        link: {
-          mobileWebUrl: 'https://developers.kakao.com',
-          webUrl: 'https://developers.kakao.com',
+          mobileWebUrl: location.href,
+          webUrl: location.href,
         },
       },
     ],
   });
 };
 
-const shareUrl = ($q: QVueGlobals) => {
+const shareUrl = ($q) => {
   if (typeof navigator.share === 'undefined') {
     $q.notify({ type: 'nagative', message: 'Non-shareable environment!' });
     return;
@@ -152,7 +107,7 @@ const shareUrl = ($q: QVueGlobals) => {
   });
 };
 
-const copyUrl = async ($q: QVueGlobals) => {
+const copyUrl = async ($q) => {
   if (typeof navigator.clipboard === 'undefined') {
     const dummy = document.createElement('input');
     document.body.appendChild(dummy);
