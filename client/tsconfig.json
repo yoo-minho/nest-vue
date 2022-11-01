@@ -23,8 +23,8 @@
     "src/**/*.d.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
-    "src/hooks/useSnsBottomSheeet.js",
-    "src/hooks/useSnsBottomSheeet.js"
+    "src/hooks/useSnsBottomSheeet.ts",
+    "src/hooks/useSnsBottomSheeet.ts"
   ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
