@@ -1,6 +1,7 @@
 import { getImage } from '@/util/ImageUtil';
+import { QVueGlobals } from 'quasar';
 
-export const showBottomSheet = ($q) => {
+export const showBottomSheet = ($q: QVueGlobals) => {
   $q.bottomSheet({
     message: '공유하기',
     grid: false,
@@ -72,8 +73,10 @@ export const showBottomSheet = ($q) => {
   });
 };
 
+// declare const Kakao = typeof Kakao;
+
 const shareKakao = () => {
-  window.Kakao.Share.sendDefault({
+  Kakao.Share.sendDefault({
     objectType: 'feed',
     content: {
       title: '팀로그',
@@ -96,7 +99,7 @@ const shareKakao = () => {
   });
 };
 
-const shareUrl = ($q) => {
+const shareUrl = ($q: QVueGlobals) => {
   if (typeof navigator.share === 'undefined') {
     $q.notify({ type: 'nagative', message: 'Non-shareable environment!' });
     return;
@@ -107,7 +110,7 @@ const shareUrl = ($q) => {
   });
 };
 
-const copyUrl = async ($q) => {
+const copyUrl = async ($q: QVueGlobals) => {
   if (typeof navigator.clipboard === 'undefined') {
     const dummy = document.createElement('input');
     document.body.appendChild(dummy);
