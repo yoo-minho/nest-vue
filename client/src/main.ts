@@ -1,5 +1,4 @@
 import { createApp } from 'vue';
-import { createVueKakaoSdk } from 'vue3-kakao-sdk';
 import { Quasar, Notify, Dialog, BottomSheet } from 'quasar';
 import { createPinia } from 'pinia';
 
@@ -14,7 +13,6 @@ const myApp = createApp(App);
 myApp.use(Quasar, {
   plugins: { Notify, Dialog, BottomSheet },
 });
-myApp.use(createVueKakaoSdk('e9c455e800755b2e3bb767bdedbf372d'));
 myApp.use(createPinia());
 myApp.use(router);
 myApp.config.errorHandler = (error) => {
