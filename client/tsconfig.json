@@ -16,15 +16,9 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "typeRoots": ["./node_modules/@types", "types"]
+    "typeRoots": ["./node_modules/@types", "./types"]
+    // "declaration": true
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "src/hooks/useSnsBottomSheeet.ts",
-    "src/hooks/useSnsBottomSheeet.ts"
-  ],
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/hooks/useSnsBottomSheeet.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
