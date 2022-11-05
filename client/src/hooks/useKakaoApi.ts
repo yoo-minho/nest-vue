@@ -1,7 +1,6 @@
 import Kakao from 'kakao-js-sdk';
 
 export const shareKakao = () => {
-  Kakao.isInitialized() === false && Kakao.init('e9c455e800755b2e3bb767bdedbf372d');
   Kakao.Share.sendDefault({
     objectType: 'feed',
     content: {
