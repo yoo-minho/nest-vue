@@ -1,5 +1,3 @@
-import Kakao from 'kakao-js-sdk';
-
 export const shareKakao = () => {
   Kakao.Share.sendDefault({
     objectType: 'feed',
