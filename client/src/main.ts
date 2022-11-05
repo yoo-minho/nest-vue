@@ -1,7 +1,6 @@
 import { createApp } from 'vue';
 import { Quasar, Notify, Dialog, BottomSheet } from 'quasar';
 import { createPinia } from 'pinia';
-import Kakao from 'kakao-js-sdk';
 
 import '@quasar/extras/material-icons/material-icons.css';
 import 'quasar/src/css/index.sass';
@@ -22,9 +21,5 @@ myApp.config.errorHandler = (error) => {
   Notify.create({ type: 'negative', message });
 };
 myApp.mount('#app');
-
-if (Kakao.isInitialized() === false) {
-  Kakao.init('e9c455e800755b2e3bb767bdedbf372d');
-}
 
 mainLog();
