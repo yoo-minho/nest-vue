@@ -74,15 +74,17 @@ export const useGroupStore = defineStore('group', {
       this.groupLoading = false;
       this.currentGroup = data.value;
     },
-    updateCurrentGroup({ lastPostCreatedAt }: { lastPostCreatedAt: Date }) {
-      if (isSameDate(this.currentGroup.lastPostCreatedAt, lastPostCreatedAt)) {
-        console.log('Todo. SKIP POST');
-      }
-      this.currentGroup.lastPostCreatedAt = new Date(lastPostCreatedAt);
+    updateCurrentGroupLinksScrapAt() {
       this.currentGroup.links = this.currentGroup.links?.map(({ link }) => {
         link.scrapAt = new Date();
         return { link };
       });
+    },
+    updateCurrentGroupLastPostCreatedAt({ lastPostCreatedAt }: { lastPostCreatedAt: Date }) {
+      if (isSameDate(this.currentGroup.lastPostCreatedAt, lastPostCreatedAt)) {
+        console.log('Todo. SKIP POST', { lastPostCreatedAt });
+      }
+      this.currentGroup.lastPostCreatedAt = lastPostCreatedAt;
     },
     async save(title: string, domain: string, description: string, tags: string[]) {
       await GroupApi.create(

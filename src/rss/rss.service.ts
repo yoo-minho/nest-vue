@@ -74,25 +74,31 @@ export class RssService {
   constructor(public httpService: HttpService) {}
 
   async findOne(url: string, lastPostCreatedAt?: Date) {
-    lastPostCreatedAt =
-      lastPostCreatedAt == undefined ? null : lastPostCreatedAt;
+    const oldLastPostCreateAt = new Date(lastPostCreatedAt || 0);
+
     const rssUrl = await this.convertRssUrl(url);
     try {
       const result: RssRes = await parse(rssUrl, {});
+      const _items = result.items
+        .map((item) => ({
+          ...item,
+          createdAt: new Date(item.created),
+        }))
+        .filter((item) => item.createdAt > oldLastPostCreateAt);
 
-      result.lastPostCreateAt = new Date(
-        Math.max(...result.items.map((item) => item.created)),
+      const newlastPostCreateAt = new Date(
+        Math.max(..._items.map((item) => item.created)),
       );
-      result.items.forEach((item) => {
-        item.createdAt = new Date(item.created);
-      });
-      if (lastPostCreatedAt) {
-        result.items = result.items.filter(
-          (item) => item.createdAt > lastPostCreatedAt,
-        );
-      }
-      result.itemLength = result.items.length;
-      return result;
+
+      const itemLength = _items.length;
+
+      return {
+        oldLastPostCreateAt,
+        lastPostCreateAt:
+          _items.length === 0 ? oldLastPostCreateAt : newlastPostCreateAt,
+        items: _items,
+        itemLength,
+      };
     } catch (e) {
       throw Error('Error in findOne');
     }

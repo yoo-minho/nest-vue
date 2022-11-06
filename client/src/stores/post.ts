@@ -7,7 +7,7 @@ import { isTodayByDate } from '@/plugin/dayjs';
 import { useGroupStore } from './group';
 
 const groupStore = useGroupStore();
-const { updateCurrentGroup } = groupStore;
+const { updateCurrentGroupLastPostCreatedAt, updateCurrentGroupLinksScrapAt } = groupStore;
 
 const MMM = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const day = [0, 1, 2, 3, 4, 5, 6];
@@ -64,8 +64,11 @@ export const usePostStore = defineStore('post', {
         throw new Error(String(e));
       } finally {
         this.scrapLoading = false;
-        const res = await GroupAPI.updateLastPostCreateAt(groupId);
-        updateCurrentGroup({ lastPostCreatedAt: new Date(res.lastPostCreatedAt) });
+
+        //link들의 lastPostCreatedAt 중 max를 group에 업데이트함
+        const { lastPostCreatedAt } = await GroupAPI.updateLastPostCreateAt(groupId);
+        updateCurrentGroupLastPostCreatedAt({ lastPostCreatedAt });
+        updateCurrentGroupLinksScrapAt();
       }
     },
     async fetchPosts(links: LinkWrap[]) {

@@ -57,7 +57,7 @@ export default {
     if (!groupId) throw new Error('No Group Id');
     try {
       const { data } = await axiosClient.patch(`group/last-post-create-at`, { groupId });
-      return data;
+      return { lastPostCreatedAt: new Date(data.lastPostCreatedAt) };
     } catch (axiosError) {
       const err = axiosError as AxiosError<{ res: { message: string } }>;
       const message = err.response?.data?.res?.message || err.message;

@@ -14,7 +14,7 @@ export class RssController {
   async findOne(@Body() queryDto: any) {
     const { linkId, url, lastPostCreatedAt } = queryDto;
     const res = await this.rssService.findOne(url, lastPostCreatedAt);
-    this.linkService.updateFlag(linkId, res.lastPostCreateAt);
+    await this.linkService.updateFlag(linkId, res.lastPostCreateAt);
     return res;
   }
 }
