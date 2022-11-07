@@ -16,43 +16,33 @@ const { title, description, domain, lastPostCreatedAt } = toRefs(props.groupData
 </script>
 
 <template>
-  <q-item>
-    <q-item-section>
-      <q-list :class="{ 'text-center': isHeader }">
-        <q-item v-if="isHeader" class="q-pa-none" style="min-height: 0">
-          <q-item-section class="text-weight-bold text-green-4"> @{{ domain }}</q-item-section>
-        </q-item>
-        <q-badge v-if="isWithinAWeek(lastPostCreatedAt)" color="red" label="New" />
-        <q-item class="q-pa-none" style="min-height: 0">
-          <q-item-section class="text-weight-bolder" style="font-size: 1rem; flex-grow: 3">
-            {{ title }}
-          </q-item-section>
-          <q-item-section
-            v-if="!isHeader"
-            class="text-grey-5"
-            style="font-size: 0.8rem; flex-grow: 1; text-align: right"
-          >
-            {{ getFormatString(lastPostCreatedAt, 'YYYY-MM-DD') }}
-          </q-item-section>
-        </q-item>
-        <q-item class="q-pa-none ellipsis-3-lines" style="min-height: 0">
-          {{ description }}
-          <q-tooltip max-width="20rem">{{ description }}</q-tooltip>
-        </q-item>
-
-        <template v-if="isHeader && scrapLoading">
+  <q-item v-if="true">
+    <q-item-section :class="{ 'text-center': isHeader }">
+      <q-item-label class="text-weight-bold text-green-4">
+        @{{ domain }}
+        <q-badge v-if="isWithinAWeek(lastPostCreatedAt)" color="red"> N </q-badge>
+      </q-item-label>
+      <q-item-label class="justify-between items-center" :class="{ row: !isHeader }">
+        <div class="text-h6 text-weight-bolder">{{ title }}</div>
+        <div v-if="!isHeader" class="text-grey-5">
+          {{ getFormatString(lastPostCreatedAt, 'YYYY-MM-DD') }}
+        </div>
+      </q-item-label>
+      <q-item-label>
+        {{ description }}
+        <q-tooltip max-width="20rem">{{ description }}</q-tooltip>
+      </q-item-label>
+      <div v-if="isHeader" class="q-my-sm">
+        <q-item-label v-if="scrapLoading">
           <q-linear-progress dark rounded indeterminate color="green-4" class="q-mt-sm" />
           <q-linear-progress dark rounded query color="green-2" class="q-mt-sm" />
-        </template>
-
-        <template v-else>
-          <q-item v-if="isHeader" class="q-pa-none" style="min-height: 0">
-            <q-item-section class="text-grey-5" style="font-size: 0.8rem">
-              {{ getFormatString(lastPostCreatedAt, 'YYYY-MM-DD HH:mm (ddd)') }}
-            </q-item-section>
-          </q-item>
-        </template>
-      </q-list>
+        </q-item-label>
+        <q-item-label v-else>
+          <div class="text-grey-5">
+            {{ getFormatString(lastPostCreatedAt, 'YYYY-MM-DD HH:mm (ddd)') }}
+          </div>
+        </q-item-label>
+      </div>
     </q-item-section>
   </q-item>
 </template>
