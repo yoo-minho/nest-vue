@@ -13,30 +13,31 @@ const moreLinksTooltip = computed(() => hiddenLinks.value.map(({ link: { title }
 </script>
 
 <template>
-  <q-item class="link-list">
+  <q-item>
     <q-item-section>
-      <q-item-label>
-        <div class="row items-center">
-          <div v-for="({ link }, i) in showingLinks" :key="i" class="col-3">
-            <link-info :link-data="link" :links="true" />
+      <q-item-label class="row q-pb-md">
+        <template v-for="({ link }, i) in showingLinks" :key="i">
+          <div class="col-3 link-item">
+            <LinkInfo :link-data="link" :links="true" />
           </div>
-          <template v-if="hiddenLength > 0">
-            <div class="col-3">
-              <q-item-label class="link-more"><q-icon name="add" size="36px" />{{ hiddenLength + 1 }}</q-item-label>
+        </template>
+        <template v-if="hiddenLength > 0">
+          <div class="col-3 link-item">
+            <div style="font-size: 36px; padding: 8px">
+              <q-icon name="add" size="36px" />{{ hiddenLength + 1 }}
               <q-tooltip>{{ moreLinksTooltip }}</q-tooltip>
             </div>
-          </template>
-        </div>
+          </div>
+        </template>
       </q-item-label>
     </q-item-section>
   </q-item>
 </template>
 
 <style scoped>
-.link-list {
-  height: 80px;
-}
-.link-more {
+.link-item {
+  height: 48px;
   font-size: 36px;
+  text-align: center;
 }
 </style>

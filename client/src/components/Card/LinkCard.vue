@@ -20,13 +20,13 @@ const randomDesc = `Need a description like '${emojiBundle
     <q-item-section side>
       <LinkInfo :link-data="link" :links="iconName === 'clear'" :posts="iconName === 'launch'" />
     </q-item-section>
-    <q-item-section>
-      <q-item-label class="text-weight-bold ellipsis text-subtitle2">{{ title }}</q-item-label>
+    <q-item-section class="cursor-pointer" @click="() => emits('clickIcon')">
+      <q-item-label class="text-weight-bold ellipsis text-subtitle2">
+        <q-icon :name="iconName" />
+        {{ title }}
+      </q-item-label>
       <q-item-label class="ellipsis-2-lines text-grey-7">{{ description || randomDesc }}</q-item-label>
       <q-item-label class="ellipsis text-grey-5">{{ url }}</q-item-label>
-    </q-item-section>
-    <q-item-section side class="cursor-pointer">
-      <q-icon :name="iconName" @click="() => emits('clickIcon')" />
     </q-item-section>
   </q-item>
 </template>
