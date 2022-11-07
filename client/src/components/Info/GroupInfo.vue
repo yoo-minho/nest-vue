@@ -16,7 +16,7 @@ const { title, description, domain, lastPostCreatedAt } = toRefs(props.groupData
 </script>
 
 <template>
-  <q-item v-if="true">
+  <q-item>
     <q-item-section :class="{ 'text-center': isHeader }">
       <q-item-label class="text-weight-bold text-green-4">
         @{{ domain }}
