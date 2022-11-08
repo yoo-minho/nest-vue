@@ -1,5 +1,5 @@
 <template>
-  <div class="max-width">
+  <div class="max-width bg-white">
     <div id="subpage"></div>
     <router-view v-slot="{ Component, route }">
       <transition :name="String(route.meta.transitionName)">
@@ -9,7 +9,7 @@
   </div>
 </template>
 
-<style>
+<style lang="scss">
 body {
   overflow: hidden;
 }
@@ -22,6 +22,7 @@ ul {
 #app {
   font-family: 'Noto Sans KR', Avenir, Helvetica, Arial, sans-serif;
   color: #2c3e50;
+  background-color: $grey-3;
 }
 
 .max-width {
