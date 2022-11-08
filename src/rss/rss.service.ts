@@ -84,7 +84,10 @@ export class RssService {
           ...item,
           createdAt: new Date(item.created),
         }))
-        .filter((item) => item.createdAt > oldLastPostCreateAt);
+        .filter(
+          ({ createdAt }) =>
+            createdAt > oldLastPostCreateAt && createdAt < new Date(),
+        );
 
       const newlastPostCreateAt = new Date(
         Math.max(..._items.map((item) => item.created)),

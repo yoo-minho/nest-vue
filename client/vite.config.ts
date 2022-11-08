@@ -34,6 +34,7 @@ export default defineConfig((config) => {
           name: 'Teamlog',
           short_name: 'Teamlog',
           description: 'We log together!',
+          display: 'standalone',
           theme_color: '#ffffff',
           icons: [
             {
