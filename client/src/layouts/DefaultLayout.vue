@@ -28,7 +28,7 @@ const groupDetail = String(route.name).includes('GroupDetail');
         <DataSubpage v-if="isOpenDataSubpage" />
       </transition-group>
     </Teleport>
-    <HeaderItem :logo="true" :editor="groupMain" :share="true" :refresh="groupDetail" :setting="true" />
+    <HeaderItem type="DEFAULT" :editor="groupMain" :refresh="groupDetail" />
     <q-page-container class="max-width">
       <q-scroll-area :visible="false" class="max-width without-header">
         <slot></slot>

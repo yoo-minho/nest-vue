@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref, toRefs } from 'vue';
+import { ref, toRaw } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useSubpageStore } from '@/stores/subpage';
 import { usePostStore } from '@/stores/post';
 import { useGroupStore } from '@/stores/group';
 import { storeToRefs } from 'pinia';
-import { useQuasar } from 'quasar';
+import { QBtn, QHeader, QToolbar, QToolbarTitle, useQuasar } from 'quasar';
 import { showBottomSheet } from '@/hooks/useSnsBottomSheeet';
 
 const postStore = usePostStore();
@@ -23,20 +23,19 @@ const router = useRouter();
 const route = useRoute();
 
 interface HeaderOption {
+  type: 'DEFAULT' | 'EDITOR' | 'SETTING';
   close?: () => void;
   back?: () => void;
-  logo?: boolean;
+  save?: () => void;
   title?: string;
-  share?: boolean;
   refresh?: boolean;
   editor?: boolean;
-  setting?: boolean;
-  save?: () => void;
 }
 
 const props = defineProps<HeaderOption>();
+const { type } = toRaw(props);
+const isDefaultType = type === 'DEFAULT';
 const rotate = ref(false);
-const { logo, editor, setting } = toRefs(props);
 const $q = useQuasar();
 
 const reload = () => {
@@ -78,12 +77,11 @@ const scrapPostsAndAction = async () => {
     <q-toolbar>
       <q-btn v-if="close" flat round dense icon="close" @click="close" />
       <q-btn v-if="back" flat round dense icon="keyboard_backspace" @click="back" />
-      <q-toolbar-title v-if="logo" class="logo-font logo-style logo-common q-ml-sm" @click="reload">
+      <q-toolbar-title v-if="isDefaultType" class="logo-font logo-style logo-common q-ml-sm" @click="reload">
         Teamlog
       </q-toolbar-title>
       <q-toolbar-title v-if="title">{{ title }}</q-toolbar-title>
 
-      <q-btn v-if="share" icon="share" flat round dense @click="showBottomSheet($q)" />
       <q-btn
         v-if="refresh"
         :class="{ loading_arrow: rotate }"
@@ -94,7 +92,9 @@ const scrapPostsAndAction = async () => {
         @click="scrapPostsAndAction"
       />
       <q-btn v-if="editor" icon="add_circle_outline" flat round dense @click="_openGroupEditor" />
-      <q-btn v-if="setting" icon="more_vert" flat round dense @click="_openSettingMain" />
+      <q-btn v-if="isDefaultType" icon="share" flat round dense @click="showBottomSheet($q)" />
+      <q-btn v-if="isDefaultType" icon="login" flat round dense @click="showBottomSheet($q)" />
+      <q-btn v-if="isDefaultType" icon="more_vert" flat round dense @click="_openSettingMain" />
       <q-btn v-if="save" flat round dense icon="done" @click="save" />
     </q-toolbar>
   </q-header>
