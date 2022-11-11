@@ -5,7 +5,7 @@ import { useSubpageStore } from '@/stores/subpage';
 import { usePostStore } from '@/stores/post';
 import { useGroupStore } from '@/stores/group';
 import { storeToRefs } from 'pinia';
-import { QBtn, QHeader, QToolbar, QToolbarTitle, useQuasar } from 'quasar';
+import { useQuasar } from 'quasar';
 import { showBottomSheet } from '@/hooks/useSnsBottomSheeet';
 
 const postStore = usePostStore();
@@ -81,7 +81,6 @@ const scrapPostsAndAction = async () => {
         Teamlog
       </q-toolbar-title>
       <q-toolbar-title v-if="title">{{ title }}</q-toolbar-title>
-
       <q-btn
         v-if="refresh"
         :class="{ loading_arrow: rotate }"
