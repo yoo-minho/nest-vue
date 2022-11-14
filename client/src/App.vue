@@ -10,6 +10,11 @@
 </template>
 
 <style lang="scss">
+@font-face {
+  font-family: 'LINESeedKR-Bd';
+  src: url('./assets/fonts/LINESeedKR-Bd.woff2') format('woff2');
+}
+
 body {
   overflow: hidden;
 }
@@ -20,7 +25,7 @@ ul {
 }
 
 #app {
-  font-family: 'Noto Sans KR', Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'LINESeedKR-Bd', 'Noto Sans KR', Avenir, Helvetica, Arial, sans-serif;
   color: #2c3e50;
   background-color: $grey-3;
 }
