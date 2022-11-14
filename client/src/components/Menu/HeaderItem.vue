@@ -14,7 +14,7 @@ const { scrapLoading } = storeToRefs(postStore);
 const { initPostData, scrapPosts } = postStore;
 
 const subpageStore = useSubpageStore();
-const { openSettingMain, openGroupEditor } = subpageStore;
+const { openSettingMain, openGroupEditor, openLoginSubpage } = subpageStore;
 
 const groupStore = useGroupStore();
 const { currentGroup } = storeToRefs(groupStore);
@@ -52,6 +52,10 @@ const _openGroupEditor = () => {
 const _openSettingMain = () => {
   router.push({ hash: '#Setting' });
   openSettingMain();
+};
+const _openLoginSubpage = () => {
+  router.push({ hash: '#Login' });
+  openLoginSubpage();
 };
 const scrapPostsAndAction = async () => {
   const { id: groupId, links } = currentGroup.value;
@@ -92,7 +96,7 @@ const scrapPostsAndAction = async () => {
       />
       <q-btn v-if="editor" icon="add_circle_outline" flat round dense @click="_openGroupEditor" />
       <q-btn v-if="isDefaultType" icon="share" flat round dense @click="showBottomSheet($q)" />
-      <q-btn v-if="isDefaultType" icon="login" flat round dense @click="showBottomSheet($q)" />
+      <q-btn v-if="isDefaultType" icon="login" flat round dense @click="_openLoginSubpage" />
       <q-btn v-if="isDefaultType" icon="more_vert" flat round dense @click="_openSettingMain" />
       <q-btn v-if="save" flat round dense icon="done" @click="save" />
     </q-toolbar>

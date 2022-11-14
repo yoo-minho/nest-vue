@@ -8,11 +8,13 @@ import GroupEditor from '@/components/Editor/GroupEditor.vue';
 import LinkEditor from '@/components/Editor/LinkEditor.vue';
 import SettingSubpage from '@/components/Setting/SettingSubpage.vue';
 import DataSubpage from '@/components/Setting/DataSubpage.vue';
+import LoginSubpage from '@/components/Auth/LoginSubpage.vue';
 
 const route = useRoute();
 
 const subpageStore = useSubpageStore();
-const { isOpenGroupEditor, isOpenLinkEditor, isOpenSettingSubpage, isOpenDataSubpage } = storeToRefs(subpageStore);
+const { isOpenGroupEditor, isOpenLinkEditor, isOpenSettingSubpage, isOpenDataSubpage, isOpenLoginSubpage } =
+  storeToRefs(subpageStore);
 
 const groupMain = String(route.name) === 'Group';
 const groupDetail = String(route.name).includes('GroupDetail');
@@ -26,6 +28,7 @@ const groupDetail = String(route.name).includes('GroupDetail');
         <LinkEditor v-if="isOpenLinkEditor" />
         <SettingSubpage v-if="isOpenSettingSubpage" />
         <DataSubpage v-if="isOpenDataSubpage" />
+        <LoginSubpage v-if="isOpenLoginSubpage" />
       </transition-group>
     </Teleport>
     <HeaderItem type="DEFAULT" :editor="groupMain" :refresh="groupDetail" />

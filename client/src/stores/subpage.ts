@@ -7,6 +7,7 @@ export const useSubpageStore = defineStore('subpage', {
     isOpenSettingSubpage: false,
     isOpenDataSubpage: false,
     stack: 'stack',
+    isOpenLoginSubpage: false,
   }),
   getters: {},
   actions: {
@@ -39,6 +40,12 @@ export const useSubpageStore = defineStore('subpage', {
     },
     closeStackMain() {
       this.isOpenDataSubpage = false;
+    },
+    openLoginSubpage() {
+      this.isOpenLoginSubpage = true;
+    },
+    closeLoginSubpage() {
+      this.isOpenLoginSubpage = false;
     },
   },
 });

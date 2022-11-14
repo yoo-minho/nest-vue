@@ -2,7 +2,6 @@
 import { toRefs } from 'vue';
 import { Group } from '@/types/common';
 import { getFormatString, isWithinAWeek } from '@/plugin/dayjs';
-
 import { storeToRefs } from 'pinia';
 import { usePostStore } from '@/stores/post';
 
@@ -20,7 +19,7 @@ const { title, description, domain, lastPostCreatedAt } = toRefs(props.groupData
     <q-item-section :class="{ 'text-center': isHeader }">
       <q-item-label class="text-weight-bold text-green-4">
         @{{ domain }}
-        <q-badge v-if="isWithinAWeek(lastPostCreatedAt)" color="red"> N </q-badge>
+        <!-- <q-badge v-if="isWithinAWeek(lastPostCreatedAt)" color="red" class="q-pt-sm"> UP </q-badge> -->
       </q-item-label>
       <q-item-label class="justify-between items-center" :class="{ row: !isHeader }">
         <div class="text-h6 text-weight-bolder">{{ title }}</div>
