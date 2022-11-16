@@ -31,6 +31,11 @@ const routes = [
       },
     ],
   },
+  {
+    path: '/oauth',
+    name: 'OAuth',
+    component: () => import('@/views/OAuth/OAuth.vue'),
+  },
 ];
 
 const router = createRouter({

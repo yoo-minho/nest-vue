@@ -7,12 +7,18 @@ const subpageStore = useSubpageStore();
 const { closeLoginSubpage } = subpageStore;
 
 const url = new URL(`../../assets/logo.png`, import.meta.url).toString();
+
+const xx = () => {
+  Kakao.Auth.authorize({
+    redirectUri: 'http://127.0.0.1:5173/oauth',
+  });
+};
 </script>
 <template>
   <AuthLayout title="로그인" @close="closeLoginSubpage()">
     <q-page class="q-pa-lg">
       <ul class="q-ma-none">
-        <li v-for="(api, i) in ApiArr" :key="i" class="button-wrap">
+        <li v-for="(api, i) in ApiArr" :key="i" class="button-wrap" @click="xx()">
           <div class="contents" :style="api.style">
             <img width="24" height="24" :src="api.src" :alt="api.alt" />
             <span class="label">{{ api.label }}</span>

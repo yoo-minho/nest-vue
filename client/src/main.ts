@@ -8,8 +8,10 @@ import 'quasar/src/css/index.sass';
 import App from './App.vue';
 import router from './router';
 import { mainLog } from './util/ConsoleUtil';
+import VueCookies from 'vue-cookies';
 
 const myApp = createApp(App);
+myApp.use(VueCookies, { expires: '7d' });
 myApp.use(Quasar, {
   plugins: { Notify, Dialog, BottomSheet },
 });
