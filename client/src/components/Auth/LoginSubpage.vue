@@ -10,7 +10,7 @@ const url = new URL(`../../assets/logo.png`, import.meta.url).toString();
 
 const xx = () => {
   Kakao.Auth.authorize({
-    redirectUri: 'http://127.0.0.1:5173/oauth',
+    redirectUri: '/oauth',
   });
 };
 </script>
