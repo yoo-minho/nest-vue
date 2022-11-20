@@ -8,7 +8,7 @@ const { closeLoginSubpage } = subpageStore;
 
 const url = new URL(`../../assets/logo.png`, import.meta.url).toString();
 
-const xx = () => {
+const loginKakao = () => {
   Kakao.Auth.authorize({
     redirectUri: '/oauth',
   });
@@ -18,7 +18,7 @@ const xx = () => {
   <AuthLayout title="로그인" @close="closeLoginSubpage()">
     <q-page class="q-pa-lg">
       <ul class="q-ma-none">
-        <li v-for="(api, i) in ApiArr" :key="i" class="button-wrap" @click="xx()">
+        <li v-for="(api, i) in ApiArr" :key="i" class="button-wrap" @click="loginKakao()">
           <div class="contents" :style="api.style">
             <img width="24" height="24" :src="api.src" :alt="api.alt" />
             <span class="label">{{ api.label }}</span>
