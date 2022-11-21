@@ -46,33 +46,49 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const subpageStore = useSubpageStore();
   const { isOpenLinkEditor, isOpenDataSubpage } = storeToRefs(subpageStore);
-  const { closeGroupEditor, closeLinkEditor, closeSettingMain, closeStackMain } = subpageStore;
+  const { closeGroupEditor, closeLinkEditor, closeSettingMain, closeStackMain, closeLoginSubpage } = subpageStore;
 
-  if (from.name === undefined && ['#Editor', '#Setting'].includes(to.hash)) {
+  const subpages = [
+    {
+      id: '#Editor',
+      cb: () => {
+        if (isOpenLinkEditor.value) {
+          closeLinkEditor();
+          next(false);
+        } else {
+          closeGroupEditor();
+          next();
+        }
+      },
+    },
+    {
+      id: '#Setting',
+      cb: () => {
+        if (isOpenDataSubpage.value) {
+          closeStackMain();
+          next(false);
+        } else {
+          closeSettingMain();
+          next();
+        }
+      },
+    },
+    {
+      id: '#Login',
+      cb: () => {
+        closeLoginSubpage();
+        next();
+      },
+    },
+  ];
+
+  if (from.name === undefined && subpages.map((page) => page.id).includes(to.hash)) {
     router.replace({ hash: '' });
     return;
   }
 
-  if (from.hash === '#Editor') {
-    if (isOpenLinkEditor.value) {
-      closeLinkEditor();
-      next(false);
-    } else {
-      closeGroupEditor();
-      next();
-    }
-    return;
-  }
-
-  if (from.hash === '#Setting') {
-    if (isOpenDataSubpage.value) {
-      closeStackMain();
-      next(false);
-    } else {
-      closeSettingMain();
-      next();
-    }
-    return;
+  for (const { id, cb } of subpages) {
+    if (from.hash === id) return cb();
   }
 
   next();
