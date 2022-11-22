@@ -8,9 +8,13 @@ export const useSubpageStore = defineStore('subpage', {
     isOpenDataSubpage: false,
     stack: 'stack',
     isOpenLoginSubpage: false,
+    mainScrollY: 0,
   }),
   getters: {},
   actions: {
+    setMainScrollY(scrollY: number) {
+      this.mainScrollY = scrollY;
+    },
     openGroupEditor() {
       this.isOpenGroupEditor = true;
     },

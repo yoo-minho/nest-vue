@@ -15,6 +15,7 @@ const route = useRoute();
 const subpageStore = useSubpageStore();
 const { isOpenGroupEditor, isOpenLinkEditor, isOpenSettingSubpage, isOpenDataSubpage, isOpenLoginSubpage } =
   storeToRefs(subpageStore);
+const { setMainScrollY } = subpageStore;
 
 const groupMain = String(route.name) === 'Group';
 const groupDetail = String(route.name).includes('GroupDetail');
@@ -33,7 +34,14 @@ const groupDetail = String(route.name).includes('GroupDetail');
     </Teleport>
     <HeaderItem type="DEFAULT" :editor="groupMain" :refresh="groupDetail" />
     <q-page-container class="max-width">
-      <q-scroll-area :visible="false" class="max-width without-header">
+      <q-scroll-area
+        :visible="false"
+        class="max-width without-header"
+        @scroll="(info: any) => {
+          setMainScrollY(info.verticalPosition)
+        
+        }"
+      >
         <slot></slot>
       </q-scroll-area>
     </q-page-container>
