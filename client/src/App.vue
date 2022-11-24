@@ -1,11 +1,13 @@
 <template>
   <div class="max-width bg-white">
     <div id="subpage"></div>
-    <router-view v-slot="{ Component, route }">
-      <transition :name="String(route.meta.transitionName)">
-        <component :is="Component" />
-      </transition>
-    </router-view>
+    <keep-alive>
+      <router-view v-slot="{ Component, route }">
+        <transition :name="String(route.meta.transitionName)">
+          <component :is="Component" />
+        </transition>
+      </router-view>
+    </keep-alive>
   </div>
 </template>
 

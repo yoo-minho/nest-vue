@@ -24,6 +24,7 @@
     "vue": "^3.2.40",
     "vue-cookies": "^1.8.2",
     "vue-router": "^4.1.5",
+    "vue-router-keep-alive-helper": "^0.1.0",
     "vue3-cookies": "^1.0.6"
   },
   "devDependencies": {
