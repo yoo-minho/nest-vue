@@ -1,7 +1,6 @@
-import Vue, { createApp } from 'vue';
+import { createApp } from 'vue';
 import { Quasar, Notify, Dialog, BottomSheet } from 'quasar';
 import { createPinia } from 'pinia';
-import createHelper from 'vue-router-keep-alive-helper';
 
 import '@quasar/extras/material-icons/material-icons.css';
 import 'quasar/src/css/index.sass';
@@ -18,7 +17,6 @@ myApp.use(Quasar, {
 });
 myApp.use(createPinia());
 
-createHelper({ Vue, router });
 myApp.use(router);
 myApp.config.errorHandler = (error) => {
   const { message } = error as Error;
