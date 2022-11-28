@@ -8,19 +8,56 @@ export const useSubpageStore = defineStore('subpage', {
     isOpenDataSubpage: false,
     stack: 'stack',
     isOpenLoginSubpage: false,
-    mainScrollY: 0,
+    // subpages: [
+    //   {
+    //     id: '#Editor',
+    //     cb: () => {
+    //       if (this.isOpenLinkEditor) {
+    //         this.closeLinkEditor();
+    //         next(false);
+    //       } else {
+    //         closeGroupEditor();
+    //         next();
+    //       }
+    //     },
+    //   },
+    //   {
+    //     id: '#Setting',
+    //     cb: () => {
+    //       if (isOpenDataSubpage.value) {
+    //         closeStackMain();
+    //         next(false);
+    //       } else {
+    //         closeSettingMain();
+    //         next();
+    //       }
+    //     },
+    //   },
+    //   {
+    //     id: '#Login',
+    //     cb: () => {
+    //       closeLoginSubpage();
+    //       next();
+    //     },
+    //   },
+    // ];
   }),
   getters: {},
   actions: {
-    setMainScrollY(scrollY: number) {
-      this.mainScrollY = scrollY;
-    },
     openGroupEditor() {
       this.isOpenGroupEditor = true;
     },
     closeGroupEditor() {
-      console.log('closeGroupEditor');
       this.isOpenGroupEditor = false;
+    },
+    closeEditor(groupCloseCb: () => void, linkCloseCb: () => void) {
+      if (this.isOpenLinkEditor) {
+        this.closeLinkEditor();
+        linkCloseCb();
+      } else {
+        this.closeGroupEditor();
+        groupCloseCb();
+      }
     },
     openLinkEditor() {
       this.isOpenLinkEditor = true;
