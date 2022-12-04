@@ -8,39 +8,6 @@ export const useSubpageStore = defineStore('subpage', {
     isOpenDataSubpage: false,
     stack: 'stack',
     isOpenLoginSubpage: false,
-    // subpages: [
-    //   {
-    //     id: '#Editor',
-    //     cb: () => {
-    //       if (this.isOpenLinkEditor) {
-    //         this.closeLinkEditor();
-    //         next(false);
-    //       } else {
-    //         closeGroupEditor();
-    //         next();
-    //       }
-    //     },
-    //   },
-    //   {
-    //     id: '#Setting',
-    //     cb: () => {
-    //       if (isOpenDataSubpage.value) {
-    //         closeStackMain();
-    //         next(false);
-    //       } else {
-    //         closeSettingMain();
-    //         next();
-    //       }
-    //     },
-    //   },
-    //   {
-    //     id: '#Login',
-    //     cb: () => {
-    //       closeLoginSubpage();
-    //       next();
-    //     },
-    //   },
-    // ];
   }),
   getters: {},
   actions: {
