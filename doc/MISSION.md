@@ -43,6 +43,7 @@
 [] 링크 삭제
 [] sticky header
 [] 홈화면추가
+[] 하루중 언제 많이 쓰는지 데일리 통계 (https://www.githubunwrapped.com/)
 
 [~] 메타처리
 
