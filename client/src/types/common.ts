@@ -11,13 +11,19 @@ export type Link = {
   lastPostCreatedAt?: Date;
 };
 export type LinkWrap = { link: Link };
+export type GroupTagWrap = {
+  tag: {
+    id: number;
+    name: string;
+  };
+};
 export type Group = {
   id?: number;
   domain: string;
   title: string;
   description?: string;
   links?: LinkWrap[];
-  tags?: string[];
+  tags?: GroupTagWrap[];
   createdAt?: Date;
   dailyViews?: number;
   totalViews?: number;

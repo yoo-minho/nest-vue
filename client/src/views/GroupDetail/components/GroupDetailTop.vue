@@ -5,11 +5,13 @@ import { useGroupStore } from '@/stores/group';
 import GroupInfo from '@/components/Info/GroupInfo.vue';
 import GroupDetailCounter from '@/components/Counter/GroupDetailCounter.vue';
 import GroupDetailTopLoader from '@/components/Loader/GroupDetailTopLoader.vue';
+import GroupDetailTagList from './GroupDetailTagList.vue';
 
 const groupStore = useGroupStore();
 const { currentGroup } = storeToRefs(groupStore);
 const dailyViews = computed(() => currentGroup.value?.dailyViews || 0);
 const totalViews = computed(() => currentGroup.value?.totalViews || 0);
+const tags = computed(() => currentGroup.value?.tags || []);
 
 const props = defineProps<{ loading: boolean }>();
 </script>
@@ -21,5 +23,6 @@ const props = defineProps<{ loading: boolean }>();
   <template v-else>
     <GroupDetailCounter :daily-views="dailyViews" :total-views="totalViews" />
     <GroupInfo mode="HEADER" :group-data="currentGroup" />
+    <GroupDetailTagList v-if="tags.length > 0" :tags="tags.map(({ tag }) => tag.name)" />
   </template>
 </template>

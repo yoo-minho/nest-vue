@@ -43,8 +43,8 @@ export default {
       throw new Error(message);
     }
   },
-  async create(group: Group, links: Link[]) {
-    const { domain, title, description, tags } = group;
+  async create(group: Group, tags: string[], links: Link[]) {
+    const { domain, title, description } = group;
     try {
       await axiosClient.post('group', { domain, title, description, links, tags });
     } catch (axiosError) {

@@ -15,7 +15,14 @@ const tabArr = [
 </script>
 
 <template>
-  <q-tabs v-model="selectTab" dense class="text-grey" active-color="primary" indicator-color="primary" narrow-indicator>
+  <q-tabs
+    v-model="selectTab"
+    dense
+    class="text-grey js-tab"
+    active-color="primary"
+    indicator-color="primary"
+    narrow-indicator
+  >
     <q-tab
       v-for="(tab, idx) in tabArr"
       :key="idx"
@@ -27,4 +34,11 @@ const tabArr = [
   <q-separator />
 </template>
 
-<style scoped></style>
+<style scoped>
+.js-tab {
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 99999;
+}
+</style>

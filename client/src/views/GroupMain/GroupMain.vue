@@ -7,10 +7,11 @@ import { useGroupStore } from '@/stores/group';
 import DefaultLayout from '@/layouts/DefaultLayout.vue';
 import GroupMainLoader from '@/components/Loader/GroupMainLoader.vue';
 import GroupCard from './components/GroupCard.vue';
+import GroupTagList from './components/GroupTagList.vue';
 
 const groupStore = useGroupStore();
-const { fetchAllGroup, fetchByTag, fetchAllTag, setCurrentTag } = groupStore;
-const { groups, groupsLoading, currentTag, isTotalTag, NavTags, tagsLoading } = storeToRefs(groupStore);
+const { fetchAllGroup, fetchByTag, fetchAllTag } = groupStore;
+const { groups, groupsLoading, currentTag, isTotalTag } = storeToRefs(groupStore);
 
 onMounted(() => {
   fetchAllTag();
@@ -32,23 +33,7 @@ watch(
 
 <template>
   <DefaultLayout>
-    <q-scroll-area class="q-px-md q-pt-md tag-area" :thumb-style="{ opacity: '0' }">
-      <div class="row no-wrap">
-        <template v-if="tagsLoading">
-          <q-skeleton v-for="n in 3" :key="n" :type="'QChip'" class="q-ma-xs" />
-        </template>
-        <template v-else>
-          <q-chip
-            v-for="(tag, i) in NavTags"
-            :key="i"
-            :class="{ active: currentTag === tag.name }"
-            clickable
-            @click="setCurrentTag(tag.name)"
-            >{{ tag.name }}
-          </q-chip>
-        </template>
-      </div>
-    </q-scroll-area>
+    <GroupTagList />
     <q-page class="q-pa-md">
       <template v-if="groupsLoading">
         <GroupMainLoader />

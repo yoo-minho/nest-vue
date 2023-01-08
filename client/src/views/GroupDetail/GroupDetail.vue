@@ -7,6 +7,7 @@ import { usePostStore } from '@/stores/post';
 import DefaultLayout from '@/layouts/DefaultLayout.vue';
 import GroupDetailTab from './components/GroupDetailTab.vue';
 import GroupDetailTop from './components/GroupDetailTop.vue';
+import GroupDetailPostLoader from '@/components/Loader/GroupDetailPostLoader.vue';
 
 const groupStore = useGroupStore();
 const { initGroupData, fetchGroup } = groupStore;

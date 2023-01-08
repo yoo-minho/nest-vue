@@ -18,6 +18,7 @@ const { openSettingMain, openGroupEditor, openLoginSubpage } = subpageStore;
 
 const groupStore = useGroupStore();
 const { currentGroup } = storeToRefs(groupStore);
+const { initGroupData, initLinks } = groupStore;
 
 const router = useRouter();
 const route = useRoute();
@@ -30,6 +31,7 @@ interface HeaderOption {
   title?: string;
   refresh?: boolean;
   editor?: boolean;
+  fix?: boolean;
 }
 
 const props = defineProps<HeaderOption>();
@@ -47,6 +49,12 @@ const reload = () => {
 };
 const _openGroupEditor = () => {
   router.push({ hash: '#Editor' });
+  initGroupData();
+  initLinks();
+  openGroupEditor();
+};
+const _openGroupFixEditor = () => {
+  router.push({ hash: '#Fix' });
   openGroupEditor();
 };
 const _openSettingMain = () => {
@@ -95,6 +103,7 @@ const scrapPostsAndAction = async () => {
         @click="scrapPostsAndAction"
       />
       <q-btn v-if="editor" icon="add_circle_outline" flat round dense @click="_openGroupEditor" />
+      <q-btn v-if="fix" icon="mode_edit_outline" flat round dense @click="_openGroupFixEditor" />
       <q-btn v-if="isDefaultType" icon="share" flat round dense @click="showBottomSheet($q)" />
       <q-btn v-if="isDefaultType" icon="login" flat round dense @click="_openLoginSubpage" />
       <q-btn v-if="isDefaultType" icon="more_vert" flat round dense @click="_openSettingMain" />

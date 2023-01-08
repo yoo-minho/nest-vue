@@ -24,6 +24,7 @@ export class GroupService {
   async group(domain: string): Promise<GroupResponseDto> {
     return this.prisma.group.findUnique({
       include: {
+        tags: { select: { tag: true } },
         links: { select: { link: true } },
         counts: { where: { date: getToday8() } },
       },

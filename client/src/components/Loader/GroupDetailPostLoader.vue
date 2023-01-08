@@ -1,5 +1,5 @@
 <template>
-  <q-item-label v-for="n in 6" :key="n">
+  <q-item-label v-for="n in 16" :key="n">
     <q-item class="row q-col-gutter-sm" style="margin-top: -16px">
       <q-item-section class="col-9">
         <q-skeleton type="text" width="70%" height="28px" />

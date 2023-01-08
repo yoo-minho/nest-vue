@@ -92,8 +92,8 @@ export const useGroupStore = defineStore('group', {
           domain,
           title,
           description,
-          tags,
         },
+        tags,
         this.linksOnEditor,
       );
     },

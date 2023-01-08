@@ -7,12 +7,12 @@ const routes = [
     path: '/',
     name: 'Group',
     component: () => import('@/views/GroupMain/GroupMain.vue'),
-    meta: {
-      scrollPos: {
-        top: 0,
-        left: 0,
-      },
-    },
+    // meta: {
+    //   scrollPos: {
+    //     top: 0,
+    //     left: 0,
+    //   },
+    // },
   },
   {
     path: '/@:domain',

@@ -31,9 +31,9 @@ const groupDetail = String(route.name).includes('GroupDetail');
         <LoginSubpage v-if="isOpenLoginSubpage" />
       </transition-group>
     </Teleport>
-    <HeaderItem type="DEFAULT" :editor="groupMain" :refresh="groupDetail" />
+    <HeaderItem type="DEFAULT" :editor="groupMain" :refresh="groupDetail" :fix="groupDetail" />
     <q-page-container class="max-width">
-      <q-scroll-area :visible="false" class="max-width without-header">
+      <q-scroll-area class="max-width without-header" :visible="false">
         <slot></slot>
       </q-scroll-area>
     </q-page-container>
