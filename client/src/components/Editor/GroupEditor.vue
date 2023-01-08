@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, toRaw } from 'vue';
 import { useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { QSelect, useQuasar } from 'quasar';
@@ -13,8 +13,8 @@ import LinkCard from '@/components/Card/LinkCard.vue';
 const router = useRouter();
 
 const groupStore = useGroupStore();
-const { initLinks, save, deleteLink } = groupStore;
-const { linksOnEditor, linkCountMessage, TagNames } = storeToRefs(groupStore);
+const { save, deleteLink } = groupStore;
+const { currentGroup, linksOnEditor, linkCountMessage, TagNames } = storeToRefs(groupStore);
 
 const subpageStore = useSubpageStore();
 const { openLinkEditor, closeGroupEditor } = subpageStore;
@@ -38,7 +38,11 @@ const tag = ref('');
 const selectedTags = ref([] as string[]);
 
 onMounted(() => {
-  initLinks();
+  console.log(currentGroup.value);
+  const { title: groupTitle, id: groupId, domain, description: groupDescription } = toRaw(currentGroup.value);
+  title.value = groupTitle;
+  id.value = domain;
+  description.value = groupDescription as string;
 });
 
 type doneFn = (callbackFn: () => void, afterFn?: (ref: QSelect) => void) => void;
@@ -77,7 +81,6 @@ async function saveGroup() {
     return;
   }
   await save(title.value, id.value, description.value, selectedTags.value);
-  // _closeGroupEditor();
   router.push({ path: `/@${id.value}` });
 }
 
