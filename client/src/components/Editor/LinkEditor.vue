@@ -4,11 +4,9 @@ import { useQuasar } from 'quasar';
 
 import { useGroupStore } from '@/stores/group';
 import { useSubpageStore } from '@/stores/subpage';
-import { getBlogType } from '@/util/ImageUtil';
 import { ErrorMessage } from '@/types/common';
-import OpenGraphTagAPI from '@/api/openGraphTagApi';
 import EditorLayout from '@/layouts/EditorLayout.vue';
-import { minifyStr } from '@/util/CommUtil';
+import { scrapOGS } from '@/hooks/useOgs';
 
 const BLOG_EXPRESSION = {
   NAVER: /https:\/\/blog.naver.com\/([0-9a-zA-Z_-]*)(\/)?([0-9a-zA-Z]*)/gi,
@@ -31,14 +29,6 @@ const getErrorMessage = (v: string): string => {
   return '';
 };
 
-const getOgImage = (ogImage: { url: string }) => {
-  console.log({ ogImage });
-  if (ogImage instanceof Array && ogImage.length) {
-    return ogImage[0].url;
-  }
-  return ogImage.url || 'no.png';
-};
-
 const url = ref('');
 const rssUrl = ref('');
 const isShowRssUrl = ref(false);
@@ -55,9 +45,11 @@ function checkUrl() {
     initRssUrl();
     return;
   }
+
   const isAutoRssUrl = Object.entries(BLOG_EXPRESSION)
     .map(([, v]) => v)
     .reduce((result, curr) => new RegExp(curr).test(url.value) || result, false);
+
   if (isAutoRssUrl) {
     initRssUrl();
   } else {
@@ -72,20 +64,13 @@ async function addBlogLink() {
     return;
   }
 
-  const ogsData = await OpenGraphTagAPI.index(url.value);
-  if (!ogsData.success) {
-    $q.notify({ type: 'negative', message: ogsData.message });
+  const { error, errorMessage: errMsg, url: ogsUrl, type, title, description, imagePath } = await scrapOGS(url.value);
+  if (error) {
+    $q.notify({ type: 'negative', message: errMsg });
     return;
   }
 
-  addLink({
-    url: url.value,
-    rssUrl: rssUrl.value,
-    type: getBlogType(url.value),
-    title: minifyStr(ogsData.ogTitle, 50),
-    description: minifyStr(ogsData.ogDescription, 100),
-    imagePath: getOgImage(ogsData.ogImage),
-  });
+  addLink({ rssUrl: rssUrl.value, url: ogsUrl, type, title, description, imagePath });
   closeLinkEditor();
 }
 </script>
