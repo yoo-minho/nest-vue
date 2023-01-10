@@ -55,6 +55,7 @@ const _openGroupEditor = () => {
 };
 const _openGroupFixEditor = () => {
   router.push({ hash: '#Fix' });
+  initLinks();
   openGroupEditor();
 };
 const _openSettingMain = () => {

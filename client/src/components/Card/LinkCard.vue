@@ -4,8 +4,8 @@ import { Link } from '@/types/common';
 import LinkInfo from '../Info/LinkInfo.vue';
 
 const props = defineProps<{ link: Link; iconName: string }>();
-const { url, title, description } = toRefs(props.link);
-const emits = defineEmits<{ (eventName: 'clickIcon'): void }>();
+const { link } = toRefs(props);
+const emits = defineEmits<{ (eventName: 'clickIcon'): void; (eventName: 'refreshIcon'): void }>();
 const emojiBundle = ['📕', '📊', '🔥', '🎯', '⚡', '🚀', '🏆', '📃', '💻', '📟', '📷', '🌍', '🌐'];
 const randomDesc = `Need a description like '${emojiBundle
   .map((value) => ({ value, sort: Math.random() }))
@@ -16,17 +16,38 @@ const randomDesc = `Need a description like '${emojiBundle
 </script>
 
 <template>
-  <q-item>
-    <q-item-section side>
-      <LinkInfo :link-data="link" :links="iconName === 'clear'" :posts="iconName === 'launch'" />
-    </q-item-section>
-    <q-item-section class="cursor-pointer" @click="() => emits('clickIcon')">
-      <q-item-label class="text-weight-bold ellipsis text-subtitle2">
-        <q-icon :name="iconName" />
-        {{ title }}
-      </q-item-label>
-      <q-item-label class="ellipsis-2-lines text-grey-7">{{ description || randomDesc }}</q-item-label>
-      <q-item-label class="ellipsis text-grey-5">{{ url }}</q-item-label>
-    </q-item-section>
-  </q-item>
+  <template v-if="iconName === 'clear'">
+    <q-item>
+      <q-item-section side>
+        <LinkInfo :link-data="link" :links="true" :posts="false" />
+      </q-item-section>
+      <q-item-section>
+        <q-item-label class="text-weight-bold ellipsis text-subtitle2">
+          {{ link.title }}
+        </q-item-label>
+        <q-item-label class="ellipsis-2-lines text-grey-7">{{ link.description || randomDesc }}</q-item-label>
+        <q-item-label class="ellipsis text-grey-5">{{ link.url }}</q-item-label>
+      </q-item-section>
+      <q-item-section class="justify-center cursor-pointer row" style="flex: auto">
+        <q-icon name="refresh" size="2em" @click="() => emits('refreshIcon')" />
+        <q-icon name="clear" size="2em" @click="() => emits('clickIcon')" />
+      </q-item-section>
+    </q-item>
+  </template>
+  <template v-else-if="iconName === 'launch'">
+    <q-item class="cursor-pointer" @click="() => emits('clickIcon')">
+      <q-item-section side>
+        <LinkInfo :link-data="link" :links="false" :posts="true" />
+      </q-item-section>
+      <q-item-section>
+        <q-item-label class="text-weight-bold ellipsis text-subtitle2">
+          <q-icon name="launch" />
+          {{ link.title }}
+        </q-item-label>
+        <q-item-label class="ellipsis-2-lines text-grey-7">{{ link.description || randomDesc }}</q-item-label>
+        <q-item-label class="ellipsis text-grey-5">{{ link.url }}</q-item-label>
+      </q-item-section>
+    </q-item>
+  </template>
+  <template v-else> </template>
 </template>

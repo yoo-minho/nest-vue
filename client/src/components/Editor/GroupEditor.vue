@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, toRaw } from 'vue';
+import { onMounted, Ref, ref, toRaw } from 'vue';
 import { useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { QSelect, useQuasar } from 'quasar';
@@ -13,7 +13,7 @@ import LinkCard from '@/components/Card/LinkCard.vue';
 const router = useRouter();
 
 const groupStore = useGroupStore();
-const { save, deleteLink } = groupStore;
+const { save, deleteLink, initLinks, refreshLink } = groupStore;
 const { currentGroup, linksOnEditor, linkCountMessage, TagNames } = storeToRefs(groupStore);
 
 const subpageStore = useSubpageStore();
@@ -35,14 +35,23 @@ const idRules = [
 
 const options = ref(TagNames.value);
 const tag = ref('');
-const selectedTags = ref([] as string[]);
+const selectedTags = ref([]) as Ref<string[]>;
 
 onMounted(() => {
   console.log(currentGroup.value);
-  const { title: groupTitle, id: groupId, domain, description: groupDescription } = toRaw(currentGroup.value);
+  const {
+    title: groupTitle,
+    id: groupId,
+    domain,
+    description: groupDescription,
+    tags: groupTags,
+    links: groupLinks = [],
+  } = toRaw(currentGroup.value);
   title.value = groupTitle;
   id.value = domain;
-  description.value = groupDescription as string;
+  description.value = groupDescription || '';
+  selectedTags.value = groupTags?.map(({ tag }) => tag.name) || [];
+  initLinks(groupLinks.map((v) => v.link));
 });
 
 type doneFn = (callbackFn: () => void, afterFn?: (ref: QSelect) => void) => void;
@@ -159,8 +168,13 @@ function _closeGroupEditor() {
     </q-btn>
 
     <q-list v-if="linksOnEditor.length > 0" bordered separator class="full-width">
-      <div v-for="(v, i) in linksOnEditor" :key="i" :data-index="i">
-        <LinkCard :link="v" icon-name="clear" @click-icon="() => deleteLink(i)" />
+      <div v-for="(v, i) in linksOnEditor" :key="i" :data-key="v.id">
+        <LinkCard
+          :link="v"
+          icon-name="clear"
+          @click-icon="() => deleteLink(v.id)"
+          @refresh-icon="refreshLink(v.id, v.url)"
+        />
       </div>
     </q-list>
   </EditorLayout>

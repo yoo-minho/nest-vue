@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { toRefs } from 'vue';
 import { Group } from '@/types/common';
-import { getFormatString, isWithinAWeek } from '@/plugin/dayjs';
+import { getFormatString } from '@/plugin/dayjs';
 import { storeToRefs } from 'pinia';
 import { usePostStore } from '@/stores/post';
 

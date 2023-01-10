@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { Group, GroupTag, Link } from '../types/common';
 import GroupApi from '../api/groupApi';
 import { getDateString, isSameDate } from '@/plugin/dayjs';
+import { scrapOGS } from '@/hooks/useOgs';
 
 const totalTag = 'All';
 
@@ -34,14 +35,39 @@ export const useGroupStore = defineStore('group', {
     },
   },
   actions: {
-    initLinks() {
-      this.linksOnEditor.length = 0;
+    initLinks(data?: Link[]) {
+      if (!data) {
+        this.linksOnEditor.length = 0;
+      } else {
+        this.linksOnEditor = data;
+      }
     },
     addLink(v: Link) {
       this.linksOnEditor.push(v);
     },
-    deleteLink(idx: number) {
-      this.linksOnEditor.splice(idx, 1);
+    deleteLink(id?: number) {
+      if (!id) return;
+      console.log('deleteLink', id);
+      const temp = [...this.linksOnEditor];
+      this.linksOnEditor.length = 0;
+      console.log('xx');
+      this.linksOnEditor = temp.filter((v) => {
+        console.log('xxxxxx', v, id, v.id !== id);
+        return v.id !== id;
+      });
+      console.log('deleteLink', this.linksOnEditor);
+    },
+    async refreshLink(id?: number, url?: string) {
+      if (!id || !url) return;
+      const ogsData = await scrapOGS(url);
+      if (ogsData.error) return;
+      this.linksOnEditor.forEach((link) => {
+        if (link.id === id) {
+          link.title = ogsData.title;
+          link.description = ogsData.description;
+          link.imagePath = ogsData.imagePath;
+        }
+      });
     },
     initGroupData() {
       this.groupLoading = true;

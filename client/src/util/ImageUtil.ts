@@ -14,10 +14,12 @@ export const getImage = (path: string) =>
 
 export const getImageByBlogType = (type: BlogType): string => getImage(getBlogImagePath(type));
 
-export const isTextImage = (url: string) => {
+export const isTextImage = (url?: string) => {
+  if (!url) return true;
   switch (url) {
     case 'https://images.velog.io/velog.png':
     case 'https://t1.daumcdn.net/tistory_admin/static/images/openGraph/opengraph.png':
+    case 'https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Ftistory_admin%2Fstatic%2Fmanage%2Fimages%2Fr3%2Fdefault_L.png':
       return true;
     default:
       return false;
