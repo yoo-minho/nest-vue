@@ -68,7 +68,9 @@ export const usePostStore = defineStore('post', {
         //link들의 lastPostCreatedAt 중 max를 group에 업데이트함
         const { lastPostCreatedAt } = await GroupAPI.updateLastPostCreateAt(groupId);
         updateCurrentGroupLastPostCreatedAt({ lastPostCreatedAt });
-        updateCurrentGroupLinksScrapAt();
+        if (scrapLinks.length > 0) {
+          updateCurrentGroupLinksScrapAt();
+        }
       }
     },
     async fetchPosts(links: LinkWrap[]) {
@@ -79,6 +81,7 @@ export const usePostStore = defineStore('post', {
 
       this.postLoading = this.posts.length > 0 ? false : true;
       const { data } = await PostAPI.findAllPosts(links);
+
       this.posts = data.value;
       this.postLoading = false;
     },
