@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { toRaw } from 'vue';
+import { toRefs } from 'vue';
 import { Link } from '@/types/common';
 import { getImageByBlogType, isTextImage } from '@/util/ImageUtil';
 
 const props = defineProps<{ linkData: Link; links?: boolean; posts?: boolean }>();
-const { imagePath = '', title, url, type } = toRaw(props.linkData);
+const { linkData } = toRefs(props);
+const { imagePath = '', title, url, type } = linkData.value;
 </script>
 
 <template>
