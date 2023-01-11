@@ -2,12 +2,11 @@
 import { Link } from '@/types/common';
 import { getImageByBlogType, isTextImage } from '@/util/ImageUtil';
 
-const props = defineProps<{ linkData: Link; links?: boolean; posts?: boolean }>();
+defineProps<{ linkData: Link; links?: boolean; posts?: boolean }>();
 </script>
 
 <template>
   <div>
-    {{ props.linkData.title }}
     <q-avatar v-if="isTextImage(linkData.imagePath)" color="primary" text-color="white" rounded>
       <div class="text-h6 non-selectable">{{ linkData.title.substring(0, 2) }}</div>
       <q-tooltip>{{ linkData.title }}<br />{{ linkData.url }}</q-tooltip>

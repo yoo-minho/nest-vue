@@ -53,6 +53,16 @@ export default {
       throw new Error(message);
     }
   },
+  async update(id: number, group: Group, tags: string[], links: Link[]) {
+    const { domain, title, description } = group;
+    try {
+      await axiosClient.put('group', { id, domain, title, description, links, tags });
+    } catch (axiosError) {
+      const err = axiosError as AxiosError<{ res: { message: string } }>;
+      const message = err.response?.data?.res?.message || err.message;
+      throw new Error(message);
+    }
+  },
   async updateLastPostCreateAt(groupId?: number): Promise<{ lastPostCreatedAt: Date }> {
     if (!groupId) throw new Error('No Group Id');
     try {

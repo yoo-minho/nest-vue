@@ -8,6 +8,7 @@ import {
   ConflictException,
   Ip,
   Patch,
+  Put,
 } from '@nestjs/common';
 import { GroupService } from './group.service';
 import { CreateGroupDto } from './dto/create-group.dto';
@@ -15,6 +16,8 @@ import { ApiTags } from '@nestjs/swagger';
 import { CacheService } from 'src/cache/cache.service';
 import { LinkService } from 'src/link/link.service';
 import { PostService } from 'src/post/post.service';
+import { UpdateGroupDto } from './dto/update-group.dto';
+import { BadRequestException } from '@nestjs/common/exceptions';
 
 @ApiTags('group')
 @Controller('group')
@@ -29,7 +32,7 @@ export class GroupController {
   @Post()
   async create(@Body() createGroupDto: CreateGroupDto) {
     const { domain, title, description, tags, links } = createGroupDto;
-    const groupData = await this.groupService.group(domain);
+    const groupData = await this.groupService.groupByDomain(domain);
     if (groupData !== null) {
       throw new ConflictException('중복된 도메인이 존재합니다!');
     }
@@ -53,6 +56,43 @@ export class GroupController {
           },
         })),
       },
+    });
+  }
+
+  @Put()
+  async update(@Body() updateGroupDto: UpdateGroupDto) {
+    const { id, domain, title, description, tags, links } = updateGroupDto;
+    if (!id) {
+      throw new BadRequestException('필수값 에러!');
+    }
+    const groupData1 = await this.groupService.groupById(id);
+    console.log({ groupData1, domain });
+    if (groupData1.domain === domain) {
+      //pass
+    } else {
+      const groupData2 = await this.groupService.groupByDomain(domain);
+      if (groupData2 !== null) {
+        throw new ConflictException('중복된 도메인이 존재합니다!');
+      }
+    }
+
+    return this.groupService.updateGroup(id, {
+      domain,
+      title,
+      description,
+      published: true, //TO-DO. 개발 true, 운영 false
+      // tags: {
+      //   create: tags?.map((name) => ({
+      //     tag: { connectOrCreate: { where: { name }, create: { name } } },
+      //   })),
+      // },
+      // links: {
+      //   create: links?.map((link) => ({
+      //     link: {
+      //       connectOrCreate: { where: { url: link.url }, create: { ...link } },
+      //     },
+      //   })),
+      // },
     });
   }
 
@@ -91,7 +131,7 @@ export class GroupController {
       await this.groupService.updateTotalViews(domain);
     }
 
-    const groupData = await this.groupService.group(domain);
+    const groupData = await this.groupService.groupByDomain(domain);
     groupData.dailyViews = groupData.counts[0]?.count || 0;
     groupData.totalViews = groupData.totalViews + groupData.dailyViews;
     delete groupData.counts;

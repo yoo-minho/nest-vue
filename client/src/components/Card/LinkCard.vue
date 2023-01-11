@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { toRefs } from 'vue';
 import { Link } from '@/types/common';
 import LinkInfo from '../Info/LinkInfo.vue';
 
-const props = defineProps<{ link: Link; iconName: string }>();
-const { link } = toRefs(props);
+defineProps<{ link: Link; iconName: string }>();
+
 const emits = defineEmits<{ (eventName: 'clickIcon'): void; (eventName: 'refreshIcon'): void }>();
 const emojiBundle = ['📕', '📊', '🔥', '🎯', '⚡', '🚀', '🏆', '📃', '💻', '📟', '📷', '🌍', '🌐'];
 const randomDesc = `Need a description like '${emojiBundle

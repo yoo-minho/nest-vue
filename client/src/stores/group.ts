@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { toRaw } from 'vue';
 import { Group, GroupTag, Link } from '../types/common';
 import GroupApi from '../api/groupApi';
 import { getDateString, isSameDate } from '@/plugin/dayjs';
@@ -47,15 +48,7 @@ export const useGroupStore = defineStore('group', {
     },
     deleteLink(id?: number) {
       if (!id) return;
-      console.log('deleteLink', id);
-      const temp = [...this.linksOnEditor];
-      this.linksOnEditor.length = 0;
-      console.log('xx');
-      this.linksOnEditor = temp.filter((v) => {
-        console.log('xxxxxx', v, id, v.id !== id);
-        return v.id !== id;
-      });
-      console.log('deleteLink', this.linksOnEditor);
+      this.linksOnEditor = this.linksOnEditor.filter((v) => v.id !== id);
     },
     async refreshLink(id?: number, url?: string) {
       if (!id || !url) return;
@@ -100,6 +93,16 @@ export const useGroupStore = defineStore('group', {
       this.groupLoading = false;
       this.currentGroup = data.value;
     },
+    async refreshGroup(domain: string) {
+      this.groupLoading = true;
+      const { data } = await GroupApi.findById(domain);
+      this.groupLoading = false;
+      this.currentGroup = data.value;
+
+      //Todo 왜 갱신이 안될까?
+      this.groups = toRaw(this.groups).map((group) => (group.domain === domain ? data.value : group));
+      console.log('groups', this.groups);
+    },
     updateCurrentGroupLinksScrapAt() {
       this.currentGroup.links = this.currentGroup.links?.map(({ link }) => {
         link.scrapAt = new Date();
@@ -115,6 +118,18 @@ export const useGroupStore = defineStore('group', {
     },
     async save(title: string, domain: string, description: string, tags: string[]) {
       await GroupApi.create(
+        {
+          domain,
+          title,
+          description,
+        },
+        tags,
+        this.linksOnEditor,
+      );
+    },
+    async fix(id: number, title: string, domain: string, description: string, tags: string[]) {
+      await GroupApi.update(
+        id,
         {
           domain,
           title,

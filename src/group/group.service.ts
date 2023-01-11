@@ -21,7 +21,21 @@ export class GroupService {
     }
   }
 
-  async group(domain: string): Promise<GroupResponseDto> {
+  async updateGroup(
+    groupId: number,
+    data: Prisma.GroupUpdateInput,
+  ): Promise<Group> {
+    try {
+      return await this.prisma.group.update({
+        where: { id: groupId },
+        data: data,
+      });
+    } catch (e) {
+      throw new ForbiddenException(e);
+    }
+  }
+
+  async groupByDomain(domain: string): Promise<GroupResponseDto> {
     return this.prisma.group.findUnique({
       include: {
         tags: { select: { tag: true } },
@@ -30,6 +44,19 @@ export class GroupService {
       },
       where: {
         domain,
+      },
+    });
+  }
+
+  async groupById(id: number): Promise<GroupResponseDto> {
+    return this.prisma.group.findUnique({
+      include: {
+        tags: { select: { tag: true } },
+        links: { select: { link: true } },
+        counts: { where: { date: getToday8() } },
+      },
+      where: {
+        id,
       },
     });
   }

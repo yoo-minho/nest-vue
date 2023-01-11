@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, Ref, ref, toRaw } from 'vue';
+import { computed, onMounted, Ref, ref, toRaw } from 'vue';
 import { useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { QSelect, useQuasar } from 'quasar';
@@ -13,12 +13,16 @@ import LinkCard from '@/components/Card/LinkCard.vue';
 const router = useRouter();
 
 const groupStore = useGroupStore();
-const { save, deleteLink, initLinks, refreshLink } = groupStore;
+const { save, fix, deleteLink, initLinks, refreshLink, refreshGroup } = groupStore;
 const { currentGroup, linksOnEditor, linkCountMessage, TagNames } = storeToRefs(groupStore);
 
 const subpageStore = useSubpageStore();
 const { openLinkEditor, closeGroupEditor } = subpageStore;
 
+const groupId = ref(0);
+const isFix = computed(() => !!(groupId.value && +groupId.value > 0));
+
+const headTitle = ref('');
 const title = ref('');
 const id = ref('');
 const description = ref('');
@@ -38,20 +42,21 @@ const tag = ref('');
 const selectedTags = ref([]) as Ref<string[]>;
 
 onMounted(() => {
-  console.log(currentGroup.value);
   const {
     title: groupTitle,
-    id: groupId,
+    id: _groupId,
     domain,
     description: groupDescription,
     tags: groupTags,
     links: groupLinks = [],
   } = toRaw(currentGroup.value);
+  groupId.value = _groupId || 0;
   title.value = groupTitle;
   id.value = domain;
   description.value = groupDescription || '';
   selectedTags.value = groupTags?.map(({ tag }) => tag.name) || [];
   initLinks(groupLinks.map((v) => v.link));
+  headTitle.value = isFix.value ? '팀 수정하기' : '팀 만들기';
 });
 
 type doneFn = (callbackFn: () => void, afterFn?: (ref: QSelect) => void) => void;
@@ -80,7 +85,8 @@ function selectOption() {
 }
 
 async function saveGroup() {
-  if (id.value.length === 0) {
+  const domain = id.value;
+  if (domain.length === 0) {
     $q.notify({ type: 'negative', message: '도메인을 입력해주세요!' });
     idRef.value.focus();
     return;
@@ -89,8 +95,15 @@ async function saveGroup() {
     $q.notify({ type: 'negative', message: '최소 1개의 url이 필요합니다.' });
     return;
   }
-  await save(title.value, id.value, description.value, selectedTags.value);
-  router.push({ path: `/@${id.value}` });
+
+  if (isFix.value) {
+    await fix(groupId.value, title.value, domain, description.value, selectedTags.value);
+    await refreshGroup(domain);
+    _closeGroupEditor();
+  } else {
+    await save(title.value, domain, description.value, selectedTags.value);
+    router.push({ path: `/@${domain}` });
+  }
 }
 
 function _closeGroupEditor() {
@@ -100,7 +113,7 @@ function _closeGroupEditor() {
 </script>
 
 <template>
-  <EditorLayout title="그룹 만들기" @save="saveGroup" @close="_closeGroupEditor">
+  <EditorLayout :title="headTitle" @save="saveGroup" @close="_closeGroupEditor">
     <q-banner rounded class="bg-green-4 text-white text-body2">
       알파 버전에서는 마스터의 승인 전까진 그룹 목록에 추가되지 않습니다. 빠른 검토 후에서 승인하도록 하겠습니다!
     </q-banner>
@@ -169,12 +182,7 @@ function _closeGroupEditor() {
 
     <q-list v-if="linksOnEditor.length > 0" bordered separator class="full-width">
       <div v-for="(v, i) in linksOnEditor" :key="i" :data-key="v.id">
-        <LinkCard
-          :link="v"
-          icon-name="clear"
-          @click-icon="() => deleteLink(v.id)"
-          @refresh-icon="refreshLink(v.id, v.url)"
-        />
+        <LinkCard :link="v" icon-name="clear" @click-icon="deleteLink(v.id)" @refresh-icon="refreshLink(v.id, v.url)" />
       </div>
     </q-list>
   </EditorLayout>
