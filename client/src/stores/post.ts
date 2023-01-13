@@ -104,7 +104,6 @@ export const usePostStore = defineStore('post', {
         console.log('SKIP fetchLastPosts');
         return;
       }
-
       this.lastLoading = true;
       const { data } = await PostAPI.findLast(links);
       const time = (date: string) => new Date(date).getTime();
