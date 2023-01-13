@@ -1,40 +1,13 @@
 <script setup lang="ts">
-import { watch } from 'vue';
-import { storeToRefs } from 'pinia';
-import { usePostStore } from '@/stores/post';
-
 import { LinkWrap } from '@/types/common';
 import ContentsLayout from '@/layouts/ContentsLayout.vue';
-import GroupDetailPostEmpty from '@/components/Empty/GroupDetailPostEmpty.vue';
-import GroupDetailPostLoader from '@/components/Loader/GroupDetailPostLoader.vue';
-import GroupDetailPostCard from './components/GroupDetailPostCard.vue';
+import GroupDetailPostList from './components/GroupDetailPostList.vue';
 
-const props = defineProps<{ links: LinkWrap[]; loading: boolean }>();
-const postStore = usePostStore();
-const { fetchPosts } = postStore;
-const { posts, postLoading } = storeToRefs(postStore);
-
-watch(
-  () => props.links,
-  (links) => {
-    if (links.length === 0) return;
-
-    fetchPosts(links);
-  },
-  { immediate: true },
-);
+defineProps<{ links: LinkWrap[] }>();
 </script>
 
 <template>
   <ContentsLayout>
-    <template v-if="loading || postLoading">
-      <GroupDetailPostLoader />
-    </template>
-    <template v-else-if="posts.length === 0">
-      <GroupDetailPostEmpty />
-    </template>
-    <template v-else>
-      <GroupDetailPostCard v-for="(post, i) in posts" :key="i" :post="post" />
-    </template>
+    <GroupDetailPostList :links="links" />
   </ContentsLayout>
 </template>

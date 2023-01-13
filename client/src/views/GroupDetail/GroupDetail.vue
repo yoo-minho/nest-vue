@@ -36,7 +36,7 @@ onMounted(async () => {
     <GroupDetailTab />
     <router-view v-slot="{ Component, route }" :links="links" :loading="groupLoading">
       <transition name="tab">
-        <component :is="Component" :key="route.path" style="position: absolute" />
+        <component :is="Component" :key="route.path" />
       </transition>
     </router-view>
   </DefaultLayout>

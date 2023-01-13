@@ -5,16 +5,16 @@ import GroupDetailStatLast from './components/GroupDetailStatLast/GroupDetailSta
 import GroupDetailStatJandi from './components/GroupDetailStatJandi/GroupDetailStatJandi.vue';
 import ContentsLayout from '@/layouts/ContentsLayout.vue';
 
-const props = defineProps<{ links: LinkWrap[]; loading: boolean }>();
+const props = defineProps<{ links: LinkWrap[] }>();
 const { links } = toRefs(props);
 </script>
 
 <template>
   <ContentsLayout>
     <div class="q-px-md q-pb-md stat-area">
-      <GroupDetailStatJandi :links="links" :loading="loading" />
+      <GroupDetailStatJandi :links="links" />
       <q-separator class="q-mt-md" />
-      <GroupDetailStatLast :links="links" :loading="loading" />
+      <GroupDetailStatLast :links="links" />
     </div>
   </ContentsLayout>
 </template>

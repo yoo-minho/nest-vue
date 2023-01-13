@@ -35,7 +35,7 @@ export class PostController {
     return this.postService.posts({
       where: { linkId: { in: linkIds } },
       orderBy: { createdAt: 'desc' },
-      take: 100,
+      take: 20,
     });
   }
 

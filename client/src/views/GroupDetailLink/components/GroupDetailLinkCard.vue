@@ -7,8 +7,10 @@ const props = defineProps<{ link: Link }>();
 </script>
 
 <template>
-  <q-item-label>
-    <LinkCard :link="props.link" icon-name="launch" @click-icon="() => openUrl(link.url)" />
-    <q-separator spaced />
-  </q-item-label>
+  <div>
+    <q-item-label class="cursor-pointer" @click="openUrl(link.url)">
+      <LinkCard :link="props.link" icon-name="launch" />
+      <q-separator spaced />
+    </q-item-label>
+  </div>
 </template>

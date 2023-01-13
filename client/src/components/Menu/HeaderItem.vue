@@ -113,7 +113,7 @@ const scrapPostsAndAction = async () => {
   </q-header>
 </template>
 
-<style scoped>
+<style>
 .logo-font {
   font-family: Arial;
 }

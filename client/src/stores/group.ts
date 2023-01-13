@@ -54,12 +54,11 @@ export const useGroupStore = defineStore('group', {
       if (!id || !url) return;
       const ogsData = await scrapOGS(url);
       if (ogsData.error) return;
-      this.linksOnEditor.forEach((link) => {
+      this.linksOnEditor = [...this.linksOnEditor].map((link) => {
         if (link.id === id) {
-          link.title = ogsData.title;
-          link.description = ogsData.description;
-          link.imagePath = ogsData.imagePath;
+          link = { ...link, title: ogsData.title, description: ogsData.description, imagePath: ogsData.imagePath };
         }
+        return link;
       });
     },
     initGroupData() {
@@ -98,10 +97,7 @@ export const useGroupStore = defineStore('group', {
       const { data } = await GroupApi.findById(domain);
       this.groupLoading = false;
       this.currentGroup = data.value;
-
-      //Todo 왜 갱신이 안될까?
-      this.groups = toRaw(this.groups).map((group) => (group.domain === domain ? data.value : group));
-      console.log('groups', this.groups);
+      this.groups = [...this.groups.map((group) => (group.domain === domain ? data.value : group))];
     },
     updateCurrentGroupLinksScrapAt() {
       this.currentGroup.links = this.currentGroup.links?.map(({ link }) => {
@@ -115,6 +111,10 @@ export const useGroupStore = defineStore('group', {
         return;
       }
       this.currentGroup.lastPostCreatedAt = lastPostCreatedAt;
+      const domain = this.currentGroup.domain;
+      this.groups = [...this.groups].map((group) =>
+        group.domain === domain ? { ...group, lastPostCreatedAt } : group,
+      );
     },
     async save(title: string, domain: string, description: string, tags: string[]) {
       await GroupApi.create(

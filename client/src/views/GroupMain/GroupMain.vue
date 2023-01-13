@@ -20,7 +20,7 @@ onMounted(() => {
 watch(
   () => currentTag.value,
   async (tag) => {
-    groupsLoading.value = groups.value.length > 0 ? false : true;
+    groupsLoading.value = true;
     if (isTotalTag.value) {
       await fetchAllGroup();
     } else {

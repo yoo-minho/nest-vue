@@ -76,14 +76,24 @@ export class GroupController {
       }
     }
 
+    //싹 다 지우고 다시 넣는게 나을지도
+
     return this.groupService.updateGroup(id, {
       domain,
       title,
       description,
       published: true, //TO-DO. 개발 true, 운영 false
       // tags: {
-      //   create: tags?.map((name) => ({
-      //     tag: { connectOrCreate: { where: { name }, create: { name } } },
+      //   update: tags?.map((name) => ({
+      //     where:{groupId_tagId : {
+      //       groupId:1,
+      //       tagId:1
+      //     }},
+      //     data: {
+      //       tag: {
+
+      //       }
+      //     }
       //   })),
       // },
       // links: {

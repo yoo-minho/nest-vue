@@ -32,8 +32,9 @@ const groupDetail = String(route.name).includes('GroupDetail');
       </transition-group>
     </Teleport>
     <HeaderItem type="DEFAULT" :editor="groupMain" :refresh="groupDetail" :fix="groupDetail" />
+
     <q-page-container class="max-width">
-      <q-scroll-area class="max-width without-header" :visible="false">
+      <q-scroll-area class="max-width without-header" :visible="false" :thumb-style="{ zIndex: '999999' }">
         <slot></slot>
       </q-scroll-area>
     </q-page-container>

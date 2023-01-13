@@ -51,6 +51,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
     });
     this.$use(async (params, next) => {
       const before = Date.now();
+      await new Promise((res) => setTimeout(res, 500));
       const result = await next(params);
       const after = Date.now();
       const { model, action } = params;
