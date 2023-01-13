@@ -52,6 +52,7 @@ export default defineConfig((config) => {
       }),
       vue({
         template: { transformAssetUrls },
+        reactivityTransform: true,
       }),
       eslintPlugin(),
       quasar({

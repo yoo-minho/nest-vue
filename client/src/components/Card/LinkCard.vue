@@ -20,10 +20,9 @@ const randomDesc = `Need a description like '${emojiBundle
       <q-item-section side>
         <LinkInfo :link-data="link" :links="true" :posts="false" />
       </q-item-section>
+
       <q-item-section>
-        <q-item-label class="text-weight-bold ellipsis text-subtitle2">
-          {{ link.title }}
-        </q-item-label>
+        <q-item-label class="text-weight-bold ellipsis text-subtitle2"> {{ link.title }} </q-item-label>
         <q-item-label class="ellipsis-2-lines text-grey-7">{{ link.description || randomDesc }}</q-item-label>
         <q-item-label class="ellipsis text-grey-5">{{ link.url }}</q-item-label>
       </q-item-section>
