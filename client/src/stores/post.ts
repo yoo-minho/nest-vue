@@ -3,7 +3,7 @@ import { DaysAllCounts, DaysCount, LastPost, LinkWrap, OrderType, Post } from '.
 import PostAPI from '../api/postApi';
 import RssAPI from '../api/rssApi';
 import GroupAPI from '@/api/groupApi';
-import { isTodayByDate } from '@/plugin/dayjs';
+import { isTodayByDate, getDateString } from '@/plugin/dayjs';
 import { useGroupStore } from './group';
 
 const groupStore = useGroupStore();
@@ -37,8 +37,8 @@ export const usePostStore = defineStore('post', {
       if (_active.length === 0) return '-';
       const dayOfWeek = day
         .map((d) => ({ day: d, count: _active.filter(({ day }) => day === d).length }))
-        .sort((x, y) => x.count - y.count)[0].day;
-      return MMM[dayOfWeek];
+        .sort((x, y) => y.count - x.count);
+      return MMM[dayOfWeek[0].day];
     },
   },
   actions: {

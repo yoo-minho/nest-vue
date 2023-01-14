@@ -2,23 +2,27 @@
 import AuthLayout from '@/layouts/AuthLayout.vue';
 import { useSubpageStore } from '@/stores/subpage';
 import ApiArr from '@/data/login-api.json';
+import { useQuasar } from 'quasar';
 
 const subpageStore = useSubpageStore();
 const { closeLoginSubpage } = subpageStore;
 
+const $q = useQuasar();
 const url = new URL(`../../assets/logo.png`, import.meta.url).toString();
 
-const loginKakao = () => {
-  Kakao.Auth.authorize({
-    redirectUri: '/oauth',
-  });
+const loginKakao = (e: MouseEvent) => {
+  $q.notify({ type: 'info', message: '준비중입니다!' });
+  return e;
+  // Kakao.Auth.authorize({
+  //   redirectUri: '/oauth',
+  // });
 };
 </script>
 <template>
   <AuthLayout title="로그인" @close="closeLoginSubpage()">
     <q-page class="q-pa-lg">
       <ul class="q-ma-none">
-        <li v-for="(api, i) in ApiArr" :key="i" class="button-wrap" @click="loginKakao()">
+        <li v-for="(api, i) in ApiArr" :key="i" class="button-wrap" @click="loginKakao">
           <div class="contents" :style="api.style">
             <img width="24" height="24" :src="api.src" :alt="api.alt" />
             <span class="label">{{ api.label }}</span>

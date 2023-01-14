@@ -10,6 +10,12 @@ import router from './router';
 import { mainLog } from './util/ConsoleUtil';
 import VueCookies from 'vue-cookies';
 
+Notify.registerType('info', {
+  progress: true,
+  color: 'green-4',
+  textColor: 'white',
+});
+
 const myApp = createApp(App);
 myApp.use(VueCookies, { expires: '7d' });
 myApp.use(Quasar, {

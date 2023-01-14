@@ -6,18 +6,29 @@ import SettingLayout from '@/layouts/SettingLayout.vue';
 import GroupApi from '@/api/groupApi';
 import SettingCard from './SettingCard.vue';
 import { onMounted, ref } from 'vue';
+import { useQuasar } from 'quasar';
 
 const subpageStore = useSubpageStore();
 const { closeSettingMain, openStackMain, openPlatformMain } = subpageStore;
 
 const router = useRouter();
-const routerPush = (path: string) => () => router.push(path);
+// const routerPush = (path: string) => () => router.push(path);
+
+const $q = useQuasar();
 
 const SERVICE_CATEGORY = [
-  { icon: 'flag', title: '우리의 미션', clickEvent: () => routerPush('/') },
-  { icon: 'description', title: '업데이트 노트', clickEvent: () => routerPush('/') },
+  { icon: 'flag', title: '우리의 미션', clickEvent: () => $q.notify({ type: 'info', message: '준비중입니다!' }) },
+  {
+    icon: 'description',
+    title: '업데이트 노트',
+    clickEvent: () => $q.notify({ type: 'info', message: '준비중입니다!' }),
+  },
   { icon: 'rss_feed', title: '허용가능한 플랫폼', clickEvent: openPlatformMain },
-  { icon: 'reviews', title: '의견 및 오류 제공', clickEvent: routerPush('/') },
+  {
+    icon: 'reviews',
+    title: '의견 및 오류 제공',
+    clickEvent: () => $q.notify({ type: 'info', message: '준비중입니다!' }),
+  },
 ];
 const ETC_CATEGORY = [{ icon: 'military_tech', title: '기술 스택', clickEvent: openStackMain }];
 

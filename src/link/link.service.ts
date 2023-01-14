@@ -19,7 +19,7 @@ export class LinkService {
 
   async upsert(links: LinkItemDto[]) {
     try {
-      return Promise.allSettled(
+      const upsertLinksResponse = await Promise.allSettled(
         links.map((link) =>
           this.prisma.link.upsert({
             where: { url: link.url },
@@ -27,6 +27,9 @@ export class LinkService {
             update: link,
           }),
         ),
+      );
+      return upsertLinksResponse.map((l) =>
+        l.status === 'fulfilled' ? l.value : { id: -1 },
       );
     } catch (e) {
       throw new ForbiddenException(e);

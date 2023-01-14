@@ -47,6 +47,7 @@ onMounted(async () => {
 .tab-leave-to {
   opacity: 0;
   transform: translateX(-50px);
+  position: absolute;
 }
 
 .tab-enter-active,

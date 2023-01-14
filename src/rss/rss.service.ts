@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import * as cheerio from 'cheerio';
 import { firstValueFrom } from 'rxjs';
 import { parse } from 'rss-to-json';
+import { ConsoleLogger } from '@nestjs/common/services';
 
 type RssRes = {
   title?: string;
@@ -55,7 +56,10 @@ export class RssService {
     },
     MEDIUM: {
       reg: /https:\/\/medium.com\/([0-9a-zA-Z_-]*)(\/)?([0-9a-zA-Z]*)/gi,
-      rss: (mediumId: string) => `https://medium.com/feed/${mediumId}`,
+      rss: (mediumId: string) =>
+        `https://medium.com/feed/${
+          mediumId.includes('@') ? mediumId : '@' + mediumId
+        }`,
       replacePipe: true,
     },
     YOUTUBE: {
@@ -77,43 +81,60 @@ export class RssService {
     const oldLastPostCreateAt = new Date(lastPostCreatedAt || 0);
 
     const rssUrl = await this.convertRssUrl(url);
+
+    console.log('rssUrl', rssUrl);
+
+    let rssItems;
     try {
       const result: RssRes = await parse(rssUrl, {});
-      const _items = result.items
-        .map((item) => ({
-          ...item,
-          createdAt: new Date(item.created),
-        }))
-        .filter(
-          ({ createdAt }) =>
-            createdAt > oldLastPostCreateAt && createdAt < new Date(),
-        );
-
-      const newlastPostCreateAt = new Date(
-        Math.max(..._items.map((item) => item.created)),
-      );
-
-      const itemLength = _items.length;
-
+      rssItems = result.items;
+    } catch (e) {
       return {
         oldLastPostCreateAt,
-        lastPostCreateAt:
-          _items.length === 0 ? oldLastPostCreateAt : newlastPostCreateAt,
-        items: _items,
-        itemLength,
+        lastPostCreateAt: lastPostCreatedAt,
+        items: [],
+        itemLength: 0,
       };
-    } catch (e) {
-      throw Error('Error in findOne');
     }
+
+    const result: RssRes = await parse(rssUrl, {});
+    console.log({ result });
+    const _items = rssItems
+      .map((item) => ({
+        ...item,
+        createdAt: new Date(item.created),
+        link: this.getUrl(item.link),
+      }))
+      .filter(
+        ({ createdAt }) =>
+          createdAt > oldLastPostCreateAt && createdAt < new Date(),
+      );
+
+    const newlastPostCreateAt = new Date(
+      Math.max(..._items.map((item) => item.created)),
+    );
+
+    const itemLength = _items.length;
+
+    return {
+      oldLastPostCreateAt,
+      lastPostCreateAt:
+        _items.length === 0 ? oldLastPostCreateAt : newlastPostCreateAt,
+      items: _items,
+      itemLength,
+    };
   }
 
   async convertRssUrl(url: string): Promise<string> {
     return (
       Object.entries(this.BLOG_EXPRESSION)
-        .filter(([, { reg }]) => isTest(url, reg))
-        .map(([, { reg, rss, replacePipe }]) =>
-          rss(replacePipe ? url.replace(reg, '$1') : url),
-        )[0] || url
+        .filter(([, { reg }]) => {
+          return isTest(url, reg);
+        })
+        .map(([, { reg, rss, replacePipe }]) => {
+          console.log('yyyxxx', url.replace(reg, '$1'));
+          return rss(replacePipe ? url.replace(reg, '$1') : url);
+        })[0] || url
     );
   }
 
@@ -124,5 +145,12 @@ export class RssService {
     const $ = cheerio.load(html);
     const rssUrl = $('link[type="application/rss+xml"]').attr('href');
     return rssUrl;
+  }
+
+  getUrl(link) {
+    if (typeof link === 'string') return link;
+    if (link instanceof Array)
+      return link.filter((data) => data.type === 'text/html')?.[0].href;
+    return '';
   }
 }

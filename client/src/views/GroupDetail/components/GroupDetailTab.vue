@@ -12,6 +12,10 @@ const tabArr = [
   { name: 'Post', label: `포스트` },
   { name: 'Stat', label: `통계` },
 ];
+
+const moveTab = (tabName: string) => {
+  router.push({ name: `GroupDetail${tabName}`, replace: true });
+};
 </script>
 
 <template>
@@ -28,7 +32,7 @@ const tabArr = [
       :key="idx"
       :name="`GroupDetail${tab.name}`"
       :label="tab.label"
-      @click="router.push({ name: `GroupDetail${tab.name}` })"
+      @click="moveTab(tab.name)"
     />
   </q-tabs>
   <q-separator />

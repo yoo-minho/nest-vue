@@ -6,7 +6,7 @@ export class OpenGraphTagController {
   constructor(private readonly openGraphTagService: OpenGraphTagService) {}
 
   @Get()
-  get(@Query('url') url: string) {
+  async get(@Query('url') url: string) {
     return this.openGraphTagService.getOne(url);
   }
 }

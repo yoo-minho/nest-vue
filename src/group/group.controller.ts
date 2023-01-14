@@ -34,10 +34,7 @@ export class GroupController {
   @Post()
   async create(@Body() createGroupDto: CreateGroupDto) {
     const { domain, title, description, tags, links } = createGroupDto;
-    const groupData = await this.groupService.groupByDomain(domain);
-    if (groupData !== null) {
-      throw new ConflictException('중복된 도메인이 존재합니다!');
-    }
+    await this.checkDuplicateDomain(domain);
     return this.groupService.createGroup({
       domain,
       title,
@@ -67,34 +64,22 @@ export class GroupController {
     if (!id) {
       throw new BadRequestException('필수값 에러!');
     }
-    const groupData1 = await this.groupService.groupById(id);
-    if (groupData1.domain === domain) {
-      //pass
-    } else {
-      const groupData2 = await this.groupService.groupByDomain(domain);
-      if (groupData2 !== null) {
-        throw new ConflictException('중복된 도메인이 존재합니다!');
-      }
+    const groupData = await this.groupService.groupById(id);
+    if (groupData.domain !== domain) {
+      await this.checkDuplicateDomain(domain);
     }
 
     const linkIds = links.map((l) => l.id);
-    const deleteLinkIds = groupData1.links
+    const deleteLinkIds = groupData.links
       .filter(({ link }) => !linkIds.includes(link.id))
       .map(({ link }) => link.id);
 
-    const deleteTagIds = groupData1.tags
+    const deleteTagIds = groupData.tags
       .filter(({ tag }) => !tags.includes(tag.name))
       .map(({ tag }) => tag.id);
 
-    const upsertTagsResponse = await this.tagService.upsert(tags);
-    const saveTags = upsertTagsResponse.map((t) =>
-      t.status === 'fulfilled' ? t.value : { id: -1 },
-    );
-
-    const upsertLinksResponse = await this.linkService.upsert(links);
-    const saveLinks = upsertLinksResponse.map((l) =>
-      l.status === 'fulfilled' ? l.value : { id: -1 },
-    );
+    const saveTags = await this.tagService.upsert(tags);
+    const saveLinks = await this.linkService.upsert(links);
 
     return this.groupService.updateGroup(id, {
       domain,
@@ -188,5 +173,12 @@ export class GroupController {
   @Patch('last-post-create-at')
   async updateLastPostCreateAt(@Body('groupId') groupId: number) {
     return this.groupService.updateLastPostCreatedAt(groupId);
+  }
+
+  async checkDuplicateDomain(domain: string) {
+    const groupData2 = await this.groupService.groupByDomain(domain);
+    if (groupData2 !== null) {
+      throw new ConflictException('중복된 도메인이 존재합니다!');
+    }
   }
 }

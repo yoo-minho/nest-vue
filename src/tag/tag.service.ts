@@ -18,9 +18,9 @@ export class TagService {
     });
   }
 
-  upsert(tags: string[]) {
+  async upsert(tags: string[]) {
     try {
-      return Promise.allSettled(
+      const upsertTagsResponse = await Promise.allSettled(
         tags.map((tag) =>
           this.prisma.tag.upsert({
             where: { name: tag },
@@ -28,6 +28,9 @@ export class TagService {
             update: {},
           }),
         ),
+      );
+      return upsertTagsResponse.map((t) =>
+        t.status === 'fulfilled' ? t.value : { id: -1 },
       );
     } catch (e) {
       throw new ForbiddenException(e);

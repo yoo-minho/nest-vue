@@ -36,6 +36,9 @@ function convertItem(_items: RssItem[], scrapUrl: string): ScrapItem[] {
       trim,
       substring100,
     )(description || content || '');
+
+    console.log({ _description });
+
     return {
       title: substring50(scrapUrl.includes('twitch') ? decodeHtmlEntity(title) : title),
       description: _description,
@@ -56,6 +59,7 @@ function htmlDecode(input: string): string {
   while (elements.length > 0) {
     elements[0].parentNode?.removeChild(elements[0]);
   }
+  console.log(input, doc.documentElement.textContent);
   return doc.documentElement.textContent || '';
 }
 
@@ -72,11 +76,15 @@ function removeNewLine(input: string) {
 }
 
 function substring50(input: string) {
-  return input.substring(0, 50);
+  return input.substring(0, 40) + removeEmojiUnicode(input.substring(40)).substring(0, 10);
 }
 
 function substring100(input: string) {
-  return input.substring(0, 100);
+  return input.substring(0, 90) + removeEmojiUnicode(input.substring(90)).substring(0, 10);
+}
+
+function removeEmojiUnicode(str: string) {
+  return [...str].map((v) => (v === v.charAt(0) ? v : '')).join('');
 }
 
 function decodeHtmlEntity(input: string) {

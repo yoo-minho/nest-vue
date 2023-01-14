@@ -20,10 +20,11 @@ const _isRank = computed(() => isRank(props.i));
       <q-item-label class="text-weight-bold ellipsis text-subtitle2">
         {{ title }}
       </q-item-label>
-      <q-item-label class="ellipsis text-grey-5">Last Date : {{ dateString }}</q-item-label>
+      <q-item-label class="ellipsis text-grey-7">Last Posting Day</q-item-label>
+      <q-item-label class="ellipsis text-grey-5">{{ dateString }}</q-item-label>
     </q-item-section>
     <q-item-section class="col-4">
-      <q-item-label :class="{ 'text-green-5': _isRank, 'text-weight-bold': _isRank }">
+      <q-item-label :class="{ 'text-green-5': _isRank, 'text-weight-bold': _isRank, 'text-subtitle2': true }">
         Rank {{ props.i + 1 }} {{ medal(props.i) }}
       </q-item-label>
       <q-item-label :class="{ 'text-green-4': _isRank }">{{ agoString }}</q-item-label>
