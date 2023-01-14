@@ -7,6 +7,7 @@ export class OpenGraphTagService {
     let result;
     try {
       const response = await ogs({ url: convertScrapUrl(url) });
+
       result = response.result;
     } catch (e) {
       result = { success: false, message: e.result.error };
