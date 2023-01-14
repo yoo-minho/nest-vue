@@ -1,9 +1,10 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
-import { Prisma, Group, Link, Views } from '@prisma/client';
+import { Prisma, Group, Link, Views, Tag } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { getToday8 } from 'src/plugin/dayjs';
 
 type GroupResponseDto = Group & {
+  tags: { tag: Tag }[];
   links: { link: Link }[];
   counts: Views[];
   dailyViews?: number;

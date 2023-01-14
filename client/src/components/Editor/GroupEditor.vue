@@ -173,7 +173,10 @@ function _closeGroupEditor() {
     </q-select>
 
     <div class="row">
-      <q-chip v-for="(v, i) in selectedTags" :key="i" dense>{{ v }}</q-chip>
+      <q-chip v-for="(v, i) in selectedTags" :key="i" dense>
+        {{ v }}
+        <q-icon name="clear" size="1em" @click="() => selectedTags.splice(i, 1)" />
+      </q-chip>
     </div>
 
     <q-btn color="primary" class="full-width" label="블로그 링크 추가" @click="openLinkEditor()">

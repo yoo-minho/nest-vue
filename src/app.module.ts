@@ -11,6 +11,7 @@ import { LinkModule } from './link/link.module';
 import { RssModule } from './rss/rss.module';
 import { GroupModule } from './group/group.module';
 import { OpenGraphTagModule } from './open-graph-tag/open-graph-tag.module';
+import { TagModule } from './tag/tag.module';
 import Joi from 'joi';
 
 @Module({
@@ -34,6 +35,7 @@ import Joi from 'joi';
     PostModule,
     CacheModule.register({ isGlobal: true }),
     LinkModule,
+    TagModule,
   ],
   controllers: [AppController],
   providers: [

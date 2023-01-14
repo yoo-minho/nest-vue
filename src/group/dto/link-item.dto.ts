@@ -1,7 +1,19 @@
 import { BLOG_TYPE } from '@prisma/client';
-import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
+import { Type } from 'class-transformer';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  MaxLength,
+} from 'class-validator';
 
 export class LinkItemDto {
+  @Type(() => Number)
+  @IsOptional()
+  @IsNumber()
+  id?: number;
+
   @IsString()
   url: string;
 

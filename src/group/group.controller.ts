@@ -18,6 +18,7 @@ import { LinkService } from 'src/link/link.service';
 import { PostService } from 'src/post/post.service';
 import { UpdateGroupDto } from './dto/update-group.dto';
 import { BadRequestException } from '@nestjs/common/exceptions';
+import { TagService } from 'src/tag/tag.service';
 
 @ApiTags('group')
 @Controller('group')
@@ -26,6 +27,7 @@ export class GroupController {
     private readonly groupService: GroupService,
     private readonly cacheService: CacheService,
     private readonly linkService: LinkService,
+    private readonly tagService: TagService,
     private readonly postService: PostService,
   ) {}
 
@@ -66,7 +68,6 @@ export class GroupController {
       throw new BadRequestException('필수값 에러!');
     }
     const groupData1 = await this.groupService.groupById(id);
-    console.log({ groupData1, domain });
     if (groupData1.domain === domain) {
       //pass
     } else {
@@ -76,33 +77,74 @@ export class GroupController {
       }
     }
 
-    //싹 다 지우고 다시 넣는게 나을지도
+    const linkIds = links.map((l) => l.id);
+    const deleteLinkIds = groupData1.links
+      .filter(({ link }) => !linkIds.includes(link.id))
+      .map(({ link }) => link.id);
+
+    const deleteTagIds = groupData1.tags
+      .filter(({ tag }) => !tags.includes(tag.name))
+      .map(({ tag }) => tag.id);
+
+    const upsertTagsResponse = await this.tagService.upsert(tags);
+    const saveTags = upsertTagsResponse.map((t) =>
+      t.status === 'fulfilled' ? t.value : { id: -1 },
+    );
+
+    const upsertLinksResponse = await this.linkService.upsert(links);
+    const saveLinks = upsertLinksResponse.map((l) =>
+      l.status === 'fulfilled' ? l.value : { id: -1 },
+    );
 
     return this.groupService.updateGroup(id, {
       domain,
       title,
       description,
       published: true, //TO-DO. 개발 true, 운영 false
-      // tags: {
-      //   update: tags?.map((name) => ({
-      //     where:{groupId_tagId : {
-      //       groupId:1,
-      //       tagId:1
-      //     }},
-      //     data: {
-      //       tag: {
-
-      //       }
-      //     }
-      //   })),
-      // },
-      // links: {
-      //   create: links?.map((link) => ({
-      //     link: {
-      //       connectOrCreate: { where: { url: link.url }, create: { ...link } },
-      //     },
-      //   })),
-      // },
+      tags: {
+        connectOrCreate: saveTags?.map((tag) => ({
+          where: {
+            groupId_tagId: {
+              groupId: id,
+              tagId: tag.id,
+            },
+          },
+          create: {
+            tag: {
+              connect: {
+                id: tag.id,
+              },
+            },
+          },
+        })),
+        deleteMany: {
+          tagId: {
+            in: deleteTagIds,
+          },
+        },
+      },
+      links: {
+        connectOrCreate: saveLinks?.map((link) => ({
+          where: {
+            groupId_linkId: {
+              groupId: id,
+              linkId: link.id,
+            },
+          },
+          create: {
+            link: {
+              connect: {
+                id: link.id,
+              },
+            },
+          },
+        })),
+        deleteMany: {
+          linkId: {
+            in: deleteLinkIds,
+          },
+        },
+      },
     });
   }
 
@@ -117,11 +159,6 @@ export class GroupController {
       where: { published: true, ...tagOption },
       orderBy: { lastPostCreatedAt: 'desc' },
     });
-  }
-
-  @Get('tags')
-  findAllTag() {
-    return this.groupService.groupTags();
   }
 
   @Get('counts')

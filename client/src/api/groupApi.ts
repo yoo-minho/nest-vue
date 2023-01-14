@@ -29,7 +29,7 @@ export default {
   },
   async findAllTag() {
     try {
-      return await useAxiosGet('group/tags');
+      return await useAxiosGet('tag');
     } catch (err) {
       const { message } = err as AxiosError;
       throw new Error(message);

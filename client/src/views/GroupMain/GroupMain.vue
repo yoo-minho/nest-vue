@@ -6,6 +6,7 @@ import { useGroupStore } from '@/stores/group';
 
 import DefaultLayout from '@/layouts/DefaultLayout.vue';
 import GroupMainLoader from '@/components/Loader/GroupMainLoader.vue';
+import GroupMainEmpty from '@/components/Empty/GroupMainEmpty.vue';
 import GroupCard from './components/GroupCard.vue';
 import GroupTagList from './components/GroupTagList.vue';
 
@@ -37,6 +38,9 @@ watch(
     <q-page class="q-pa-md">
       <template v-if="groupsLoading">
         <GroupMainLoader />
+      </template>
+      <template v-if="groups.length === 0">
+        <GroupMainEmpty />
       </template>
       <template v-else>
         <GroupCard v-for="group in groups" :key="group.id" :group="group" />
