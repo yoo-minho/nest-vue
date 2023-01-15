@@ -29,7 +29,27 @@ type RssResItem = {
   link?: string;
 };
 
-const isTest = (url: string, reg: RegExp): boolean => new RegExp(reg).test(url);
+const isTest = (url: string, reg: RegExp | RegExp[]): boolean => {
+  if (reg instanceof RegExp) {
+    return new RegExp(reg).test(url);
+  } else {
+    let ok = false;
+    reg.forEach((r) => {
+      ok = ok || new RegExp(r).test(url);
+    });
+    return ok;
+  }
+};
+
+const replaceUrl = (url: string, reg: RegExp | RegExp[]): string => {
+  if (reg instanceof RegExp) {
+    return url.replace(reg, '$1');
+  } else {
+    return reg
+      .map((r) => (isTest(url, r) ? url.replace(r, '$1') : ''))
+      .join('');
+  }
+};
 
 @Injectable()
 export class RssService {
@@ -55,7 +75,10 @@ export class RssService {
       replacePipe: false,
     },
     MEDIUM: {
-      reg: /https:\/\/medium.com\/([0-9a-zA-Z_-]*)(\/)?([0-9a-zA-Z]*)/gi,
+      reg: [
+        /https:\/\/medium.com\/([0-9a-zA-Z_-]*)(\/)?([0-9a-zA-Z]*)/gi,
+        /https:\/\/([0-9a-zA-Z_-]*)\.medium.com(\/)?([0-9a-zA-Z]*)/gi,
+      ],
       rss: (mediumId: string) =>
         `https://medium.com/feed/${
           mediumId.includes('@') ? mediumId : '@' + mediumId
@@ -79,11 +102,7 @@ export class RssService {
 
   async findOne(url: string, lastPostCreatedAt?: Date) {
     const oldLastPostCreateAt = new Date(lastPostCreatedAt || 0);
-
     const rssUrl = await this.convertRssUrl(url);
-
-    console.log('rssUrl', rssUrl);
-
     let rssItems;
     try {
       const result: RssRes = await parse(rssUrl, {});
@@ -96,9 +115,6 @@ export class RssService {
         itemLength: 0,
       };
     }
-
-    const result: RssRes = await parse(rssUrl, {});
-    console.log({ result });
     const _items = rssItems
       .map((item) => ({
         ...item,
@@ -110,18 +126,14 @@ export class RssService {
           createdAt > oldLastPostCreateAt && createdAt < new Date(),
       );
 
-    const newlastPostCreateAt = new Date(
-      Math.max(..._items.map((item) => item.created)),
-    );
-
-    const itemLength = _items.length;
-
     return {
       oldLastPostCreateAt,
       lastPostCreateAt:
-        _items.length === 0 ? oldLastPostCreateAt : newlastPostCreateAt,
+        _items.length === 0
+          ? oldLastPostCreateAt
+          : new Date(Math.max(..._items.map((item) => item.created))), //newlastPostCreateAt
       items: _items,
-      itemLength,
+      itemLength: _items.length,
     };
   }
 
@@ -132,8 +144,8 @@ export class RssService {
           return isTest(url, reg);
         })
         .map(([, { reg, rss, replacePipe }]) => {
-          console.log('yyyxxx', url.replace(reg, '$1'));
-          return rss(replacePipe ? url.replace(reg, '$1') : url);
+          console.log('yyyxxx', replaceUrl(url, reg));
+          return rss(replacePipe ? replaceUrl(url, reg) : url);
         })[0] || url
     );
   }
