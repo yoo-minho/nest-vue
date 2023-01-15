@@ -3,7 +3,7 @@ import { DaysAllCounts, DaysCount, LastPost, LinkWrap, OrderType, Post } from '.
 import PostAPI from '../api/postApi';
 import RssAPI from '../api/rssApi';
 import GroupAPI from '@/api/groupApi';
-import { isTodayByDate, getDateString } from '@/plugin/dayjs';
+import { isTodayByDate } from '@/plugin/dayjs';
 import { useGroupStore } from './group';
 
 const groupStore = useGroupStore();

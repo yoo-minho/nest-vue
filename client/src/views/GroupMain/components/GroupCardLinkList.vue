@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { computed, toRaw } from 'vue';
+import { computed, toRefs } from 'vue';
 import { LinkWrap } from '@/types/common';
 import LinkInfo from '@/components/Info/LinkInfo.vue';
 
 const LIMIT = 4;
 const props = defineProps<{ links: LinkWrap[] }>();
-const { links } = toRaw(props);
-const hiddenLength = links.length - LIMIT;
-const showingLinks = computed(() => (hiddenLength > 0 ? links.slice(0, LIMIT - 1) : links));
-const hiddenLinks = computed(() => [...links].splice(LIMIT - 1));
+const { links } = toRefs(props);
+const hiddenLength = links.value.length - LIMIT;
+const showingLinks = computed(() => (hiddenLength > 0 ? [...links.value].slice(0, LIMIT - 1) : links.value));
+const hiddenLinks = computed(() => [...links.value].splice(LIMIT - 1));
 const moreLinksTooltip = computed(() => hiddenLinks.value.map(({ link: { title } }) => title).join(', '));
 </script>
 
