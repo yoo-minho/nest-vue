@@ -3,7 +3,6 @@ import { Injectable } from '@nestjs/common';
 import * as cheerio from 'cheerio';
 import { firstValueFrom } from 'rxjs';
 import { parse } from 'rss-to-json';
-import { ConsoleLogger } from '@nestjs/common/services';
 
 type RssRes = {
   title?: string;
@@ -140,13 +139,10 @@ export class RssService {
   async convertRssUrl(url: string): Promise<string> {
     return (
       Object.entries(this.BLOG_EXPRESSION)
-        .filter(([, { reg }]) => {
-          return isTest(url, reg);
-        })
-        .map(([, { reg, rss, replacePipe }]) => {
-          console.log('yyyxxx', replaceUrl(url, reg));
-          return rss(replacePipe ? replaceUrl(url, reg) : url);
-        })[0] || url
+        .filter(([, { reg }]) => isTest(url, reg))
+        .map(([, { reg, rss, replacePipe }]) =>
+          rss(replacePipe ? replaceUrl(url, reg) : url),
+        )[0] || url
     );
   }
 
