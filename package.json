@@ -18,6 +18,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "db:dev": "dotenv -e src/config/development.env -- npm run db:migrate & dotenv -e src/config/development.env -- npm run db:sync & dotenv -e src/config/development.env -- npm run db:erd",
+    "db:dev2": "dotenv -e ./config/development.env -- npm run db:migrate & dotenv -e ./config/development.env -- npm run db:sync & dotenv -e ./config/development.env -- npm run db:erd",
     "db:prod": "dotenv -e src/config/production.env -- npm run db:migrate & dotenv -e src/config/production.env -- npm run db:sync & dotenv -e src/config/production.env -- npm run db:erd",
     "db:migrate": "npx prisma migrate dev --name init",
     "db:sync": "npx prisma db pull",
