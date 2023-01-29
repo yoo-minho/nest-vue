@@ -1,6 +1,8 @@
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { Days } from '../types/common';
+import 'dayjs/locale/ko';
+dayjs.locale('ko');
 
 dayjs.extend(relativeTime);
 

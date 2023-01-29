@@ -175,7 +175,7 @@ function _closeGroupEditor() {
     <div class="row">
       <q-chip v-for="(v, i) in selectedTags" :key="i" dense>
         {{ v }}
-        <q-icon name="clear" size="1em" @click="() => selectedTags.splice(i, 1)" />
+        <q-icon class="cursor-pointer" name="clear" size="1em" @click="() => selectedTags.splice(i, 1)" />
       </q-chip>
     </div>
 

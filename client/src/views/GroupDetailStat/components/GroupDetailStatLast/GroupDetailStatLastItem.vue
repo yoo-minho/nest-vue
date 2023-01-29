@@ -27,7 +27,8 @@ const _isRank = computed(() => isRank(props.i));
       <q-item-label :class="{ 'text-green-5': _isRank, 'text-weight-bold': _isRank, 'text-subtitle2': true }">
         Rank {{ props.i + 1 }} {{ medal(props.i) }}
       </q-item-label>
-      <q-item-label :class="{ 'text-green-4': _isRank }">{{ agoString }}</q-item-label>
+      <q-item-label :class="_isRank ? 'text-green-7' : 'text-grey-7'">Time From Now</q-item-label>
+      <q-item-label :class="_isRank ? 'text-green-4' : 'text-grey-5'">{{ agoString }}</q-item-label>
     </q-item-section>
   </q-item>
 </template>
