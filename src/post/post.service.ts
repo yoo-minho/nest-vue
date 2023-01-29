@@ -81,10 +81,10 @@ export class PostService {
     const postCounts = {};
     posts.forEach(({ linkId, createdAt }) => {
       const day8 = getFormatString(createdAt, 'YYYY-MM-DD');
-      postCounts[day8] = { ['totalCount']: 0 };
+      if (!postCounts[day8]) {
+        postCounts[day8] = { ['totalCount']: 0 };
+      }
       postCounts[day8]['totalCount'] = postCounts[day8]['totalCount'] + 1;
-      const key = `linkCountBy${linkId}`;
-      postCounts[day8][key] = (postCounts[day8][key] || 0) + 1;
     });
     const days = enumerateDaysFromNMonths(3, 'YYYY-MM-DD');
     return days.map((v) => ({ ...v, count: postCounts[v.date] }));
