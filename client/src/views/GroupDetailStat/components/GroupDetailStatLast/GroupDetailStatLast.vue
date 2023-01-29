@@ -34,7 +34,7 @@ watch(
       v-model="currentOrder"
       :options="orderOptions"
       filled
-      label="Last Posting Date Ranking"
+      label="Last Posting Day Ranking"
       label-color="green-4"
       class="q-my-md"
     />
