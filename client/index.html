@@ -9,57 +9,39 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
     <link rel="mask-icon" href="/mask-icon.svg" color="#FFFFFF" />
     <meta name="theme-color" content="#ffffff" />
-
-    <!-- <script>
-      (function () {
-        var w = window;
-        if (w.Jettabus) {
-          return (window.console.error || window.console.log || function () {})('Jettabus script included twice.');
-        }
-        var guid = function () {
-          return 'JB-' + Math.random() * 16;
-        };
-        var d = window.document;
-        var jb = function () {
-          jb.c(arguments);
-        };
-        jb.q = [];
-        jb.c = function (args) {
-          jb.q.push(args);
-        };
-        w.Jettabus = jb;
-        function l() {
-          if (w.JettabusInitialized) {
-            return;
-          }
-          w.JettabusInitialized = true;
-          var s = document.createElement('script');
-          s.type = 'text/javascript';
-          s.async = true;
-          s.src = 'https://jettabus.io/plugin/jettabus-plugin.js?guid=' + guid();
-          s.charset = 'UTF-8';
-          var x = document.getElementsByTagName('script')[0];
-          x.parentNode.insertBefore(s, x);
-        }
-        if (document.readyState === 'complete') {
-          l();
-        } else if (window.attachEvent) {
-          window.attachEvent('onload', l);
-        } else {
-          window.addEventListener('DOMContentLoaded', l, false);
-          window.addEventListener('load', l, false);
-        }
-      })();
-      Jettabus('ticket', 'JB-q6UvbL2dbw3i7Cr99Wwf');
-    </script> -->
     <style>
       .d-none {
-        display: none;
+        display: none !important;
+      }
+      .add-to-homescreen {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        position: absolute;
+        bottom: 0;
+        z-index: 9999;
+        padding: 16px;
+      }
+      .add-to-homescreen button {
+        width: 200px;
+        font-size: 16px;
+        border-color: rgba(27, 31, 36, 0.15);
+        border-radius: 8px;
+        color: white;
+        padding: 4px 0;
+        box-shadow: 0 1px 5px rgb(0 0 0 / 20%), 0 2px 2px rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 12%);
+        background: #26a641 !important;
       }
     </style>
   </head>
   <body>
-    <button class="js-install d-none">install</button>
+    <div class="add-to-homescreen d-none">
+      <button>
+        Add to homescreen
+        <span class="material-icons">get_app</span>
+      </button>
+    </div>
+
     <div id="app"></div>
 
     <script
@@ -71,37 +53,23 @@
       Kakao.init('e9c455e800755b2e3bb767bdedbf372d');
     </script>
     <script>
-      const showInstallPromotion = () => document.querySelector('.js-install').classList.remove('d-none');
-      const hideInstallPromotion = () => document.querySelector('.js-install').classList.add('d-none');
+      const showInstallPromotion = () => document.querySelector('.add-to-homescreen').classList.remove('d-none');
+      const hideInstallPromotion = () => document.querySelector('.add-to-homescreen').classList.add('d-none');
       let deferredPrompt;
       window.addEventListener('beforeinstallprompt', (e) => {
-        // Prevent the mini-infobar from appearing on mobile
         e.preventDefault();
-        // Stash the event so it can be triggered later.
         deferredPrompt = e;
-        // Update UI notify the user they can install the PWA
         showInstallPromotion();
-        // Optionally, send analytics event that PWA install promo was shown.
-        console.log(`'beforeinstallprompt' event was fired.`);
       });
       window.addEventListener('appinstalled', () => {
-        // Hide the app-provided install promotion
         hideInstallPromotion();
-        // Clear the deferredPrompt so it can be garbage collected
         deferredPrompt = null;
-        // Optionally, send analytics event to indicate successful install
-        console.log('PWA was installed');
       });
       document.querySelector('.js-install').addEventListener('click', async () => {
-        // Hide the app provided install promotion
         hideInstallPromotion();
-        // Show the install prompt
         deferredPrompt.prompt();
-        // Wait for the user to respond to the prompt
         const { outcome } = await deferredPrompt.userChoice;
-        // Optionally, send analytics event with outcome of user choice
         console.log(`User response to the install prompt: ${outcome}`);
-        // We've used the prompt, and can't use it again, throw it away
         deferredPrompt = null;
       });
     </script>
