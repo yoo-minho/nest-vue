@@ -1,5 +1,5 @@
 import { createApp } from 'vue';
-import { Quasar, Notify, Dialog, BottomSheet } from 'quasar';
+import { Quasar, Notify, Dialog, BottomSheet, LocalStorage, Dark } from 'quasar';
 import { createPinia } from 'pinia';
 
 import '@quasar/extras/material-icons/material-icons.css';
@@ -23,7 +23,7 @@ myApp.use(VueGtag, {
 });
 myApp.use(VueCookies, { expires: '7d' });
 myApp.use(Quasar, {
-  plugins: { Notify, Dialog, BottomSheet },
+  plugins: { Notify, Dialog, BottomSheet, LocalStorage },
 });
 myApp.use(createPinia());
 
@@ -35,4 +35,5 @@ myApp.config.errorHandler = (error) => {
 };
 myApp.mount('#app');
 
+Dark.set(LocalStorage.getItem('mode') === 'dark');
 mainLog();

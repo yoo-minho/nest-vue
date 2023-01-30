@@ -1,6 +1,15 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useQuasar } from 'quasar';
+
+const $q = useQuasar();
+const isDarkActive = ref($q.dark.isActive);
+
+watch(
+  () => $q.dark.isActive,
+  (val) => (isDarkActive.value = val),
+);
 
 const router = useRouter();
 const route = useRoute();
@@ -22,7 +31,7 @@ const moveTab = (tabName: string) => {
   <q-tabs
     v-model="selectTab"
     dense
-    class="text-grey js-tab"
+    :class="`text-grey js-tab ${isDarkActive ? 'bg-grey-8' : 'bg-white'}`"
     active-color="primary"
     indicator-color="primary"
     narrow-indicator
@@ -42,7 +51,6 @@ const moveTab = (tabName: string) => {
 .js-tab {
   position: sticky;
   top: 0;
-  background: white;
   z-index: 99999;
 }
 </style>

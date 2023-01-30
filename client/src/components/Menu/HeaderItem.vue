@@ -83,6 +83,10 @@ const scrapPostsAndAction = async () => {
   $q.notify({ type: 'positive', message: 'Refresh Completed!' });
   setTimeout(() => (rotate.value = false), 400);
 };
+const toggleDarkMode = () => {
+  $q.dark.toggle();
+  $q.localStorage.set('mode', $q.dark.isActive ? 'dark' : 'light');
+};
 </script>
 
 <template>
@@ -94,6 +98,7 @@ const scrapPostsAndAction = async () => {
         Teamlog
       </q-toolbar-title>
       <q-toolbar-title v-if="title">{{ title }}</q-toolbar-title>
+      <q-btn :icon="`${$q.dark.isActive ? 'dark' : 'light'}_mode`" flat round dense @click="toggleDarkMode()" />
       <q-btn
         v-if="refresh"
         :class="{ loading_arrow: rotate }"

@@ -1,5 +1,17 @@
+<script setup lang="ts">
+import { useQuasar } from 'quasar';
+import { ref, watch } from 'vue';
+
+const $q = useQuasar();
+const isDarkActive = ref($q.dark.isActive);
+watch(
+  () => $q.dark.isActive,
+  (val) => (isDarkActive.value = val),
+);
+</script>
+
 <template>
-  <div class="max-width bg-white">
+  <div :class="`max-width ${isDarkActive ? 'bg-grey-9' : 'bg-white'}`">
     <div id="subpage"></div>
     <router-view v-slot="{ Component, route }">
       <transition :name="String(route.meta.transitionName)">
@@ -55,6 +67,5 @@ ul {
 .subpage {
   position: absolute;
   z-index: 3000;
-  background-color: white;
 }
 </style>

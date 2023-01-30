@@ -86,12 +86,12 @@ function selectOption() {
 
 async function saveGroup() {
   const domain = id.value;
-  if (domain.length === 0) {
+  if (!domain || domain.length === 0) {
     $q.notify({ type: 'negative', message: '도메인을 입력해주세요!' });
     idRef.value.focus();
     return;
   }
-  if (linksOnEditor.value.length === 0) {
+  if (!linksOnEditor.value || linksOnEditor.value.length === 0) {
     $q.notify({ type: 'negative', message: '최소 1개의 url이 필요합니다.' });
     return;
   }

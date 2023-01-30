@@ -29,14 +29,14 @@ const loginKakao = (e: MouseEvent) => {
           </div>
         </li>
       </ul>
-      <div class="text-h6 q-mb-lg text-center">
-        <div>간편하게 로그인하고</div>
-        <div>자유롭게 활용하세요</div>
-      </div>
-      <div class="d-flex text-center">
-        <span class="q-mx-sm">Service by Teamlog</span>
+      <q-item dense class="text-h6 q-mb-lg column items-center">
+        <q-item dense>간편하게 로그인하고</q-item>
+        <q-item dense>자유롭게 활용하세요</q-item>
+      </q-item>
+      <q-item dense class="d-flex text-center column items-center">
+        <q-item dense class="q-mx-sm">Service by Teamlog</q-item>
         <q-img :src="url" spinner-color="white" class="bottom-logo" />
-      </div>
+      </q-item>
     </q-page>
   </AuthLayout>
 </template>
