@@ -9,6 +9,7 @@ import App from './App.vue';
 import router from './router';
 import { mainLog } from './util/ConsoleUtil';
 import VueCookies from 'vue-cookies';
+import VueGtag from 'vue-gtag';
 
 Notify.registerType('info', {
   progress: true,
@@ -17,6 +18,9 @@ Notify.registerType('info', {
 });
 
 const myApp = createApp(App);
+myApp.use(VueGtag, {
+  config: { id: 'G-MRERLPYY1H' },
+});
 myApp.use(VueCookies, { expires: '7d' });
 myApp.use(Quasar, {
   plugins: { Notify, Dialog, BottomSheet },

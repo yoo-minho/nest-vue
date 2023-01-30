@@ -42,5 +42,5 @@ const getOgImage = (ogImage: { url: string }) => {
   if (ogImage instanceof Array && ogImage.length) {
     return ogImage[0].url;
   }
-  return ogImage.url || 'no.png';
+  return ogImage?.url || '/favicon.ico';
 };
