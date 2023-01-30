@@ -22,23 +22,32 @@
         z-index: 9999;
         padding: 16px;
       }
-      .add-to-homescreen button {
-        width: 200px;
-        font-size: 16px;
+      .add-to-homescreen button.banner {
+        font-size: 18px;
         border-color: rgba(27, 31, 36, 0.15);
         border-radius: 8px;
         color: white;
-        padding: 4px 0;
+        padding: 12px 20px;
         box-shadow: 0 1px 5px rgb(0 0 0 / 20%), 0 2px 2px rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 12%);
         background: #26a641 !important;
+        font-family: 'Pretendard-Regular';
+      }
+      .add-to-homescreen button.close {
+        color: #26a641 !important;
+        background-color: rgb(0 0 0 / 0);
+        border: 0;
+        font-size: 18px;
       }
     </style>
   </head>
   <body>
-    <div class="add-to-homescreen d-none">
-      <button>
-        Add to homescreen
+    <div class="add-to-homescreen">
+      <button class="banner">
         <span class="material-icons">get_app</span>
+        홈 화면에 Teamlog 추가
+      </button>
+      <button class="close">
+        <span class="material-icons">close</span>
       </button>
     </div>
 
@@ -65,13 +74,14 @@
         hideInstallPromotion();
         deferredPrompt = null;
       });
-      document.querySelector('.js-install').addEventListener('click', async () => {
+      document.querySelector('.add-to-homescreen > button.banner').addEventListener('click', async () => {
         hideInstallPromotion();
-        deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
+        deferredPrompt?.prompt();
+        const { outcome } = await deferredPrompt?.userChoice;
         console.log(`User response to the install prompt: ${outcome}`);
         deferredPrompt = null;
       });
+      document.querySelector('.add-to-homescreen > button.close').addEventListener('click', hideInstallPromotion);
     </script>
     <script type="module" src="/src/main.ts"></script>
   </body>
