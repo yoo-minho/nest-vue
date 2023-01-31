@@ -73,17 +73,18 @@ export const usePostStore = defineStore('post', {
         }
       }
     },
-    async fetchPosts(links: LinkWrap[]) {
+    async fetchPosts(links: LinkWrap[], page?: number) {
       if (links.length === 0) {
         console.log('SKIP fetchPosts');
         return;
       }
 
       this.postLoading = this.posts.length > 0 ? false : true;
-      const { data } = await PostAPI.findAllPosts(links);
-
-      this.posts = data.value;
+      const isFirstPage = !page || page === 1;
+      const { data } = await PostAPI.findAllPosts(links, page);
+      this.posts = isFirstPage ? data.value : [...this.posts, ...data.value];
       this.postLoading = false;
+      return data.value.length > 0;
     },
     async fetchJandis(links: LinkWrap[], linkId: number) {
       if (links.length === 0) {

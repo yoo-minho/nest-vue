@@ -7,7 +7,8 @@ import LinkInfo from '@/components/Info/LinkInfo.vue';
 
 const props = defineProps<{ post: Post }>();
 const { post } = toRefs(props);
-const skipBlogName = (v: string) => v.replace(' - velog', '').replace(' – Medium', '');
+const skipBlogName = (v: string) =>
+  v.replace(' - velog', '').replace(' – Medium', '').replace(' : 네이버 블로그', '').replace('의 브런치', '');
 </script>
 
 <template>

@@ -31,11 +31,17 @@ export class PostController {
   }
 
   @Get()
-  findAll(@Query('linkIds', numbersPipe) linkIds: number[]) {
+  findAll(
+    @Query('linkIds', numbersPipe) linkIds: number[],
+    @Query('page') page: number,
+  ) {
+    page = page || 1;
+    const PAGE_PER_COUNT = 20;
     return this.postService.posts({
       where: { linkId: { in: linkIds } },
       orderBy: { createdAt: 'desc' },
-      take: 20,
+      skip: (page - 1) * PAGE_PER_COUNT,
+      take: PAGE_PER_COUNT,
     });
   }
 

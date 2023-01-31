@@ -53,6 +53,7 @@ export type ScrapResult = {
   lastPostCreateAt?: Date;
 };
 export type Post = {
+  id?: number;
   createdAt: Date;
   description?: string;
   content?: string;

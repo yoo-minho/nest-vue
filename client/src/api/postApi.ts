@@ -18,9 +18,9 @@ export default {
       throw new Error(ErrorMessage(e as AxiosErrorType));
     }
   },
-  async findAllPosts(links: LinkWrap[]) {
+  async findAllPosts(links: LinkWrap[], page?: number) {
     try {
-      return await useAxiosGetArray('post', { params: { linkIds: getIds(links) } });
+      return await useAxiosGetArray('post', { params: { page, linkIds: getIds(links) } });
     } catch (err) {
       const { message } = err as AxiosError;
       throw new Error(message);
