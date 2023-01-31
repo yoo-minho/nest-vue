@@ -31,9 +31,9 @@ const moveTab = (tabName: string) => {
   <q-tabs
     v-model="selectTab"
     dense
-    :class="`text-grey js-tab ${isDarkActive ? 'bg-grey-8' : 'bg-white'}`"
-    active-color="primary"
-    indicator-color="primary"
+    :class="`text-grey js-tab ${isDarkActive ? 'bg-dark' : 'bg-white'}`"
+    :active-color="`${isDarkActive ? 'green-4' : 'primary'}`"
+    :indicator-color="`${isDarkActive ? 'green-4' : 'primary'}`"
     narrow-indicator
   >
     <q-tab

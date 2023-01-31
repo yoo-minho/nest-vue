@@ -11,6 +11,7 @@ const props = defineProps<{ tags?: string[] }>();
 <style lang="scss" scoped>
 .tag-area {
   margin-top: -10px;
+  margin-bottom: 8px;
 
   .q-chip {
     font-size: 12px;
