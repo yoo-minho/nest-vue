@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue';
+import GroupDetailPostLoader from '../Loader/GroupDetailPostLoader.vue';
 
 const emits = defineEmits<{
   (eventName: 'triggerIntersected', value: Element): void;
@@ -31,5 +32,5 @@ onUnmounted(() => {
 });
 </script>
 <template>
-  <div ref="trigger">@@@</div>
+  <div ref="trigger"><GroupDetailPostLoader /></div>
 </template>

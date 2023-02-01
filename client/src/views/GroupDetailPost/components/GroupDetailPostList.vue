@@ -33,13 +33,14 @@ const loadMore = async (el: Element) => {
   } else {
     el.innerHTML = '';
   }
-  console.log('xxxx', document.querySelectorAll('.vue-recycle-scroller__item-view').length);
 };
 </script>
 
 <template>
   <template v-if="postLoading">
-    <GroupDetailPostLoader />
+    <q-item-label v-for="n in 20" :key="n">
+      <GroupDetailPostLoader />
+    </q-item-label>
   </template>
   <template v-else-if="posts.length === 0">
     <GroupDetailPostEmpty />
