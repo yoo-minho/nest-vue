@@ -1,7 +1,7 @@
 import { Link, RssItem, ScrapItem } from '../types/common';
 import axiosClient from './base';
 import PostAPI from './postApi';
-import { pipe } from '../util';
+import { pipe } from '@/util/CommUtil';
 
 export default {
   async scrap(_link: Link) {

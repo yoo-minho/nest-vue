@@ -2,6 +2,7 @@
 import { computed, toRaw } from 'vue';
 import { useGroupStore } from '@/stores/group';
 import { LastPost } from '@/types/common';
+import { skipBlogName } from '@/util/NameUtil';
 
 const groupStore = useGroupStore();
 const { currentGroup } = groupStore;
@@ -18,7 +19,7 @@ const _isRank = computed(() => isRank(props.i));
   <q-item>
     <q-item-section class="col-8">
       <q-item-label class="text-weight-bold ellipsis text-subtitle2">
-        {{ title }}
+        {{ skipBlogName(title || '') }}
       </q-item-label>
       <q-item-label class="ellipsis text-grey-7">Last Posting Day</q-item-label>
       <q-item-label class="ellipsis text-grey-5">{{ dateString }}</q-item-label>

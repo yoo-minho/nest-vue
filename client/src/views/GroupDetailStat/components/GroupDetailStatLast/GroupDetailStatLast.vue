@@ -45,7 +45,7 @@ watch(
         </div>
         <div v-else>
           <q-list dark bordered separator>
-            <GroupDetailStatLastItem v-for="(v, i) in lastPosts" :key="i" :last-post="v" :i="i" clickable />
+            <GroupDetailStatLastItem v-for="(v, i) in lastPosts.slice(0, 5)" :key="i" :last-post="v" :i="i" clickable />
           </q-list>
         </div>
       </q-card-section>

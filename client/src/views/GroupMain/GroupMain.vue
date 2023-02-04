@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 
 import { useGroupStore } from '@/stores/group';
@@ -9,6 +9,7 @@ import GroupMainLoader from '@/components/Loader/GroupMainLoader.vue';
 import GroupMainEmpty from '@/components/Empty/GroupMainEmpty.vue';
 import GroupCard from './components/GroupCard.vue';
 import GroupTagList from './components/GroupTagList.vue';
+import { delay } from '@/util/CommUtil';
 
 const groupStore = useGroupStore();
 const { fetchAllGroup, fetchByTag, fetchAllTag } = groupStore;
@@ -18,34 +19,43 @@ onMounted(() => {
   fetchAllTag();
 });
 
-watch(
-  () => currentTag.value,
-  async (tag) => {
-    groupsLoading.value = true;
-    if (isTotalTag.value) {
-      await fetchAllGroup();
-    } else {
-      await fetchByTag(tag);
-    }
-  },
-  { immediate: true },
-);
+const tagValue = ref('');
+
+const fetchData = async (tag: string) => {
+  groupsLoading.value = true;
+  if (isTotalTag.value) {
+    await fetchAllGroup();
+  } else {
+    tagValue.value = tag;
+    await fetchByTag(tag);
+  }
+};
+
+watch(() => currentTag.value, fetchData, { immediate: true });
+
+const refresh = async (done: () => void) => {
+  await delay(1000);
+  await fetchData(tagValue.value);
+  done();
+};
 </script>
 
 <template>
   <DefaultLayout>
-    <GroupTagList />
-    <q-page class="q-pa-md">
-      <template v-if="groupsLoading">
-        <GroupMainLoader />
-      </template>
-      <template v-if="groups.length === 0">
-        <GroupMainEmpty />
-      </template>
-      <template v-else>
-        <GroupCard v-for="group in groups" :key="group.id" :group="group" />
-      </template>
-    </q-page>
+    <q-pull-to-refresh @refresh="refresh">
+      <GroupTagList />
+      <q-page class="q-pa-md">
+        <template v-if="groupsLoading">
+          <GroupMainLoader />
+        </template>
+        <template v-if="groups.length === 0">
+          <GroupMainEmpty />
+        </template>
+        <template v-else>
+          <GroupCard v-for="group in groups" :key="group.id" :group="group" />
+        </template>
+      </q-page>
+    </q-pull-to-refresh>
   </DefaultLayout>
 </template>
 

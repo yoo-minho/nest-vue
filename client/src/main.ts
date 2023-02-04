@@ -29,9 +29,8 @@ myApp.use(createPinia());
 
 myApp.use(router);
 myApp.config.errorHandler = (error) => {
-  const { message } = error as Error;
   console.error(error);
-  Notify.create({ type: 'negative', message });
+  Notify.create({ type: 'negative', message: '잠시 후 다시 시도해주세요!' });
 };
 myApp.mount('#app');
 

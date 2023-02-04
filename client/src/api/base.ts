@@ -4,7 +4,7 @@ import { useAxios } from '@vueuse/integrations/useAxios';
 
 const axiosClient = axios.create({
   baseURL: process.env.baseUrl,
-  timeout: 3000,
+  timeout: 30 * 1000,
   headers: { Accept: 'application/json' },
 });
 

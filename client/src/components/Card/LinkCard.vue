@@ -2,6 +2,7 @@
 import { Link } from '@/types/common';
 import { ref } from 'vue';
 import LinkInfo from '../Info/LinkInfo.vue';
+import { skipBlogName } from '@/util/NameUtil';
 
 defineProps<{ link: Link; iconName: string }>();
 
@@ -48,7 +49,7 @@ const randomDesc = `Need a description like '${emojiBundle
       <q-item-section>
         <q-item-label class="text-weight-bold ellipsis text-subtitle2">
           <q-icon name="launch" />
-          {{ link.title }}
+          {{ skipBlogName(link.title) }}
         </q-item-label>
         <q-item-label class="ellipsis-2-lines text-grey-7">{{ link.description || randomDesc }}</q-item-label>
         <q-item-label class="ellipsis text-grey-5">{{ link.url }}</q-item-label>

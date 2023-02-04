@@ -7,6 +7,7 @@ import { usePostStore } from '@/stores/post';
 import DefaultLayout from '@/layouts/DefaultLayout.vue';
 import GroupDetailTab from './components/GroupDetailTab.vue';
 import GroupDetailTop from './components/GroupDetailTop.vue';
+import { delay } from '@/util/CommUtil';
 
 const groupStore = useGroupStore();
 const { initGroupData, fetchGroup } = groupStore;
@@ -21,24 +22,34 @@ const links = computed(() => currentGroup.value?.links || []);
 initGroupData();
 initPostData();
 
-onMounted(async () => {
+const fetchData = async () => {
   await fetchGroup(props.domain);
   const { id: groupId, links } = currentGroup.value;
   if (!links) return;
 
   await scrapPosts(links, true, groupId);
-});
+};
+
+onMounted(fetchData);
+
+const refresh = async (done: () => void) => {
+  await delay(1000);
+  await fetchData();
+  done();
+};
 </script>
 
 <template>
   <DefaultLayout>
-    <GroupDetailTop :loading="groupLoading" />
-    <GroupDetailTab />
-    <router-view v-slot="{ Component, route }" :links="links" :loading="groupLoading">
-      <transition name="tab">
-        <component :is="Component" :key="route.path" />
-      </transition>
-    </router-view>
+    <q-pull-to-refresh @refresh="refresh">
+      <GroupDetailTop :loading="groupLoading" />
+      <GroupDetailTab />
+      <router-view v-slot="{ Component, route }" :links="links" :loading="groupLoading">
+        <transition name="tab">
+          <component :is="Component" :key="route.path" />
+        </transition>
+      </router-view>
+    </q-pull-to-refresh>
   </DefaultLayout>
 </template>
 

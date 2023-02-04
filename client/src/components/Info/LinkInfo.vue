@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Link } from '@/types/common';
 import { getImageByBlogType, isTextImage } from '@/util/ImageUtil';
+import { skipBlogName } from '@/util/NameUtil';
 
 defineProps<{ linkData: Link; links?: boolean; posts?: boolean }>();
 </script>
@@ -15,7 +16,7 @@ defineProps<{ linkData: Link; links?: boolean; posts?: boolean }>();
       <q-img :src="linkData.imagePath" :alt="linkData.title" class="image-48">
         <template #error>{{ linkData.title.substring(0, 1) }}</template>
       </q-img>
-      <q-tooltip>{{ linkData.title }}<br />{{ linkData.url }}</q-tooltip>
+      <q-tooltip>{{ skipBlogName(linkData.title) }}<br />{{ linkData.url }}</q-tooltip>
     </q-avatar>
     <q-avatar :class="{ 'blog-icon': true, 'shadow-2': true, posts, links }" rounded size="18px">
       <img :src="getImageByBlogType(linkData.type)" :alt="linkData.title" />

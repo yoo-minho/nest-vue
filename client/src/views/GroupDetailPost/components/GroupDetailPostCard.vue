@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { toRefs } from 'vue';
 import { Post } from '@/types/common';
-import { openUrl } from '@/util';
+import { openUrl } from '@/util/CommUtil';
 import { getDateString } from '@/plugin/dayjs';
 import LinkInfo from '@/components/Info/LinkInfo.vue';
+import { skipBlogName } from '@/util/NameUtil';
 
 const props = defineProps<{ post: Post }>();
 const { post } = toRefs(props);
-const skipBlogName = (v: string) =>
-  v.replace(' - velog', '').replace(' – Medium', '').replace(' : 네이버 블로그', '').replace('의 브런치', '');
 </script>
 
 <template>
