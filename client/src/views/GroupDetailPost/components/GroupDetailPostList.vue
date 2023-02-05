@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { LinkWrap } from '@/types/common';
 import { storeToRefs } from 'pinia';
+import { useGroupStore } from '@/stores/group';
 import { usePostStore } from '@/stores/post';
 import { ref, watch } from 'vue';
 import GroupDetailPostCard from './GroupDetailPostCard.vue';
@@ -11,6 +12,9 @@ import ScrollObserver from '@/components/Observer/ScrollObserver.vue';
 const postStore = usePostStore();
 const { fetchPosts } = postStore;
 const { posts, postLoading } = storeToRefs(postStore);
+
+const groupStore = useGroupStore();
+const { handleSwipeTab } = groupStore;
 
 const props = defineProps<{ links: LinkWrap[] }>();
 const page = ref(1);
@@ -34,6 +38,8 @@ const loadMore = async (el: Element) => {
     el.innerHTML = '';
   }
 };
+
+const _handleSwipe = (newInfo: { direction: 'left' | 'right' }) => handleSwipeTab(newInfo.direction, 'GroupDetailPost');
 </script>
 
 <template>
@@ -46,8 +52,10 @@ const loadMore = async (el: Element) => {
     <GroupDetailPostEmpty />
   </template>
   <template v-else>
-    <GroupDetailPostCard v-for="(post, i) in posts" :key="i" :post="post" />
-    <ScrollObserver @trigger-intersected="loadMore" />
+    <div v-touch-swipe.mouse.left.right="_handleSwipe">
+      <GroupDetailPostCard v-for="(post, i) in posts" :key="i" :post="post" />
+      <ScrollObserver @trigger-intersected="loadMore" />
+    </div>
   </template>
 </template>
 <style scoped>

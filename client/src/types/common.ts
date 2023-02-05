@@ -102,3 +102,4 @@ export type StackJson = {
 };
 export type OrderType = 1 | -1;
 export type BlogType = string & ('BRUNCH' | 'MEDIUM' | 'NAVER' | 'TISTORY' | 'VELOG' | 'TWIITCH' | '');
+export type TabType = string & ('GroupDetailLink' | 'GroupDetailPost' | 'GroupDetailStat');

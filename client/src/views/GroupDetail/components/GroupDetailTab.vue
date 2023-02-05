@@ -2,7 +2,12 @@
 import { ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
+import { useGroupStore } from '@/stores/group';
+import { storeToRefs } from 'pinia';
+import { TabType } from '@/types/common';
 
+const groupStore = useGroupStore();
+const { selectTab } = storeToRefs(groupStore);
 const $q = useQuasar();
 const isDarkActive = ref($q.dark.isActive);
 
@@ -13,8 +18,7 @@ watch(
 
 const router = useRouter();
 const route = useRoute();
-const selectTab = ref();
-selectTab.value = route.name;
+selectTab.value = route.name as TabType;
 
 const tabArr = [
   { name: 'Link', label: `블로그` },
@@ -22,8 +26,13 @@ const tabArr = [
   { name: 'Stat', label: `통계` },
 ];
 
+watch(
+  () => selectTab.value,
+  (tabName) => router.push({ name: `${tabName}`, replace: true }),
+);
+
 const moveTab = (tabName: string) => {
-  router.push({ name: `GroupDetail${tabName}`, replace: true });
+  selectTab.value = `GroupDetail${tabName}` as TabType;
 };
 </script>
 

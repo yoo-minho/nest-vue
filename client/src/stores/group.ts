@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { Group, GroupTag, Link } from '../types/common';
+import { Group, GroupTag, Link, TabType } from '../types/common';
 import GroupApi from '../api/groupApi';
 import { getDateString, isSameDate } from '@/plugin/dayjs';
 import { scrapOGS } from '@/hooks/useOgs';
@@ -16,6 +16,7 @@ export const useGroupStore = defineStore('group', {
     tagsLoading: true,
     tags: [] as GroupTag[],
     currentTag: totalTag,
+    selectTab: '' as TabType,
   }),
   getters: {
     linkCountMessage: ({ linksOnEditor: links }) => (links.length > 0 ? `(${links.length}/10)` : ''),
@@ -35,6 +36,17 @@ export const useGroupStore = defineStore('group', {
     },
   },
   actions: {
+    handleSwipeTab(direction: 'left' | 'right', currentTab: TabType) {
+      const tabs = [`GroupDetailLink`, `GroupDetailPost`, `GroupDetailStat`];
+      const idx = tabs.indexOf(currentTab);
+      let nextTab;
+      if (direction === 'left') {
+        nextTab = tabs[(idx + 1) % 3];
+      } else if (direction === 'right') {
+        nextTab = tabs[(idx + 2) % 3];
+      }
+      this.selectTab = nextTab as TabType;
+    },
     initLinks(data?: Link[]) {
       if (!data) {
         this.linksOnEditor.length = 0;

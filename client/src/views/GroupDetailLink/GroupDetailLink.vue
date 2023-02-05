@@ -1,10 +1,15 @@
 <script setup lang="ts">
 import { LinkWrap } from '@/types/common';
+import { useGroupStore } from '@/stores/group';
 import ContentsLayout from '@/layouts/ContentsLayout.vue';
 import GroupDetailLinkLoader from '@/components/Loader/GroupDetailLinkLoader.vue';
 import GroupDetailLinkCard from './components/GroupDetailLinkCard.vue';
 
 const props = defineProps<{ links: LinkWrap[]; loading: boolean }>();
+
+const groupStore = useGroupStore();
+const { handleSwipeTab } = groupStore;
+const _handleSwipe = (newInfo: { direction: 'left' | 'right' }) => handleSwipeTab(newInfo.direction, 'GroupDetailLink');
 </script>
 
 <template>
@@ -13,7 +18,9 @@ const props = defineProps<{ links: LinkWrap[]; loading: boolean }>();
       <GroupDetailLinkLoader />
     </template>
     <template v-else>
-      <GroupDetailLinkCard v-for="({ link }, i) in props.links" :key="i" :link="link" />
+      <div v-touch-swipe.mouse.left.right="_handleSwipe">
+        <GroupDetailLinkCard v-for="({ link }, i) in props.links" :key="i" :link="link" />
+      </div>
     </template>
   </ContentsLayout>
 </template>
