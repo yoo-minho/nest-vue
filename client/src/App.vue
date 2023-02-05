@@ -68,4 +68,8 @@ ul {
   position: absolute;
   z-index: 3000;
 }
+
+.q-pull-to-refresh__puller-container {
+  left: 0 !important;
+}
 </style>
