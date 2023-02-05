@@ -22,7 +22,6 @@ onMounted(() => {
 const tagValue = ref('');
 
 const fetchData = async (tag: string) => {
-  groupsLoading.value = true;
   if (isTotalTag.value) {
     await fetchAllGroup();
   } else {
@@ -31,7 +30,14 @@ const fetchData = async (tag: string) => {
   }
 };
 
-watch(() => currentTag.value, fetchData, { immediate: true });
+watch(
+  () => currentTag.value,
+  (tag) => {
+    groupsLoading.value = true;
+    fetchData(tag);
+  },
+  { immediate: true },
+);
 
 const refresh = async (done: () => void) => {
   await delay(1000);
