@@ -36,7 +36,7 @@ watch(
       filled
       label="Last Posting Day Ranking"
       label-color="green-4"
-      class="q-my-md"
+      class="q-mb-md"
     />
     <q-card class="bg-dark">
       <q-card-section class="text-white">

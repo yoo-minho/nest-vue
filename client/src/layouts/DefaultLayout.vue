@@ -34,8 +34,8 @@ const groupDetail = String(route.name).includes('GroupDetail');
     <HeaderItem type="DEFAULT" :editor="groupMain" :refresh="groupDetail" :fix="groupDetail" />
     <q-page-container>
       <q-scroll-area class="max-width without-header" :visible="false" :thumb-style="{ zIndex: '999999' }">
-        <q-layout>
-          <q-page-container>
+        <q-layout style="min-height: 0">
+          <q-page-container style="min-height: 0">
             <q-page>
               <slot></slot>
             </q-page>
