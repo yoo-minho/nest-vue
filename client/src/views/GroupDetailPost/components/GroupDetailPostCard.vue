@@ -12,17 +12,17 @@ const { post } = toRefs(props);
 
 <template>
   <q-item-label class="cursor-pointer" @click="openUrl(post.url)">
-    <q-item class="row q-col-gutter-sm">
-      <q-item-section class="col-9">
+    <q-item>
+      <q-item-section side>
+        <LinkInfo :link-data="post.link" :posts="true" />
+      </q-item-section>
+      <q-item-section>
         <q-item-label class="text-weight-bold ellipsis text-subtitle2">{{ post.title }}</q-item-label>
         <q-item-label class="ellipsis-2-lines">{{ post.description || 'ㅤ' }}</q-item-label>
         <q-item-label class="text-grey-5 ellipsis">
           <span class="text-weight-bold">{{ skipBlogName(post.link.title) }}</span> -
           {{ getDateString(post.createdAt) }}
         </q-item-label>
-      </q-item-section>
-      <q-item-section class="col-3 items-center">
-        <LinkInfo :link-data="post.link" :posts="true" />
       </q-item-section>
     </q-item>
     <q-separator spaced />

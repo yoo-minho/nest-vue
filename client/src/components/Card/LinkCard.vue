@@ -27,7 +27,7 @@ const randomDesc = `Need a description like '${emojiBundle
 <template>
   <template v-if="iconName === 'clear'">
     <q-item clickable q-hoverable>
-      <q-item-section side>
+      <q-item-section side style="padding: 0">
         <LinkInfo :link-data="link" :links="true" :posts="false" />
       </q-item-section>
       <q-item-section>

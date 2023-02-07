@@ -51,6 +51,7 @@ function _closeSettingMain() {
   <SettingLayout title="더보기" @back="_closeSettingMain">
     <q-list padding class="rounded-borders">
       <q-item-label header>Total</q-item-label>
+
       <div class="row q-px-md q-mb-md">
         <div v-for="(v, i) in countArray" :key="i" class="col-4">
           <q-chip class="count-chip" :color="v.color" text-color="white">
@@ -58,13 +59,21 @@ function _closeSettingMain() {
           </q-chip>
         </div>
       </div>
+
+      <q-separator spaced />
+
       <q-item-label header>Service</q-item-label>
+
       <div v-for="(v, i) in SERVICE_CATEGORY" :key="i">
         <SettingCard :setting-json="v" />
       </div>
+
       <DarkModeCard />
+
       <q-separator spaced />
+
       <q-item-label header>Etc</q-item-label>
+
       <div v-for="(v, i) in ETC_CATEGORY" :key="i">
         <SettingCard :setting-json="v" />
       </div>
