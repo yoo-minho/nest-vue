@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
-
 import { useSubpageStore } from '@/stores/subpage';
 import SettingLayout from '@/layouts/SettingLayout.vue';
 import GroupApi from '@/api/groupApi';
@@ -30,16 +29,16 @@ const SERVICE_CATEGORY = [
   },
 ];
 const ETC_CATEGORY = [{ icon: 'military_tech', title: '기술 스택', clickEvent: openStackMain }];
-
-const groupCount = ref(0);
-const linkCount = ref(0);
-const postCount = ref(0);
+const countArray = ref();
 
 onMounted(async () => {
   const { data } = await GroupApi.count();
-  groupCount.value = data.value.groupCount;
-  linkCount.value = data.value.linkCount;
-  postCount.value = data.value.postCount;
+  const { groupCount, linkCount, postCount } = data.value;
+  countArray.value = [
+    { label: 'teams', value: groupCount, color: 'green-2' },
+    { label: 'blogs', value: linkCount, color: 'green-3' },
+    { label: 'posts', value: postCount, color: 'green-4' },
+  ];
 });
 
 function _closeSettingMain() {
@@ -53,14 +52,10 @@ function _closeSettingMain() {
     <q-list padding class="rounded-borders">
       <q-item-label header>Total</q-item-label>
       <div class="row q-px-md q-mb-md">
-        <div class="col-4">
-          <q-chip class="count-chip" color="green-2" text-color="white"> {{ groupCount }} teams </q-chip>
-        </div>
-        <div class="col-4">
-          <q-chip class="count-chip" color="green-3" text-color="white"> {{ linkCount }} blogs </q-chip>
-        </div>
-        <div class="col-4">
-          <q-chip square class="count-chip" color="green-4" text-color="white"> {{ postCount }} posts</q-chip>
+        <div v-for="(v, i) in countArray" :key="i" class="col-4">
+          <q-chip class="count-chip" :color="v.color" text-color="white">
+            {{ v.value.toLocaleString() }} {{ v.label }}
+          </q-chip>
         </div>
       </div>
       <q-item-label header>Service</q-item-label>
