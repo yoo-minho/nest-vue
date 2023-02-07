@@ -100,13 +100,17 @@ export class RssService {
   constructor(public httpService: HttpService) {}
 
   async findOne(url: string, lastPostCreatedAt?: Date) {
+    console.log('rssrss:: 1', lastPostCreatedAt);
     const oldLastPostCreateAt = new Date(lastPostCreatedAt || 0);
+    console.log('rssrss:: 2', oldLastPostCreateAt);
     const rssUrl = await this.convertRssUrl(url);
     let rssItems;
     try {
       const result: RssRes = await parse(rssUrl, {});
       rssItems = result.items;
+      console.log('rssrss:: 3', rssItems.length);
     } catch (e) {
+      console.error(e);
       return {
         oldLastPostCreateAt,
         lastPostCreateAt: lastPostCreatedAt,
