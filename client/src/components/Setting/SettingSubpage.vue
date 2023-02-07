@@ -7,13 +7,12 @@ import GroupApi from '@/api/groupApi';
 import SettingCard from './SettingCard.vue';
 import { onMounted, ref } from 'vue';
 import { useQuasar } from 'quasar';
+import DarkModeCard from './DarkModeCard.vue';
 
 const subpageStore = useSubpageStore();
 const { closeSettingMain, openStackMain, openPlatformMain } = subpageStore;
 
 const router = useRouter();
-// const routerPush = (path: string) => () => router.push(path);
-
 const $q = useQuasar();
 
 const SERVICE_CATEGORY = [
@@ -68,6 +67,7 @@ function _closeSettingMain() {
       <div v-for="(v, i) in SERVICE_CATEGORY" :key="i">
         <SettingCard :setting-json="v" />
       </div>
+      <DarkModeCard />
       <q-separator spaced />
       <q-item-label header>Etc</q-item-label>
       <div v-for="(v, i) in ETC_CATEGORY" :key="i">
