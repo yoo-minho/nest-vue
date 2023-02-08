@@ -4,6 +4,7 @@ import { LinkWrap } from '@/types/common';
 import { useGroupStore } from '@/stores/group';
 import GroupDetailStatLast from './components/GroupDetailStatLast/GroupDetailStatLast.vue';
 import GroupDetailStatJandi from './components/GroupDetailStatJandi/GroupDetailStatJandi.vue';
+import GroupDetailStatDonut from './components/GroupDetailStatDonut.vue';
 import ContentsLayout from '@/layouts/ContentsLayout.vue';
 
 const groupStore = useGroupStore();
@@ -50,7 +51,9 @@ const { links } = toRefs(props);
           header-class="text-green-2"
         >
           <q-card>
-            <q-card-section> 준비중... </q-card-section>
+            <q-card-section>
+              <GroupDetailStatDonut />
+            </q-card-section>
           </q-card>
         </q-expansion-item>
 

@@ -39,7 +39,10 @@ const loadMore = async (el: Element) => {
   }
 };
 
-const _handleSwipe = (newInfo: { direction: 'left' | 'right' }) => handleSwipeTab(newInfo.direction, 'GroupDetailPost');
+const _handleSwipe = (newInfo: { direction: 'left' | 'right' }) => {
+  if (page.value > 2) return; //Todo. 스크롤 내렸을땐 좌우가 안 움직이도록!
+  return handleSwipeTab(newInfo.direction, 'GroupDetailPost');
+};
 </script>
 
 <template>
