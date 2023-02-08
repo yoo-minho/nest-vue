@@ -31,7 +31,7 @@ const { links } = toRefs(props);
         <q-expansion-item
           group="somegroup"
           icon="fiber_new"
-          label="가장 최근에 쓴 로그 Top 3"
+          label="가장 최근에 작성한 로그 Top 3"
           header-class="text-green-3"
         >
           <q-card>
@@ -46,7 +46,7 @@ const { links } = toRefs(props);
         <q-expansion-item
           group="somegroup"
           icon="view_module"
-          label="가장 많이 쓴 로그 Top 3"
+          label="가장 많이 작성한 로그 Top 3"
           header-class="text-green-2"
         >
           <q-card>

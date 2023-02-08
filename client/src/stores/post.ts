@@ -11,7 +11,6 @@ const { updateCurrentGroupLastPostCreatedAt, updateCurrentGroupLinksScrapAt } = 
 
 const MMM = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const day = [0, 1, 2, 3, 4, 5, 6];
-const countKey = (linkId: number) => (linkId > 0 ? `linkCountBy${linkId}` : 'totalCount');
 
 export const usePostStore = defineStore('post', {
   state: () => ({
@@ -86,17 +85,16 @@ export const usePostStore = defineStore('post', {
       this.postLoading = false;
       return data.value.length > 0;
     },
-    async fetchJandis(links: LinkWrap[], linkId: number) {
+    async fetchJandis(links: LinkWrap[]) {
       if (links.length === 0) {
         console.log('SKIP fetchJandis');
         return;
       }
-
       this.jandiLoading = true;
       const { data } = await PostAPI.countByDate(links);
-      this.jandis = data.value.map((v: DaysAllCounts) => ({
+      this.jandis = [...data.value].map((v: DaysAllCounts) => ({
         ...v,
-        count: v.count ? v.count[countKey(linkId)] || 0 : 0,
+        count: v.count ? v.count['totalCount'] || 0 : 0,
       }));
       this.jandiLoading = false;
     },

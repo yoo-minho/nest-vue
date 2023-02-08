@@ -41,7 +41,7 @@ const groupDetail = String(route.name).includes('GroupDetail');
             </q-page>
           </q-page-container>
           <q-page-scroller position="bottom-right" :scroll-offset="150" :offset="[18, 18]">
-            <q-btn fab icon="keyboard_arrow_up" color="green-4" />
+            <q-btn fab icon="keyboard_arrow_up" color="dark" />
           </q-page-scroller>
         </q-layout>
       </q-scroll-area>

@@ -2,7 +2,7 @@
 const props = defineProps<{ count: number }>();
 </script>
 <template>
-  <div class="column items-center" style="align-items: center">
+  <div class="column items-center" style="margin: 0 auto">
     <div class="row q-gutter-xs items-center q-mt-xs">
       <div class="text-grey-1">Less</div>
       <div class="jandi bg-green-1"></div>

@@ -19,7 +19,10 @@ const linkFilter = ref(defaultOption);
 
 const filterCount = async (linkId = -1) => {
   if (props.links.length === 0) return;
-  await fetchJandis(props.links, linkId);
+
+  const targetLinks = linkId === -1 ? props.links : props.links.filter((l) => l.link.id === linkId);
+  await fetchJandis(targetLinks);
+
   linkFilterOptions.value = [
     defaultOption,
     ...props.links.map(({ link }) => ({ label: link.title, value: link.id || -1 })),
@@ -51,10 +54,23 @@ watch(
       <GroupDetailStatJandiBox :loading="jandiLoading" :label="'포스팅 많은 요일'" :value="manyPostingMMM" />
     </div>
     <q-card class="bg-green-1">
-      <q-card-section class="row" style="align-items: center; justify-content: center">
+      <q-card-section class="row jandi-zone">
         <GroupDetailStatJandiContents :loading="jandiLoading" :data="jandis" />
         <GroupDetailStatJandiTip :count="activeJandisCount" />
       </q-card-section>
     </q-card>
   </div>
 </template>
+
+<style scoped>
+.jandi-zone {
+  justify-content: center;
+}
+
+@media (max-width: 400px) {
+  .jandi-zone {
+    justify-content: end;
+    overflow-x: scroll;
+  }
+}
+</style>
