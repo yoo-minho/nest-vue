@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { toRefs } from 'vue';
+import { ref, toRefs } from 'vue';
 import { LinkWrap } from '@/types/common';
 import { useGroupStore } from '@/stores/group';
 import GroupDetailStatLast from './components/GroupDetailStatLast/GroupDetailStatLast.vue';

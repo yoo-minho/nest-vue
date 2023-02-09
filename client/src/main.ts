@@ -10,6 +10,7 @@ import router from './router';
 import { mainLog } from './util/ConsoleUtil';
 import VueCookies from 'vue-cookies';
 import VueGtag from 'vue-gtag';
+import VueApexCharts from 'vue3-apexcharts';
 
 Notify.registerType('info', {
   progress: true,
@@ -18,6 +19,7 @@ Notify.registerType('info', {
 });
 
 const myApp = createApp(App);
+myApp.use(VueApexCharts);
 myApp.use(VueGtag, {
   config: { id: 'G-MRERLPYY1H' },
 });

@@ -1,74 +1,51 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
-
-const data = [
-  {
-    fill: 15,
-    color: '#80e080',
+const options = {
+  chart: {
+    id: 'vuechart-example',
   },
-  {
-    fill: 35,
-    color: '#4fc3f7',
+  legend: {
+    show: true,
+    showForSingleSeries: false,
+    showForNullSeries: true,
+    showForZeroSeries: true,
+    position: 'top',
+    fontSize: '14px',
+    fontWeight: 400,
+    labels: {
+      colors: ['white'],
+    },
+    itemMargin: {
+      horizontal: 5,
+      vertical: 5,
+    },
+    onItemClick: {
+      toggleDataSeries: false,
+    },
+    onItemHover: {
+      highlightDataSeries: false,
+    },
   },
-  {
-    fill: 20,
-    color: '#9575cd',
+  labels: ['Apple', 'Mango', 'Ora22222222221222nge', 'Watermelon222222222222222'],
+  plotOptions: {
+    pie: {
+      dataLabels: {
+        minAngleToShowLabel: 1000,
+      },
+      customScale: 1.4,
+      offsetY: 70,
+    },
   },
-  {
-    fill: 30,
-    color: '#f06292',
+  stroke: {
+    show: false,
   },
-];
+  colors: ['#39d353', '#26a641', '#006d32', '#0e4429'],
+};
 
-onMounted(() => {
-  const doughnut = document.querySelector('#doughnut');
-  const $svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-
-  let filled = 0;
-  $svg.setAttribute('width', '100%');
-  $svg.setAttribute('height', '100%');
-  $svg.setAttribute('viewBox', '0 0 100 100');
-  doughnut?.appendChild($svg);
-
-  data.forEach(function (o, i) {
-    const $circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle'),
-      startAngle = -90,
-      radius = 30,
-      cx = 50,
-      cy = 50,
-      animationDuration = 2000,
-      strokeWidth = 15,
-      dashArray = 2 * Math.PI * radius,
-      dashOffset = dashArray - (dashArray * o.fill) / 100,
-      angle = (filled * 360) / 100 + startAngle,
-      currentDuration = (animationDuration * o.fill) / 100,
-      delay = (animationDuration * filled) / 100;
-    $circle.setAttribute('r', String(radius));
-    $circle.setAttribute('cx', String(cx));
-    $circle.setAttribute('cy', String(cy));
-    $circle.setAttribute('fill', 'transparent');
-    $circle.setAttribute('stroke', o.color);
-    $circle.setAttribute('stroke-width', String(strokeWidth));
-    $circle.setAttribute('stroke-dasharray', String(dashArray));
-    $circle.setAttribute('stroke-dashoffset', String(dashArray));
-    $circle.style.transition = 'stroke-dashoffset ' + currentDuration + 'ms linear ' + delay + 'ms';
-    $circle.setAttribute('transform', 'rotate(' + angle + ' ' + cx + ' ' + cy + ')');
-
-    $svg.appendChild($circle);
-
-    filled += o.fill;
-    setTimeout(function () {
-      $circle.style['stroke-dashoffset' as any] = String(dashOffset);
-    }, 100);
-  });
-});
+const series = [60, 30, 20, 11];
 </script>
 <template>
-  <div id="doughnut"></div>
+  <q-card class="bg-dark q-py-md">
+    <apexchart type="donut" :options="options" :series="series"></apexchart>
+  </q-card>
 </template>
-<style>
-circle:hover {
-  transform: rotate(-90deg) scale(1.1);
-  /* transform: scale(1.1); */
-}
-</style>
+<style></style>
