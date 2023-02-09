@@ -4,6 +4,7 @@ import * as path from 'path';
 import eslintPlugin from 'vite-plugin-eslint';
 import { quasar, transformAssetUrls } from '@quasar/vite-plugin';
 import { VitePWA } from 'vite-plugin-pwa';
+import pluginRewriteAll from 'vite-plugin-rewrite-all';
 
 export default defineConfig((config) => {
   const { mode } = config;
@@ -58,6 +59,7 @@ export default defineConfig((config) => {
       quasar({
         sassVariables: 'src/quasar-variables.sass',
       }),
+      pluginRewriteAll(),
     ],
     resolve: {
       alias: {
