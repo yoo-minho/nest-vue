@@ -1,7 +1,6 @@
 <script setup lang="ts">
 const props = defineProps<{ tags?: string[] }>();
 const emits = defineEmits<{ (eventName: 'clickTag', tagName: string): void }>();
-const xx = (name: string): MouseEvent => emits('clickTag', name) as unknown as MouseEvent;
 </script>
 
 <template>
