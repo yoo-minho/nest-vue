@@ -9,6 +9,7 @@ import LinkEditor from '@/components/Editor/LinkEditor.vue';
 import SettingSubpage from '@/components/Setting/SettingSubpage.vue';
 import DataSubpage from '@/components/Setting/DataSubpage.vue';
 import LoginSubpage from '@/components/Auth/LoginSubpage.vue';
+import { ref, watch } from 'vue';
 
 const route = useRoute();
 
@@ -18,6 +19,15 @@ const { isOpenGroupEditor, isOpenLinkEditor, isOpenSettingSubpage, isOpenDataSub
 
 const groupMain = String(route.name) === 'Group';
 const groupDetail = String(route.name).includes('GroupDetail');
+const isStatView = (routeName: string) => routeName === 'GroupDetailStat';
+const groupDetailStat = ref(isStatView(String(route.name)));
+
+watch(
+  () => route.name,
+  () => {
+    groupDetailStat.value = isStatView(String(route.name));
+  },
+);
 </script>
 
 <template>
@@ -41,7 +51,7 @@ const groupDetail = String(route.name).includes('GroupDetail');
             </q-page>
           </q-page-container>
           <q-page-scroller position="bottom-right" :scroll-offset="150" :offset="[18, 18]">
-            <q-btn fab icon="keyboard_arrow_up" color="dark" />
+            <q-btn fab icon="keyboard_arrow_up" :color="groupDetailStat ? 'green-4' : 'dark'" />
           </q-page-scroller>
         </q-layout>
       </q-scroll-area>

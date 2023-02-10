@@ -60,6 +60,23 @@ export class PostService {
     });
   }
 
+  async postCountGroupByLinkId(linkArr) {
+    return this.prisma.post.groupBy({
+      _count: { id: true },
+      by: ['linkId'],
+      where: {
+        linkId: {
+          in: linkArr,
+        },
+        createdAt: {
+          gte: getBeforeMonth(3),
+        },
+      },
+      orderBy: [{ _count: { id: 'desc' } }, { _max: { createdAt: 'desc' } }],
+      take: 4,
+    });
+  }
+
   async postCountByDate(linkArr) {
     const posts = await this.prisma.post.findMany({
       select: {

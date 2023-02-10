@@ -43,6 +43,18 @@ export default {
       throw new Error(message);
     }
   },
+  async findCountGroupById(links: LinkWrap[]) {
+    try {
+      const { data, isLoading } = await useAxiosGetArray('post/many', { params: { linkIds: getIds(links) } });
+      return {
+        isLoading,
+        data: ref(data),
+      };
+    } catch (err) {
+      const { message } = err as AxiosError;
+      throw new Error(message);
+    }
+  },
   async countByDate(links: LinkWrap[]) {
     try {
       return await useAxiosGetArray('post/count/date', { params: { linkIds: getIds(links) } });

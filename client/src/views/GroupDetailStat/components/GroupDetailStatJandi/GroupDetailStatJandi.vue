@@ -6,6 +6,7 @@ import { usePostStore } from '@/stores/post';
 import GroupDetailStatJandiTip from './GroupDetailStatJandiTip.vue';
 import GroupDetailStatJandiBox from './GroupDetailStatJandiBox.vue';
 import GroupDetailStatJandiContents from './GroupDetailStatJandiContents.vue';
+import { skipBlogName } from '@/util/NameUtil';
 
 const postStore = usePostStore();
 const { fetchJandis } = postStore;
@@ -25,7 +26,7 @@ const filterCount = async (linkId = -1) => {
 
   linkFilterOptions.value = [
     defaultOption,
-    ...props.links.map(({ link }) => ({ label: link.title, value: link.id || -1 })),
+    ...props.links.map(({ link }) => ({ label: skipBlogName(link.title), value: link.id || -1 })),
   ];
 };
 
@@ -44,11 +45,14 @@ watch(
     <q-select
       v-model="linkFilter"
       :options="linkFilterOptions"
-      filled
       label="Posting Graph By"
       label-color="green-4"
       class="q-mb-md"
-    />
+    >
+      <template #before>
+        <q-avatar square size="50px" font-size="25px" color="green-4" text-color="white" icon="grass" />
+      </template>
+    </q-select>
     <div class="row q-col-gutter-md q-mb-md">
       <GroupDetailStatJandiBox :loading="jandiLoading" :label="'다음 포스팅까지'" :value="nextPostingDay" />
       <GroupDetailStatJandiBox :loading="jandiLoading" :label="'포스팅 많은 요일'" :value="manyPostingMMM" />

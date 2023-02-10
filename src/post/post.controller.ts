@@ -54,6 +54,12 @@ export class PostController {
     }));
   }
 
+  @Get('many')
+  async findCountGroupById(@Query('linkIds', numbersPipe) linkIds: number[]) {
+    const arr = await this.postService.postCountGroupByLinkId(linkIds);
+    return arr.map(({ _count, linkId }) => ({ linkId, count: _count.id }));
+  }
+
   @Get('count/date')
   async countByDate(@Query('linkIds', numbersPipe) linkIds: number[]) {
     return await this.postService.postCountByDate(linkIds);

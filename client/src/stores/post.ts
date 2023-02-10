@@ -1,16 +1,20 @@
-import { defineStore } from 'pinia';
+import { defineStore, storeToRefs } from 'pinia';
 import { DaysAllCounts, DaysCount, LastPost, LinkWrap, OrderType, Post } from '../types/common';
 import PostAPI from '../api/postApi';
 import RssAPI from '../api/rssApi';
 import GroupAPI from '@/api/groupApi';
 import { isTodayByDate } from '@/plugin/dayjs';
 import { useGroupStore } from './group';
+import { skipBlogName } from '@/util/NameUtil';
 
 const groupStore = useGroupStore();
+const { currentGroup } = storeToRefs(groupStore);
 const { updateCurrentGroupLastPostCreatedAt, updateCurrentGroupLinksScrapAt } = groupStore;
 
 const MMM = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const day = [0, 1, 2, 3, 4, 5, 6];
+
+type xxx = { linkId: number; count: number };
 
 export const usePostStore = defineStore('post', {
   state: () => ({
@@ -21,8 +25,17 @@ export const usePostStore = defineStore('post', {
     jandiLoading: false,
     lastPosts: [] as LastPost[],
     lastLoading: false,
+    countPostGroupByLinkId: [] as xxx[],
   }),
   getters: {
+    titleOfPostCounting(): string[] {
+      return this.countPostGroupByLinkId
+        .map(({ linkId }) => currentGroup.value.links?.find(({ link }) => link.id === linkId)?.link.title || '')
+        .map((v) => skipBlogName(v));
+    },
+    countOfPostCounting(): number[] {
+      return this.countPostGroupByLinkId.map(({ count }) => count);
+    },
     activeJandis: ({ jandis }) => jandis.filter(({ count }) => count > 0) || [],
     activeJandisCount() {
       const _active = this.activeJandis as DaysCount[];
@@ -108,6 +121,20 @@ export const usePostStore = defineStore('post', {
       const time = (date: string) => new Date(date).getTime();
       this.lastPosts = [...data.value].sort((x, y) => order * (time(y.createdAt) - time(x.createdAt)));
       this.lastLoading = false;
+    },
+    async fetchCountGroupById(links: LinkWrap[]) {
+      if (links.length === 0) {
+        console.log('SKIP fetchCountGroupById');
+        return;
+      }
+      this.lastLoading = true;
+      const { data } = await PostAPI.findCountGroupById(links);
+      this.countPostGroupByLinkId = data.value;
+      this.lastLoading = false;
+
+      // const time = (date: string) => new Date(date).getTime();
+      // this.lastPosts = [...data.value].sort((x, y) => order * (time(y.createdAt) - time(x.createdAt)));
+      // this.lastLoading = false;
     },
   },
 });
