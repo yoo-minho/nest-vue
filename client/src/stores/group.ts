@@ -5,6 +5,7 @@ import { getDateString, isSameDate } from '@/plugin/dayjs';
 import { scrapOGS } from '@/hooks/useOgs';
 
 const totalTag = 'All';
+const appName = 'TEAMLOG';
 
 export const useGroupStore = defineStore('group', {
   state: () => ({
@@ -17,6 +18,7 @@ export const useGroupStore = defineStore('group', {
     tags: [] as GroupTag[],
     currentTag: totalTag,
     selectTab: '' as TabType,
+    currentHeaderTitle: appName,
   }),
   getters: {
     linkCountMessage: ({ linksOnEditor: links }) => (links.length > 0 ? `(${links.length}/10)` : ''),
@@ -34,9 +36,17 @@ export const useGroupStore = defineStore('group', {
         ) || 'fail to scrap ...'
       );
     },
+    isOrginalHeader: ({ currentHeaderTitle }) => currentHeaderTitle === appName,
   },
   actions: {
+    initHeaderTitle() {
+      this.currentHeaderTitle = appName;
+    },
+    changeHeaderTitle() {
+      this.currentHeaderTitle = this.currentGroup.title;
+    },
     handleSwipeTab(direction: 'left' | 'right', currentTab: TabType) {
+      if (!this.isOrginalHeader) return; //스크롤 내렸을땐 좌우가 안 움직이도록!
       const tabs = [`GroupDetailLink`, `GroupDetailPost`, `GroupDetailStat`];
       const idx = tabs.indexOf(currentTab);
       let nextTab;

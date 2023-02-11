@@ -6,7 +6,6 @@ import GroupDetailLinkLoader from '@/components/Loader/GroupDetailLinkLoader.vue
 import GroupDetailLinkCard from './components/GroupDetailLinkCard.vue';
 
 const props = defineProps<{ links: LinkWrap[]; loading: boolean }>();
-
 const groupStore = useGroupStore();
 const { handleSwipeTab } = groupStore;
 const _handleSwipe = (newInfo: { direction: 'left' | 'right' }) => handleSwipeTab(newInfo.direction, 'GroupDetailLink');

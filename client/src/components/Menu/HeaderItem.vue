@@ -4,10 +4,12 @@ import { useRouter, useRoute } from 'vue-router';
 import { useSubpageStore } from '@/stores/subpage';
 import { useGroupStore } from '@/stores/group';
 import { showBottomSheet } from '@/hooks/useSnsBottomSheeet';
+import { storeToRefs } from 'pinia';
 
 const subpageStore = useSubpageStore();
 const { openSettingMain, openGroupEditor, openLoginSubpage } = subpageStore;
 const groupStore = useGroupStore();
+const { currentHeaderTitle } = storeToRefs(groupStore);
 const { initGroupData, initLinks } = groupStore;
 const router = useRouter();
 const route = useRoute();
@@ -62,7 +64,7 @@ const _openLoginSubpage = () => {
       <q-btn v-if="close" flat round dense icon="close" @click="close" />
       <q-btn v-if="back" flat round dense icon="keyboard_backspace" @click="back" />
       <q-toolbar-title v-if="isDefaultType" class="logo-font logo-style logo-common q-ml-sm" @click="reload">
-        Teamlog
+        {{ currentHeaderTitle }}
       </q-toolbar-title>
       <q-toolbar-title v-if="title">{{ title }}</q-toolbar-title>
       <q-btn v-if="editor" icon="add_circle_outline" flat round dense @click="_openGroupEditor" />
@@ -76,9 +78,6 @@ const _openLoginSubpage = () => {
 </template>
 
 <style>
-.logo-font {
-  font-family: Arial;
-}
 .logo-common {
   color: white;
   font-weight: bold;

@@ -1,5 +1,4 @@
 import { defineStore, storeToRefs } from 'pinia';
-import { Notify } from 'quasar';
 import { DaysAllCounts, DaysCount, LastPost, linkCount, LinkWrap, OrderType, Post } from '../types/common';
 import { isTodayByDate } from '@/plugin/dayjs';
 import { useGroupStore } from './group';
@@ -58,7 +57,6 @@ export const usePostStore = defineStore('post', {
       if (!links) return;
       this.initPostData({ post: false });
       await this.scrapPosts(links, false, groupId);
-      Notify.create({ type: 'positive', message: 'Refresh Completed!' });
     },
     initPostData({ post = true } = {}) {
       if (post) {

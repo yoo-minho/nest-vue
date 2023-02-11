@@ -7,7 +7,7 @@ const isHeader = props.mode === 'HEADER';
 </script>
 
 <template>
-  <q-item class="q-pt-md">
+  <q-item class="q-pt-md column">
     <q-item-section :class="{ 'text-center': isHeader }">
       <q-item-label class="text-weight-bold text-green-4"> @{{ groupData.domain }} </q-item-label>
       <q-item-label class="justify-between items-center" :class="{ row: !isHeader }">

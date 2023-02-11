@@ -1,26 +1,30 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue';
-import GroupDetailPostLoader from '../Loader/GroupDetailPostLoader.vue';
 
 const emits = defineEmits<{
   (eventName: 'triggerIntersected', value: Element): void;
-  (eventName: 'refreshIcon'): void;
+  (eventName: 'hiddenEvent'): void;
 }>();
 
 const trigger = ref();
-const options = {
-  root: null,
-  threshold: 0,
-};
+
+interface IntersectionObserverEntryV2 extends IntersectionObserverEntry {
+  isVisible: boolean;
+}
+
 let observer: IntersectionObserver | null = null;
-const handleIntersect = (entry: IntersectionObserverEntry): void => {
-  if (entry.isIntersecting) emits('triggerIntersected', trigger.value);
+const handleIntersect = (entry: IntersectionObserverEntryV2): void => {
+  if (entry.isIntersecting) return emits('triggerIntersected', trigger.value);
+  if (entry.isVisible === false) return emits('hiddenEvent');
 };
 onMounted(() => {
   try {
-    observer = new IntersectionObserver((entries) => {
-      handleIntersect(entries[0]);
-    }, options);
+    observer = new IntersectionObserver(
+      (entries) => {
+        handleIntersect(entries[0] as IntersectionObserverEntryV2);
+      },
+      { root: null, threshold: 0 },
+    );
     observer.observe(trigger.value);
   } catch (err) {
     console.error(err);
@@ -32,5 +36,5 @@ onUnmounted(() => {
 });
 </script>
 <template>
-  <div ref="trigger"><GroupDetailPostLoader /></div>
+  <div ref="trigger"><slot></slot></div>
 </template>

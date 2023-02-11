@@ -39,10 +39,7 @@ const loadMore = async (el: Element) => {
   }
 };
 
-const _handleSwipe = (newInfo: { direction: 'left' | 'right' }) => {
-  if (page.value > 2) return; //Todo. 스크롤 내렸을땐 좌우가 안 움직이도록!
-  return handleSwipeTab(newInfo.direction, 'GroupDetailPost');
-};
+const _handleSwipe = (newInfo: { direction: 'left' | 'right' }) => handleSwipeTab(newInfo.direction, 'GroupDetailPost');
 </script>
 
 <template>
@@ -57,7 +54,9 @@ const _handleSwipe = (newInfo: { direction: 'left' | 'right' }) => {
   <template v-else>
     <div v-touch-swipe.mouse.left.right="_handleSwipe">
       <GroupDetailPostCard v-for="(post, i) in posts" :key="i" :post="post" />
-      <ScrollObserver @trigger-intersected="loadMore" />
+      <ScrollObserver @trigger-intersected="loadMore">
+        <GroupDetailPostLoader />
+      </ScrollObserver>
     </div>
   </template>
 </template>
