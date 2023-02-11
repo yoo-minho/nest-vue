@@ -51,7 +51,7 @@ watch(
             </q-page>
           </q-page-container>
           <q-page-scroller position="bottom-right" :scroll-offset="150" :offset="[18, 18]">
-            <q-btn fab icon="keyboard_arrow_up" :color="groupDetailStat ? 'green-4' : 'dark'" />
+            <q-btn fab icon="keyboard_arrow_up" :color="groupDetailStat ? 'green-4' : 'dark'" size="10px" />
           </q-page-scroller>
         </q-layout>
       </q-scroll-area>

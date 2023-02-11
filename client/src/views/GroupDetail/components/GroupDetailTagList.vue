@@ -12,7 +12,7 @@ const emits = defineEmits<{ (eventName: 'clickTag', tagName: string): void }>();
 <style lang="scss" scoped>
 .tag-area {
   margin-top: -10px;
-  margin-bottom: 8px;
+  margin-bottom: -10px;
 
   .q-chip {
     font-size: 12px;

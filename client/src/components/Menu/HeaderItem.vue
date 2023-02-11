@@ -9,7 +9,7 @@ import { storeToRefs } from 'pinia';
 const subpageStore = useSubpageStore();
 const { openSettingMain, openGroupEditor, openLoginSubpage } = subpageStore;
 const groupStore = useGroupStore();
-const { currentHeaderTitle } = storeToRefs(groupStore);
+const { currentHeaderTitle, isOrginalHeader } = storeToRefs(groupStore);
 const { initGroupData, initLinks } = groupStore;
 const router = useRouter();
 const route = useRoute();
@@ -35,7 +35,9 @@ const reload = () => {
     router.go(0);
     return;
   }
-  router.replace({ name: 'Group' });
+  if (isOrginalHeader.value) {
+    router.replace({ name: 'Group' });
+  }
 };
 const _openGroupEditor = () => {
   router.push({ hash: '#Editor' });
@@ -63,7 +65,11 @@ const _openLoginSubpage = () => {
     <q-toolbar>
       <q-btn v-if="close" flat round dense icon="close" @click="close" />
       <q-btn v-if="back" flat round dense icon="keyboard_backspace" @click="back" />
-      <q-toolbar-title v-if="isDefaultType" class="logo-font logo-style logo-common q-ml-sm" @click="reload">
+      <q-toolbar-title
+        v-if="isDefaultType"
+        :class="`logo q-ml-sm ${isOrginalHeader ? 'original-name' : 'group-name'}`"
+        @click="reload"
+      >
         {{ currentHeaderTitle }}
       </q-toolbar-title>
       <q-toolbar-title v-if="title">{{ title }}</q-toolbar-title>
@@ -77,48 +83,19 @@ const _openLoginSubpage = () => {
   </q-header>
 </template>
 
-<style>
-.logo-common {
+<style scope lang="scss">
+.logo {
   color: white;
   font-weight: bold;
   cursor: pointer;
-}
-.loading_arrow {
-  -webkit-animation: rotation 0.5s infinite linear;
-  -moz-animation: rotation 0.5s infinite linear;
-  -o-animation: rotation 0.5s infinite linear;
-  animation: rotation 0.5s infinite linear;
-}
-@-webkit-keyframes rotation {
-  from {
-    -webkit-transform: rotate(0deg);
+
+  &.original-name {
+    letter-spacing: 6px;
+    font-size: 20px;
   }
-  to {
-    -webkit-transform: rotate(359deg);
-  }
-}
-@-moz-keyframes rotation {
-  from {
-    -moz-transform: rotate(0deg);
-  }
-  to {
-    -moz-transform: rotate(359deg);
-  }
-}
-@-o-keyframes rotation {
-  from {
-    -o-transform: rotate(0deg);
-  }
-  to {
-    -o-transform: rotate(359deg);
-  }
-}
-@keyframes rotation {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(359deg);
+
+  &.group-name {
+    font-size: 18px;
   }
 }
 </style>
