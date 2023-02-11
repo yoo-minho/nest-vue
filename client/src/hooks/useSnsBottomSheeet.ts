@@ -1,9 +1,9 @@
 import { getImage } from '@/util/ImageUtil';
-import { QVueGlobals } from 'quasar';
 import { shareKakao } from './useKakaoApi';
+import { BottomSheet, Notify } from 'quasar';
 
-export const showBottomSheet = ($q: QVueGlobals) => {
-  $q.bottomSheet({
+export const showBottomSheet = () => {
+  BottomSheet.create({
     message: '공유하기',
     grid: false,
     actions: [
@@ -64,19 +64,19 @@ export const showBottomSheet = ($q: QVueGlobals) => {
         );
         return;
       case 'copy':
-        copyUrl($q);
+        copyUrl();
         return;
       case 'share':
       default:
-        shareUrl($q);
+        shareUrl();
         return;
     }
   });
 };
 
-const shareUrl = ($q: QVueGlobals) => {
+const shareUrl = () => {
   if (typeof navigator.share === 'undefined') {
-    $q.notify({ type: 'nagative', message: 'Non-shareable environment!' });
+    Notify.create({ type: 'nagative', message: 'Non-shareable environment!' });
     return;
   }
   navigator.share({
@@ -85,7 +85,7 @@ const shareUrl = ($q: QVueGlobals) => {
   });
 };
 
-const copyUrl = async ($q: QVueGlobals) => {
+const copyUrl = async () => {
   if (typeof navigator.clipboard === 'undefined') {
     const dummy = document.createElement('input');
     document.body.appendChild(dummy);
@@ -96,5 +96,5 @@ const copyUrl = async ($q: QVueGlobals) => {
   } else {
     await navigator.clipboard.writeText(location.href);
   }
-  $q.notify({ type: 'positive', message: 'Copy Completed!' });
+  Notify.create({ type: 'positive', message: 'Copy Completed!' });
 };

@@ -117,10 +117,7 @@ export const useGroupStore = defineStore('group', {
       });
     },
     updateCurrentGroupLastPostCreatedAt({ lastPostCreatedAt }: { lastPostCreatedAt: Date }) {
-      if (isSameDate(this.currentGroup.lastPostCreatedAt, lastPostCreatedAt)) {
-        console.log('Todo. SKIP POST', { lastPostCreatedAt });
-        return;
-      }
+      if (isSameDate(this.currentGroup.lastPostCreatedAt, lastPostCreatedAt)) return;
       this.currentGroup.lastPostCreatedAt = lastPostCreatedAt;
       const domain = this.currentGroup.domain;
       this.groups = [...this.groups].map((group) =>

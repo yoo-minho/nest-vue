@@ -1,11 +1,13 @@
 import { defineStore, storeToRefs } from 'pinia';
-import { DaysAllCounts, DaysCount, LastPost, LinkWrap, OrderType, Post } from '../types/common';
-import PostAPI from '../api/postApi';
-import RssAPI from '../api/rssApi';
-import GroupAPI from '@/api/groupApi';
+import { Notify } from 'quasar';
+import { DaysAllCounts, DaysCount, LastPost, linkCount, LinkWrap, OrderType, Post } from '../types/common';
 import { isTodayByDate } from '@/plugin/dayjs';
 import { useGroupStore } from './group';
 import { skipBlogName } from '@/util/NameUtil';
+
+import PostAPI from '../api/postApi';
+import RssAPI from '../api/rssApi';
+import GroupAPI from '@/api/groupApi';
 
 const groupStore = useGroupStore();
 const { currentGroup } = storeToRefs(groupStore);
@@ -14,18 +16,15 @@ const { updateCurrentGroupLastPostCreatedAt, updateCurrentGroupLinksScrapAt } = 
 const MMM = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const day = [0, 1, 2, 3, 4, 5, 6];
 
-type xxx = { linkId: number; count: number };
-
 export const usePostStore = defineStore('post', {
   state: () => ({
-    scrapLoading: false,
     posts: [] as Post[],
     postLoading: false,
     jandis: [] as DaysCount[],
     jandiLoading: false,
     lastPosts: [] as LastPost[],
     lastLoading: false,
-    countPostGroupByLinkId: [] as xxx[],
+    countPostGroupByLinkId: [] as linkCount[],
   }),
   getters: {
     titleOfPostCounting(): string[] {
@@ -54,29 +53,32 @@ export const usePostStore = defineStore('post', {
     },
   },
   actions: {
-    initPostData() {
-      this.posts = [];
-      this.postLoading = true;
+    async scrapPostsAndAction() {
+      const { id: groupId, links } = currentGroup.value;
+      if (!links) return;
+      this.initPostData({ post: false });
+      await this.scrapPosts(links, false, groupId);
+      Notify.create({ type: 'positive', message: 'Refresh Completed!' });
+    },
+    initPostData({ post = true } = {}) {
+      if (post) {
+        this.posts = [];
+        this.postLoading = true;
+      }
       this.jandis = [];
       this.jandiLoading = true;
       this.lastPosts = [];
       this.lastLoading = true;
     },
     async scrapPosts(links: LinkWrap[], isScrapOncePerDay: boolean, groupId?: number) {
-      if (links.length === 0) {
-        console.log('SKIP scrapPosts');
-        return;
-      }
+      if (links.length === 0) return;
 
-      this.scrapLoading = true;
       const scrapLinks = links.filter(({ link }: LinkWrap) => !(isScrapOncePerDay && isTodayByDate(link.scrapAt)));
       try {
-        await Promise.all(scrapLinks.map(({ link }: LinkWrap) => RssAPI.scrap(link)));
+        await Promise.allSettled(scrapLinks.map(({ link }: LinkWrap) => RssAPI.scrap(link)));
       } catch (e) {
         throw new Error(String(e));
       } finally {
-        this.scrapLoading = false;
-
         //link들의 lastPostCreatedAt 중 max를 group에 업데이트함
         const { lastPostCreatedAt } = await GroupAPI.updateLastPostCreateAt(groupId);
         updateCurrentGroupLastPostCreatedAt({ lastPostCreatedAt });
@@ -86,10 +88,7 @@ export const usePostStore = defineStore('post', {
       }
     },
     async fetchPosts(links: LinkWrap[], page?: number) {
-      if (links.length === 0) {
-        console.log('SKIP fetchPosts');
-        return;
-      }
+      if (links.length === 0) return;
 
       this.postLoading = this.posts.length > 0 ? false : true;
       const isFirstPage = !page || page === 1;
@@ -99,10 +98,7 @@ export const usePostStore = defineStore('post', {
       return data.value.length > 0;
     },
     async fetchJandis(links: LinkWrap[]) {
-      if (links.length === 0) {
-        console.log('SKIP fetchJandis');
-        return;
-      }
+      if (links.length === 0) return;
       this.jandiLoading = true;
       const { data } = await PostAPI.countByDate(links);
       this.jandis = [...data.value].map((v: DaysAllCounts) => ({
@@ -112,10 +108,7 @@ export const usePostStore = defineStore('post', {
       this.jandiLoading = false;
     },
     async fetchLastPosts(links: LinkWrap[], order: OrderType) {
-      if (links.length === 0) {
-        console.log('SKIP fetchLastPosts');
-        return;
-      }
+      if (links.length === 0) return;
       this.lastLoading = true;
       const { data } = await PostAPI.findLast(links);
       const time = (date: string) => new Date(date).getTime();
@@ -123,18 +116,9 @@ export const usePostStore = defineStore('post', {
       this.lastLoading = false;
     },
     async fetchCountGroupById(links: LinkWrap[]) {
-      if (links.length === 0) {
-        console.log('SKIP fetchCountGroupById');
-        return;
-      }
-      this.lastLoading = true;
+      if (links.length === 0) return;
       const { data } = await PostAPI.findCountGroupById(links);
       this.countPostGroupByLinkId = data.value;
-      this.lastLoading = false;
-
-      // const time = (date: string) => new Date(date).getTime();
-      // this.lastPosts = [...data.value].sort((x, y) => order * (time(y.createdAt) - time(x.createdAt)));
-      // this.lastLoading = false;
     },
   },
 });
