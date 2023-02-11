@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { onMounted, computed } from 'vue';
 import { storeToRefs } from 'pinia';
-
 import { useGroupStore } from '@/stores/group';
 import { usePostStore } from '@/stores/post';
 import DefaultLayout from '@/layouts/DefaultLayout.vue';
@@ -14,7 +13,7 @@ const { initGroupData, fetchGroup } = groupStore;
 const { groupLoading, currentGroup } = storeToRefs(groupStore);
 
 const postStore = usePostStore();
-const { scrapPosts, initPostData } = postStore;
+const { scrapPosts, initPostData, scrapPostsAndAction } = postStore;
 
 const props = defineProps<{ domain: string }>();
 const links = computed(() => currentGroup.value?.links || []);
@@ -34,7 +33,7 @@ onMounted(fetchData);
 
 const refresh = async (done: () => void) => {
   await delay(1000);
-  await fetchData();
+  await scrapPostsAndAction();
   done();
 };
 </script>
