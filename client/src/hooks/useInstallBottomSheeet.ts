@@ -1,4 +1,3 @@
-import { getImage } from '@/util/ImageUtil';
 import { BottomSheet } from 'quasar';
 
 export const showBottomSheet = (deferredPrompt?: BeforeInstallPromptEvent) => {
@@ -8,7 +7,7 @@ export const showBottomSheet = (deferredPrompt?: BeforeInstallPromptEvent) => {
     actions: [
       {
         label: '홈 화면에 Teamlog 추가',
-        img: getImage('../logo.png'),
+        img: new URL(`../assets/logo.png`, import.meta.url).toString(),
         id: 'teamlog',
       },
     ],

@@ -14,9 +14,12 @@ watch(
 onMounted(() => {
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
-    showBottomSheet(e as BeforeInstallPromptEvent);
+    console.log('PWA was beforeinstallprompt');
+    setTimeout(() => {
+      showBottomSheet(e as BeforeInstallPromptEvent);
+    }, 2000);
   });
-  window.addEventListener('appinstalled', () => {
+  window.addEventListener('appinstalled', (e) => {
     console.log('PWA was installed');
   });
 });

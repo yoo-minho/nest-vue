@@ -90,8 +90,8 @@ const _openLoginSubpage = () => {
   cursor: pointer;
 
   &.original-name {
-    letter-spacing: 6px;
-    font-size: 20px;
+    letter-spacing: 1px;
+    font-size: 24px;
   }
 
   &.group-name {
