@@ -9,48 +9,8 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
     <link rel="mask-icon" href="/mask-icon.svg" color="#FFFFFF" />
     <meta name="theme-color" content="#ffffff" />
-    <style>
-      .d-none {
-        display: none !important;
-      }
-      .add-to-homescreen {
-        display: flex;
-        width: 100%;
-        justify-content: center;
-        position: absolute;
-        bottom: 0;
-        z-index: 9999;
-        padding: 16px;
-      }
-      .add-to-homescreen button.banner {
-        font-size: 18px;
-        border-color: rgba(27, 31, 36, 0.15);
-        border-radius: 8px;
-        color: white;
-        padding: 8px 20px;
-        box-shadow: 0 1px 5px rgb(0 0 0 / 20%), 0 2px 2px rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 12%);
-        background: #26a641 !important;
-        font-family: 'Pretendard-Regular';
-      }
-      .add-to-homescreen button.close {
-        color: #26a641 !important;
-        background-color: rgb(0 0 0 / 0);
-        border: 0;
-        font-size: 18px;
-      }
-    </style>
   </head>
   <body>
-    <div class="add-to-homescreen d-none">
-      <button class="banner">
-        <span class="material-icons">get_app</span>
-        홈 화면에 Teamlog 추가
-      </button>
-      <button class="close">
-        <span class="material-icons">close</span>
-      </button>
-    </div>
-
     <div id="app"></div>
 
     <script
@@ -60,29 +20,6 @@
     ></script>
     <script>
       Kakao.init('e9c455e800755b2e3bb767bdedbf372d');
-    </script>
-    <script>
-      const showInstallPromotion = () => document.querySelector('.add-to-homescreen').classList.remove('d-none');
-      const hideInstallPromotion = () => document.querySelector('.add-to-homescreen').classList.add('d-none');
-      let deferredPrompt;
-      window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        showInstallPromotion();
-      });
-      window.addEventListener('appinstalled', () => {
-        hideInstallPromotion();
-        deferredPrompt = null;
-        console.log('PWA was installed');
-      });
-      document.querySelector('.add-to-homescreen > button.banner').addEventListener('click', async () => {
-        hideInstallPromotion();
-        deferredPrompt?.prompt();
-        const { outcome } = await deferredPrompt?.userChoice;
-        console.log(`User response to the install prompt: ${outcome}`);
-        deferredPrompt = null;
-      });
-      document.querySelector('.add-to-homescreen > button.close').addEventListener('click', hideInstallPromotion);
     </script>
     <script type="module" src="/src/main.ts"></script>
   </body>

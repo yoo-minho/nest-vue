@@ -1,13 +1,25 @@
 <script setup lang="ts">
 import { useQuasar } from 'quasar';
-import { ref, watch } from 'vue';
+import { ref, watch, onMounted } from 'vue';
+import { showBottomSheet } from '@/hooks/useInstallBottomSheeet';
 
 const $q = useQuasar();
 const isDarkActive = ref($q.dark.isActive);
+
 watch(
   () => $q.dark.isActive,
   (val) => (isDarkActive.value = val),
 );
+
+onMounted(() => {
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    showBottomSheet(e as BeforeInstallPromptEvent);
+  });
+  window.addEventListener('appinstalled', () => {
+    console.log('PWA was installed');
+  });
+});
 </script>
 
 <template>
