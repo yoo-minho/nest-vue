@@ -31,7 +31,7 @@ const idRef = ref();
 const selectRef = ref();
 
 const $q = useQuasar();
-const titleRules = [(val: string) => val?.length > 0 || '그룹 이름을 입력해주세요!'];
+const titleRules = [(val: string) => val?.length > 0 || '팀 이름을 입력해주세요!'];
 const idRules = [
   (val: string) => val?.length > 0 || '도메인을 입력해주세요!',
   (val: string) => new RegExp(/^[A-Za-z0-9_+]*$/).test(val) || '대소문자, 숫자, 언더바를 활용하여 입력해주세요!',
@@ -119,8 +119,8 @@ function _closeGroupEditor() {
     </q-banner>
     <q-input
       v-model="title"
-      placeholder="그룹 이름 추가"
-      label="그룹 이름"
+      placeholder="팀 이름 추가"
+      label="팀 이름"
       counter
       maxlength="20"
       stack-label
@@ -148,8 +148,8 @@ function _closeGroupEditor() {
       counter
       maxlength="100"
       type="textarea"
-      label="그룹 설명"
-      placeholder="(선택) 그룹 설명을 적어주세요!"
+      label="팀 설명"
+      placeholder="(선택) 팀 설명을 적어주세요!"
       hide-bottom-space
     />
     <q-select
