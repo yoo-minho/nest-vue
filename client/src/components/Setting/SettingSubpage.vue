@@ -15,7 +15,6 @@ const router = useRouter();
 const $q = useQuasar();
 
 const SERVICE_CATEGORY = [
-  { icon: 'flag', title: '우리의 미션', clickEvent: () => $q.notify({ type: 'info', message: '준비중입니다!' }) },
   {
     icon: 'description',
     title: '업데이트 노트',
@@ -25,10 +24,17 @@ const SERVICE_CATEGORY = [
   {
     icon: 'reviews',
     title: '의견 및 오류 제공',
-    clickEvent: () => $q.notify({ type: 'info', message: '준비중입니다!' }),
+    clickEvent: () => window.open('https://forms.gle/R4WQPKqJFmUg5p6v8', 'form'),
   },
 ];
-const ETC_CATEGORY = [{ icon: 'military_tech', title: '기술 스택', clickEvent: openStackMain }];
+const ETC_CATEGORY = [
+  {
+    icon: 'flag',
+    title: '팀로그 탄생 비화',
+    clickEvent: () => window.open('https://velog.io/@dellose/teamlog-birth', 'birth'),
+  },
+  { icon: 'military_tech', title: '팀로그의 기술 스택', clickEvent: openStackMain },
+];
 const countArray = ref();
 
 onMounted(async () => {

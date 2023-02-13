@@ -14,12 +14,11 @@ watch(
 onMounted(() => {
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
-    console.log('PWA was beforeinstallprompt');
     setTimeout(() => {
       showBottomSheet(e as BeforeInstallPromptEvent);
     }, 2000);
   });
-  window.addEventListener('appinstalled', (e) => {
+  window.addEventListener('appinstalled', () => {
     console.log('PWA was installed');
   });
 });
@@ -68,6 +67,10 @@ ul {
 
 .without-header {
   height: calc(100vh - 51px);
+}
+
+.margin-top-header {
+  top: 51px;
 }
 
 .image-48 {

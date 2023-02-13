@@ -8,10 +8,14 @@ const toggleDarkMode = () => {
   $q.dark.toggle();
   $q.localStorage.set('mode', $q.dark.isActive ? 'dark' : 'light');
 };
+const clickDarkMode = () => {
+  value.value = !value.value;
+  toggleDarkMode();
+};
 </script>
 
 <template>
-  <q-item clickable>
+  <q-item clickable @click="clickDarkMode">
     <q-item-section avatar top>
       <q-avatar :icon="`${$q.dark.isActive ? 'dark' : 'light'}_mode`" />
     </q-item-section>

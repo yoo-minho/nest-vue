@@ -12,7 +12,7 @@ const { closeStackMain } = subpageStore;
 const { stack } = storeToRefs(subpageStore);
 
 const array = computed(() => (stack.value === 'stack' ? stackArray : platformArray));
-const title = computed(() => (stack.value === 'stack' ? '기술 스택' : '허용가능한 플랫폼'));
+const title = computed(() => (stack.value === 'stack' ? '팀로그의 기술 스택' : '허용가능한 플랫폼'));
 </script>
 
 <template>
