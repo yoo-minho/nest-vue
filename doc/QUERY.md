@@ -12,3 +12,19 @@ select * from "Link" where id in (
 update "Group" set "lastPostCreatedAt" = null where id = 28;
 update "Link" set "lastPostCreatedAt" = null, "scrapAt" = null where id in (75, 74);
 ```
+
+```sql
+--최신 포스트일자 갱신 이슈 찾기 위해
+update "Group" set "lastPostCreatedAt" = "calculateAt"
+from
+(
+	select * from (
+		select *,
+			(select max("createdAt") from "Post" where "linkId" in (select "linkId" from "LinksOnGroups" where "groupId" = "Group".id)) "calculateAt"
+		from "Group"
+	) t
+	where "lastPostCreatedAt" != "calculateAt"
+) t2
+where t2.id = "Group".id;
+
+```
