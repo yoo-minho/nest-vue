@@ -6,7 +6,6 @@ import { usePostStore } from '@/stores/post';
 import DefaultLayout from '@/layouts/DefaultLayout.vue';
 import GroupDetailTab from './components/GroupDetailTab.vue';
 import GroupDetailTop from './components/GroupDetailTop.vue';
-import { delay } from '@/util/CommUtil';
 
 const groupStore = useGroupStore();
 const { initGroupData, fetchGroup } = groupStore;
@@ -32,7 +31,6 @@ const fetchData = async () => {
 onMounted(fetchData);
 
 const refresh = async (done: () => void) => {
-  await delay(1000);
   await scrapPostsAndAction();
   done();
 };
