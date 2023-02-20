@@ -7,6 +7,7 @@ import { skipBlogName } from '@/util/NameUtil';
 import PostAPI from '../api/postApi';
 import RssAPI from '../api/rssApi';
 import GroupAPI from '@/api/groupApi';
+import { delay } from '@/util/CommUtil';
 
 const groupStore = useGroupStore();
 const { currentGroup } = storeToRefs(groupStore);
@@ -24,6 +25,7 @@ export const usePostStore = defineStore('post', {
     lastPosts: [] as LastPost[],
     lastLoading: false,
     countPostGroupByLinkId: [] as linkCount[],
+    scrapLoading: false,
   }),
   getters: {
     titleOfPostCounting(): string[] {
@@ -73,7 +75,8 @@ export const usePostStore = defineStore('post', {
 
       const scrapLinks = links.filter(({ link }: LinkWrap) => !(isScrapOncePerDay && isTodayByDate(link.scrapAt)));
       try {
-        await Promise.allSettled(scrapLinks.map(({ link }: LinkWrap) => RssAPI.scrap(link)));
+        this.scrapLoading = true;
+        await Promise.allSettled([...scrapLinks.map(({ link }: LinkWrap) => RssAPI.scrap(link)), delay(1000)]);
       } catch (e) {
         throw new Error(String(e));
       } finally {
@@ -83,6 +86,7 @@ export const usePostStore = defineStore('post', {
         if (scrapLinks.length > 0) {
           updateCurrentGroupLinksScrapAt();
         }
+        this.scrapLoading = false;
       }
     },
     async fetchPosts(links: LinkWrap[], page?: number) {

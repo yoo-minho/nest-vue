@@ -1,5 +1,6 @@
 import { createWebHistory, createRouter } from 'vue-router';
 import { useSubpageStore } from '@/stores/subpage';
+import { useGroupStore } from '@/stores/group';
 import { storeToRefs } from 'pinia';
 
 const routes = [
@@ -48,6 +49,9 @@ router.beforeEach((to, from, next) => {
   const { isOpenLinkEditor, isOpenDataSubpage } = storeToRefs(subpageStore);
   const { closeGroupEditor, closeLinkEditor, closeSettingMain, closeStackMain, closeLoginSubpage } = subpageStore;
 
+  const groupStore = useGroupStore();
+  const { initHeaderTitle } = groupStore;
+
   const subpages = [
     {
       id: '#Editor',
@@ -81,6 +85,8 @@ router.beforeEach((to, from, next) => {
       },
     },
   ];
+
+  initHeaderTitle();
 
   if (from.name === undefined && subpages.map((page) => page.id).includes(to.hash)) {
     router.replace({ hash: '' });

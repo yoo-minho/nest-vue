@@ -5,7 +5,7 @@ import { getDateString, isSameDate } from '@/plugin/dayjs';
 import { scrapOGS } from '@/hooks/useOgs';
 
 const totalTag = 'All';
-const appName = 'Teamlog';
+const appName = 'teamlog';
 
 export const useGroupStore = defineStore('group', {
   state: () => ({
