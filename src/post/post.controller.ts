@@ -9,7 +9,7 @@ import {
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { Prisma } from '@prisma/client';
-import { GroupService } from '../group/group.service';
+import { LinkService } from '../link/link.service';
 
 const numbersPipe = new ParseArrayPipe({ items: Number, separator: ',' });
 
@@ -17,17 +17,24 @@ const numbersPipe = new ParseArrayPipe({ items: Number, separator: ',' });
 export class PostController {
   constructor(
     private readonly postService: PostService,
-    private readonly groupService: GroupService,
+    private readonly linkService: LinkService,
   ) {}
 
   @Post()
-  create(@Body() createPostDto: CreatePostDto) {
+  async create(@Body() createPostDto: CreatePostDto) {
     const { linkId, items = [] } = createPostDto;
     if (items.length === 0) return;
+
     const postDtos = items.map(
       (item): Prisma.PostCreateManyInput => ({ linkId, ...item }),
     );
-    return this.postService.createPosts(postDtos);
+    const xx = this.postService.createPosts(postDtos);
+    const lastPostArr = await this.postService.lastPosts([linkId]);
+    if (lastPostArr.length == 0) return;
+
+    const lastPostCreatedAt = lastPostArr[0]._max.createdAt;
+    this.linkService.updateFlag(linkId, lastPostCreatedAt);
+    return xx;
   }
 
   @Get()

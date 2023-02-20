@@ -112,8 +112,6 @@ export class RssService {
     } catch (e) {
       console.error(e);
       return {
-        oldLastPostCreateAt,
-        lastPostCreateAt: lastPostCreatedAt,
         items: [],
         itemLength: 0,
       };
@@ -128,13 +126,7 @@ export class RssService {
         ({ createdAt }) =>
           createdAt > oldLastPostCreateAt && createdAt < new Date(),
       );
-
     return {
-      oldLastPostCreateAt,
-      lastPostCreateAt:
-        _items.length === 0
-          ? oldLastPostCreateAt
-          : new Date(Math.max(..._items.map((item) => item.created))), //newlastPostCreateAt
       items: _items,
       itemLength: _items.length,
     };
