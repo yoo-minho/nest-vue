@@ -73,7 +73,13 @@ export const usePostStore = defineStore('post', {
     async scrapPosts(links: LinkWrap[], isScrapOncePerDay: boolean, groupId?: number) {
       if (links.length === 0) return;
 
-      const scrapLinks = links.filter(({ link }: LinkWrap) => !(isScrapOncePerDay && isTodayByDate(link.scrapAt)));
+      let scrapLinks = [...links];
+      if (isScrapOncePerDay) {
+        scrapLinks = links.filter(({ link }: LinkWrap) => !isTodayByDate(link.scrapAt));
+      }
+
+      if (scrapLinks.length === 0) return;
+
       try {
         this.scrapLoading = true;
         await Promise.allSettled([...scrapLinks.map(({ link }: LinkWrap) => RssAPI.scrap(link)), delay(1000)]);
@@ -83,9 +89,7 @@ export const usePostStore = defineStore('post', {
         //link들의 lastPostCreatedAt 중 max를 group에 업데이트함
         const { lastPostCreatedAt } = await GroupAPI.updateLastPostCreateAt(groupId);
         updateCurrentGroupLastPostCreatedAt({ lastPostCreatedAt });
-        if (scrapLinks.length > 0) {
-          updateCurrentGroupLinksScrapAt();
-        }
+        updateCurrentGroupLinksScrapAt();
         this.scrapLoading = false;
       }
     },

@@ -38,7 +38,11 @@ onMounted(() => {
 <style lang="scss">
 @font-face {
   font-family: 'Pretendard-Regular';
-  src: url('./assets/fonts/Pretendard-Regular.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 400;
+  src: url('./assets/fonts/Pretendard-Regular.woff2') format('woff2'),
+    url('./assets/fonts/Pretendard-Regular.woff') format('woff'),
+    url('./assets/fonts/Pretendard-Regular.ttf') format('truetype');
 }
 
 body {

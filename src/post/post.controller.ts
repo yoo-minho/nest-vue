@@ -23,18 +23,20 @@ export class PostController {
   @Post()
   async create(@Body() createPostDto: CreatePostDto) {
     const { linkId, items = [] } = createPostDto;
+
     if (items.length === 0) return;
 
     const postDtos = items.map(
       (item): Prisma.PostCreateManyInput => ({ linkId, ...item }),
     );
-    const xx = this.postService.createPosts(postDtos);
+    const posts = this.postService.createPosts(postDtos);
     const lastPostArr = await this.postService.lastPosts([linkId]);
+
     if (lastPostArr.length == 0) return;
 
     const lastPostCreatedAt = lastPostArr[0]._max.createdAt;
-    this.linkService.updateFlag(linkId, lastPostCreatedAt);
-    return xx;
+    this.linkService.updateLastPostCreatedAt(linkId, lastPostCreatedAt);
+    return posts;
   }
 
   @Get()

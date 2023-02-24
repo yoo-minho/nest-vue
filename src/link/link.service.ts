@@ -36,10 +36,18 @@ export class LinkService {
     }
   }
 
-  async updateFlag(id: number, lastPostCreatedAt: Date) {
+  async updateScrapAt(id: number) {
     return await this.prisma.link.update({
       data: {
         scrapAt: new Date(),
+      },
+      where: { id },
+    });
+  }
+
+  async updateLastPostCreatedAt(id: number, lastPostCreatedAt: Date) {
+    return await this.prisma.link.update({
+      data: {
         lastPostCreatedAt,
       },
       where: { id },
