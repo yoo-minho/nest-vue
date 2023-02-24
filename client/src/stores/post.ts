@@ -26,6 +26,7 @@ export const usePostStore = defineStore('post', {
     lastLoading: false,
     countPostGroupByLinkId: [] as linkCount[],
     scrapLoading: false,
+    searchWord: '',
   }),
   getters: {
     titleOfPostCounting(): string[] {
@@ -99,6 +100,19 @@ export const usePostStore = defineStore('post', {
       this.postLoading = this.posts.length > 0 ? false : true;
       const isFirstPage = !page || page === 1;
       const { data } = await PostAPI.findAllPosts(links, page);
+      this.posts = isFirstPage ? data.value : [...this.posts, ...data.value];
+      this.postLoading = false;
+      return data.value.length > 0;
+    },
+    async fetchSearchPosts(page?: number) {
+      if (this.searchWord.length < 2) {
+        this.postLoading = false;
+        return;
+      }
+      this.postLoading = true;
+      const isFirstPage = !page || page === 1;
+      const { data } = await PostAPI.searchPosts(this.searchWord, page);
+      await delay(1000);
       this.posts = isFirstPage ? data.value : [...this.posts, ...data.value];
       this.postLoading = false;
       return data.value.length > 0;

@@ -17,7 +17,7 @@ const { links } = toRefs(props);
 
 <template>
   <ContentsLayout>
-    <div v-touch-swipe.mouse.left.right="_handleSwipe" class="q-px-md q-pb-md stat-area">
+    <div v-touch-swipe.mouse.left.right="_handleSwipe" class="q-px-md q-pb-md q-mt-sm stat-area">
       <GroupDetailStatJandi :links="links" />
 
       <q-separator class="q-my-md" />

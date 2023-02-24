@@ -26,6 +26,14 @@ export default {
       throw new Error(message);
     }
   },
+  async searchPosts(q: string, page?: number) {
+    try {
+      return await useAxiosGetArray('post/search', { params: { page, q } });
+    } catch (err) {
+      const { message } = err as AxiosError;
+      throw new Error(message);
+    }
+  },
   async findLast(links: LinkWrap[]) {
     try {
       const { isLoading, data } = await useAxiosGetArray('post/last', { params: { linkIds: getIds(links) } });

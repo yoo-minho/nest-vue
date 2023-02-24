@@ -54,6 +54,19 @@ export class PostController {
     });
   }
 
+  @Get('search')
+  async search(@Query('q') q: string, @Query('page') page: number) {
+    if (q === '') return;
+    page = page || 1;
+    const PAGE_PER_COUNT = 20;
+    return await this.postService.posts({
+      where: { title: { contains: q, mode: 'insensitive' } },
+      orderBy: { createdAt: 'desc' },
+      skip: (page - 1) * PAGE_PER_COUNT,
+      take: PAGE_PER_COUNT,
+    });
+  }
+
   @Get('last')
   async findAllLast(@Query('linkIds', numbersPipe) linkIds: number[]) {
     const lastPostArr = await this.postService.lastPosts(linkIds);

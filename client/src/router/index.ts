@@ -33,6 +33,11 @@ const routes = [
     ],
   },
   {
+    path: '/search',
+    name: 'GroupSearch',
+    component: () => import('@/views/GroupSearch/GroupSearch.vue'),
+  },
+  {
     path: '/oauth',
     name: 'OAuth',
     component: () => import('@/views/OAuth/OAuth.vue'),
