@@ -17,7 +17,7 @@ const { post } = toRefs(props);
         <LinkInfo :link-data="post.link" :posts="true" />
       </q-item-section>
       <q-item-section>
-        <q-item-label class="text-weight-bold ellipsis text-subtitle2">{{ post.title }}</q-item-label>
+        <q-item-label><div class="text-weight-bold ellipsis text-subtitle2" v-html="post.title"></div></q-item-label>
         <q-item-label class="ellipsis-2-lines">{{ post.description || 'ㅤ' }}</q-item-label>
         <q-item-label class="text-grey-5 ellipsis">
           <span class="text-weight-bold">{{ skipBlogName(post.link.title) }}</span> -
@@ -28,3 +28,9 @@ const { post } = toRefs(props);
     <q-separator spaced />
   </q-item-label>
 </template>
+<style lang="scss">
+mark {
+  color: $green-4;
+  background: $grey-2;
+}
+</style>
