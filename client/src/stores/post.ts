@@ -105,7 +105,7 @@ export const usePostStore = defineStore('post', {
       return data.value.length > 0;
     },
     async fetchSearchPosts(page?: number) {
-      if (this.searchWord.length < 2) {
+      if (this.searchWord.length < 1) {
         this.postLoading = false;
         return;
       }
@@ -113,7 +113,13 @@ export const usePostStore = defineStore('post', {
       const isFirstPage = !page || page === 1;
       const { data } = await PostAPI.searchPosts(this.searchWord, page);
       await delay(1000);
-      this.posts = isFirstPage ? data.value : [...this.posts, ...data.value];
+      const searchWords = this.searchWord.split('|').filter((word) => !!word);
+      const highlight = (t: string) => {
+        searchWords.forEach((word) => (t = t.replace(new RegExp(word, 'ig'), (v) => `<mark>${v}</mark>`)));
+        return t;
+      };
+      const convData = data.value.map((v: { title: string }) => ({ ...v, title: highlight(v.title) }));
+      this.posts = isFirstPage ? convData : [...this.posts, ...convData];
       this.postLoading = false;
       return data.value.length > 0;
     },

@@ -36,9 +36,6 @@ function convertItem(_items: RssItem[], scrapUrl: string): ScrapItem[] {
       trim,
       substring100,
     )(description || content || '');
-
-    console.log({ _description });
-
     return {
       title: substring50(scrapUrl.includes('twitch') ? decodeHtmlEntity(title) : title),
       description: _description,
@@ -59,7 +56,6 @@ function htmlDecode(input: string): string {
   while (elements.length > 0) {
     elements[0].parentNode?.removeChild(elements[0]);
   }
-  console.log(input, doc.documentElement.textContent);
   return doc.documentElement.textContent || '';
 }
 

@@ -59,8 +59,14 @@ export class PostController {
     if (q === '') return;
     page = page || 1;
     const PAGE_PER_COUNT = 20;
+    const qArr = q
+      .split('|')
+      .filter((word) => !!word)
+      .map((word) => ({
+        title: { contains: word.trim(), mode: 'insensitive' },
+      })) as Prisma.Enumerable<Prisma.PostWhereInput>;
     return await this.postService.posts({
-      where: { title: { contains: q, mode: 'insensitive' } },
+      where: { OR: qArr },
       orderBy: { createdAt: 'desc' },
       skip: (page - 1) * PAGE_PER_COUNT,
       take: PAGE_PER_COUNT,

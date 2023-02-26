@@ -7,6 +7,7 @@ const LIMIT = 4;
 const props = defineProps<{ links: LinkWrap[] }>();
 const { links } = toRefs(props);
 const hiddenLength = links.value.length - LIMIT;
+console.log({ hiddenLength });
 const showingLinks = computed(() => (hiddenLength > 0 ? [...links.value].slice(0, LIMIT - 1) : links.value));
 const hiddenLinks = computed(() => [...links.value].splice(LIMIT - 1));
 const moreLinksTooltip = computed(() => hiddenLinks.value.map(({ link: { title } }) => title).join(', '));

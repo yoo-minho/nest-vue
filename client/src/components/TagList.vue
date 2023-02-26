@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
-const props = defineProps<{ tagsLoading: boolean; tags: { name: string }[]; currentTag?: string; prefix?: string }>();
+const props = defineProps<{
+  tagsLoading: boolean;
+  tags: { name?: string; label?: string; value?: string }[];
+  currentTag?: string;
+  prefix?: string;
+}>();
 const emits = defineEmits<{ (eventName: 'clickTag', tagName: string): void }>();
 const currentTag = ref(props.currentTag);
 
@@ -12,7 +17,7 @@ const clickTag = (tagName: string) => {
 </script>
 
 <template>
-  <q-scroll-area class="q-px-md q-pt-md tag-area" :thumb-style="{ opacity: '0' }">
+  <q-scroll-area class="q-px-sm q-pt-sm tag-area" :thumb-style="{ opacity: '0' }">
     <div class="row no-wrap">
       <template v-if="tagsLoading">
         <q-skeleton v-for="n in 3" :key="n" :type="'QChip'" class="q-ma-xs" />
@@ -21,10 +26,10 @@ const clickTag = (tagName: string) => {
         <q-chip
           v-for="(tag, i) in tags"
           :key="i"
-          :class="{ active: currentTag === tag.name }"
+          :class="{ active: currentTag === (tag.name || tag.value) }"
           clickable
-          @click="clickTag(tag.name)"
-          >{{ prefix }}{{ tag.name }}
+          @click="clickTag(tag.name || tag.value || '')"
+          >{{ prefix }}{{ tag.name || tag.label }}
         </q-chip>
       </template>
     </div>

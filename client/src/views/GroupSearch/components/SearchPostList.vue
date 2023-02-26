@@ -4,9 +4,9 @@ import { useGroupStore } from '@/stores/group';
 import { usePostStore } from '@/stores/post';
 import { ref, onMounted } from 'vue';
 import GroupDetailPostCard from '@/views/GroupDetailPost/components/GroupDetailPostCard.vue';
-import GroupDetailPostEmpty from '@/components/Empty/GroupDetailPostEmpty.vue';
 import GroupDetailPostLoader from '@/components/Loader/GroupDetailPostLoader.vue';
 import ScrollObserver from '@/components/Observer/ScrollObserver.vue';
+import SearchEmpty from '@/components/Empty/SearchEmpty.vue';
 
 const postStore = usePostStore();
 const { fetchSearchPosts } = postStore;
@@ -37,7 +37,7 @@ const _handleSwipe = (newInfo: { direction: 'left' | 'right' }) => handleSwipeTa
 
 <template>
   <template v-if="posts.length === 0">
-    <GroupDetailPostEmpty />
+    <SearchEmpty />
   </template>
   <template v-else>
     <div v-touch-swipe.mouse.left.right="_handleSwipe">

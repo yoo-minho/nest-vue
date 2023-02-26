@@ -50,7 +50,8 @@ const refresh = async (done: () => void) => {
   <DefaultLayout>
     <q-pull-to-refresh @refresh="refresh">
       <GroupTagList />
-      <q-page class="q-pa-md">
+      <q-separator class="q-mb-sm" />
+      <q-page class="q-pt-sm q-pb-md q-px-md">
         <template v-if="groupsLoading">
           <GroupMainLoader />
         </template>

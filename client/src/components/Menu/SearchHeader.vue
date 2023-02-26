@@ -15,13 +15,15 @@ const router = useRouter();
       <q-btn icon="arrow_back_ios" flat round dense @click="() => router.push({ name: 'Group' })" />
       <q-input
         v-model="searchWord"
-        placeholder="Search In teamlog"
+        placeholder="포스트 제목을 검색합니다"
         type="text"
         dense
+        class="search-input-wrap"
         color="white"
         style="width: 100%"
         label-color="white"
         autofocus
+        clearable
         :input-class="'search-input'"
         :loading="postLoading"
         debounce="500"
@@ -40,8 +42,13 @@ const router = useRouter();
 </template>
 
 <style scope lang="scss">
+.search-input-wrap {
+  & button {
+    color: white;
+  }
+}
 .search-input {
   color: white;
-  font-weight: bold;
+  font-size: 1rem;
 }
 </style>
