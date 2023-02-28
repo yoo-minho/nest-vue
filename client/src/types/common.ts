@@ -101,7 +101,7 @@ export type StackJson = {
   githubStar: string;
 };
 export type OrderType = 1 | -1;
-export type BlogType = string & ('BRUNCH' | 'MEDIUM' | 'NAVER' | 'TISTORY' | 'VELOG' | 'TWIITCH' | '');
+export type BlogType = string & ('BRUNCH' | 'MEDIUM' | 'NAVER' | 'TISTORY' | 'VELOG' | 'TWIITCH' | 'RSS' | '');
 export type TabType = string & ('GroupDetailLink' | 'GroupDetailPost' | 'GroupDetailStat');
 export type OrderOption = { label: string; value: string; order: OrderType };
 export type linkCount = { linkId: number; count: number };

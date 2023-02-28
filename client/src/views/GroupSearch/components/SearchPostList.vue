@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { useGroupStore } from '@/stores/group';
 import { usePostStore } from '@/stores/post';
 import { ref, onMounted } from 'vue';
 import GroupDetailPostCard from '@/views/GroupDetailPost/components/GroupDetailPostCard.vue';
@@ -11,8 +10,6 @@ import SearchEmpty from '@/components/Empty/SearchEmpty.vue';
 const postStore = usePostStore();
 const { fetchSearchPosts } = postStore;
 const { posts, postLoading, searchWord } = storeToRefs(postStore);
-const groupStore = useGroupStore();
-const { currentGroup } = storeToRefs(groupStore);
 
 const page = ref(1);
 
@@ -43,14 +40,3 @@ const loadMore = async (el: Element) => {
     </ScrollObserver>
   </template>
 </template>
-<style scoped>
-.scroller {
-  height: 100%;
-}
-.user {
-  height: 32%;
-  padding: 0 12px;
-  display: flex;
-  align-items: center;
-}
-</style>

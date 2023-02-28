@@ -7,6 +7,7 @@ import SettingCard from './SettingCard.vue';
 import { onMounted, ref } from 'vue';
 import { useQuasar } from 'quasar';
 import DarkModeCard from './DarkModeCard.vue';
+import PlatformStatList from '../PlatformStatList.vue';
 
 const subpageStore = useSubpageStore();
 const { closeSettingMain, openStackMain, openPlatformMain } = subpageStore;
@@ -36,15 +37,17 @@ const ETC_CATEGORY = [
   { icon: 'military_tech', title: '팀로그의 기술 스택', clickEvent: openStackMain },
 ];
 const countArray = ref();
+const linkCountByPlatform = ref();
 
 onMounted(async () => {
   const { data } = await GroupApi.count();
-  const { groupCount, linkCount, postCount } = data.value;
+  const { groupCount, linkCount, postCount, linkCountByPlatform: linkCountBy } = data.value;
   countArray.value = [
     { label: 'teams', value: groupCount, color: 'green-2' },
     { label: 'blogs', value: linkCount, color: 'green-3' },
     { label: 'posts', value: postCount, color: 'green-4' },
   ];
+  linkCountByPlatform.value = linkCountBy;
 });
 
 function _closeSettingMain() {
@@ -56,8 +59,7 @@ function _closeSettingMain() {
 <template>
   <SettingLayout title="더보기" @back="_closeSettingMain">
     <q-list padding class="rounded-borders">
-      <q-item-label header>Total</q-item-label>
-
+      <q-item-label header>전체 카운트 통계</q-item-label>
       <div class="row q-px-md q-mb-md">
         <div v-for="(v, i) in countArray" :key="i" class="col-4">
           <q-chip class="count-chip" :color="v.color" text-color="white">
@@ -68,7 +70,14 @@ function _closeSettingMain() {
 
       <q-separator spaced />
 
-      <q-item-label header>Service</q-item-label>
+      <q-item-label header>전체 플랫폼 통계</q-item-label>
+      <div class="row q-px-md q-mb-md">
+        <PlatformStatList :link-count-by-platform="linkCountByPlatform" />
+      </div>
+
+      <q-separator spaced />
+
+      <q-item-label header>서비스</q-item-label>
 
       <div v-for="(v, i) in SERVICE_CATEGORY" :key="i">
         <SettingCard :setting-json="v" />
@@ -78,7 +87,7 @@ function _closeSettingMain() {
 
       <q-separator spaced />
 
-      <q-item-label header>Etc</q-item-label>
+      <q-item-label header>기타</q-item-label>
 
       <div v-for="(v, i) in ETC_CATEGORY" :key="i">
         <SettingCard :setting-json="v" />

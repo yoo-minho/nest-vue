@@ -28,6 +28,8 @@ watch(
     groupDetailStat.value = isStatView(String(route.name));
   },
 );
+
+const scrollAreaRef = ref();
 </script>
 
 <template>
@@ -41,9 +43,20 @@ watch(
         <LoginSubpage v-if="isOpenLoginSubpage" />
       </transition-group>
     </Teleport>
-    <HeaderItem type="DEFAULT" :editor="groupMain" :refresh="groupDetail" :fix="groupDetail" />
+    <HeaderItem
+      type="DEFAULT"
+      :editor="groupMain"
+      :refresh="groupDetail"
+      :fix="groupDetail"
+      :scroll-area-ref="scrollAreaRef"
+    />
     <q-page-container>
-      <q-scroll-area class="max-width without-header" :visible="false" :thumb-style="{ zIndex: '999999' }">
+      <q-scroll-area
+        ref="scrollAreaRef"
+        class="max-width without-header"
+        :visible="false"
+        :thumb-style="{ zIndex: '999999' }"
+      >
         <q-layout style="min-height: 0">
           <q-page-container style="min-height: 0">
             <q-page>

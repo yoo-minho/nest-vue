@@ -57,4 +57,12 @@ export class LinkService {
   async count() {
     return await this.prisma.link.count();
   }
+
+  async countByPlatform() {
+    return await this.prisma.link.groupBy({
+      by: ['type'],
+      _count: true,
+      orderBy: [{ _count: { type: 'desc' } }],
+    });
+  }
 }

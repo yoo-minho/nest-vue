@@ -68,5 +68,15 @@
     "path": "platform/twitch.png",
     "url": "https://www.twitch.tv/",
     "githubStar": ""
+  },
+  {
+    "name": "rss",
+    "type": "RSS",
+    "label": "RSS",
+    "version": "",
+    "description": "Rich Site Summary Or Really Simple Syndication.",
+    "path": "platform/rss.png",
+    "url": "https://namu.wiki/w/RSS",
+    "githubStar": ""
   }
 ]

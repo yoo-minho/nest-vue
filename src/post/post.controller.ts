@@ -11,7 +11,11 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { Prisma } from '@prisma/client';
 import { LinkService } from '../link/link.service';
 
-const numbersPipe = new ParseArrayPipe({ items: Number, separator: ',' });
+const numbersPipe = new ParseArrayPipe({
+  items: Number,
+  separator: ',',
+  optional: true,
+});
 const PAGE_PER_COUNT = 20;
 
 @Controller('post')
@@ -56,10 +60,11 @@ export class PostController {
 
   @Get('search')
   async search(
-    @Query('linkIds', numbersPipe) linkIds: number[],
     @Query('q') q: string,
     @Query('page') page: number,
+    @Query('linkIds', numbersPipe) linkIds?: number[],
   ) {
+    console.log('xxx');
     if (q === '') return;
     page = page || 1;
     const qArr = q

@@ -5,6 +5,7 @@ import { useSubpageStore } from '@/stores/subpage';
 import { useGroupStore } from '@/stores/group';
 import { showBottomSheet } from '@/hooks/useSnsBottomSheeet';
 import { storeToRefs } from 'pinia';
+import { QScrollArea } from 'quasar';
 
 const subpageStore = useSubpageStore();
 const { openSettingMain, openGroupEditor, openLoginSubpage } = subpageStore;
@@ -23,13 +24,12 @@ interface HeaderOption {
   refresh?: boolean;
   editor?: boolean;
   fix?: boolean;
+  scrollAreaRef?: QScrollArea;
 }
 
 const props = defineProps<HeaderOption>();
-const { type } = toRaw(props);
-
 const isDev = process.env.mode === 'development';
-const isDefaultType = type === 'DEFAULT';
+const isDefaultType = props.type === 'DEFAULT';
 
 const reload = () => {
   if (route.name === 'Group') {
@@ -38,6 +38,8 @@ const reload = () => {
   }
   if (isOrginalHeader.value) {
     router.replace({ name: 'Group' });
+  } else {
+    props.scrollAreaRef?.setScrollPosition('vertical', 0, 300);
   }
 };
 const _openGroupEditor = () => {

@@ -21,7 +21,7 @@ const { scrapLoading } = storeToRefs(postStore);
         </div>
       </q-item-label>
       <q-item-label>
-        {{ groupData.description }}
+        <div style="white-space: pre-wrap">{{ groupData.description }}</div>
         <q-tooltip max-width="20rem">{{ groupData.description }}</q-tooltip>
       </q-item-label>
 

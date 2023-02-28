@@ -148,12 +148,14 @@ export class GroupController {
 
   @Get('counts')
   async countGroupNLinkNPost() {
-    const [groupCount, linkCount, postCount] = await Promise.all([
-      this.groupService.count(),
-      this.linkService.count(),
-      this.postService.count(),
-    ]);
-    return { groupCount, linkCount, postCount };
+    const [groupCount, linkCount, postCount, linkCountByPlatform] =
+      await Promise.all([
+        this.groupService.count(),
+        this.linkService.count(),
+        this.postService.count(),
+        this.linkService.countByPlatform(),
+      ]);
+    return { groupCount, linkCount, postCount, linkCountByPlatform };
   }
 
   @Get(':domain')
