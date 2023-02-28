@@ -55,7 +55,7 @@ router.beforeEach((to, from, next) => {
   const { closeGroupEditor, closeLinkEditor, closeSettingMain, closeStackMain, closeLoginSubpage } = subpageStore;
 
   const groupStore = useGroupStore();
-  const { initHeaderTitle } = groupStore;
+  const { initHeaderTitle, initGroupData } = groupStore;
 
   const subpages = [
     {
@@ -91,7 +91,10 @@ router.beforeEach((to, from, next) => {
     },
   ];
 
-  initHeaderTitle();
+  if (to.name === 'Group') {
+    initHeaderTitle();
+    initGroupData();
+  }
 
   if (from.name === undefined && subpages.map((page) => page.id).includes(to.hash)) {
     router.replace({ hash: '' });

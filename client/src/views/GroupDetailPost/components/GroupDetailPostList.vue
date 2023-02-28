@@ -24,14 +24,14 @@ watch(
   (links) => {
     if (links.length === 0) return;
     postLoading.value = true;
-    fetchPosts(links);
+    fetchPosts();
     page.value++;
   },
   { immediate: true },
 );
 
 const loadMore = async (el: Element) => {
-  const existsPosts = await fetchPosts(props.links, page.value);
+  const existsPosts = await fetchPosts(page.value);
   if (existsPosts) {
     page.value++;
   } else {

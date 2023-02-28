@@ -62,7 +62,7 @@ const _openLoginSubpage = () => {
 </script>
 
 <template>
-  <q-header bordered class="bg-primary text-white">
+  <q-header bordered class="bg-primary text-white max-width">
     <q-toolbar>
       <q-btn v-if="close" flat round dense icon="close" @click="close" />
       <q-btn v-if="back" flat round dense icon="keyboard_backspace" @click="back" />

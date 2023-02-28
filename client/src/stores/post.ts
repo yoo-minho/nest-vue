@@ -94,12 +94,10 @@ export const usePostStore = defineStore('post', {
         this.scrapLoading = false;
       }
     },
-    async fetchPosts(links: LinkWrap[], page?: number) {
-      if (links.length === 0) return;
-
+    async fetchPosts(page?: number) {
       this.postLoading = this.posts.length > 0 ? false : true;
       const isFirstPage = !page || page === 1;
-      const { data } = await PostAPI.findAllPosts(links, page);
+      const { data } = await PostAPI.findAllPosts(currentGroup.value.links || [], page);
       this.posts = isFirstPage ? data.value : [...this.posts, ...data.value];
       this.postLoading = false;
       return data.value.length > 0;
@@ -111,7 +109,7 @@ export const usePostStore = defineStore('post', {
       }
       this.postLoading = true;
       const isFirstPage = !page || page === 1;
-      const { data } = await PostAPI.searchPosts(this.searchWord, page);
+      const { data } = await PostAPI.searchPosts(currentGroup.value.links, this.searchWord, page);
       await delay(1000);
       const searchWords = this.searchWord.split('|').filter((word) => !!word);
       const highlight = (t: string) => {

@@ -12,6 +12,7 @@ import { Prisma } from '@prisma/client';
 import { LinkService } from '../link/link.service';
 
 const numbersPipe = new ParseArrayPipe({ items: Number, separator: ',' });
+const PAGE_PER_COUNT = 20;
 
 @Controller('post')
 export class PostController {
@@ -45,7 +46,6 @@ export class PostController {
     @Query('page') page: number,
   ) {
     page = page || 1;
-    const PAGE_PER_COUNT = 20;
     return this.postService.posts({
       where: { linkId: { in: linkIds } },
       orderBy: { createdAt: 'desc' },
@@ -55,10 +55,13 @@ export class PostController {
   }
 
   @Get('search')
-  async search(@Query('q') q: string, @Query('page') page: number) {
+  async search(
+    @Query('linkIds', numbersPipe) linkIds: number[],
+    @Query('q') q: string,
+    @Query('page') page: number,
+  ) {
     if (q === '') return;
     page = page || 1;
-    const PAGE_PER_COUNT = 20;
     const qArr = q
       .split('|')
       .filter((word) => !!word)
@@ -66,7 +69,7 @@ export class PostController {
         title: { contains: word.trim(), mode: 'insensitive' },
       })) as Prisma.Enumerable<Prisma.PostWhereInput>;
     return await this.postService.posts({
-      where: { OR: qArr },
+      where: { AND: [{ linkId: { in: linkIds } }, { OR: qArr }] },
       orderBy: { createdAt: 'desc' },
       skip: (page - 1) * PAGE_PER_COUNT,
       take: PAGE_PER_COUNT,

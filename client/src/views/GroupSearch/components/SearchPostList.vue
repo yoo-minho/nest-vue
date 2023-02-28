@@ -11,9 +11,8 @@ import SearchEmpty from '@/components/Empty/SearchEmpty.vue';
 const postStore = usePostStore();
 const { fetchSearchPosts } = postStore;
 const { posts, postLoading, searchWord } = storeToRefs(postStore);
-
 const groupStore = useGroupStore();
-const { handleSwipeTab } = groupStore;
+const { currentGroup } = storeToRefs(groupStore);
 
 const page = ref(1);
 
@@ -31,21 +30,17 @@ const loadMore = async (el: Element) => {
     el.innerHTML = '';
   }
 };
-
-const _handleSwipe = (newInfo: { direction: 'left' | 'right' }) => handleSwipeTab(newInfo.direction, 'GroupDetailPost');
 </script>
 
 <template>
   <template v-if="posts.length === 0">
-    <SearchEmpty :no-result="searchWord?.length > 0" />
+    <SearchEmpty :no-result="!postLoading && searchWord?.length > 0" />
   </template>
   <template v-else>
-    <div v-touch-swipe.mouse.left.right="_handleSwipe">
-      <GroupDetailPostCard v-for="(post, i) in posts" :key="i" :post="post" />
-      <ScrollObserver v-if="posts.length >= 20" @trigger-intersected="loadMore">
-        <GroupDetailPostLoader />
-      </ScrollObserver>
-    </div>
+    <GroupDetailPostCard v-for="(post, i) in posts" :key="i" :post="post" />
+    <ScrollObserver v-if="posts.length >= 20" @trigger-intersected="loadMore">
+      <GroupDetailPostLoader />
+    </ScrollObserver>
   </template>
 </template>
 <style scoped>

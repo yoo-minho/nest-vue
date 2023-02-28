@@ -1,15 +1,4 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router';
-import { storeToRefs } from 'pinia';
-import { useSubpageStore } from '@/stores/subpage';
-
-import HeaderItem from '@/components/Menu/HeaderItem.vue';
-import GroupEditor from '@/components/Editor/GroupEditor.vue';
-import LinkEditor from '@/components/Editor/LinkEditor.vue';
-import SettingSubpage from '@/components/Setting/SettingSubpage.vue';
-import DataSubpage from '@/components/Setting/DataSubpage.vue';
-import LoginSubpage from '@/components/Auth/LoginSubpage.vue';
-import { ref, watch } from 'vue';
 import SearchHeader from '@/components/Menu/SearchHeader.vue';
 </script>
 
@@ -32,33 +21,3 @@ import SearchHeader from '@/components/Menu/SearchHeader.vue';
     </q-page-container>
   </q-layout>
 </template>
-
-<style>
-.subpage-leave-to {
-  position: absolute;
-  transform: translateY(100vh);
-}
-
-.subpage-leave-active {
-  transition: ease-out 0.5s;
-}
-
-.subpage-leave-from {
-  position: absolute;
-  transform: translateY(0);
-}
-
-.subpage-enter-to {
-  position: absolute;
-  transform: translateY(0);
-}
-
-.subpage-enter-active {
-  transition: ease-out 0.5s;
-}
-
-.subpage-enter-from {
-  position: absolute;
-  transform: translateY(100vh);
-}
-</style>

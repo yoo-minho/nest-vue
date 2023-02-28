@@ -2,23 +2,29 @@
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
 import { usePostStore } from '@/stores/post';
+import { useGroupStore } from '@/stores/group';
 
 const postStore = usePostStore();
 const { searchWord, postLoading } = storeToRefs(postStore);
 const { fetchSearchPosts } = postStore;
+const groupStore = useGroupStore();
+const { currentGroup } = storeToRefs(groupStore);
 const router = useRouter();
 </script>
 
 <template>
-  <q-header bordered class="bg-primary text-white">
+  <q-header bordered class="bg-primary text-white max-width">
     <q-toolbar class="">
-      <q-btn icon="arrow_back_ios" flat round dense @click="() => router.go(-1)" />
+      <q-btn icon="keyboard_backspace" flat round dense @click="() => router.go(-1)" />
+      <q-chip v-if="currentGroup.title" style="width: 7.5rem; color: white" color="green-4">
+        <span class="q-mr-xs">in</span><q-item-label class="ellipsis">{{ currentGroup.title }}</q-item-label>
+      </q-chip>
       <q-input
         v-model="searchWord"
-        placeholder="팀, 포스트 검색"
+        placeholder="포스트 검색"
         type="text"
         dense
-        class="search-input-wrap"
+        class="search-input-wrap q-ml-sm"
         color="white"
         style="width: 100%"
         label-color="white"

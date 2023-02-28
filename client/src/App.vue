@@ -25,8 +25,8 @@ onMounted(() => {
 <template>
   <div :class="`max-width ${isDarkActive ? 'bg-grey-9' : 'bg-white'}`">
     <div id="subpage"></div>
-    <router-view v-slot="{ Component, route }">
-      <transition :name="String(route.meta.transitionName)">
+    <router-view v-slot="{ Component }">
+      <transition>
         <keep-alive include="GroupMain">
           <component :is="Component" />
         </keep-alive>

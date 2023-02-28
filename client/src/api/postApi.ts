@@ -7,28 +7,28 @@ import { ErrorMessage, AxiosErrorType } from './error';
 import { LastPost, LinkWrap, ScrapItem } from '@/types/common';
 import { getAgoString, getDateString } from '@/plugin/dayjs';
 
-const getIds = (links: LinkWrap[]) => links.map(({ link }) => link.id);
+const getIds = (links?: LinkWrap[]) => (links ? links.map(({ link }) => link.id) : []);
 
 export default {
-  async createPosts(linkId: number, items: ScrapItem[]) {
-    if (items.length === 0) return;
+  async createPosts(linkId?: number, items?: ScrapItem[]) {
+    if (items?.length === 0) return;
     try {
       await axiosClient.post('post', { linkId, items });
     } catch (e) {
       throw new Error(ErrorMessage(e as AxiosErrorType));
     }
   },
-  async findAllPosts(links: LinkWrap[], page?: number) {
+  async findAllPosts(links?: LinkWrap[], page?: number) {
     try {
-      return await useAxiosGetArray('post', { params: { page, linkIds: getIds(links) } });
+      return await useAxiosGetArray('post', { params: { linkIds: getIds(links), page } });
     } catch (err) {
       const { message } = err as AxiosError;
       throw new Error(message);
     }
   },
-  async searchPosts(q: string, page?: number) {
+  async searchPosts(links?: LinkWrap[], q?: string, page?: number) {
     try {
-      return await useAxiosGetArray('post/search', { params: { page, q } });
+      return await useAxiosGetArray('post/search', { params: { linkIds: getIds(links), q, page } });
     } catch (err) {
       const { message } = err as AxiosError;
       throw new Error(message);
