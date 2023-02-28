@@ -28,6 +28,7 @@ interface HeaderOption {
 const props = defineProps<HeaderOption>();
 const { type } = toRaw(props);
 
+const isDev = process.env.mode === 'development';
 const isDefaultType = type === 'DEFAULT';
 
 const reload = () => {
@@ -73,12 +74,12 @@ const _openLoginSubpage = () => {
         {{ currentHeaderTitle }}
       </q-toolbar-title>
       <q-toolbar-title v-if="title">{{ title }}</q-toolbar-title>
-      <q-btn icon="search" flat round dense @click="() => router.push({ name: 'GroupSearch' })" />
+      <q-btn v-if="isDefaultType" icon="search" flat round dense @click="() => router.push({ name: 'GroupSearch' })" />
       <q-btn v-if="editor" icon="add_circle_outline" flat round dense @click="_openGroupEditor" />
-      <q-btn v-if="fix" icon="mode_edit_outline" flat round dense @click="_openGroupFixEditor" />
+      <q-btn v-if="fix && isDev" icon="mode_edit_outline" flat round dense @click="_openGroupFixEditor" />
       <q-btn v-if="isDefaultType" icon="share" flat round dense @click="showBottomSheet()" />
-      <q-btn v-if="isDefaultType" icon="login" flat round dense @click="_openLoginSubpage" />
-      <q-btn v-if="isDefaultType" icon="more_vert" flat round dense @click="_openSettingMain" />
+      <q-btn v-if="isDefaultType" icon="account_circle" flat round dense @click="_openLoginSubpage" />
+      <q-btn v-if="isDefaultType" icon="settings" flat round dense @click="_openSettingMain" />
       <q-btn v-if="save" flat round dense icon="done" @click="save" />
     </q-toolbar>
   </q-header>

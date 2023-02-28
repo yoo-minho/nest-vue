@@ -92,4 +92,9 @@ ul {
 .q-pull-to-refresh__puller-container {
   left: 0 !important;
 }
+
+.logo-img {
+  height: 36px;
+  max-width: 36px;
+}
 </style>

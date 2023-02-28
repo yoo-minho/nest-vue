@@ -10,7 +10,7 @@ import SearchEmpty from '@/components/Empty/SearchEmpty.vue';
 
 const postStore = usePostStore();
 const { fetchSearchPosts } = postStore;
-const { posts, postLoading } = storeToRefs(postStore);
+const { posts, postLoading, searchWord } = storeToRefs(postStore);
 
 const groupStore = useGroupStore();
 const { handleSwipeTab } = groupStore;
@@ -37,7 +37,7 @@ const _handleSwipe = (newInfo: { direction: 'left' | 'right' }) => handleSwipeTa
 
 <template>
   <template v-if="posts.length === 0">
-    <SearchEmpty />
+    <SearchEmpty :no-result="searchWord?.length > 0" />
   </template>
   <template v-else>
     <div v-touch-swipe.mouse.left.right="_handleSwipe">

@@ -105,7 +105,7 @@ export const usePostStore = defineStore('post', {
       return data.value.length > 0;
     },
     async fetchSearchPosts(page?: number) {
-      if (this.searchWord.length < 1) {
+      if (!this.searchWord || this.searchWord.length < 1) {
         this.postLoading = false;
         return;
       }

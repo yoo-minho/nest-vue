@@ -15,11 +15,9 @@ posts.value = [];
 
 <template>
   <SearchLayout>
-    <q-pull-to-refresh>
-      <SearchTagList />
-      <q-separator class="q-mb-sm" />
-      <SearchPostList />
-    </q-pull-to-refresh>
+    <SearchTagList />
+    <q-separator class="q-mb-sm" />
+    <SearchPostList />
   </SearchLayout>
 </template>
 

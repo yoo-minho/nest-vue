@@ -8,7 +8,7 @@ const subpageStore = useSubpageStore();
 const { closeLoginSubpage } = subpageStore;
 
 const $q = useQuasar();
-const url = new URL(`../../assets/logo.png`, import.meta.url).toString();
+const logo = new URL(`../../assets/logo.png`, import.meta.url).toString();
 
 const loginKakao = (e: MouseEvent) => {
   $q.notify({ type: 'info', message: '준비중입니다!' });
@@ -35,7 +35,7 @@ const loginKakao = (e: MouseEvent) => {
       </q-item>
       <q-item dense class="d-flex text-center column items-center">
         <q-item dense class="q-mx-sm">Service by Teamlog</q-item>
-        <q-img :src="url" spinner-color="white" class="bottom-logo" />
+        <q-img :src="logo" spinner-color="white" class="logo-img" />
       </q-item>
     </q-page>
   </AuthLayout>
@@ -61,10 +61,5 @@ const loginKakao = (e: MouseEvent) => {
     margin-left: 20px;
     font-size: 1rem;
   }
-}
-
-.bottom-logo {
-  height: 36px;
-  max-width: 36px;
 }
 </style>

@@ -17,21 +17,36 @@ const clickTag = (tagName: string) => {
 </script>
 
 <template>
-  <q-scroll-area class="q-px-sm q-pt-sm tag-area" :thumb-style="{ opacity: '0' }">
-    <div class="row no-wrap">
-      <template v-if="tagsLoading">
-        <q-skeleton v-for="n in 3" :key="n" :type="'QChip'" class="q-ma-xs" />
-      </template>
-      <template v-else>
-        <q-chip
-          v-for="(tag, i) in tags"
-          :key="i"
-          :class="{ active: currentTag === (tag.name || tag.value) }"
-          clickable
-          @click="clickTag(tag.name || tag.value || '')"
-          >{{ prefix }}{{ tag.name || tag.label }}
-        </q-chip>
-      </template>
-    </div>
-  </q-scroll-area>
+  <div class="q-px-md q-pt-md">
+    <slot></slot>
+    <q-scroll-area class="tag-area" :thumb-style="{ opacity: '0' }">
+      <div class="row no-wrap">
+        <template v-if="tagsLoading">
+          <q-skeleton v-for="n in 3" :key="n" :type="'QChip'" class="q-ma-xs" />
+        </template>
+        <template v-else>
+          <q-chip
+            v-for="(tag, i) in tags"
+            :key="i"
+            :class="{ active: currentTag === (tag.name || tag.value) }"
+            clickable
+            @click="clickTag(tag.name || tag.value || '')"
+            >{{ prefix }}{{ tag.name || tag.label }}
+          </q-chip>
+        </template>
+      </div>
+    </q-scroll-area>
+  </div>
 </template>
+<style lang="scss">
+.tag-area {
+  height: 50px;
+  max-width: 900px;
+
+  .active {
+    color: white;
+    background-color: $primary;
+    font-weight: bolder;
+  }
+}
+</style>

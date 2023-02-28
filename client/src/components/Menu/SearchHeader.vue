@@ -12,26 +12,21 @@ const router = useRouter();
 <template>
   <q-header bordered class="bg-primary text-white">
     <q-toolbar class="">
-      <q-btn icon="arrow_back_ios" flat round dense @click="() => router.push({ name: 'Group' })" />
+      <q-btn icon="arrow_back_ios" flat round dense @click="() => router.go(-1)" />
       <q-input
         v-model="searchWord"
-        placeholder="포스트 제목을 검색합니다"
+        placeholder="팀, 포스트 검색"
         type="text"
         dense
         class="search-input-wrap"
         color="white"
         style="width: 100%"
         label-color="white"
-        autofocus
         clearable
         :input-class="'search-input'"
         :loading="postLoading"
         debounce="500"
-        @update:model-value="
-          () => {
-            fetchSearchPosts();
-          }
-        "
+        @update:model-value="fetchSearchPosts()"
       >
         <template #append>
           <q-btn icon="search" color="white" flat dense @click="fetchSearchPosts()" />

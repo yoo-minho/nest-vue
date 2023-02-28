@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { getImage } from '@/util/ImageUtil';
+
+defineProps<{ noResult: boolean }>();
 </script>
 <template>
   <div class="column items-center justify-center q-pa-md">
-    <img :src="getImage('undraw_adventure.svg')" style="width: 100%; padding: 60px; padding-bottom: 0" />
-    <span class="text-h6" style="font-size: 1rem">새로운 검색어를 입력해보세요!</span>
-    <span>'|'를 활용하면 OR 검색이 가능합니다.</span>
+    <span v-if="noResult">검색결과가 없습니다.</span>
+    <span v-else>[검색 Tip] '|'를 활용하면 OR 검색이 가능합니다.</span>
+    <img :src="getImage('undraw_adventure.svg')" style="width: 100%; padding: 30px 60px 0 60px" />
   </div>
 </template>

@@ -7,14 +7,14 @@ const postStore = usePostStore();
 const { searchWord } = storeToRefs(postStore);
 const { fetchSearchPosts } = postStore;
 const searchKeywords = [
-  { label: '성장', value: '성장' },
-  { label: '이직', value: '이직' },
   { label: '회고', value: '회고|.log' },
-  { label: '책', value: '책|독서' },
+  { label: '테스트', value: '테스트|test' },
+  { label: '인프콘', value: '인프콘' },
   { label: 'sql', value: 'sql|쿼리|query' },
-  { label: '최적화', value: '최적화' },
   { label: '프론트', value: '프론트' },
   { label: '백엔드', value: '백엔드' },
+  { label: '성장', value: '성장' },
+  { label: '이직', value: '이직' },
 ];
 
 const clickTag = (tagName: string) => {
@@ -24,5 +24,7 @@ const clickTag = (tagName: string) => {
 </script>
 
 <template>
-  <TagList :tags-loading="false" :tags="searchKeywords" @click-tag="clickTag"></TagList>
+  <TagList :tags-loading="false" :tags="searchKeywords" @click-tag="clickTag">
+    <q-item-label>추천 키워드로 검색해보세요</q-item-label>
+  </TagList>
 </template>
