@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { toRaw } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useSubpageStore } from '@/stores/subpage';
 import { useGroupStore } from '@/stores/group';
@@ -77,7 +76,7 @@ const _openLoginSubpage = () => {
       </q-toolbar-title>
       <q-toolbar-title v-if="title">{{ title }}</q-toolbar-title>
       <q-btn v-if="isDefaultType" icon="search" flat round dense @click="() => router.push({ name: 'GroupSearch' })" />
-      <q-btn v-if="editor" icon="add_circle_outline" flat round dense @click="_openGroupEditor" />
+      <q-btn v-if="editor && isDev" icon="add_circle_outline" flat round dense @click="_openGroupEditor" />
       <q-btn v-if="fix && isDev" icon="mode_edit_outline" flat round dense @click="_openGroupFixEditor" />
       <q-btn v-if="isDefaultType" icon="share" flat round dense @click="showBottomSheet()" />
       <q-btn v-if="isDefaultType" icon="account_circle" flat round dense @click="_openLoginSubpage" />
