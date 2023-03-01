@@ -66,15 +66,22 @@ const moveSpecialPage = () => {
           <GroupMainEmpty />
         </template>
         <template v-else>
-          <GroupAdBanner icon="campaign" contents="<회고> 모아보고 싶다면 Click!" @click-banner="moveSpecialPage()" />
+          <GroupAdBanner
+            v-if="isTotalTag"
+            icon="campaign"
+            contents="<회고> 모아보고 싶다면 Click!"
+            @click-banner="moveSpecialPage()"
+          />
           <GroupCard v-for="group in groups.slice(0, 5)" :key="group.id" :group="group" />
           <GroupAdBanner
+            v-if="isTotalTag"
             icon="workspaces_outline"
             contents="<팀블로그> 만들고 싶다면 Click!"
             @click-banner="openRequestTeamMakerForm()"
           />
           <GroupCard v-for="group in groups.slice(5, 10)" :key="group.id" :group="group" />
           <GroupAdBanner
+            v-if="isTotalTag"
             icon="reviews"
             contents="<의견,오류,제휴> 문의하고 싶다면 Click!"
             @click-banner="openFeedbackForm()"

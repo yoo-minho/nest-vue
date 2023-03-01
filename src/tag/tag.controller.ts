@@ -6,7 +6,8 @@ export class TagController {
   constructor(private readonly tagService: TagService) {}
 
   @Get()
-  findAllTag() {
-    return this.tagService.findAll();
+  async findAllTag() {
+    const response = await this.tagService.findAll();
+    return response.filter((v) => v._count.groups > 0);
   }
 }

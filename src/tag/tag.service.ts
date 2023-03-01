@@ -8,9 +8,7 @@ export class TagService {
   findAll() {
     return this.prisma.tag.findMany({
       include: {
-        _count: {
-          select: { groups: true },
-        },
+        _count: true,
       },
       orderBy: {
         groups: { _count: 'desc' },
