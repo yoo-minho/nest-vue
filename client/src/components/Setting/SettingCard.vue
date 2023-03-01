@@ -11,7 +11,7 @@ const { icon, title, clickEvent } = toRaw(props.settingJson);
 </script>
 
 <template>
-  <q-item clickable @click="clickEvent()">
+  <q-item clickable dense @click="clickEvent()">
     <q-item-section avatar top>
       <q-avatar :icon="icon" />
     </q-item-section>
