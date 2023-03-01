@@ -1,10 +1,26 @@
 <script setup lang="ts">
-import { useQuasar } from 'quasar';
+import { useQuasar, useMeta } from 'quasar';
 import { ref, watch, onMounted } from 'vue';
 import { showBottomSheet } from '@/hooks/useInstallBottomSheeet';
 
 const $q = useQuasar();
 const isDarkActive = ref($q.dark.isActive);
+
+useMeta({
+  title: '팀로그',
+  titleTemplate: (title) => `${title} - My Website`,
+  meta: {
+    description: { name: 'description', content: '티스토리, 미디엄, 브런치, 벨로그 상관없이 팀 블로그 만드는 방법' },
+    keywords: { name: 'keywords', content: 'Quasar website' },
+    equiv: { 'http-equiv': 'Content-Type', content: 'text/html; charset=UTF-8' },
+    ogTitle: {
+      property: 'og:title',
+      template(ogTitle) {
+        return `${ogTitle} - My Website`;
+      },
+    },
+  },
+});
 
 watch(
   () => $q.dark.isActive,
