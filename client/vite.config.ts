@@ -24,7 +24,7 @@ export default defineConfig((config) => {
     },
     plugins: [
       VitePWA({
-        registerType: 'autoUpdate',
+        registerType: 'prompt',
         injectRegister: 'auto', //default
         workbox: {
           globPatterns: ['**/*.{js,css,html,ico,png,svg}'],

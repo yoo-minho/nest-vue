@@ -17,6 +17,7 @@ const { post } = toRefs(props);
         <LinkInfo :link-data="post.link" :posts="true" />
       </q-item-section>
       <q-item-section>
+        <!-- eslint-disable-next-line vue/no-v-html -->
         <q-item-label><div class="text-weight-bold ellipsis text-subtitle2" v-html="post.title"></div></q-item-label>
         <q-item-label class="ellipsis-2-lines">{{ post.description || 'ㅤ' }}</q-item-label>
         <q-item-label class="text-grey-5 ellipsis">
