@@ -28,6 +28,11 @@ import Joi from 'joi';
     }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'client/dist'),
+      serveStaticOptions: {
+        cacheControl: false, //default:true
+        etag: false, //default:true
+        lastModified: false, //default:true
+      },
     }),
     OpenGraphTagModule,
     RssModule,
