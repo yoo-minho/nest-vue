@@ -13,7 +13,6 @@ watch(
 
 onMounted(() => {
   window.addEventListener('beforeinstallprompt', (e) => {
-    console.log('PWA beforeinstallprompt');
     e.preventDefault();
     showBottomSheet(e as BeforeInstallPromptEvent);
   });

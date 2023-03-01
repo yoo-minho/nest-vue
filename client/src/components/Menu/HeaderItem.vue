@@ -60,8 +60,7 @@ const _openLoginSubpage = () => {
   router.push({ hash: '#Login' });
   openLoginSubpage();
 };
-const xxx = new URL(`../../assets/white_logo.png`, import.meta.url).toString();
-console.log(xxx);
+const logoPath = new URL(`../../assets/white_logo.png`, import.meta.url).toString();
 </script>
 
 <template>
@@ -75,7 +74,7 @@ console.log(xxx);
         @click="reload"
       >
         <q-avatar rounded size="28px">
-          <q-img :src="xxx" :no-transition="true" />
+          <q-img :src="logoPath" :no-transition="true" />
         </q-avatar>
         <span class="q-ml-sm">{{ currentHeaderTitle }}</span>
       </q-toolbar-title>
