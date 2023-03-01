@@ -35,7 +35,7 @@ export default defineConfig((config) => {
           name: 'teamlog',
           short_name: 'teamlog',
           description: '티스토리, 미디엄, 브런치, 벨로그 상관없이 팀 블로그 만드는 방법',
-          display: 'fullscreen',
+          display: 'standalone',
           theme_color: '#ffffff',
           background_color: '#ffffff',
           lang: 'ko',
