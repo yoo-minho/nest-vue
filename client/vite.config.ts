@@ -27,7 +27,7 @@ export default defineConfig((config) => {
         registerType: 'prompt',
         injectRegister: 'auto', //default
         workbox: {
-          globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
+          globPatterns: ['**/*.{css,html,ico,png,svg}'],
           cleanupOutdatedCaches: true, //default
         },
         includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
