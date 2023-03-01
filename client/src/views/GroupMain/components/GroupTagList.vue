@@ -13,6 +13,7 @@ const { currentTag, NavTags, tagsLoading } = storeToRefs(groupStore);
     :tags-loading="tagsLoading"
     :tags="NavTags"
     :current-tag="currentTag"
+    size="sm"
     prefix="#"
     @click-tag="setCurrentTag"
   ></TagList>

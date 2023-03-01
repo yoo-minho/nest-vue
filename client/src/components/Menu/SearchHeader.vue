@@ -14,7 +14,7 @@ const router = useRouter();
 
 <template>
   <q-header bordered class="bg-primary text-white max-width">
-    <q-toolbar class="">
+    <q-toolbar>
       <q-btn icon="keyboard_backspace" flat round dense @click="() => router.go(-1)" />
       <q-chip v-if="currentGroup.title" style="width: 7.5rem; color: white" color="green-4">
         <span class="q-mr-xs">in</span><q-item-label class="ellipsis">{{ currentGroup.title }}</q-item-label>

@@ -5,27 +5,25 @@ import SettingLayout from '@/layouts/SettingLayout.vue';
 import GroupApi from '@/api/groupApi';
 import SettingCard from './SettingCard.vue';
 import { onMounted, ref } from 'vue';
-import { useQuasar } from 'quasar';
 import DarkModeCard from './DarkModeCard.vue';
 import PlatformStatList from '../PlatformStatList.vue';
+import { openFeedbackForm, openServiceIdentityNotion } from '@/hooks/useOpenWindow';
 
 const subpageStore = useSubpageStore();
 const { closeSettingMain, openStackMain, openPlatformMain } = subpageStore;
 
 const router = useRouter();
-const $q = useQuasar();
 
 const SERVICE_CATEGORY = [
   {
-    icon: 'description',
-    title: '업데이트 노트',
-    clickEvent: () => $q.notify({ type: 'info', message: '준비중입니다!' }),
+    icon: 'grade',
+    title: '서비스 아이덴티티',
+    clickEvent: () => openServiceIdentityNotion(),
   },
-  { icon: 'rss_feed', title: '허용가능한 플랫폼', clickEvent: openPlatformMain },
   {
     icon: 'reviews',
-    title: '의견 및 오류 제공',
-    clickEvent: () => window.open('https://forms.gle/R4WQPKqJFmUg5p6v8', 'form'),
+    title: '의견,오류,제휴 문의',
+    clickEvent: () => openFeedbackForm(),
   },
 ];
 const ETC_CATEGORY = [
@@ -70,7 +68,10 @@ function _closeSettingMain() {
 
       <q-separator spaced />
 
-      <q-item-label header>전체 플랫폼 통계</q-item-label>
+      <q-item-label header class="platform-area">
+        전체 플랫폼 통계
+        <q-chip size="12px" clickable @click="openPlatformMain()"> 허용가능한 플랫폼? </q-chip>
+      </q-item-label>
       <div class="row q-px-md q-mb-md">
         <PlatformStatList :link-count-by-platform="linkCountByPlatform" />
       </div>
@@ -100,5 +101,12 @@ function _closeSettingMain() {
 .count-chip {
   width: 100%;
   border-radius: 0;
+}
+
+.platform-area {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 8px;
 }
 </style>

@@ -27,6 +27,7 @@ export const usePostStore = defineStore('post', {
     countPostGroupByLinkId: [] as linkCount[],
     scrapLoading: false,
     searchWord: '',
+    searchKeyword: '',
   }),
   getters: {
     titleOfPostCounting(): string[] {
@@ -105,6 +106,7 @@ export const usePostStore = defineStore('post', {
     async fetchSearchPosts(page?: number) {
       if (!this.searchWord || this.searchWord.length < 1) {
         this.postLoading = false;
+        this.searchKeyword = '';
         return;
       }
       this.postLoading = true;

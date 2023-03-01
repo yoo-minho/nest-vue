@@ -92,10 +92,11 @@ const logoPath = new URL(`../../assets/white_logo.png`, import.meta.url).toStrin
 
 <style scope lang="scss">
 .logo {
+  display: flex;
+  align-items: center;
   color: white;
   font-weight: bold;
   cursor: pointer;
-  line-height: 28px;
 
   &.original-name {
     letter-spacing: 1px;
@@ -104,7 +105,6 @@ const logoPath = new URL(`../../assets/white_logo.png`, import.meta.url).toStrin
 
   &.group-name {
     font-size: 18px;
-    line-height: 36px;
   }
 }
 </style>
