@@ -24,11 +24,11 @@ export default defineConfig((config) => {
     },
     plugins: [
       VitePWA({
-        registerType: 'prompt',
+        registerType: 'autoUpdate',
         injectRegister: 'auto', //default
         workbox: {
-          globPatterns: ['**/*.{css,html,ico,png,svg}'],
-          cleanupOutdatedCaches: true, //default
+          globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
+          cleanupOutdatedCaches: true,
         },
         includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
         manifest: {

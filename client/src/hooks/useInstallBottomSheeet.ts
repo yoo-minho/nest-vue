@@ -6,7 +6,7 @@ export const showBottomSheet = (deferredPrompt?: BeforeInstallPromptEvent) => {
     grid: false,
     actions: [
       {
-        label: '홈 화면에 Teamlog 추가',
+        label: '홈 화면에 teamlog 추가',
         img: new URL(`../assets/dark_logo.png`, import.meta.url).toString(),
         id: 'teamlog',
       },
