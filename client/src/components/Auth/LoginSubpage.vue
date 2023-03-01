@@ -8,7 +8,7 @@ const subpageStore = useSubpageStore();
 const { closeLoginSubpage } = subpageStore;
 
 const $q = useQuasar();
-const logo = new URL(`../../assets/logo.png`, import.meta.url).toString();
+const logo = new URL(`../../assets/dark_logo.png`, import.meta.url).toString();
 
 const loginKakao = (e: MouseEvent) => {
   $q.notify({ type: 'info', message: '준비중입니다!' });

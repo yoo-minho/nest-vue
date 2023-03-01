@@ -60,6 +60,8 @@ const _openLoginSubpage = () => {
   router.push({ hash: '#Login' });
   openLoginSubpage();
 };
+const xxx = new URL(`../../assets/white_logo.png`, import.meta.url).toString();
+console.log(xxx);
 </script>
 
 <template>
@@ -69,10 +71,13 @@ const _openLoginSubpage = () => {
       <q-btn v-if="back" flat round dense icon="keyboard_backspace" @click="back" />
       <q-toolbar-title
         v-if="isDefaultType"
-        :class="`logo q-ml-sm ${isOrginalHeader ? 'original-name' : 'group-name'}`"
+        :class="`logo ${isOrginalHeader ? 'original-name' : 'group-name'}`"
         @click="reload"
       >
-        {{ currentHeaderTitle }}
+        <q-avatar rounded size="28px">
+          <q-img :src="xxx" :no-transition="true" />
+        </q-avatar>
+        <span class="q-ml-sm">{{ currentHeaderTitle }}</span>
       </q-toolbar-title>
       <q-toolbar-title v-if="title">{{ title }}</q-toolbar-title>
       <q-btn v-if="isDefaultType" icon="search" flat round dense @click="() => router.push({ name: 'GroupSearch' })" />
@@ -80,7 +85,7 @@ const _openLoginSubpage = () => {
       <q-btn v-if="fix && isDev" icon="mode_edit_outline" flat round dense @click="_openGroupFixEditor" />
       <q-btn v-if="isDefaultType" icon="share" flat round dense @click="showBottomSheet()" />
       <q-btn v-if="isDefaultType" icon="account_circle" flat round dense @click="_openLoginSubpage" />
-      <q-btn v-if="isDefaultType" icon="settings" flat round dense @click="_openSettingMain" />
+      <q-btn v-if="isDefaultType" icon="menu" flat round dense @click="_openSettingMain" />
       <q-btn v-if="save" flat round dense icon="done" @click="save" />
     </q-toolbar>
   </q-header>
@@ -91,6 +96,7 @@ const _openLoginSubpage = () => {
   color: white;
   font-weight: bold;
   cursor: pointer;
+  line-height: 28px;
 
   &.original-name {
     letter-spacing: 1px;
@@ -99,6 +105,7 @@ const _openLoginSubpage = () => {
 
   &.group-name {
     font-size: 18px;
+    line-height: 36px;
   }
 }
 </style>
