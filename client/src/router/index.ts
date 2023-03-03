@@ -3,7 +3,7 @@ import { useSubpageStore } from '@/stores/subpage';
 import { useGroupStore } from '@/stores/group';
 import { storeToRefs } from 'pinia';
 
-const routes = [
+export const routes = [
   {
     path: '/',
     name: 'Group',
