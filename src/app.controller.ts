@@ -26,7 +26,7 @@ export class AppController {
     const meta = new useMeta(root);
     meta.setTitle(`${groupData.title} - teamlog`);
     meta.setDescription(groupData.description);
-    meta.setUrl(`https://teamlog.team/${domain}`);
+    meta.setUrl(`https://teamlog.team/@${domain}`);
     meta.setImage('https://teamlog.team/og_image_white.png');
     return root.toString();
   }
@@ -56,6 +56,9 @@ class useMeta {
     this.setMetaName('url', contents);
     this.setMetaProperty('og:url', contents);
     this.setMetaName('twitter:url', contents);
+    this.root
+      .querySelector(`link[rel=canonical]`)
+      .setAttribute('href', contents);
   }
 
   setImage(contents: string) {
