@@ -9,7 +9,7 @@ import { QScrollArea } from 'quasar';
 const subpageStore = useSubpageStore();
 const { openSettingMain, openGroupEditor, openLoginSubpage } = subpageStore;
 const groupStore = useGroupStore();
-const { currentHeaderTitle, isOrginalHeader } = storeToRefs(groupStore);
+const { currentHeaderTitle, isOrginalHeader, currentGroup } = storeToRefs(groupStore);
 const { initGroupData, initLinks } = groupStore;
 const router = useRouter();
 const route = useRoute();
@@ -82,7 +82,14 @@ const logoPath = new URL(`../../assets/white_logo.png`, import.meta.url).toStrin
       <q-btn v-if="isDefaultType" icon="search" flat round dense @click="() => router.push({ name: 'GroupSearch' })" />
       <q-btn v-if="editor && isDev" icon="add_circle_outline" flat round dense @click="_openGroupEditor" />
       <q-btn v-if="fix && isDev" icon="mode_edit_outline" flat round dense @click="_openGroupFixEditor" />
-      <q-btn v-if="isDefaultType" icon="share" flat round dense @click="showBottomSheet()" />
+      <q-btn
+        v-if="isDefaultType"
+        icon="share"
+        flat
+        round
+        dense
+        @click="showBottomSheet({ title: currentGroup.title, description: currentGroup.description })"
+      />
       <q-btn v-if="isDefaultType" icon="account_circle" flat round dense @click="_openLoginSubpage" />
       <q-btn v-if="isDefaultType" icon="menu" flat round dense @click="_openSettingMain" />
       <q-btn v-if="save" flat round dense icon="done" @click="save" />

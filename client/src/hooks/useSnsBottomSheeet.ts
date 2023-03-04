@@ -2,7 +2,7 @@ import { getImage } from '@/util/ImageUtil';
 import { shareKakao } from './useKakaoApi';
 import { BottomSheet, Notify } from 'quasar';
 
-export const showBottomSheet = () => {
+export const showBottomSheet = ({ title, description }: { title?: string; description?: string } = {}) => {
   BottomSheet.create({
     message: '공유하기',
     grid: false,
@@ -44,7 +44,7 @@ export const showBottomSheet = () => {
     const title = encodeURIComponent('팀로그');
     switch (action.id) {
       case 'kakao':
-        shareKakao();
+        shareKakao({ title, description });
         return;
       case 'facebook':
         window.open(`http://www.facebook.com/sharer/sharer.php?u=${sharedUrl}`, '', 'width=400, height=500');
