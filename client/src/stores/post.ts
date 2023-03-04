@@ -85,13 +85,15 @@ export const usePostStore = defineStore('post', {
       try {
         this.scrapLoading = true;
         await Promise.allSettled([...scrapLinks.map(({ link }: LinkWrap) => RssAPI.scrap(link)), delay(1000)]);
+        //link들의 lastPostCreatedAt 중 max를 group에 업데이트함
+        console.log('scrapPosts finally 1');
+        const { lastPostCreatedAt } = await GroupAPI.updateLastPostCreateAt(groupId);
+        console.log('scrapPosts finally 2', { groupId, lastPostCreatedAt });
+        updateCurrentGroupLastPostCreatedAt({ lastPostCreatedAt });
+        updateCurrentGroupLinksScrapAt();
       } catch (e) {
         throw new Error(String(e));
       } finally {
-        //link들의 lastPostCreatedAt 중 max를 group에 업데이트함
-        const { lastPostCreatedAt } = await GroupAPI.updateLastPostCreateAt(groupId);
-        updateCurrentGroupLastPostCreatedAt({ lastPostCreatedAt });
-        updateCurrentGroupLinksScrapAt();
         this.scrapLoading = false;
       }
     },
