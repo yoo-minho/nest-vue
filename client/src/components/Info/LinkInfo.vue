@@ -13,7 +13,7 @@ defineProps<{ linkData: Link; links?: boolean; posts?: boolean }>();
       <q-tooltip>{{ linkData.title }}<br />{{ linkData.url }}</q-tooltip>
     </q-avatar>
     <q-avatar v-else rounded size="48px" class="shadow-1">
-      <q-img :src="linkData.imagePath" :alt="linkData.title" class="image-48">
+      <q-img :src="linkData.imagePath" :alt="linkData.title" class="image-48" no-spinner loading="eager">
         <template #error>{{ linkData.title.substring(0, 1) }}</template>
       </q-img>
       <q-tooltip>{{ skipBlogName(linkData.title) }}<br />{{ linkData.url }}</q-tooltip>
