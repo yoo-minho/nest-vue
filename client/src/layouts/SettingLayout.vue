@@ -19,7 +19,9 @@ watch(
   <q-layout class="subpage max-width" :class="`${isDarkActive ? 'bg-grey-9' : 'bg-white'}`">
     <HeaderItem type="SETTING" :title="props.title" :back="() => emits('back')" />
     <q-page-container class="max-width">
-      <slot></slot>
+      <q-scroll-area class="max-width without-header" :visible="false" :thumb-style="{ zIndex: '999999' }">
+        <slot></slot>
+      </q-scroll-area>
     </q-page-container>
   </q-layout>
 </template>

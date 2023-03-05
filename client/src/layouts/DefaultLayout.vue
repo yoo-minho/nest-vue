@@ -59,7 +59,7 @@ const scrollAreaRef = ref();
       >
         <q-layout style="min-height: 0">
           <q-page-container style="min-height: 0">
-            <q-page>
+            <q-page style="min-height: 0">
               <slot></slot>
             </q-page>
           </q-page-container>

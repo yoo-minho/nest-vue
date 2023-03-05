@@ -101,4 +101,8 @@ ul {
 .q-item__section--side {
   padding-right: 8px !important;
 }
+
+.q-separator--horizontal:last-child {
+  margin-bottom: 0 !important;
+}
 </style>

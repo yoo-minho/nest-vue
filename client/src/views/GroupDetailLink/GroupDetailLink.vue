@@ -1,31 +1,19 @@
 <script setup lang="ts">
-import { BlogType, LinkWrap } from '@/types/common';
+import { computed } from 'vue';
+import { LinkWrap } from '@/types/common';
 import { useGroupStore } from '@/stores/group';
 import ContentsLayout from '@/layouts/ContentsLayout.vue';
 import GroupDetailLinkLoader from '@/components/Loader/GroupDetailLinkLoader.vue';
 import GroupDetailLinkCard from './components/GroupDetailLinkCard.vue';
-import { computed } from 'vue';
 import PlatformStatList from '@/components/PlatformStatList.vue';
+import { getPlatformStat } from '@/hooks/usePlatformStat';
 
 const props = defineProps<{ links: LinkWrap[]; loading: boolean }>();
 const groupStore = useGroupStore();
 const { handleSwipeTab } = groupStore;
 const _handleSwipe = (newInfo: { direction: 'left' | 'right' }) => handleSwipeTab(newInfo.direction, 'GroupDetailLink');
 
-const counts = {} as { [key: string]: number };
-
-const getStat = (_links: LinkWrap[]) => {
-  _links.forEach(({ link: { type } }) => (counts[type] = (counts[type] || 0) + 1));
-  const result: { type: BlogType; _count: number }[] = [];
-  Object.keys(counts).forEach((type) => {
-    const _type = type as BlogType;
-    result.push({ type: _type, _count: counts[type] });
-  });
-  result.sort((a, b) => b._count - a._count);
-  return result;
-};
-
-const linkCountByPlatform = computed(() => getStat(props.links));
+const linkCountByPlatform = computed(() => getPlatformStat(props.links));
 </script>
 
 <template>

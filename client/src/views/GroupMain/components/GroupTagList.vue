@@ -16,5 +16,6 @@ const { currentTag, NavTags, tagsLoading } = storeToRefs(groupStore);
     size="sm"
     prefix="#"
     @click-tag="setCurrentTag"
-  ></TagList>
+  >
+  </TagList>
 </template>

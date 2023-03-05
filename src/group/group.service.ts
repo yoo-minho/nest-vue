@@ -40,7 +40,10 @@ export class GroupService {
     return this.prisma.group.findUnique({
       include: {
         tags: { select: { tag: true } },
-        links: { select: { link: true } },
+        links: {
+          select: { link: true },
+          orderBy: { link: { lastPostCreatedAt: 'desc' } },
+        },
         counts: { where: { date: getToday8() } },
       },
       where: {
@@ -53,7 +56,10 @@ export class GroupService {
     return this.prisma.group.findUnique({
       include: {
         tags: { select: { tag: true } },
-        links: { select: { link: true } },
+        links: {
+          select: { link: true },
+          orderBy: { link: { lastPostCreatedAt: 'desc' } },
+        },
         counts: { where: { date: getToday8() } },
       },
       where: {
@@ -72,7 +78,10 @@ export class GroupService {
     const { skip, take, cursor, where, orderBy } = params;
     return this.prisma.group.findMany({
       include: {
-        links: { select: { link: true } },
+        links: {
+          select: { link: true },
+          orderBy: { link: { lastPostCreatedAt: 'desc' } },
+        },
       },
       skip,
       take,

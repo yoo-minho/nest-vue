@@ -11,13 +11,14 @@ const emits = defineEmits<{ (eventName: 'clickTag', tagName: string): void }>();
 
 <template>
   <div :class="`q-px-${size} q-pt-${size}`">
-    <slot></slot>
+    <slot name="header"></slot>
     <q-scroll-area class="tag-area" :thumb-style="{ opacity: '0' }" :style="{ height: size == 'md' ? '52px' : '44px' }">
       <div class="row no-wrap">
         <template v-if="tagsLoading">
           <q-skeleton v-for="n in 3" :key="n" :type="'QChip'" class="q-ma-xs" />
         </template>
         <template v-else>
+          <slot name="before"></slot>
           <q-chip
             v-for="(tag, i) in tags"
             :key="i"

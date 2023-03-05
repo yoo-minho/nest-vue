@@ -7,7 +7,7 @@ import SettingCard from './SettingCard.vue';
 import { onMounted, ref } from 'vue';
 import DarkModeCard from './DarkModeCard.vue';
 import PlatformStatList from '../PlatformStatList.vue';
-import { openFeedbackForm, openServiceIdentityNotion } from '@/hooks/useOpenWindow';
+import { openFeedbackForm, openServiceIdentityNotion, openRequestTeamMakerForm } from '@/hooks/useOpenWindow';
 
 const subpageStore = useSubpageStore();
 const { closeSettingMain, openStackMain, openPlatformMain } = subpageStore;
@@ -21,8 +21,13 @@ const SERVICE_CATEGORY = [
     clickEvent: () => openServiceIdentityNotion(),
   },
   {
+    icon: 'rss_feed',
+    title: '팀블로그 신청하기',
+    clickEvent: () => openRequestTeamMakerForm(),
+  },
+  {
     icon: 'reviews',
-    title: '의견,오류,제휴 문의',
+    title: '의견,오류,제휴,광고 문의',
     clickEvent: () => openFeedbackForm(),
   },
 ];

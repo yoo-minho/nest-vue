@@ -9,7 +9,7 @@ import SearchHeader from '@/components/Menu/SearchHeader.vue';
       <q-scroll-area class="max-width without-header" :visible="false" :thumb-style="{ zIndex: '999999' }">
         <q-layout style="min-height: 0">
           <q-page-container style="min-height: 0">
-            <q-page class="max-width">
+            <q-page class="max-width" style="min-height: 0">
               <slot></slot>
             </q-page>
           </q-page-container>

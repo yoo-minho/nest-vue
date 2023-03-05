@@ -30,7 +30,7 @@ const moveTagGroup = (tagName: string) => {
   </template>
   <template v-else>
     <GroupDetailCounter :daily-views="dailyViews" :total-views="totalViews" />
-    <GroupInfo mode="HEADER" :group-data="currentGroup" />
+    <GroupInfo :group-data="currentGroup" />
     <GroupDetailTagList v-if="tags.length > 0" :tags="tags.map(({ tag }) => tag.name)" @click-tag="moveTagGroup" />
     <ScrollObserver @trigger-intersected="initHeaderTitle" @hidden-event="changeHeaderTitle"></ScrollObserver>
   </template>

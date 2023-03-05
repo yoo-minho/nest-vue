@@ -41,24 +41,24 @@ export const showBottomSheet = ({ title, description }: { title?: string; descri
     ],
   }).onOk((action) => {
     const sharedUrl = encodeURIComponent(location.href);
-    const title = encodeURIComponent('팀로그');
+    const _title = encodeURIComponent(title || '팀로그(teamlog) - 팀으로 글쓰기를 시작할때 최고의 선택');
     switch (action.id) {
       case 'kakao':
-        shareKakao({ title, description });
+        shareKakao({ title: _title, description });
         return;
       case 'facebook':
         window.open(`http://www.facebook.com/sharer/sharer.php?u=${sharedUrl}`, '', 'width=400, height=500');
         return;
       case 'twitter':
         window.open(
-          `http://twitter.com/share?url=${sharedUrl}&text=${title}`,
+          `http://twitter.com/share?url=${sharedUrl}&text=${_title}`,
           'tweetPop',
           'width=400, height=500, scrollbars=yes',
         );
         return;
       case 'band':
         window.open(
-          `http://www.band.us/plugin/share?body=${title}&route=${sharedUrl}`,
+          `http://www.band.us/plugin/share?body=${_title}&route=${sharedUrl}`,
           'shareBand',
           'width=400, height=500, resizable=yes',
         );

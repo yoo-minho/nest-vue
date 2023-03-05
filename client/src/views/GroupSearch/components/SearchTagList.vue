@@ -10,7 +10,7 @@ const { fetchSearchPosts } = postStore;
 const route = useRoute();
 const router = useRouter();
 const searchKeywords = [
-  { label: '회고', value: '회고|결산|.log' },
+  { label: '회고', value: '회고|결산|.log|정산' },
   { label: '인프콘', value: '인프콘' },
   { label: '글또', value: '글또' },
   { label: '이직', value: '이직' },
@@ -32,6 +32,8 @@ const clickTag = (tagName: string) => {
 
 <template>
   <TagList :tags-loading="false" :tags="searchKeywords" size="md" :current-tag="searchKeyword" @click-tag="clickTag">
-    <q-item-label>추천 키워드로 검색해보세요</q-item-label>
+    <template #header>
+      <q-item-label>추천 키워드로 검색해보세요</q-item-label>
+    </template>
   </TagList>
 </template>

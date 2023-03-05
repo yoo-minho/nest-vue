@@ -1,14 +1,25 @@
 <script setup lang="ts">
-defineProps<{ contents: string; icon: string }>();
+defineProps<{ color: string; textColor: string; banner: string; title: string; contents: string }>();
 const emits = defineEmits<{ (eventName: 'clickBanner'): void }>();
 </script>
 
 <template>
-  <q-banner class="bg-green-4 text-white q-mb-md cursor-pointer shadow-1" rounded dense @click="emits('clickBanner')">
-    <div style="display: flex; justify-content: space-between; align-items: center">
-      <q-icon class="col-1" :name="icon" size="24px" />
-      <span class="col-8 q-mx-sm" style="font-size: 1em">{{ contents }}</span>
-      <q-icon class="col-1" name="ads_click" size="24px" />
+  <q-item-label class="cursor-pointer row q-mx-sm items-center" @click="emits('clickBanner')">
+    <div class="image_area row justify-center content-center">
+      <q-avatar :color="color" :text-color="textColor" rounded size="76px">
+        <div class="non-selectable">{{ banner }}</div>
+      </q-avatar>
     </div>
-  </q-banner>
+    <q-item class="col q-px-sm">
+      <q-item-section>
+        <q-item-label class="text-weight-bolder row" style="font-size: 16px">
+          <span>
+            <span>{{ title }}</span>
+          </span>
+        </q-item-label>
+        <q-item-label class="ellipsis-2-lines">{{ contents }}</q-item-label>
+      </q-item-section>
+    </q-item>
+  </q-item-label>
+  <q-separator spaced />
 </template>

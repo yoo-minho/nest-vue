@@ -6,7 +6,6 @@ import { useRouter } from 'vue-router';
 import { useGroupStore } from '@/stores/group';
 import DefaultLayout from '@/layouts/DefaultLayout.vue';
 import GroupMainLoader from '@/components/Loader/GroupMainLoader.vue';
-import GroupMainEmpty from '@/components/Empty/GroupMainEmpty.vue';
 import GroupCard from './components/GroupCard.vue';
 import GroupTagList from './components/GroupTagList.vue';
 import { delay } from '@/util/CommUtil';
@@ -58,41 +57,53 @@ const moveSpecialPage = () => {
     <q-pull-to-refresh @refresh="refresh">
       <GroupTagList />
       <q-separator class="q-mb-sm" />
-      <q-page class="q-pt-sm q-pb-md q-px-md">
+      <q-page>
         <template v-if="groupsLoading">
           <GroupMainLoader />
-        </template>
-        <template v-if="groups.length === 0">
-          <GroupMainEmpty />
         </template>
         <template v-else>
           <GroupAdBanner
             v-if="isTotalTag"
-            icon="campaign"
-            contents="<회고> 모아보고 싶다면 Click!"
+            banner="안내"
+            title="<회고> 글을 모아보고 싶다면 클릭!"
+            contents="더 나은 내가 되기 위해, 더 나은 팀이 되기 위해, 더 나은 우리가 되기 위해"
+            color="dark"
+            text-color="white"
             @click-banner="moveSpecialPage()"
           />
           <GroupCard v-for="group in groups.slice(0, 5)" :key="group.id" :group="group" />
           <GroupAdBanner
             v-if="isTotalTag"
-            icon="workspaces_outline"
-            contents="<팀블로그> 만들고 싶다면 Click!"
+            banner="안내"
+            title="<팀블로그> 만들어보고 싶다면 클릭!"
+            contents="두 개 이상의 블로그 링크가 필요합니다!"
+            color="dark"
+            text-color="white"
             @click-banner="openRequestTeamMakerForm()"
           />
           <GroupCard v-for="group in groups.slice(5, 10)" :key="group.id" :group="group" />
           <GroupAdBanner
             v-if="isTotalTag"
-            icon="reviews"
-            contents="<의견,오류,제휴> 문의하고 싶다면 Click!"
+            banner="문의"
+            title="<의견,오류> 문의하고 싶다면 클릭!"
+            contents="어떠한 문의든 대환영입니다!"
+            color="green-4"
+            text-color="white"
             @click-banner="openFeedbackForm()"
           />
-          <GroupCard v-for="group in groups.slice(10)" :key="group.id" :group="group" />
+          <GroupCard v-for="group in groups.slice(10, 15)" :key="group.id" :group="group" />
+          <GroupAdBanner
+            v-if="isTotalTag"
+            banner="광고"
+            title="<광고,제휴> 문의하고 싶다면 클릭!"
+            contents="첫 광고의 영광은 누구에게 갈까요?"
+            color="yellow"
+            text-color="black"
+            @click-banner="openFeedbackForm()"
+          />
+          <GroupCard v-for="group in groups.slice(15)" :key="group.id" :group="group" />
         </template>
       </q-page>
     </q-pull-to-refresh>
   </DefaultLayout>
 </template>
-
-<style lang="scss">
-@import './styles/_group-main.scss';
-</style>
