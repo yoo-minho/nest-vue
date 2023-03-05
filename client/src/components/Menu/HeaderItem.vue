@@ -74,7 +74,7 @@ const logoPath = new URL(`../../assets/white_logo.png`, import.meta.url).toStrin
         @click="reload"
       >
         <q-avatar rounded size="28px">
-          <q-img :src="logoPath" :no-transition="true" />
+          <q-img :src="logoPath" no-spinner loading="eager" />
         </q-avatar>
         <span class="q-ml-sm">{{ currentHeaderTitle }}</span>
       </q-toolbar-title>

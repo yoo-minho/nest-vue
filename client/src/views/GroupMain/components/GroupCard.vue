@@ -12,15 +12,22 @@ const clickGroup = (domain: string) => router.push({ path: `/@${domain}` });
 <template>
   <q-item-label class="cursor-pointer row q-mx-sm items-center" @click="clickGroup(group.domain)">
     <div class="image_area row justify-center content-center">
-      <div v-for="(v, i) in group.links?.slice(0, 4)" :key="i" class="image_item shadow-1">
-        <q-avatar v-if="isTextImage(v.link.imagePath)" color="black" text-color="white" rounded size="32px">
+      <div v-for="(v, i) in group.links?.slice(0, 4)" :key="i" class="image_item">
+        <q-avatar
+          v-if="isTextImage(v.link.imagePath)"
+          color="black"
+          text-color="white"
+          rounded
+          size="32px"
+          class="shadow-1"
+        >
           <div class="non-selectable">{{ v.link.title.substring(0, 2) }}</div>
         </q-avatar>
-        <q-avatar v-else rounded size="32px" color="black" text-color="white">
+        <q-avatar v-else rounded size="32px" color="black" text-color="white" class="shadow-1">
           <q-img :src="v.link.imagePath" :alt="v.link.title" class="image-32" no-spinner :ratio="1" loading="eager">
             <template #error>
               <div class="absolute-full flex flex-center bg-negative text-white" style="padding: 0">
-                {{ v.link.title.substring(0, 2) }}!
+                {{ v.link.title.substring(0, 2) }}
               </div>
             </template>
           </q-img>
