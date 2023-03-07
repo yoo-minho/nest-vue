@@ -16,21 +16,12 @@ export class AppController {
   constructor(private readonly groupService: GroupService) {}
 
   @Get('/')
-  async getPage(@Response() res): Promise<any> {
-    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
+  async getPage(): Promise<any> {
     return root.toString();
   }
 
   @Get('/@:domain')
-  async getTeamDetailPage(
-    @Response() res,
-    @Param('domain') domain: string,
-  ): Promise<any> {
-    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
+  async getTeamDetailPage(@Param('domain') domain: string): Promise<any> {
     const groupData = await this.groupService.groupByDomain(domain);
     const meta = new useMeta(root);
     meta.setTitle(`${groupData.title} - teamlog`);
