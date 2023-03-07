@@ -1,5 +1,5 @@
 <template>
-  <div v-for="i in 6" :key="i">
+  <div v-for="i in 10" :key="i">
     <q-item-label class="cursor-pointer row q-mx-sm items-center">
       <div class="image_area row justify-center content-center">
         <div v-for="n in 4" :key="n" class="image_item shadow-1">

@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Response } from '@nestjs/common';
 import { resolve, join } from 'path';
 import { readFileSync } from 'fs';
 import { parse, HTMLElement } from 'node-html-parser';
@@ -16,12 +16,21 @@ export class AppController {
   constructor(private readonly groupService: GroupService) {}
 
   @Get('/')
-  async getPage(): Promise<any> {
+  async getPage(@Response() res): Promise<any> {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
     return root.toString();
   }
 
   @Get('/@:domain')
-  async getTeamDetailPage(@Param('domain') domain: string): Promise<any> {
+  async getTeamDetailPage(
+    @Response() res,
+    @Param('domain') domain: string,
+  ): Promise<any> {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
     const groupData = await this.groupService.groupByDomain(domain);
     const meta = new useMeta(root);
     meta.setTitle(`${groupData.title} - teamlog`);
