@@ -67,7 +67,7 @@ const moveSpecialPage = () => {
             banner="안내"
             title="<회고> 글을 모아보고 싶다면 클릭!"
             contents="더 나은 내가 되기 위해, 더 나은 팀이 되기 위해, 더 나은 우리가 되기 위해"
-            color="dark"
+            color="green-3"
             text-color="white"
             @click-banner="moveSpecialPage()"
           />
@@ -77,7 +77,7 @@ const moveSpecialPage = () => {
             banner="안내"
             title="<팀블로그> 만들어보고 싶다면 클릭!"
             contents="두 개 이상의 블로그 링크가 필요합니다!"
-            color="dark"
+            color="green-3"
             text-color="white"
             @click-banner="openRequestTeamMakerForm()"
           />

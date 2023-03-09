@@ -7,7 +7,7 @@ const emits = defineEmits<{ (eventName: 'clickBanner'): void }>();
   <q-item-label class="cursor-pointer row q-mx-sm items-center" @click="emits('clickBanner')">
     <div class="image_area row justify-center content-center">
       <q-avatar :color="color" :text-color="textColor" rounded size="64px">
-        <div class="non-selectable">{{ banner }}</div>
+        <div class="non-selectable" style="font-weight: bold">{{ banner }}</div>
       </q-avatar>
     </div>
     <q-item class="col q-px-sm">

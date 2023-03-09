@@ -34,10 +34,10 @@ export class PostController {
     const postDtos = items.map(
       (item): Prisma.PostCreateManyInput => ({ linkId, ...item }),
     );
-    const posts = this.postService.createPosts(postDtos);
+    const posts = await this.postService.createPosts(postDtos);
     const lastPostArr = await this.postService.lastPosts([linkId]);
 
-    if (lastPostArr.length == 0) return;
+    if (lastPostArr.length == 0) return posts;
 
     const lastPostCreatedAt = lastPostArr[0]._max.createdAt;
     this.linkService.updateLastPostCreatedAt(linkId, lastPostCreatedAt);
