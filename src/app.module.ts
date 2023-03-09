@@ -30,6 +30,7 @@ import { PrismaModule } from './prisma/prisma.module';
     }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'client/dist'),
+      renderPath: '/',
       serveStaticOptions: {
         cacheControl: false, //default:true
         etag: false, //default:true

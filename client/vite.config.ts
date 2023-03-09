@@ -13,13 +13,7 @@ export default defineConfig((config) => {
       'process.env': {
         ...config,
         isDev,
-        ...(isDev
-          ? {
-              baseUrl: 'http://localhost:5000/api',
-            }
-          : {
-              baseUrl: '/api',
-            }),
+        ...{ baseUrl: isDev ? 'http://localhost:5000/api' : '/api' },
       },
     },
     plugins: [
@@ -27,8 +21,9 @@ export default defineConfig((config) => {
         registerType: 'autoUpdate',
         injectRegister: 'auto', //default
         workbox: {
-          globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
-          // cleanupOutdatedCaches: true,
+          globPatterns: ['**/*.{ico,png,svg}'],
+          // globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
+          cleanupOutdatedCaches: true,
         },
         includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
         manifest: {

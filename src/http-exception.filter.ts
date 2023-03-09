@@ -14,12 +14,15 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const request = ctx.getRequest<Request>();
     const status = exception.getStatus();
     const res = exception.getResponse();
-
-    response.status(status).json({
-      statusCode: status,
-      timestamp: new Date().toISOString(),
-      path: request.url,
-      res,
-    });
+    if (request.url.includes('api')) {
+      response.status(status).json({
+        statusCode: status,
+        timestamp: new Date().toISOString(),
+        path: request.url,
+        res,
+      });
+    } else {
+      response.redirect(`/error?status=${status}&path=${request.url}`);
+    }
   }
 }

@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Response } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { resolve, join } from 'path';
 import { readFileSync } from 'fs';
 import { parse, HTMLElement } from 'node-html-parser';
@@ -15,19 +15,33 @@ const root = parse(
 export class AppController {
   constructor(private readonly groupService: GroupService) {}
 
-  @Get('/')
+  @Get()
   async getPage(): Promise<any> {
+    const meta = new useMeta(root);
+    meta.setTitle('팀로그(teamlog) - 팀으로 글쓰기를 시작할때 최고의 선택');
+    meta.setDescription(
+      '티스토리, 미디엄, 브런치, 벨로그, 네이버블로그 상관없이 팀 블로그를 만들 수 있어요!',
+    );
+    meta.setUrl('https://teamlog.team/');
+    meta.setImage('https://teamlog.team/og_image_white.png');
+    return root.toString();
     return root.toString();
   }
 
   @Get('/@:domain')
   async getTeamDetailPage(@Param('domain') domain: string): Promise<any> {
+    console.log('xxxx');
     const groupData = await this.groupService.groupByDomain(domain);
     const meta = new useMeta(root);
     meta.setTitle(`${groupData.title} - teamlog`);
     meta.setDescription(groupData.description);
     meta.setUrl(`https://teamlog.team/@${domain}`);
     meta.setImage('https://teamlog.team/og_image_white.png');
+    return root.toString();
+  }
+
+  @Get('/error')
+  async getErrorPage(): Promise<any> {
     return root.toString();
   }
 }

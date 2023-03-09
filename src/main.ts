@@ -27,6 +27,7 @@ async function bootstrap() {
     exclude: [
       { path: '', method: RequestMethod.GET },
       { path: '@:domain', method: RequestMethod.GET },
+      { path: 'error', method: RequestMethod.GET },
     ],
   });
   app.enableCors();

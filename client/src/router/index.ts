@@ -43,8 +43,8 @@ export const routes = [
     component: () => import('@/views/OAuth/OAuth.vue'),
   },
   {
-    path: '/404',
-    name: 'notFound',
+    path: '/error',
+    name: 'Error',
     component: () => import('@/views/NotFound.vue'),
   },
 ];
