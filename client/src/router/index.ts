@@ -42,6 +42,11 @@ export const routes = [
     name: 'OAuth',
     component: () => import('@/views/OAuth/OAuth.vue'),
   },
+  {
+    path: '/404',
+    name: 'notFound',
+    component: () => import('@/views/NotFound.vue'),
+  },
 ];
 
 const router = createRouter({
