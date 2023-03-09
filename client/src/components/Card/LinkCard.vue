@@ -3,6 +3,7 @@ import { Link } from '@/types/common';
 import { ref } from 'vue';
 import LinkInfo from '../Info/LinkInfo.vue';
 import { skipBlogName } from '@/util/NameUtil';
+import { getFormatString } from '@/plugin/dayjs';
 
 defineProps<{ link: Link; iconName: string }>();
 
@@ -53,6 +54,9 @@ const randomDesc = `Need a description like '${emojiBundle
         </q-item-label>
         <q-item-label class="ellipsis-2-lines text-grey-7">{{ link.description || randomDesc }}</q-item-label>
         <q-item-label class="ellipsis text-grey-5">{{ link.url }}</q-item-label>
+        <q-item-label class="text-grey-5">
+          {{ getFormatString(link.lastPostCreatedAt, 'YYYY-MM-DD HH:mm (ddd)') }}
+        </q-item-label>
       </q-item-section>
     </q-item>
   </template>
