@@ -36,7 +36,7 @@ const reload = () => {
     return;
   }
   if (isOrginalHeader.value) {
-    router.replace({ name: 'Group' });
+    router.replace({ name: 'Group', query: {} });
   } else {
     props.scrollAreaRef?.setScrollPosition('vertical', 0, 300);
   }

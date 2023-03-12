@@ -98,8 +98,8 @@ export const useGroupStore = defineStore('group', {
       this.tags = data.value;
       this.tagsLoading = false;
     },
-    setCurrentTag(tag: string) {
-      this.currentTag = tag;
+    setCurrentTag(tag?: string) {
+      this.currentTag = tag || totalTag;
     },
     async fetchGroup(domain: string) {
       if (this.currentGroup.domain === domain) {

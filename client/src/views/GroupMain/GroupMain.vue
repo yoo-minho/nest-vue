@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
 
 import { delay } from '@/util/CommUtil';
@@ -15,12 +15,14 @@ import { openFeedbackForm, openRequestTeamMakerForm } from '@/hooks/useOpenWindo
 import ScrollObserver from '@/components/Observer/ScrollObserver.vue';
 
 const router = useRouter();
+const route = useRoute();
 const groupStore = useGroupStore();
-const { fetchGroups, fetchAllTag } = groupStore;
+const { fetchGroups, fetchAllTag, setCurrentTag } = groupStore;
 const { groups, groupsLoading, currentTag, isTotalTag } = storeToRefs(groupStore);
 const page = ref(1);
 
 onMounted(() => {
+  setCurrentTag(String(route.query.tag || ''));
   fetchAllTag();
 });
 

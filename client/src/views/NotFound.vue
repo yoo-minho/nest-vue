@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 const logoPath = new URL('../assets/dark_logo.png', import.meta.url).toString();
-const goMain = () => router.replace({ name: 'Group' });
+const goMain = () => router.replace({ name: 'Group', query: {} });
 </script>
 <template>
   <div style="height: 100vh">
