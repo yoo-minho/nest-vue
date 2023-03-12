@@ -28,28 +28,6 @@ type RssResItem = {
   link?: string;
 };
 
-const isTest = (url: string, reg: RegExp | RegExp[]): boolean => {
-  if (reg instanceof RegExp) {
-    return new RegExp(reg).test(url);
-  } else {
-    let ok = false;
-    reg.forEach((r) => {
-      ok = ok || new RegExp(r).test(url);
-    });
-    return ok;
-  }
-};
-
-const replaceUrl = (url: string, reg: RegExp | RegExp[]): string => {
-  if (reg instanceof RegExp) {
-    return url.replace(reg, '$1');
-  } else {
-    return reg
-      .map((r) => (isTest(url, r) ? url.replace(r, '$1') : ''))
-      .join('');
-  }
-};
-
 @Injectable()
 export class RssService {
   BLOG_EXPRESSION = {
@@ -74,14 +52,13 @@ export class RssService {
       replacePipe: false,
     },
     MEDIUM: {
-      reg: [
-        /https:\/\/medium.com\/([0-9a-zA-Z_-]*)(\/)?([0-9a-zA-Z]*)/gi,
-        /https:\/\/([0-9a-zA-Z_-]*)\.medium.com(\/)?([0-9a-zA-Z]*)/gi,
-      ],
-      rss: (mediumId: string) =>
-        `https://medium.com/feed/${
-          mediumId.includes('@') ? mediumId : '@' + mediumId
-        }`,
+      reg: /https:\/\/medium.com\/([0-9a-zA-Z_-]*)(\/)?([0-9a-zA-Z]*)/gi,
+      rss: (mediumId: string) => `https://medium.com/feed/${mediumId}`,
+      replacePipe: true,
+    },
+    MEDIUM_1: {
+      reg: /https:\/\/([0-9a-zA-Z_-]*)\.medium.com(\/)?([0-9a-zA-Z]*)/gi,
+      rss: (mediumId: string) => `https://medium.com/feed/@${mediumId}`,
       replacePipe: true,
     },
     YOUTUBE: {
@@ -100,15 +77,12 @@ export class RssService {
   constructor(public httpService: HttpService) {}
 
   async findOne(url: string, lastPostCreatedAt?: Date) {
-    console.log('rssrss:: 1', lastPostCreatedAt);
     const oldLastPostCreateAt = new Date(lastPostCreatedAt || 0);
-    console.log('rssrss:: 2', oldLastPostCreateAt);
     const rssUrl = await this.convertRssUrl(url);
     let rssItems;
     try {
       const result: RssRes = await parse(rssUrl, {});
       rssItems = result.items;
-      console.log('rssrss:: 3', rssItems.length);
     } catch (e) {
       console.error(e);
       return {
@@ -132,12 +106,34 @@ export class RssService {
     };
   }
 
+  isTest = (url: string, reg: RegExp | RegExp[]): boolean => {
+    if (reg instanceof RegExp) {
+      return new RegExp(reg).test(url);
+    } else {
+      let ok = false;
+      reg.forEach((r) => {
+        ok = ok || new RegExp(r).test(url);
+      });
+      return ok;
+    }
+  };
+
+  replaceUrl = (url: string, reg: RegExp | RegExp[]): string => {
+    if (reg instanceof RegExp) {
+      return url.replace(reg, '$1');
+    } else {
+      return reg
+        .map((r) => (this.isTest(url, r) ? url.replace(r, '$1') : ''))
+        .join('');
+    }
+  };
+
   async convertRssUrl(url: string): Promise<string> {
     return (
       Object.entries(this.BLOG_EXPRESSION)
-        .filter(([, { reg }]) => isTest(url, reg))
+        .filter(([, { reg }]) => this.isTest(url, reg))
         .map(([, { reg, rss, replacePipe }]) =>
-          rss(replacePipe ? replaceUrl(url, reg) : url),
+          rss(replacePipe ? this.replaceUrl(url, reg) : url),
         )[0] || url
     );
   }

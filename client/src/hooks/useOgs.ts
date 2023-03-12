@@ -34,13 +34,13 @@ export const scrapOGS = async (url: string): Promise<OGSOutput> => {
     type: getBlogType(url),
     title: minifyStr(ogsData.ogTitle, 50),
     description: minifyStr(ogsData.ogDescription, 100),
-    imagePath: getOgImage(ogsData.ogImage),
+    imagePath: getOgImage(url, ogsData.ogImage),
   };
 };
 
-const getOgImage = (ogImage: { url: string }) => {
+const getOgImage = (url: string, ogImage: { url: string }) => {
   if (ogImage instanceof Array && ogImage.length) {
     return ogImage[0].url;
   }
-  return ogImage?.url || '/favicon.ico';
+  return ogImage?.url || url + 'favicon.ico';
 };

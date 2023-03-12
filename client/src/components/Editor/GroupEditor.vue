@@ -182,7 +182,12 @@ function _closeGroupEditor() {
 
     <q-list v-if="linksOnEditor.length > 0" bordered separator class="full-width">
       <div v-for="(v, i) in linksOnEditor" :key="i" :data-key="v.id">
-        <LinkCard :link="v" icon-name="clear" @click-icon="deleteLink(v.id)" @refresh-icon="refreshLink(v.id, v.url)" />
+        <LinkCard
+          :link="v"
+          icon-name="clear"
+          @click-icon="deleteLink(isFix ? 'EDIT' : 'ADD', v.id || i)"
+          @refresh-icon="refreshLink(v.id, v.url)"
+        />
       </div>
     </q-list>
   </EditorLayout>

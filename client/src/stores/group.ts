@@ -67,9 +67,9 @@ export const useGroupStore = defineStore('group', {
     addLink(v: Link) {
       this.linksOnEditor.push(v);
     },
-    deleteLink(id?: number) {
-      if (!id) return;
-      this.linksOnEditor = this.linksOnEditor.filter((v) => v.id !== id);
+    deleteLink(type: 'ADD' | 'EDIT', id: number) {
+      const filterFn = (v: Link, idx: number) => (type === 'EDIT' ? v.id !== id : idx !== id);
+      this.linksOnEditor = this.linksOnEditor.filter(filterFn);
     },
     async refreshLink(id?: number, url?: string) {
       if (!id || !url) return;
