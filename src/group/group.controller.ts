@@ -134,15 +134,15 @@ export class GroupController {
   }
 
   @Get()
-  findAll(@Query() { tag }) {
-    const tagOption = tag
-      ? {
-          tags: { some: { tag: { name: tag } } },
-        }
-      : {};
+  findAll(@Query() { tag, page }) {
+    const PAGE_PER_COUNT = 20;
+    const tagOption = tag ? { tags: { some: { tag: { name: tag } } } } : {};
+    page = page || 1;
     return this.groupService.groups({
       where: { published: true, ...tagOption },
       orderBy: { lastPostCreatedAt: 'desc' },
+      skip: (page - 1) * PAGE_PER_COUNT,
+      take: PAGE_PER_COUNT,
     });
   }
 

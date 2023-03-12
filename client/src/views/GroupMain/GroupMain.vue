@@ -1,49 +1,53 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
-import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
+import { storeToRefs } from 'pinia';
+
+import { delay } from '@/util/CommUtil';
 
 import { useGroupStore } from '@/stores/group';
 import DefaultLayout from '@/layouts/DefaultLayout.vue';
 import GroupMainLoader from '@/components/Loader/GroupMainLoader.vue';
 import GroupCard from './components/GroupCard.vue';
 import GroupTagList from './components/GroupTagList.vue';
-import { delay } from '@/util/CommUtil';
 import GroupAdBanner from './components/GroupAdBanner.vue';
 import { openFeedbackForm, openRequestTeamMakerForm } from '@/hooks/useOpenWindow';
+import ScrollObserver from '@/components/Observer/ScrollObserver.vue';
 
 const router = useRouter();
 const groupStore = useGroupStore();
-const { fetchAllGroup, fetchByTag, fetchAllTag } = groupStore;
+const { fetchGroups, fetchAllTag } = groupStore;
 const { groups, groupsLoading, currentTag, isTotalTag } = storeToRefs(groupStore);
+const page = ref(1);
 
 onMounted(() => {
   fetchAllTag();
 });
 
-const tagValue = ref('');
-
-const fetchData = async (tag: string) => {
-  if (isTotalTag.value) {
-    await fetchAllGroup();
+const loadMore = async (el: Element) => {
+  const existsPosts = await fetchGroups(page.value);
+  if (existsPosts) {
+    page.value++;
   } else {
-    tagValue.value = tag;
-    await fetchByTag(tag);
+    el.innerHTML = '';
   }
 };
 
 watch(
   () => currentTag.value,
-  (tag) => {
+  () => {
     groupsLoading.value = true;
-    fetchData(tag);
+    page.value = 1;
+    fetchGroups();
+    page.value++;
   },
   { immediate: true },
 );
 
 const refresh = async (done: () => void) => {
-  await delay(1000);
-  await fetchData(tagValue.value);
+  page.value = 1;
+  await Promise.all([delay(1000), fetchGroups()]);
+  page.value++;
   done();
 };
 
@@ -59,7 +63,7 @@ const moveSpecialPage = () => {
       <q-separator class="q-mb-sm" />
       <q-page>
         <template v-if="groupsLoading">
-          <GroupMainLoader />
+          <GroupMainLoader v-for="i in 10" :key="i" />
         </template>
         <template v-else>
           <GroupAdBanner
@@ -102,6 +106,9 @@ const moveSpecialPage = () => {
             @click-banner="openFeedbackForm()"
           />
           <GroupCard v-for="group in groups.slice(15)" :key="group.id" :group="group" />
+          <ScrollObserver @trigger-intersected="loadMore">
+            <GroupMainLoader />
+          </ScrollObserver>
         </template>
       </q-page>
     </q-pull-to-refresh>

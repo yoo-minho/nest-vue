@@ -86,15 +86,12 @@ export const useGroupStore = defineStore('group', {
       this.groupLoading = true;
       this.currentGroup = {} as Group;
     },
-    async fetchAllGroup() {
-      const { data } = await GroupApi.findAll();
-      this.groups = data.value;
+    async fetchGroups(page?: number) {
+      const isFirstPage = !page || page === 1;
+      const { data } = await GroupApi.findAll(this.isTotalTag ? { page } : { tag: this.currentTag, page });
+      this.groups = isFirstPage ? data.value : [...this.groups, ...data.value];
       this.groupsLoading = false;
-    },
-    async fetchByTag(tag: string) {
-      const { data } = await GroupApi.findByTag(tag);
-      this.groups = data.value;
-      this.groupsLoading = false;
+      return data.value.length > 0;
     },
     async fetchAllTag() {
       const { data } = await GroupApi.findAllTag();

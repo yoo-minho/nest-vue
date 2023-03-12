@@ -3,9 +3,10 @@ import axiosClient, { useAxiosGet } from './base';
 import { AxiosError } from 'axios';
 
 export default {
-  async findAll() {
+  async findAll(props: { tag?: string; page?: number } = {}) {
+    const { tag, page } = props;
     try {
-      return await useAxiosGet('group');
+      return await useAxiosGet('group', { params: { tag, page } });
     } catch (err) {
       const { message } = err as AxiosError;
       throw new Error(message);
@@ -14,14 +15,6 @@ export default {
   async count() {
     try {
       return await useAxiosGet('group/counts');
-    } catch (err) {
-      const { message } = err as AxiosError;
-      throw new Error(message);
-    }
-  },
-  async findByTag(tag: string) {
-    try {
-      return await useAxiosGet('group', { params: { tag } });
     } catch (err) {
       const { message } = err as AxiosError;
       throw new Error(message);
