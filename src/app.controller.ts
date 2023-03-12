@@ -30,7 +30,6 @@ export class AppController {
 
   @Get('/@:domain')
   async getTeamDetailPage(@Param('domain') domain: string): Promise<any> {
-    console.log('xxxx');
     const groupData = await this.groupService.groupByDomain(domain);
     const meta = new useMeta(root);
     meta.setTitle(`${groupData.title} - teamlog`);
