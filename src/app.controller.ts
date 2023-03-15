@@ -1,8 +1,18 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import {
+  Controller,
+  Request,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { resolve, join } from 'path';
 import { readFileSync } from 'fs';
 import { parse, HTMLElement } from 'node-html-parser';
 import { GroupService } from './group/group.service';
+import { LocalAuthGuard } from './auth/local-auth.guard';
+import { AuthService } from './auth/auth.service';
+import { JwtAuthGuard } from './auth/jwt-auth.guard';
 
 const root = parse(
   readFileSync(
@@ -13,7 +23,22 @@ const root = parse(
 
 @Controller()
 export class AppController {
-  constructor(private readonly groupService: GroupService) {}
+  constructor(
+    private readonly groupService: GroupService,
+    private readonly authService: AuthService,
+  ) {}
+
+  @UseGuards(LocalAuthGuard)
+  @Post('auth/login')
+  async login(@Request() req) {
+    return this.authService.login(req.user);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('profile')
+  getProfile(@Request() req) {
+    return req.user;
+  }
 
   @Get()
   async getPage(): Promise<any> {

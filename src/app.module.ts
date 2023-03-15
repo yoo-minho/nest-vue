@@ -12,9 +12,10 @@ import { RssModule } from './rss/rss.module';
 import { GroupModule } from './group/group.module';
 import { OpenGraphTagModule } from './open-graph-tag/open-graph-tag.module';
 import { TagModule } from './tag/tag.module';
-import { GroupService } from './group/group.service';
 import Joi from 'joi';
 import { PrismaModule } from './prisma/prisma.module';
+import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -45,6 +46,8 @@ import { PrismaModule } from './prisma/prisma.module';
     LinkModule,
     TagModule,
     PrismaModule,
+    UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [
@@ -52,7 +55,6 @@ import { PrismaModule } from './prisma/prisma.module';
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,
     },
-    GroupService,
   ],
 })
 export class AppModule {}

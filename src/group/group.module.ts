@@ -8,8 +8,9 @@ import { PostService } from 'src/post/post.service';
 import { TagService } from 'src/tag/tag.service';
 
 @Module({
+  imports: [PrismaModule],
   controllers: [GroupController],
   providers: [GroupService, CacheService, LinkService, TagService, PostService],
-  imports: [PrismaModule],
+  exports: [GroupService],
 })
 export class GroupModule {}
