@@ -9,6 +9,20 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
+  getToken(payload) {
+    const accessToken = this.jwtService.sign(payload, {
+      expiresIn: '2h',
+      secret: 'process.env.JWT_SECRET',
+    });
+
+    const refreshToken = this.jwtService.sign(payload, {
+      expiresIn: '7d',
+      secret: 'process.env.JWT_SECRET',
+    });
+
+    return { accessToken, refreshToken };
+  }
+
   async validateUser(username: string, pass: string): Promise<any> {
     const user = await this.userService.findOne(username);
     if (user && user.password === pass) {
@@ -26,6 +40,7 @@ export class AuthService {
   }
 
   async OAuthLogin({ req, res }) {
+    console.log('OAuthLogin');
     return;
     // // 1. 회원조회
     // let user = await this.userService.findOne({ email: req.user.email }); //user를 찾아서

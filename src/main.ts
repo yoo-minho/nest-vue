@@ -28,6 +28,7 @@ async function bootstrap() {
       { path: '', method: RequestMethod.GET },
       { path: '@:domain', method: RequestMethod.GET },
       { path: 'error', method: RequestMethod.GET },
+      { path: 'oauth', method: RequestMethod.GET },
     ],
   });
   app.enableCors();

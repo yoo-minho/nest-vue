@@ -115,19 +115,6 @@ export class GroupService {
     });
   }
 
-  async groupTags() {
-    return this.prisma.tag.findMany({
-      include: {
-        _count: {
-          select: { groups: true },
-        },
-      },
-      orderBy: {
-        groups: { _count: 'desc' },
-      },
-    });
-  }
-
   async updateTotalViews(groupDomain: string) {
     const date = getToday8();
     try {
