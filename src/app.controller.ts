@@ -50,11 +50,11 @@ export class AppController {
     meta.setUrl('https://teamlog.team/');
     meta.setImage('https://teamlog.team/og_image_white.png');
     return root.toString();
-    return root.toString();
   }
 
   @Get('/@:domain')
   async getTeamDetailPage(@Param('domain') domain: string): Promise<any> {
+    console.log('xxxx2');
     const groupData = await this.groupService.groupByDomain(domain);
     const meta = new useMeta(root);
     meta.setTitle(`${groupData.title} - teamlog`);
@@ -66,6 +66,11 @@ export class AppController {
 
   @Get('/error')
   async getErrorPage(): Promise<any> {
+    return root.toString();
+  }
+
+  @Get('/oauth')
+  async getOAuthPage(): Promise<any> {
     return root.toString();
   }
 }
