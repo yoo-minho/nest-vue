@@ -1,47 +1,34 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-
-type User = {
-  userId: number;
-  username: string;
-  password: string;
-};
+import { Prisma, User } from '@prisma/client';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class UserService {
-  private readonly users = [
-    {
-      userId: 1,
-      username: 'john@gmail.com',
-      password: '123',
-    },
-    {
-      userId: 2,
-      username: 'maria@gmail.com',
-      password: '456',
-    },
-  ];
+  constructor(private prisma: PrismaService) {}
 
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  async createUser(data: Prisma.UserCreateInput) {
+    try {
+      //최초 로그인
+      return await this.prisma.user.create({ data });
+    } catch (e) {
+      const { name, message, stack } = e;
+      if (message.includes('Unique constraint failed')) {
+        //이후 로그인
+        this.updateUserToken({ id: data.id, token: data.refreshToken });
+        return;
+      }
+      throw e;
+    }
   }
 
-  findAll() {
-    return `This action returns all user`;
+  async userById(params: { id: string }): Promise<User> {
+    return this.prisma.user.findUnique({ where: { id: params.id } });
   }
 
-  findOne(username: string): Promise<User> {
-    return new Promise((res) =>
-      res(this.users.find((user) => user.username === username)),
-    );
-  }
-
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async updateUserToken(params: { id: string; token: string }): Promise<User> {
+    return this.prisma.user.update({
+      data: { refreshToken: params.token },
+      where: { id: params.id },
+    });
   }
 }

@@ -13,6 +13,7 @@ import GroupTagList from './components/GroupTagList.vue';
 import GroupAdBanner from './components/GroupAdBanner.vue';
 import { openFeedbackForm, openRequestTeamMakerForm } from '@/hooks/useOpenWindow';
 import ScrollObserver from '@/components/Observer/ScrollObserver.vue';
+import UserApi from '@/api/userApi';
 
 const router = useRouter();
 const route = useRoute();
@@ -24,6 +25,7 @@ const page = ref(1);
 onMounted(() => {
   setCurrentTag(String(route.query.tag || ''));
   fetchAllTag();
+  UserApi.findUser();
 });
 
 const loadMore = async (el: Element) => {

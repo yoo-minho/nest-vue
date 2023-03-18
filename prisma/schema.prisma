@@ -14,10 +14,12 @@ datasource db {
 }
 
 model User {
-  id     String  @id @unique @db.VarChar(100)
-  email  String  @unique @db.VarChar(100)
-  name   String  @db.VarChar(50)
-  groups Group[]
+  id           String  @id @unique @db.VarChar(100)
+  email        String? @unique @db.VarChar(100)
+  name         String  @db.VarChar(50)
+  profileImage String? @db.VarChar(500)
+  refreshToken String? @unique @db.VarChar(200)
+  groups       Group[]
 }
 
 model Group {

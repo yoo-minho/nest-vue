@@ -16,6 +16,7 @@ import Joi from 'joi';
 import { PrismaModule } from './prisma/prisma.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { JwtStrategy } from 'src/auth/jwt.strategy';
 
 @Module({
   imports: [
@@ -55,6 +56,7 @@ import { AuthModule } from './auth/auth.module';
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,
     },
+    JwtStrategy,
   ],
 })
 export class AppModule {}

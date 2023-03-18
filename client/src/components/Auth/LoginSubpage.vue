@@ -10,8 +10,9 @@ const { closeLoginSubpage } = subpageStore;
 const $q = useQuasar();
 const logo = new URL(`../../assets/dark_logo.png`, import.meta.url).toString();
 
-const loginKakao = (e: MouseEvent) => {
-  $q.notify({ type: 'info', message: '준비중입니다!' });
+const tryLoginKakao = (e: MouseEvent) => {
+  location.href = '/api/auth/kakao';
+  // $q.notify({ type: 'info', message: '준비중입니다!' });
   return e;
   // Kakao.Auth.authorize({
   //   redirectUri: '/oauth',
@@ -22,7 +23,7 @@ const loginKakao = (e: MouseEvent) => {
   <AuthLayout title="로그인" @close="closeLoginSubpage()">
     <q-page class="q-pa-lg">
       <ul class="q-ma-none">
-        <li v-for="(api, i) in ApiArr" :key="i" class="button-wrap" @click="loginKakao">
+        <li v-for="(api, i) in ApiArr" :key="i" class="button-wrap" @click="tryLoginKakao">
           <div class="contents" :style="api.style">
             <img width="24" height="24" :src="api.src" :alt="api.alt" />
             <span class="label">{{ api.label }}</span>
