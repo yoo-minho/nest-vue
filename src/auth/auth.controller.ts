@@ -15,8 +15,7 @@ export class AuthController {
   @Get('/kakao')
   @UseGuards(KaKaoAuthGuard)
   async loginKakao(@Req() req: Request, @Res() res: Response) {
-    res.status(200);
-    return;
+    res.status(200).end();
   }
 
   @Get('/kakao/redirect')
@@ -25,8 +24,17 @@ export class AuthController {
     const user = req.user as Prisma.UserCreateInput;
     const payload = { id: user.id };
     const { accessToken, refreshToken } = this.authService.getToken(payload);
-    res.cookie('access-token', accessToken, { httpOnly: true });
+    res.cookie('access-token', accessToken);
     await this.userService.createUser({ ...user, refreshToken });
-    res.redirect('/');
+    res.send('<script>self.close()</script>');
+    res.status(200).end();
+  }
+
+  @Get('/logout')
+  async logoutKakao(@Req() req: Request, @Res() res: Response) {
+    const id = this.authService.getIdByToken(req.cookies['access-token']);
+    res.clearCookie('access-token');
+    this.userService.updateUserToken({ id, token: '' });
+    res.status(200).end();
   }
 }

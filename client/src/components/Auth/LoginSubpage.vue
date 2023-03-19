@@ -2,12 +2,10 @@
 import AuthLayout from '@/layouts/AuthLayout.vue';
 import { useSubpageStore } from '@/stores/subpage';
 import ApiArr from '@/data/login-api.json';
-import { useQuasar } from 'quasar';
 
 const subpageStore = useSubpageStore();
 const { closeLoginSubpage } = subpageStore;
 
-const $q = useQuasar();
 const logo = new URL(`../../assets/dark_logo.png`, import.meta.url).toString();
 
 const tryLoginKakao = (e: MouseEvent) => {

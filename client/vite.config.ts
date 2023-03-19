@@ -9,11 +9,20 @@ export default defineConfig((config) => {
   const { mode } = config;
   const isDev = mode === 'development';
   return {
+    server: {
+      port: 8090,
+      proxy: {
+        '/api/': {
+          target: 'http://localhost:5000/',
+          changeOrigin: true,
+        },
+      },
+    },
     define: {
       'process.env': {
         ...config,
         isDev,
-        ...{ baseUrl: isDev ? 'http://localhost:5000/api' : '/api' },
+        ...{ baseUrl: '/api' },
       },
     },
     plugins: [

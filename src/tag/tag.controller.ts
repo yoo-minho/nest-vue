@@ -1,8 +1,6 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 import { TagService } from './tag.service';
 
-@UseGuards(JwtAuthGuard)
 @Controller('tag')
 export class TagController {
   constructor(private readonly tagService: TagService) {}

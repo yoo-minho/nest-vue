@@ -18,6 +18,8 @@ export class UserController {
 
   @Get()
   async findById(@Req() req: Request) {
+    const accessToken = req.cookies['access-token'];
+    if (!accessToken) return {};
     const id = this.authService.getIdByToken(req.cookies['access-token']);
     const response = await this.userService.userById({ id });
     const { refreshToken, ...data } = response;

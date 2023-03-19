@@ -2,15 +2,21 @@
 import { useRouter, useRoute } from 'vue-router';
 import { useSubpageStore } from '@/stores/subpage';
 import { useGroupStore } from '@/stores/group';
+import { useUserStore } from '@/stores/user';
 import { showBottomSheet } from '@/hooks/useSnsBottomSheeet';
 import { storeToRefs } from 'pinia';
 import { QScrollArea } from 'quasar';
+import { onMounted } from 'vue';
 
 const subpageStore = useSubpageStore();
 const { openSettingMain, openGroupEditor, openLoginSubpage } = subpageStore;
 const groupStore = useGroupStore();
 const { currentHeaderTitle, isOrginalHeader, currentGroup } = storeToRefs(groupStore);
 const { initGroupData, initLinks } = groupStore;
+const userStore = useUserStore();
+const { fetchUser } = userStore;
+const { isExistsUser, profileImage } = storeToRefs(userStore);
+
 const router = useRouter();
 const route = useRoute();
 
@@ -29,6 +35,10 @@ interface HeaderOption {
 const props = defineProps<HeaderOption>();
 const isDev = process.env.mode === 'development';
 const isDefaultType = props.type === 'DEFAULT';
+
+onMounted(() => {
+  fetchUser();
+});
 
 const reload = () => {
   if (route.name === 'Group') {
@@ -90,7 +100,14 @@ const logoPath = new URL(`../../assets/white_logo.png`, import.meta.url).toStrin
         dense
         @click="showBottomSheet({ title: currentGroup.title, description: currentGroup.description })"
       />
-      <q-btn v-if="isDefaultType" icon="account_circle" flat round dense @click="_openLoginSubpage" />
+      <div v-if="isDefaultType">
+        <q-btn v-if="isExistsUser" flat round dense @click="_openLoginSubpage">
+          <q-avatar size="24px">
+            <img :src="profileImage" />
+          </q-avatar>
+        </q-btn>
+        <q-btn v-else icon="account_circle" flat round dense @click="_openLoginSubpage" />
+      </div>
       <q-btn v-if="isDefaultType" icon="menu" flat round dense @click="_openSettingMain" />
       <q-btn v-if="save" flat round dense icon="done" @click="save" />
     </q-toolbar>
