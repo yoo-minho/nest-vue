@@ -100,16 +100,15 @@ const logoPath = new URL(`../../assets/white_logo.png`, import.meta.url).toStrin
         dense
         @click="showBottomSheet({ title: currentGroup.title, description: currentGroup.description })"
       />
-      <div v-if="isDefaultType">
-        <q-btn v-if="isExistsUser" flat round dense @click="_openLoginSubpage">
-          <q-avatar size="24px">
+      <template v-if="isDefaultType">
+        <q-btn v-if="isExistsUser" flat round @click="_openSettingMain">
+          <q-avatar size="28px">
             <img :src="profileImage" />
           </q-avatar>
         </q-btn>
-        <q-btn v-else icon="account_circle" flat round dense @click="_openLoginSubpage" />
-      </div>
-      <q-btn v-if="isDefaultType" icon="menu" flat round dense @click="_openSettingMain" />
-      <q-btn v-if="save" flat round dense icon="done" @click="save" />
+        <q-btn v-else icon="account_circle" flat round @click="_openSettingMain" />
+      </template>
+      <q-btn v-if="save" flat round icon="done" @click="save" />
     </q-toolbar>
   </q-header>
 </template>
