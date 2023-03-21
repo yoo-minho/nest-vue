@@ -6,8 +6,13 @@ import { storeToRefs } from 'pinia';
 export const routes = [
   {
     path: '/',
-    name: 'Group',
-    component: () => import('@/views/GroupMain/GroupMain.vue'),
+    name: 'Team',
+    component: () => import('@/views/TeamPage/TeamPage.vue'),
+  },
+  {
+    path: '/posts',
+    name: 'Post',
+    component: () => import('@/views/PostPage/PostPage.vue'),
   },
   {
     path: '/@:domain',
@@ -96,7 +101,7 @@ router.beforeEach((to, from, next) => {
     },
   ];
 
-  if (to.name === 'Group') {
+  if (to.name === 'Team') {
     initHeaderTitle();
     initGroupData();
   }

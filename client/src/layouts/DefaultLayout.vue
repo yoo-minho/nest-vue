@@ -17,7 +17,7 @@ const subpageStore = useSubpageStore();
 const { isOpenGroupEditor, isOpenLinkEditor, isOpenSettingSubpage, isOpenDataSubpage, isOpenLoginSubpage } =
   storeToRefs(subpageStore);
 
-const groupMain = String(route.name) === 'Group';
+const groupMain = String(route.name) === 'Team';
 const groupDetail = String(route.name).includes('GroupDetail');
 const isStatView = (routeName: string) => routeName === 'GroupDetailStat';
 const groupDetailStat = ref(isStatView(String(route.name)));
@@ -33,7 +33,7 @@ const scrollAreaRef = ref();
 </script>
 
 <template>
-  <q-layout>
+  <q-layout style="min-height: 0">
     <Teleport to="#subpage">
       <transition-group name="subpage">
         <GroupEditor v-if="isOpenGroupEditor" />

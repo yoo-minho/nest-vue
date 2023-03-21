@@ -20,7 +20,7 @@ const router = useRouter();
 const props = defineProps<{ loading: boolean }>();
 const moveTagGroup = (tagName: string) => {
   setCurrentTag(tagName);
-  router.push({ name: 'Group' });
+  router.push({ name: 'Team' });
 };
 </script>
 
