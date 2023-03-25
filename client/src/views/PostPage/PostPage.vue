@@ -1,12 +1,17 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { usePostStore } from '@/stores/post';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
+import { useTagStore } from '@/stores/tag';
 import ScrollObserver from '@/components/Observer/ScrollObserver.vue';
-import SearchEmpty from '@/components/Empty/SearchEmpty.vue';
 import PostListItem from '@/components/PostListItem.vue';
 import PostListSkeletonItem from '@/components/PostListSkeletonItem.vue';
 import PostTagList from './components/PostTagList.vue';
+
+import { POST_TAG } from '@/constants';
+
+const tagStore = useTagStore();
+const { currentTag, isTotalTag } = storeToRefs(tagStore);
 
 const postStore = usePostStore();
 const { fetchSearchPosts } = postStore;
@@ -28,7 +33,22 @@ const loadMore = async (el: Element) => {
     el.innerHTML = '';
   }
 };
-console.log('asdsad');
+
+watch(
+  () => currentTag.value,
+  () => {
+    postLoading.value = true;
+    page.value = 1;
+
+    searchWord.value = isTotalTag.value ? '' : POST_TAG.find((v) => v.label === currentTag.value)?.value || '';
+
+    console.log(searchWord.value);
+
+    fetchSearchPosts();
+    page.value++;
+  },
+  { immediate: true },
+);
 </script>
 
 <template>

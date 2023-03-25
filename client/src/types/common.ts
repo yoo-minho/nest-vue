@@ -38,7 +38,6 @@ export type Tag = {
   index?: number;
   id: string;
   name: string;
-  value?: string;
   count?: number;
 };
 export type RssItem = {

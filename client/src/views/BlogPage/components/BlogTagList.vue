@@ -6,6 +6,7 @@ import { onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 
 import { getImage } from '@/util/ImageUtil';
+import { BLOG_TAG } from '@/constants';
 
 const route = useRoute();
 const $q = useQuasar();
@@ -24,6 +25,10 @@ onMounted(() => {
   setCurrentTag(String(route.query.tag || ''));
   fetchAllBlogTag();
 });
+
+const getLabel = (type: string) => {
+  return BLOG_TAG.find((v) => v.type === type)?.label || 'All';
+};
 </script>
 
 <template>
@@ -50,7 +55,7 @@ onMounted(() => {
             <q-avatar v-if="tag.name !== 'All'" size="18px">
               <q-img :src="getImage(`platform/${tag.name.toLowerCase()}.png`)" :no-transition="true" />
             </q-avatar>
-            {{ tag.name }}
+            {{ getLabel(tag.name) }}
           </q-chip>
         </template>
       </div>

@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { Tag } from '../types/common';
 import GroupApi from '../api/groupApi';
-import { POST_TAG } from '@/data/post-tag';
+import { POST_TAG, BLOG_TAG } from '@/constants';
 
 const totalTag = 'All';
 
@@ -23,14 +23,12 @@ export const useTagStore = defineStore('tag', {
       this.tagsLoading = false;
     },
     async fetchAllBlogTag() {
-      const { data } = await GroupApi.count();
-      const { linkCountByPlatform: linkCountBy } = data.value;
-      this.tags = linkCountBy.map((v: any) => ({ id: v.type, name: v.type, count: v._count }));
+      this.tags = BLOG_TAG.map((v) => ({ id: v.type, name: v.type }));
       this.tagsLoading = false;
     },
     async fetchAllPostTag() {
-      console.log({ POST_TAG });
-      this.tags = POST_TAG.map((v) => ({ id: v.label, name: v.label, value: v.value }));
+      this.tags = POST_TAG.map((v) => ({ id: v.label, name: v.label }));
+      this.tagsLoading = false;
     },
     setCurrentTag(tag?: string) {
       this.currentTag = tag || totalTag;
