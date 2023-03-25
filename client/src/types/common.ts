@@ -34,6 +34,13 @@ export type GroupTag = {
   groupId: string;
   name: string;
 };
+export type Tag = {
+  index?: number;
+  id: string;
+  name: string;
+  value?: string;
+  count?: number;
+};
 export type RssItem = {
   created: number;
   description?: string;

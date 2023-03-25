@@ -103,15 +103,15 @@ export const usePostStore = defineStore('post', {
       return data.value.length > 0;
     },
     async fetchSearchPosts(page?: number) {
-      if (!this.searchWord || this.searchWord.length < 1) {
-        this.postLoading = false;
-        this.searchKeyword = '';
-        return;
-      }
+      // if (!this.searchWord || this.searchWord.length < 1) {
+      //   this.postLoading = false;
+      //   this.searchKeyword = '';
+      //   return;
+      // }
       this.postLoading = true;
       const isFirstPage = !page || page === 1;
       const { data } = await PostAPI.searchPosts(currentGroup.value.links, this.searchWord, page);
-      await delay(1000);
+      // await delay(1000);
       const searchWords = this.searchWord.split('|').filter((word) => !!word);
       const highlight = (t: string) => {
         searchWords.forEach((word) => (t = t.replace(new RegExp(word, 'ig'), (v) => `<mark>${v}</mark>`)));

@@ -37,17 +37,13 @@ const refresh = async (done: () => void) => {
 </script>
 
 <template>
-  <DefaultLayout>
-    <q-pull-to-refresh @refresh="refresh">
-      <GroupDetailTop :loading="groupLoading" />
-      <GroupDetailTab />
-      <router-view v-slot="{ Component, route }" :links="links" :loading="groupLoading">
-        <transition name="tab">
-          <component :is="Component" :key="route.path" />
-        </transition>
-      </router-view>
-    </q-pull-to-refresh>
-  </DefaultLayout>
+  <GroupDetailTop :loading="groupLoading" />
+  <GroupDetailTab />
+  <router-view v-slot="{ Component, route }" :links="links" :loading="groupLoading">
+    <transition name="tab">
+      <component :is="Component" :key="route.path" />
+    </transition>
+  </router-view>
 </template>
 
 <style scoped>

@@ -1,10 +1,20 @@
 <script setup lang="ts">
 import { useQuasar } from 'quasar';
+import { storeToRefs } from 'pinia';
 import { ref, watch, onMounted } from 'vue';
 import { showBottomSheet } from '@/hooks/useInstallBottomSheeet';
+import { useSubpageStore } from '@/stores/subpage';
+import HeaderItem from '@/components/Menu/HeaderItem.vue';
+import { useRoute } from 'vue-router';
+import SettingSubpage from './components/Setting/SettingSubpage.vue';
 
 const $q = useQuasar();
 const isDarkActive = ref($q.dark.isActive);
+const tab = ref();
+const subpageStore = useSubpageStore();
+const { isOpenGroupEditor, isOpenLinkEditor, isOpenSettingSubpage, isOpenDataSubpage, isOpenLoginSubpage } =
+  storeToRefs(subpageStore);
+const route = useRoute();
 
 watch(
   () => $q.dark.isActive,
@@ -12,6 +22,10 @@ watch(
 );
 
 onMounted(() => {
+  if (window.location.pathname === '/') {
+    setTimeout(() => (tab.value = 't_0'), 0);
+  }
+
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     showBottomSheet(e as BeforeInstallPromptEvent);
@@ -20,18 +34,61 @@ onMounted(() => {
     console.log('PWA was installed');
   });
 });
+
+const refresh = async (done: () => void) => {
+  // await scrapPostsAndAction(); //post
+  done();
+};
+
+const isInTeam = () => String(route.name).includes('GroupDetail');
+
+console.log('onmoun22', tab.value);
+const scrollAreaRef = ref();
 </script>
 
 <template>
   <div :class="`max-width ${isDarkActive ? 'bg-grey-9' : 'bg-white'}`">
-    <div id="subpage"></div>
-    <router-view v-slot="{ Component }">
-      <transition>
-        <keep-alive include="GroupMain">
-          <component :is="Component" />
-        </keep-alive>
-      </transition>
-    </router-view>
+    <q-layout style="min-height: 0">
+      <div id="subpage">
+        <transition-group name="subpage">
+          <GroupEditor v-if="isOpenGroupEditor" />
+          <LinkEditor v-if="isOpenLinkEditor" />
+          <SettingSubpage v-if="isOpenSettingSubpage" />
+          <DataSubpage v-if="isOpenDataSubpage" />
+          <LoginSubpage v-if="isOpenLoginSubpage" />
+        </transition-group>
+      </div>
+      <q-page-container style="padding: 0">
+        <q-pull-to-refresh @refresh="refresh">
+          <q-scroll-area
+            ref="scrollAreaRef"
+            class="max-width without-header"
+            :visible="false"
+            style="height: 100vh; overflow-x: hidden"
+            :thumb-style="{ zIndex: '999999' }"
+          >
+            <HeaderItem type="DEFAULT" :editor="false" :refresh="false" :fix="false" style="position: relative" />
+            <div v-if="!isInTeam()" style="position: sticky; top: 0; z-index: 1">
+              <q-tabs v-model="tab" class="bg-dark text-white shadow-2" align="justify">
+                <q-route-tab to="/" icon="workspaces_outline" style="flex: 1" />
+                <q-route-tab to="blogs" icon="rss_feed" style="flex: 1" />
+                <q-route-tab to="posts" icon="local_fire_department" style="flex: 1" />
+                <q-route-tab to="" icon="bookmark" style="flex: 1" />
+                <q-route-tab to="" icon="account_circle" style="flex: 1" />
+              </q-tabs>
+            </div>
+            <q-layout style="min-height: 0">
+              <q-page-container style="min-height: 0">
+                <router-view />
+              </q-page-container>
+              <q-page-scroller position="bottom-right" :scroll-offset="150" :offset="[18, 18]">
+                <q-btn fab icon="keyboard_arrow_up" color="green-4" />
+              </q-page-scroller>
+            </q-layout>
+          </q-scroll-area>
+        </q-pull-to-refresh>
+      </q-page-container>
+    </q-layout>
   </div>
 </template>
 

@@ -1,11 +1,13 @@
-import { defineStore } from 'pinia';
-import { Group, GroupTag, Link, TabType } from '../types/common';
+import { defineStore, storeToRefs } from 'pinia';
+import { Group, Link, TabType } from '../types/common';
 import GroupApi from '../api/groupApi';
 import { getDateString, isSameDate } from '@/plugin/dayjs';
 import { scrapOGS } from '@/hooks/useOgs';
+import { useTagStore } from '@/stores/tag';
 
-const totalTag = 'All';
 const appName = 'teamlog';
+// const tagStore = useTagStore();
+// const { currentTag, isTotalTag } = storeToRefs(tagStore);
 
 export const useGroupStore = defineStore('group', {
   state: () => ({
@@ -14,17 +16,11 @@ export const useGroupStore = defineStore('group', {
     groups: [] as Group[],
     groupLoading: true,
     currentGroup: {} as Group,
-    tagsLoading: true,
-    tags: [] as GroupTag[],
-    currentTag: totalTag,
     selectTab: '' as TabType,
     currentHeaderTitle: appName,
   }),
   getters: {
     linkCountMessage: ({ linksOnEditor: links }) => (links.length > 0 ? `(${links.length}/10)` : ''),
-    isTotalTag: (state) => state.currentTag === totalTag,
-    NavTags: ({ tags }) => [{ index: -1, groupId: '', name: totalTag }, ...tags],
-    TagNames: ({ tags }) => tags.map(({ name }) => name.toLowerCase()),
     minScrapAt: ({ currentGroup }) => {
       if (!currentGroup.links) return;
       return (
@@ -87,19 +83,13 @@ export const useGroupStore = defineStore('group', {
       this.currentGroup = {} as Group;
     },
     async fetchGroups(page?: number) {
+      const tagStore = useTagStore();
+      const { currentTag, isTotalTag } = storeToRefs(tagStore);
       const isFirstPage = !page || page === 1;
-      const { data } = await GroupApi.findAll(this.isTotalTag ? { page } : { tag: this.currentTag, page });
+      const { data } = await GroupApi.findAll(isTotalTag.value ? { page } : { tag: currentTag.value, page });
       this.groups = isFirstPage ? data.value : [...this.groups, ...data.value];
       this.groupsLoading = false;
       return data.value.length > 0;
-    },
-    async fetchAllTag() {
-      const { data } = await GroupApi.findAllTag();
-      this.tags = data.value;
-      this.tagsLoading = false;
-    },
-    setCurrentTag(tag?: string) {
-      this.currentTag = tag || totalTag;
     },
     async fetchGroup(domain: string) {
       if (this.currentGroup.domain === domain) {

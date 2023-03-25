@@ -15,6 +15,11 @@ export const routes = [
     component: () => import('@/views/PostPage/PostPage.vue'),
   },
   {
+    path: '/blogs',
+    name: 'Blog',
+    component: () => import('@/views/BlogPage/BlogPage.vue'),
+  },
+  {
     path: '/@:domain',
     name: 'GroupDetail',
     props: true,

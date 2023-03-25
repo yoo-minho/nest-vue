@@ -1,10 +1,34 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
+import { Prisma, Link } from '@prisma/client';
 import { LinkItemDto } from 'src/group/dto/link-item.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class LinkService {
   constructor(private prisma: PrismaService) {}
+
+  async links(params: {
+    skip?: number;
+    take?: number;
+    cursor?: Prisma.LinkWhereUniqueInput;
+    where?: Prisma.LinkWhereInput;
+    orderBy?: Prisma.LinkOrderByWithRelationInput;
+  }): Promise<Link[]> {
+    const { skip, take, cursor, where, orderBy } = params;
+    return this.prisma.link.findMany({
+      include: {
+        groups: {
+          select: { group: true },
+          orderBy: { group: { lastPostCreatedAt: 'desc' } },
+        },
+      },
+      skip,
+      take,
+      cursor,
+      where,
+      orderBy,
+    });
+  }
 
   async update(id: number) {
     try {

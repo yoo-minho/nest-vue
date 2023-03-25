@@ -64,7 +64,7 @@ export class PostController {
     @Query('page') page: number,
     @Query('linkIds', numbersPipe) linkIds?: number[],
   ) {
-    if (q === '') return;
+    // if (q === '') return;
     page = page || 1;
     const qArr = q
       .split('|')

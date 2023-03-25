@@ -1,30 +1,24 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
+import { ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
-
-import { delay } from '@/util/CommUtil';
-
 import { useGroupStore } from '@/stores/group';
-import DefaultLayout from '@/layouts/DefaultLayout.vue';
-import GroupMainLoader from '@/components/Loader/GroupMainLoader.vue';
-import GroupCard from './components/GroupCard.vue';
-import GroupTagList from './components/GroupTagList.vue';
-import GroupAdBanner from './components/GroupAdBanner.vue';
+import { useTagStore } from '@/stores/tag';
+import TeamListItem from './components/TeamListItem.vue';
 import { openFeedbackForm, openRequestTeamMakerForm } from '@/hooks/useOpenWindow';
 import ScrollObserver from '@/components/Observer/ScrollObserver.vue';
+import AdBanner from '@/components/AdBanner.vue';
+import TeamListSkeletonItem from './components/TeamListSkeletonItem.vue';
+import TeamTagList from './components/TeamTagList.vue';
 
 const router = useRouter();
-const route = useRoute();
 const groupStore = useGroupStore();
-const { fetchGroups, fetchAllTag, setCurrentTag } = groupStore;
-const { groups, groupsLoading, currentTag, isTotalTag } = storeToRefs(groupStore);
-const page = ref(1);
+const { fetchGroups } = groupStore;
+const { groups, groupsLoading } = storeToRefs(groupStore);
+const tagStore = useTagStore();
+const { currentTag } = storeToRefs(tagStore);
 
-onMounted(() => {
-  setCurrentTag(String(route.query.tag || ''));
-  fetchAllTag();
-});
+const page = ref(1);
 
 const loadMore = async (el: Element) => {
   const existsPosts = await fetchGroups(page.value);
@@ -46,25 +40,19 @@ watch(
   { immediate: true },
 );
 
-const refresh = async (done: () => void) => {
-  page.value = 1;
-  await Promise.all([delay(1000), fetchGroups()]);
-  page.value++;
-  done();
-};
-
 const moveSpecialPage = () => {
   router.push({ name: 'GroupSearch', query: { keyword: '회고' } });
 };
 </script>
 
 <template>
-  <q-page>
+  <TeamTagList />
+  <q-page class="q-mt-sm" style="min-height: 0">
     <template v-if="groupsLoading">
-      <GroupMainLoader v-for="i in 10" :key="i" />
+      <TeamListSkeletonItem v-for="i in 10" :key="i" />
     </template>
     <template v-else>
-      <GroupAdBanner
+      <!-- <AdBanner
         v-if="isTotalTag"
         banner="안내"
         title="<회고> 글을 모아보고 싶다면 클릭!"
@@ -72,9 +60,9 @@ const moveSpecialPage = () => {
         color="green-3"
         text-color="white"
         @click-banner="moveSpecialPage()"
-      />
-      <GroupCard v-for="group in groups.slice(0, 5)" :key="group.id" :group="group" />
-      <GroupAdBanner
+      /> -->
+      <TeamListItem v-for="group in groups.slice(0, 5)" :key="group.id" :group="group" />
+      <!-- <AdBanner
         v-if="isTotalTag"
         banner="안내"
         title="<팀블로그> 만들어보고 싶다면 클릭!"
@@ -82,9 +70,9 @@ const moveSpecialPage = () => {
         color="green-3"
         text-color="white"
         @click-banner="openRequestTeamMakerForm()"
-      />
-      <GroupCard v-for="group in groups.slice(5, 10)" :key="group.id" :group="group" />
-      <GroupAdBanner
+      /> -->
+      <TeamListItem v-for="group in groups.slice(5, 10)" :key="group.id" :group="group" />
+      <!-- <AdBanner
         v-if="isTotalTag"
         banner="문의"
         title="<의견,오류> 문의하고 싶다면 클릭!"
@@ -92,9 +80,9 @@ const moveSpecialPage = () => {
         color="green-4"
         text-color="white"
         @click-banner="openFeedbackForm()"
-      />
-      <GroupCard v-for="group in groups.slice(10, 15)" :key="group.id" :group="group" />
-      <GroupAdBanner
+      /> -->
+      <TeamListItem v-for="group in groups.slice(10, 15)" :key="group.id" :group="group" />
+      <!-- <AdBanner
         v-if="isTotalTag"
         banner="광고"
         title="<광고,제휴> 문의하고 싶다면 클릭!"
@@ -102,10 +90,10 @@ const moveSpecialPage = () => {
         color="yellow"
         text-color="black"
         @click-banner="openFeedbackForm()"
-      />
-      <GroupCard v-for="group in groups.slice(15)" :key="group.id" :group="group" />
+      /> -->
+      <TeamListItem v-for="group in groups.slice(15)" :key="group.id" :group="group" />
       <ScrollObserver @trigger-intersected="loadMore">
-        <GroupMainLoader />
+        <TeamListSkeletonItem />
       </ScrollObserver>
     </template>
   </q-page>

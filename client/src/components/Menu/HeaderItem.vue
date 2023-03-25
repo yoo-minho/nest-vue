@@ -9,7 +9,7 @@ import { QScrollArea } from 'quasar';
 import { onMounted } from 'vue';
 
 const subpageStore = useSubpageStore();
-const { openSettingMain, openGroupEditor, openLoginSubpage } = subpageStore;
+const { openSettingMain, openGroupEditor } = subpageStore;
 const groupStore = useGroupStore();
 const { currentHeaderTitle, isOrginalHeader, currentGroup } = storeToRefs(groupStore);
 const { initGroupData, initLinks } = groupStore;
@@ -41,12 +41,12 @@ onMounted(() => {
 });
 
 const reload = () => {
-  if (route.name === 'Group') {
+  if (route.name === 'Team') {
     router.go(0);
     return;
   }
   if (isOrginalHeader.value) {
-    router.replace({ name: 'Group', query: {} });
+    router.replace({ name: 'Team', query: {} });
   } else {
     props.scrollAreaRef?.setScrollPosition('vertical', 0, 300);
   }
@@ -65,10 +65,6 @@ const _openGroupFixEditor = () => {
 const _openSettingMain = () => {
   router.push({ hash: '#Setting' });
   openSettingMain();
-};
-const _openLoginSubpage = () => {
-  router.push({ hash: '#Login' });
-  openLoginSubpage();
 };
 const logoPath = new URL(`../../assets/white_logo.png`, import.meta.url).toString();
 </script>
