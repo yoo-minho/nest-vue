@@ -65,13 +65,11 @@
     <h1 class="visuallyhidden">팀로그(teamlog) - 팀으로 글쓰기를 시작할때 최고의 선택</h1>
     <div id="app"></div>
 
-    <script
-      src="https://t1.kakaocdn.net/kakao_js_sdk/2.0.0/kakao.min.js"
-      integrity="sha384-PFHeU/4gvSH8kpvhrigAPfZGBDPs372JceJq3jAXce11bVA6rMvGWzvP4fMQuBGL"
-      crossorigin="anonymous"
-    ></script>
     <script>
-      Kakao.init('e9c455e800755b2e3bb767bdedbf372d');
+      if (location.search.includes('?code=')) {
+        document.cookie = `access-token=${location.search.replace('?code=', '')}`;
+        self.close();
+      }
     </script>
     <script type="module" src="/src/main.ts"></script>
   </body>
