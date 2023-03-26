@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { useGroupStore } from '@/stores/group';
 import { useTagStore } from '@/stores/tag';
@@ -10,8 +10,10 @@ import ScrollObserver from '@/components/Observer/ScrollObserver.vue';
 import AdBanner from '@/components/AdBanner.vue';
 import TeamListSkeletonItem from './components/TeamListSkeletonItem.vue';
 import TeamTagList from './components/TeamTagList.vue';
+import ScrollLayout from '@/layouts/ScrollLayout.vue';
 
 const router = useRouter();
+const route = useRoute();
 const groupStore = useGroupStore();
 const { fetchGroups } = groupStore;
 const { groups, groupsLoading } = storeToRefs(groupStore);
@@ -39,20 +41,19 @@ watch(
   },
   { immediate: true },
 );
-
-const moveSpecialPage = () => {
-  router.push({ name: 'GroupSearch', query: { keyword: '회고' } });
-};
 </script>
 
 <template>
-  <TeamTagList />
-  <q-page class="q-mt-sm" style="min-height: 0">
-    <template v-if="groupsLoading">
-      <TeamListSkeletonItem v-for="i in 10" :key="i" />
-    </template>
-    <template v-else>
-      <!-- <AdBanner
+  <ScrollLayout>
+    <router-view></router-view>
+    <template v-if="route.name === 'Team'">
+      <TeamTagList />
+      <q-page class="q-mt-sm" style="min-height: 0">
+        <template v-if="groupsLoading">
+          <TeamListSkeletonItem v-for="i in 10" :key="i" />
+        </template>
+        <template v-else>
+          <!-- <AdBanner
         v-if="isTotalTag"
         banner="안내"
         title="<회고> 글을 모아보고 싶다면 클릭!"
@@ -61,8 +62,8 @@ const moveSpecialPage = () => {
         text-color="white"
         @click-banner="moveSpecialPage()"
       /> -->
-      <TeamListItem v-for="group in groups.slice(0, 5)" :key="group.id" :group="group" />
-      <!-- <AdBanner
+          <TeamListItem v-for="group in groups.slice(0, 5)" :key="group.id" :group="group" />
+          <!-- <AdBanner
         v-if="isTotalTag"
         banner="안내"
         title="<팀블로그> 만들어보고 싶다면 클릭!"
@@ -71,8 +72,8 @@ const moveSpecialPage = () => {
         text-color="white"
         @click-banner="openRequestTeamMakerForm()"
       /> -->
-      <TeamListItem v-for="group in groups.slice(5, 10)" :key="group.id" :group="group" />
-      <!-- <AdBanner
+          <TeamListItem v-for="group in groups.slice(5, 10)" :key="group.id" :group="group" />
+          <!-- <AdBanner
         v-if="isTotalTag"
         banner="문의"
         title="<의견,오류> 문의하고 싶다면 클릭!"
@@ -81,8 +82,8 @@ const moveSpecialPage = () => {
         text-color="white"
         @click-banner="openFeedbackForm()"
       /> -->
-      <TeamListItem v-for="group in groups.slice(10, 15)" :key="group.id" :group="group" />
-      <!-- <AdBanner
+          <TeamListItem v-for="group in groups.slice(10, 15)" :key="group.id" :group="group" />
+          <!-- <AdBanner
         v-if="isTotalTag"
         banner="광고"
         title="<광고,제휴> 문의하고 싶다면 클릭!"
@@ -91,10 +92,12 @@ const moveSpecialPage = () => {
         text-color="black"
         @click-banner="openFeedbackForm()"
       /> -->
-      <TeamListItem v-for="group in groups.slice(15)" :key="group.id" :group="group" />
-      <ScrollObserver @trigger-intersected="loadMore">
-        <TeamListSkeletonItem />
-      </ScrollObserver>
+          <TeamListItem v-for="group in groups.slice(15)" :key="group.id" :group="group" />
+          <ScrollObserver @trigger-intersected="loadMore">
+            <TeamListSkeletonItem />
+          </ScrollObserver>
+        </template>
+      </q-page>
     </template>
-  </q-page>
+  </ScrollLayout>
 </template>

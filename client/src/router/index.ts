@@ -8,50 +8,53 @@ export const routes = [
     path: '/',
     name: 'Team',
     component: () => import('@/views/TeamPage/TeamPage.vue'),
-  },
-  {
-    path: '/posts',
-    name: 'Post',
-    component: () => import('@/views/PostPage/PostPage.vue'),
-  },
-  {
-    path: '/blogs',
-    name: 'Blog',
-    component: () => import('@/views/BlogPage/BlogPage.vue'),
-  },
-  {
-    path: '/noti',
-    name: 'Noti',
-    component: () => import('@/views/NotiPage/NotiPage.vue'),
-  },
-  {
-    path: '/my',
-    name: 'My',
-    component: () => import('@/views/MyPage/MyPage.vue'),
-  },
-  {
-    path: '/@:domain',
-    name: 'GroupDetail',
-    props: true,
-    component: () => import('@/views/GroupDetail/GroupDetail.vue'),
     children: [
       {
-        path: 'blogs',
-        name: 'GroupDetailLink',
-        component: () => import('@/views/GroupDetailLink/GroupDetailLink.vue'),
+        path: '/posts',
+        name: 'Post',
+        component: () => import('@/views/PostPage/PostPage.vue'),
       },
       {
-        path: '',
-        name: 'GroupDetailPost',
-        component: () => import('@/views/GroupDetailPost/GroupDetailPost.vue'),
+        path: '/blogs',
+        name: 'Blog',
+        component: () => import('@/views/BlogPage/BlogPage.vue'),
       },
       {
-        path: 'stats',
-        name: 'GroupDetailStat',
-        component: () => import('@/views/GroupDetailStat/GroupDetailStat.vue'),
+        path: '/noti',
+        name: 'Noti',
+        component: () => import('@/views/NotiPage/NotiPage.vue'),
+      },
+      {
+        path: '/my',
+        name: 'My',
+        component: () => import('@/views/MyPage/MyPage.vue'),
+      },
+      {
+        path: '/@:domain',
+        name: 'GroupDetail',
+        props: true,
+        component: () => import('@/views/GroupDetail/GroupDetail.vue'),
+        children: [
+          {
+            path: 'blogs',
+            name: 'GroupDetailLink',
+            component: () => import('@/views/GroupDetailLink/GroupDetailLink.vue'),
+          },
+          {
+            path: '',
+            name: 'GroupDetailPost',
+            component: () => import('@/views/GroupDetailPost/GroupDetailPost.vue'),
+          },
+          {
+            path: 'stats',
+            name: 'GroupDetailStat',
+            component: () => import('@/views/GroupDetailStat/GroupDetailStat.vue'),
+          },
+        ],
       },
     ],
   },
+
   {
     path: '/search',
     name: 'GroupSearch',

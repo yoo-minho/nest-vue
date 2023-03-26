@@ -6,6 +6,8 @@ import { usePostStore } from '@/stores/post';
 import DefaultLayout from '@/layouts/DefaultLayout.vue';
 import GroupDetailTab from './components/GroupDetailTab.vue';
 import GroupDetailTop from './components/GroupDetailTop.vue';
+import ScrollLayout from '@/layouts/ScrollLayout.vue';
+import InTeamHeader from '@/components/Menu/InTeamHeader.vue';
 
 const groupStore = useGroupStore();
 const { initGroupData, fetchGroup } = groupStore;
@@ -37,13 +39,16 @@ const refresh = async (done: () => void) => {
 </script>
 
 <template>
-  <GroupDetailTop :loading="groupLoading" />
-  <GroupDetailTab />
-  <router-view v-slot="{ Component, route }" :links="links" :loading="groupLoading">
-    <transition name="tab">
-      <component :is="Component" :key="route.path" />
-    </transition>
-  </router-view>
+  <InTeamHeader style="position: relative" />
+  <ScrollLayout>
+    <GroupDetailTop :loading="groupLoading" />
+    <GroupDetailTab />
+    <router-view v-slot="{ Component, route }" :links="links" :loading="groupLoading">
+      <transition name="tab">
+        <component :is="Component" :key="route.path" />
+      </transition>
+    </router-view>
+  </ScrollLayout>
 </template>
 
 <style scoped>
