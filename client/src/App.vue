@@ -4,13 +4,16 @@ import { storeToRefs } from 'pinia';
 import { ref, watch, onMounted } from 'vue';
 import { showBottomSheet } from '@/hooks/useInstallBottomSheeet';
 import { useSubpageStore } from '@/stores/subpage';
-import HeaderItem from '@/components/Menu/HeaderItem.vue';
+import { useUserStore } from '@/stores/user';
 import { useRoute } from 'vue-router';
 import SettingSubpage from './components/Setting/SettingSubpage.vue';
+import MainHeader from './components/Menu/MainHeader.vue';
 
 const $q = useQuasar();
 const isDarkActive = ref($q.dark.isActive);
-const tab = ref();
+const userStore = useUserStore();
+const { isExistsUser, profileImage, mainTab } = storeToRefs(userStore);
+const { fetchUser } = userStore;
 const subpageStore = useSubpageStore();
 const { isOpenGroupEditor, isOpenLinkEditor, isOpenSettingSubpage, isOpenDataSubpage, isOpenLoginSubpage } =
   storeToRefs(subpageStore);
@@ -23,7 +26,7 @@ watch(
 
 onMounted(() => {
   if (window.location.pathname === '/') {
-    setTimeout(() => (tab.value = 't_0'), 0);
+    setTimeout(() => (mainTab.value = 't_0'), 0);
   }
 
   window.addEventListener('beforeinstallprompt', (e) => {
@@ -33,6 +36,8 @@ onMounted(() => {
   window.addEventListener('appinstalled', () => {
     console.log('PWA was installed');
   });
+
+  fetchUser();
 });
 
 const refresh = async (done: () => void) => {
@@ -41,9 +46,6 @@ const refresh = async (done: () => void) => {
 };
 
 const isInTeam = () => String(route.name).includes('GroupDetail');
-
-console.log('onmoun22', tab.value);
-const scrollAreaRef = ref();
 </script>
 
 <template>
@@ -67,14 +69,21 @@ const scrollAreaRef = ref();
             style="height: 100vh; overflow-x: hidden"
             :thumb-style="{ zIndex: '999999' }"
           >
-            <HeaderItem type="DEFAULT" :editor="false" :refresh="false" :fix="false" style="position: relative" />
+            <MainHeader type="DEFAULT" :editor="false" :refresh="false" :fix="false" style="position: relative" />
             <div v-if="!isInTeam()" style="position: sticky; top: 0; z-index: 1">
-              <q-tabs v-model="tab" class="bg-dark text-white shadow-2" align="justify">
+              <q-tabs v-model="mainTab" class="bg-dark text-white shadow-2" align="justify">
                 <q-route-tab to="/" icon="workspaces_outline" style="flex: 1" />
-                <q-route-tab to="blogs" icon="rss_feed" style="flex: 1" />
-                <q-route-tab to="posts" icon="local_fire_department" style="flex: 1" />
-                <q-route-tab to="" icon="bookmark" style="flex: 1" />
-                <q-route-tab to="" icon="account_circle" style="flex: 1" />
+                <q-route-tab to="/blogs" icon="rss_feed" style="flex: 1" />
+                <q-route-tab to="/posts" icon="local_fire_department" style="flex: 1" />
+                <q-route-tab to="" icon="notifications" style="flex: 1" />
+                <q-route-tab to="/my" style="flex: 1">
+                  <q-btn v-if="isExistsUser" flat round>
+                    <q-avatar size="28px">
+                      <img :src="profileImage" />
+                    </q-avatar>
+                  </q-btn>
+                  <q-btn v-else icon="account_circle" flat round />
+                </q-route-tab>
               </q-tabs>
             </div>
             <q-layout style="min-height: 0">

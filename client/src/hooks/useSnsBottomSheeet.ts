@@ -42,9 +42,11 @@ export const showBottomSheet = ({ title, description }: { title?: string; descri
   }).onOk((action) => {
     const sharedUrl = encodeURIComponent(location.href);
     const _title = encodeURIComponent(title || '팀로그(teamlog) - 팀으로 글쓰기를 시작할때 최고의 선택');
+    const _description =
+      description || '티스토리, 미디엄, 브런치, 벨로그, 네이버블로그 상관없이 팀 블로그를 만들 수 있어요!';
     switch (action.id) {
       case 'kakao':
-        shareKakao({ title: _title, description });
+        shareKakao({ title: _title, description: _description });
         return;
       case 'facebook':
         window.open(`http://www.facebook.com/sharer/sharer.php?u=${sharedUrl}`, '', 'width=400, height=500');

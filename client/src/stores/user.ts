@@ -8,6 +8,7 @@ export const useUserStore = defineStore('user', {
     email: '',
     name: '',
     profileImage: '',
+    mainTab: '',
   }),
   getters: {
     isExistsUser: (state) => !!state.id,

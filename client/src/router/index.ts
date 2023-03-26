@@ -20,6 +20,11 @@ export const routes = [
     component: () => import('@/views/BlogPage/BlogPage.vue'),
   },
   {
+    path: '/my',
+    name: 'My',
+    component: () => import('@/views/MyPage/MyPage.vue'),
+  },
+  {
     path: '/@:domain',
     name: 'GroupDetail',
     props: true,

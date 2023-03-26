@@ -15,3 +15,10 @@ export const BLOG_TAG = [
   { type: 'YOUTUBE', label: '유튜브' },
   { type: 'RSS', label: 'RSS' },
 ];
+export const MAINTAB_LABEL = [
+  { type: 't_0', label: '팀로그' },
+  { type: 't_1', label: '블로그' },
+  { type: 't_2', label: '포스트' },
+  { type: 't_3', label: '알림' },
+  { type: 't_4', label: '나의 공간' },
+];

@@ -75,10 +75,6 @@ function _closeSettingMain() {
 <template>
   <SettingLayout title="더보기" @back="_closeSettingMain">
     <q-list padding class="rounded-borders">
-      <q-item-label header>계정</q-item-label>
-      <AccountArea />
-      <q-separator spaced />
-
       <q-item-label header>전체 카운트 통계</q-item-label>
       <div class="row q-px-md q-mb-md">
         <div v-for="(v, i) in countArray" :key="i" class="col-4">
