@@ -7,7 +7,7 @@ export class LinkController {
 
   @Get()
   findAll(@Query() { tag, page }) {
-    const PAGE_PER_COUNT = 20;
+    const PAGE_PER_COUNT = 10;
     page = page || 1;
     return this.linkService.links({
       where: { type: { equals: tag } },

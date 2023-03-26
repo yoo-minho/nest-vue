@@ -8,10 +8,15 @@ import PostAPI from '../api/postApi';
 import RssAPI from '../api/rssApi';
 import GroupAPI from '@/api/groupApi';
 import { delay } from '@/util/CommUtil';
+import { useUserStore } from './user';
+import { highlights } from '@/hooks/useHighlight';
 
 const groupStore = useGroupStore();
 const { currentGroup } = storeToRefs(groupStore);
 const { updateCurrentGroupLastPostCreatedAt, updateCurrentGroupLinksScrapAt } = groupStore;
+
+const userStore = useUserStore();
+const { searchWord } = storeToRefs(userStore);
 
 const MMM = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const day = [0, 1, 2, 3, 4, 5, 6];
@@ -26,8 +31,7 @@ export const usePostStore = defineStore('post', {
     lastLoading: false,
     countPostGroupByLinkId: [] as linkCount[],
     scrapLoading: false,
-    searchWord: '',
-    searchKeyword: '',
+    tagWord: '',
   }),
   getters: {
     titleOfPostCounting(): string[] {
@@ -105,14 +109,16 @@ export const usePostStore = defineStore('post', {
     async fetchSearchPosts(page?: number) {
       this.postLoading = true;
       const isFirstPage = !page || page === 1;
-      const { data } = await PostAPI.searchPosts(currentGroup.value.links, this.searchWord, page);
-      const searchWords = this.searchWord.split('|').filter((word) => !!word);
-      const highlight = (t: string) => {
-        searchWords.forEach((word) => (t = t.replace(new RegExp(word, 'ig'), (v) => `<mark>${v}</mark>`)));
-        return t;
-      };
-      const convData = data.value.map((v: { title: string }) => ({ ...v, title: highlight(v.title) }));
-      this.posts = isFirstPage ? convData : [...this.posts, ...convData];
+      if (isFirstPage) {
+        this.posts = [];
+      }
+      const { data } = await PostAPI.searchPosts({
+        links: currentGroup.value.links,
+        tag: this.tagWord,
+        q: searchWord.value,
+        page,
+      });
+      this.posts = [...this.posts, ...highlights(data.value, searchWord.value)] as Post[];
       this.postLoading = false;
       return data.value.length > 0;
     },

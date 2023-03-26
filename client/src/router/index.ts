@@ -20,6 +20,11 @@ export const routes = [
     component: () => import('@/views/BlogPage/BlogPage.vue'),
   },
   {
+    path: '/noti',
+    name: 'Noti',
+    component: () => import('@/views/NotiPage/NotiPage.vue'),
+  },
+  {
     path: '/my',
     name: 'My',
     component: () => import('@/views/MyPage/MyPage.vue'),
@@ -75,7 +80,7 @@ router.beforeEach((to, from, next) => {
   const { closeGroupEditor, closeLinkEditor, closeSettingMain, closeStackMain, closeLoginSubpage } = subpageStore;
 
   const groupStore = useGroupStore();
-  const { initHeaderTitle, initGroupData } = groupStore;
+  const { initGroupData } = groupStore;
 
   const subpages = [
     {
@@ -112,7 +117,6 @@ router.beforeEach((to, from, next) => {
   ];
 
   if (to.name === 'Team') {
-    initHeaderTitle();
     initGroupData();
   }
 

@@ -7,6 +7,13 @@ import { ErrorMessage, AxiosErrorType } from './error';
 import { LastPost, LinkWrap, ScrapItem } from '@/types/common';
 import { getAgoString, getDateString } from '@/plugin/dayjs';
 
+type SearchParam = {
+  links?: LinkWrap[];
+  tag?: string;
+  q?: string;
+  page?: number;
+};
+
 const getIds = (links?: LinkWrap[]) => (links ? links.map(({ link }) => link.id) : []);
 
 export default {
@@ -26,9 +33,10 @@ export default {
       throw new Error(message);
     }
   },
-  async searchPosts(links?: LinkWrap[], q?: string, page?: number) {
+  async searchPosts(props: SearchParam) {
+    const { links, tag, q, page } = props;
     try {
-      return await useAxiosGetArray('post/search', { params: { linkIds: getIds(links), q, page } });
+      return await useAxiosGetArray('post/search', { params: { linkIds: getIds(links), tag, q, page } });
     } catch (err) {
       const { message } = err as AxiosError;
       throw new Error(message);

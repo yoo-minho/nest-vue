@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { QScrollArea } from 'quasar';
 
 import UserApi from '../api/userApi';
 
@@ -9,6 +10,8 @@ export const useUserStore = defineStore('user', {
     name: '',
     profileImage: '',
     mainTab: '',
+    isSearchMode: false,
+    searchWord: '',
   }),
   getters: {
     isExistsUser: (state) => !!state.id,
@@ -21,6 +24,12 @@ export const useUserStore = defineStore('user', {
       this.name = user.value.name;
       this.profileImage = user.value.profileImage;
       return;
+    },
+    toggleSearchMode() {
+      this.isSearchMode = !this.isSearchMode;
+      if (!this.isSearchMode) {
+        this.searchWord = '';
+      }
     },
   },
 });

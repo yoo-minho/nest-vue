@@ -26,6 +26,7 @@ const titleByTab = computed(() => MAINTAB_LABEL.find((v) => v.type === mainTab.v
 <template>
   <q-header bordered class="text-white max-width">
     <q-toolbar>
+      <q-btn icon="keyboard_backspace" flat round dense @click="router.push({ name: 'Team' })" />
       <q-input
         v-if="isSearchMode"
         v-model="searchWord"
@@ -44,7 +45,7 @@ const titleByTab = computed(() => MAINTAB_LABEL.find((v) => v.type === mainTab.v
           <q-icon name="search" class="q-ma-sm" />
         </template>
       </q-input>
-      <q-toolbar-title v-else class="name">{{ titleByTab }}</q-toolbar-title>
+      <div v-else style="flex: 1"></div>
       <q-btn :icon="isSearchMode ? 'close' : 'search'" flat round dense @click="toggleSearchMode()" />
       <q-btn icon="share" flat round dense @click="showBottomSheet()" />
       <q-btn icon="menu" flat round dense @click="_openSettingMain" />

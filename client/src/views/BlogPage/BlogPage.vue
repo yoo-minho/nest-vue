@@ -2,7 +2,7 @@
 import { storeToRefs } from 'pinia';
 import { useBlogStore } from '@/stores/blog';
 import { useTagStore } from '@/stores/tag';
-import { ref, onMounted, watch } from 'vue';
+import { ref, watch } from 'vue';
 import ScrollObserver from '@/components/Observer/ScrollObserver.vue';
 import PostListSkeletonItem from '@/components/PostListSkeletonItem.vue';
 import BlogListItem from '@/components/BlogListItem.vue';
@@ -15,12 +15,6 @@ const tagStore = useTagStore();
 const { currentTag } = storeToRefs(tagStore);
 
 const page = ref(1);
-
-onMounted(() => {
-  blogsLoading.value = true;
-  fetchBlogs();
-  page.value++;
-});
 
 const loadMore = async (el: Element) => {
   const existsPosts = await fetchBlogs(page.value);
@@ -52,7 +46,7 @@ watch(
     <q-page class="q-mt-sm">
       <div class="max-width">
         <BlogListItem v-for="(blog, i) in blogs" :key="i" :link="blog" />
-        <ScrollObserver v-if="blogs.length >= 20" @trigger-intersected="loadMore">
+        <ScrollObserver v-if="blogs.length >= 10" @trigger-intersected="loadMore">
           <PostListSkeletonItem />
         </ScrollObserver>
       </div>

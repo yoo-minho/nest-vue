@@ -1,29 +1,28 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { usePostStore } from '@/stores/post';
-import { ref, onMounted, watch } from 'vue';
+import { ref, watch } from 'vue';
 import { useTagStore } from '@/stores/tag';
 import ScrollObserver from '@/components/Observer/ScrollObserver.vue';
 import PostListItem from '@/components/PostListItem.vue';
 import PostListSkeletonItem from '@/components/PostListSkeletonItem.vue';
 import PostTagList from './components/PostTagList.vue';
+import PostEmpty from './components/PostEmpty.vue';
 
 import { POST_TAG } from '@/constants';
+import { useUserStore } from '@/stores/user';
 
 const tagStore = useTagStore();
 const { currentTag, isTotalTag } = storeToRefs(tagStore);
 
+const userStore = useUserStore();
+const { searchWord } = storeToRefs(userStore);
+
 const postStore = usePostStore();
 const { fetchSearchPosts } = postStore;
-const { posts, postLoading, searchWord } = storeToRefs(postStore);
+const { posts, postLoading, tagWord } = storeToRefs(postStore);
 
 const page = ref(1);
-
-onMounted(() => {
-  postLoading.value = true;
-  fetchSearchPosts();
-  page.value++;
-});
 
 const loadMore = async (el: Element) => {
   const existsPosts = await fetchSearchPosts(page.value);
@@ -35,15 +34,11 @@ const loadMore = async (el: Element) => {
 };
 
 watch(
-  () => currentTag.value,
+  [() => currentTag.value, () => searchWord.value],
   () => {
     postLoading.value = true;
     page.value = 1;
-
-    searchWord.value = isTotalTag.value ? '' : POST_TAG.find((v) => v.label === currentTag.value)?.value || '';
-
-    console.log(searchWord.value);
-
+    tagWord.value = isTotalTag.value ? '' : POST_TAG.find((v) => v.label === currentTag.value)?.value || '';
     fetchSearchPosts();
     page.value++;
   },
@@ -53,14 +48,17 @@ watch(
 
 <template>
   <PostTagList />
-  <template v-if="postLoading && posts.length === 0">
+  <template v-if="postLoading">
     <PostListSkeletonItem v-for="i in 10" :key="i" />
+  </template>
+  <template v-if="posts.length === 0">
+    <PostEmpty />
   </template>
   <template v-else>
     <q-page class="q-mt-sm">
       <div class="max-width">
         <PostListItem v-for="(post, i) in posts" :key="i" :post="post" />
-        <ScrollObserver v-if="posts.length >= 20" @trigger-intersected="loadMore">
+        <ScrollObserver v-if="posts.length >= 10" @trigger-intersected="loadMore">
           <PostListSkeletonItem />
         </ScrollObserver>
       </div>

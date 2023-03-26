@@ -6,8 +6,6 @@ import { scrapOGS } from '@/hooks/useOgs';
 import { useTagStore } from '@/stores/tag';
 
 const appName = 'teamlog';
-// const tagStore = useTagStore();
-// const { currentTag, isTotalTag } = storeToRefs(tagStore);
 
 export const useGroupStore = defineStore('group', {
   state: () => ({
@@ -17,7 +15,6 @@ export const useGroupStore = defineStore('group', {
     groupLoading: true,
     currentGroup: {} as Group,
     selectTab: '' as TabType,
-    currentHeaderTitle: appName,
   }),
   getters: {
     linkCountMessage: ({ linksOnEditor: links }) => (links.length > 0 ? `(${links.length}/10)` : ''),
@@ -32,17 +29,10 @@ export const useGroupStore = defineStore('group', {
         ) || 'fail to scrap ...'
       );
     },
-    isOrginalHeader: ({ currentHeaderTitle }) => currentHeaderTitle === appName,
   },
   actions: {
-    initHeaderTitle() {
-      this.currentHeaderTitle = appName;
-    },
-    changeHeaderTitle() {
-      this.currentHeaderTitle = this.currentGroup.title;
-    },
     handleSwipeTab(direction: 'left' | 'right', currentTab: TabType) {
-      if (!this.isOrginalHeader) return; //스크롤 내렸을땐 좌우가 안 움직이도록!
+      // if (!this.isOrginalHeader) return; //스크롤 내렸을땐 좌우가 안 움직이도록!
       const tabs = [`GroupDetailLink`, `GroupDetailPost`, `GroupDetailStat`];
       const idx = tabs.indexOf(currentTab);
       let nextTab;

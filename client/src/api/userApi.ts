@@ -1,11 +1,9 @@
 import { useAxiosGet } from './base';
 import { AxiosError } from 'axios';
-import { LocalStorage } from 'quasar';
 
 export default {
   async findUser() {
     try {
-      console.log('findUser', LocalStorage.getItem('access-token'));
       return await useAxiosGet('user');
     } catch (err) {
       const { message } = err as AxiosError;
