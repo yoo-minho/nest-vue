@@ -17,6 +17,9 @@ export const useTagStore = defineStore('tag', {
     TagNames: ({ tags }) => tags.map(({ name }) => name.toLowerCase()),
   },
   actions: {
+    initTag() {
+      this.currentTag = totalTag;
+    },
     async fetchAllTeamTag() {
       const { data } = await GroupApi.findAllTag();
       this.tags = data.value;

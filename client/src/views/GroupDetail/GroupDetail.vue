@@ -6,7 +6,7 @@ import { usePostStore } from '@/stores/post';
 import DefaultLayout from '@/layouts/DefaultLayout.vue';
 import GroupDetailTab from './components/GroupDetailTab.vue';
 import GroupDetailTop from './components/GroupDetailTop.vue';
-import ScrollLayout from '@/layouts/ScrollLayout.vue';
+import InTeamLayout from '@/layouts/InTeamLayout.vue';
 import InTeamHeader from '@/components/Menu/InTeamHeader.vue';
 
 const groupStore = useGroupStore();
@@ -40,7 +40,7 @@ const refresh = async (done: () => void) => {
 
 <template>
   <InTeamHeader style="position: relative" />
-  <ScrollLayout>
+  <InTeamLayout @pull2refresh="refresh">
     <GroupDetailTop :loading="groupLoading" />
     <GroupDetailTab />
     <router-view v-slot="{ Component, route }" :links="links" :loading="groupLoading">
@@ -48,7 +48,7 @@ const refresh = async (done: () => void) => {
         <component :is="Component" :key="route.path" />
       </transition>
     </router-view>
-  </ScrollLayout>
+  </InTeamLayout>
 </template>
 
 <style scoped>

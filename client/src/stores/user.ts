@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia';
-import { QScrollArea } from 'quasar';
 
 import UserApi from '../api/userApi';
 
@@ -17,6 +16,10 @@ export const useUserStore = defineStore('user', {
     isExistsUser: (state) => !!state.id,
   },
   actions: {
+    initSearchData() {
+      this.isSearchMode = false;
+      this.searchWord = '';
+    },
     async fetchUser() {
       const { data: user } = await UserApi.findUser();
       this.id = user.value.id;

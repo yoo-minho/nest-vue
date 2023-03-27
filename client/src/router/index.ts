@@ -1,6 +1,8 @@
 import { createWebHistory, createRouter } from 'vue-router';
 import { useSubpageStore } from '@/stores/subpage';
 import { useGroupStore } from '@/stores/group';
+import { useTagStore } from '@/stores/tag';
+import { useUserStore } from '@/stores/user';
 import { storeToRefs } from 'pinia';
 
 export const routes = [
@@ -85,6 +87,20 @@ router.beforeEach((to, from, next) => {
   const groupStore = useGroupStore();
   const { initGroupData } = groupStore;
 
+  const tagStore = useTagStore();
+  const { initTag } = tagStore;
+
+  const userStore = useUserStore();
+  const { initSearchData } = userStore;
+
+  if (to.name === 'Team') {
+    initGroupData();
+  }
+  if (!to.query.tag) {
+    initTag();
+  }
+  initSearchData();
+
   const subpages = [
     {
       id: '#Editor',
@@ -118,10 +134,6 @@ router.beforeEach((to, from, next) => {
       },
     },
   ];
-
-  if (to.name === 'Team') {
-    initGroupData();
-  }
 
   if (from.name === undefined && subpages.map((page) => page.id).includes(to.hash)) {
     router.replace({ hash: '' });

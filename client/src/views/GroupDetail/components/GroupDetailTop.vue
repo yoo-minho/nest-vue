@@ -7,20 +7,17 @@ import GroupInfo from '@/components/Info/GroupInfo.vue';
 import GroupDetailCounter from '@/components/Counter/GroupDetailCounter.vue';
 import GroupDetailTopLoader from '@/components/Loader/GroupDetailTopLoader.vue';
 import GroupDetailTagList from './GroupDetailTagList.vue';
-import ScrollObserver from '@/components/Observer/ScrollObserver.vue';
 
 const groupStore = useGroupStore();
 const { currentGroup } = storeToRefs(groupStore);
-const { setCurrentTag, initHeaderTitle, changeHeaderTitle } = groupStore;
 const dailyViews = computed(() => currentGroup.value?.dailyViews || 0);
 const totalViews = computed(() => currentGroup.value?.totalViews || 0);
 const tags = computed(() => currentGroup.value?.tags || []);
 const router = useRouter();
 
 const props = defineProps<{ loading: boolean }>();
-const moveTagGroup = (tagName: string) => {
-  setCurrentTag(tagName);
-  router.push({ name: 'Team' });
+const moveTeamByTag = (tagName: string) => {
+  router.push({ name: 'Team', query: { tag: tagName } });
 };
 </script>
 
@@ -31,7 +28,6 @@ const moveTagGroup = (tagName: string) => {
   <template v-else>
     <GroupDetailCounter :daily-views="dailyViews" :total-views="totalViews" />
     <GroupInfo :group-data="currentGroup" />
-    <GroupDetailTagList v-if="tags.length > 0" :tags="tags.map(({ tag }) => tag.name)" @click-tag="moveTagGroup" />
-    <ScrollObserver @trigger-intersected="initHeaderTitle" @hidden-event="changeHeaderTitle"></ScrollObserver>
+    <GroupDetailTagList v-if="tags.length > 0" :tags="tags.map(({ tag }) => tag.name)" @click-tag="moveTeamByTag" />
   </template>
 </template>

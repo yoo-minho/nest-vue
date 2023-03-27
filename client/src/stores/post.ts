@@ -118,7 +118,7 @@ export const usePostStore = defineStore('post', {
         q: searchWord.value,
         page,
       });
-      this.posts = [...this.posts, ...highlights(data.value, searchWord.value)] as Post[];
+      this.posts = [...this.posts, ...highlights(data.value, searchWord.value + '|' + this.tagWord)] as Post[];
       this.postLoading = false;
       return data.value.length > 0;
     },

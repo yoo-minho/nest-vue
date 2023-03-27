@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
 
@@ -21,6 +21,20 @@ const _openSettingMain = () => {
   openSettingMain();
 };
 const titleByTab = computed(() => MAINTAB_LABEL.find((v) => v.type === mainTab.value)?.label || '팀로그');
+const keywordRef = ref();
+const fakeSearchWord = ref();
+
+watch(
+  () => keywordRef.value,
+  (v) => {
+    if (!v) return;
+    const el = keywordRef.value.getNativeElement();
+    el.addEventListener('input', (e: InputEvent) => {
+      const eventTarget = e.target as HTMLInputElement;
+      searchWord.value = eventTarget.value;
+    });
+  },
+);
 </script>
 
 <template>
@@ -28,12 +42,14 @@ const titleByTab = computed(() => MAINTAB_LABEL.find((v) => v.type === mainTab.v
     <q-toolbar>
       <q-input
         v-if="isSearchMode"
-        v-model="searchWord"
+        ref="keywordRef"
+        v-model="fakeSearchWord"
         type="search"
         bg-color="grey-2"
         dense
         rounded
         maxlength="20"
+        :debounce="500"
         style="flex: 1"
         :input-style="{ fontSize: '1rem' }"
         class="super-small"
@@ -63,7 +79,7 @@ const titleByTab = computed(() => MAINTAB_LABEL.find((v) => v.type === mainTab.v
 }
 
 .super-small.q-field--dense {
-  margin-right: 8px;
+  margin: 0 8px;
 
   .q-field__control {
     border-radius: 16px;

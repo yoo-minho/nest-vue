@@ -10,7 +10,7 @@ export class LinkController {
     const PAGE_PER_COUNT = 10;
     page = page || 1;
     return this.linkService.links({
-      where: { type: { equals: tag } },
+      where: { type: { equals: tag }, lastPostCreatedAt: { not: null } },
       orderBy: { lastPostCreatedAt: 'desc' },
       skip: (page - 1) * PAGE_PER_COUNT,
       take: PAGE_PER_COUNT,

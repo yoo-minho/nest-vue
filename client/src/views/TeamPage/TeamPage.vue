@@ -1,18 +1,15 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
+import { useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { useGroupStore } from '@/stores/group';
 import { useTagStore } from '@/stores/tag';
 import TeamListItem from './components/TeamListItem.vue';
-import { openFeedbackForm, openRequestTeamMakerForm } from '@/hooks/useOpenWindow';
 import ScrollObserver from '@/components/Observer/ScrollObserver.vue';
-import AdBanner from '@/components/AdBanner.vue';
 import TeamListSkeletonItem from './components/TeamListSkeletonItem.vue';
 import TeamTagList from './components/TeamTagList.vue';
-import ScrollLayout from '@/layouts/ScrollLayout.vue';
+import MainLayout from '@/layouts/MainLayout.vue';
 
-const router = useRouter();
 const route = useRoute();
 const groupStore = useGroupStore();
 const { fetchGroups } = groupStore;
@@ -41,10 +38,18 @@ watch(
   },
   { immediate: true },
 );
+
+const refresh = async (done: () => void) => {
+  groupsLoading.value = true;
+  page.value = 1;
+  await fetchGroups();
+  page.value++;
+  done();
+};
 </script>
 
 <template>
-  <ScrollLayout>
+  <MainLayout @pull2refresh="refresh">
     <router-view></router-view>
     <template v-if="route.name === 'Team'">
       <TeamTagList />
@@ -99,5 +104,5 @@ watch(
         </template>
       </q-page>
     </template>
-  </ScrollLayout>
+  </MainLayout>
 </template>
