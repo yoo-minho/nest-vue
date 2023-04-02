@@ -4,11 +4,7 @@ import { storeToRefs } from 'pinia';
 import { ref, watch, onMounted } from 'vue';
 import { showBottomSheet } from '@/hooks/useInstallBottomSheeet';
 import { useSubpageStore } from '@/stores/subpage';
-import { useUserStore } from '@/stores/user';
-import { useRoute } from 'vue-router';
 import SettingSubpage from './components/Setting/SettingSubpage.vue';
-import MainHeader from './components/Menu/MainHeader.vue';
-import InTeamHeader from './components/Menu/InTeamHeader.vue';
 
 const $q = useQuasar();
 const isDarkActive = ref($q.dark.isActive);
