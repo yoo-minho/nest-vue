@@ -38,9 +38,9 @@ watch(
 
 <template>
   <div v-show="!isInTeam()" :class="`max-width ${isDarkActive ? 'bg-grey-9' : 'bg-white'}`">
-    <q-layout style="min-height: 0">
-      <q-page-container style="padding: 0">
-        <q-pull-to-refresh @refresh="(done: () => void) => emits('pull2refresh', done)">
+    <q-pull-to-refresh @refresh="(done: () => void) => emits('pull2refresh', done)">
+      <q-layout style="min-height: 0">
+        <q-page-container style="padding: 0">
           <q-scroll-area
             ref="scrollAreaRef"
             class="max-width without-header"
@@ -74,9 +74,9 @@ watch(
               </q-page-scroller>
             </q-layout>
           </q-scroll-area>
-        </q-pull-to-refresh>
-      </q-page-container>
-    </q-layout>
+        </q-page-container>
+      </q-layout>
+    </q-pull-to-refresh>
   </div>
   <div v-if="isInTeam()">
     <slot></slot>
