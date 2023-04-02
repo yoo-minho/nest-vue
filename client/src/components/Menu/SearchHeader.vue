@@ -1,15 +1,17 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
 import { usePostStore } from '@/stores/post';
 import { useGroupStore } from '@/stores/group';
 
 const postStore = usePostStore();
-const { searchWord, postLoading } = storeToRefs(postStore);
+const { postLoading } = storeToRefs(postStore);
 const { fetchSearchPosts } = postStore;
 const groupStore = useGroupStore();
 const { currentGroup } = storeToRefs(groupStore);
 const router = useRouter();
+const searchWord = ref();
 </script>
 
 <template>

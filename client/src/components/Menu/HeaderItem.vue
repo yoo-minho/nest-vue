@@ -11,7 +11,7 @@ import { onMounted } from 'vue';
 const subpageStore = useSubpageStore();
 const { openSettingMain, openGroupEditor } = subpageStore;
 const groupStore = useGroupStore();
-const { currentHeaderTitle, isOrginalHeader, currentGroup } = storeToRefs(groupStore);
+const { currentGroup } = storeToRefs(groupStore);
 const { initGroupData, initLinks } = groupStore;
 const userStore = useUserStore();
 const { fetchUser } = userStore;
@@ -45,11 +45,7 @@ const reload = () => {
     router.go(0);
     return;
   }
-  if (isOrginalHeader.value) {
-    router.replace({ name: 'Team', query: {} });
-  } else {
-    props.scrollAreaRef?.setScrollPosition('vertical', 0, 300);
-  }
+  props.scrollAreaRef?.setScrollPosition('vertical', 0, 300);
 };
 const _openGroupEditor = () => {
   router.push({ hash: '#Editor' });
@@ -74,15 +70,10 @@ const logoPath = new URL(`../../assets/white_logo.png`, import.meta.url).toStrin
     <q-toolbar>
       <q-btn v-if="close" flat round dense icon="close" @click="close" />
       <q-btn v-if="back" flat round dense icon="keyboard_backspace" @click="back" />
-      <q-toolbar-title
-        v-if="isDefaultType"
-        :class="`logo ${isOrginalHeader ? 'original-name' : 'group-name'}`"
-        @click="reload"
-      >
+      <q-toolbar-title v-if="isDefaultType" :class="`logo original-name`" @click="reload">
         <q-avatar rounded size="28px">
           <q-img :src="logoPath" no-spinner loading="eager" />
         </q-avatar>
-        <span class="q-ml-sm">{{ currentHeaderTitle }}</span>
       </q-toolbar-title>
       <q-toolbar-title v-if="title">{{ title }}</q-toolbar-title>
       <q-btn v-if="isDefaultType" icon="search" flat round dense @click="() => router.push({ name: 'GroupSearch' })" />

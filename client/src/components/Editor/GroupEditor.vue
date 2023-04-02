@@ -6,6 +6,7 @@ import { QSelect, useQuasar } from 'quasar';
 
 import { useGroupStore } from '@/stores/group';
 import { useSubpageStore } from '@/stores/subpage';
+import { useTagStore } from '@/stores/tag';
 
 import EditorLayout from '@/layouts/EditorLayout.vue';
 import LinkCard from '@/components/Card/LinkCard.vue';
@@ -14,7 +15,10 @@ const router = useRouter();
 
 const groupStore = useGroupStore();
 const { save, fix, deleteLink, initLinks, refreshLink, refreshGroup } = groupStore;
-const { currentGroup, linksOnEditor, linkCountMessage, TagNames } = storeToRefs(groupStore);
+const { currentGroup, linksOnEditor, linkCountMessage } = storeToRefs(groupStore);
+
+const tagStore = useTagStore();
+const { tags } = storeToRefs(tagStore);
 
 const subpageStore = useSubpageStore();
 const { openLinkEditor, closeGroupEditor } = subpageStore;
@@ -37,7 +41,7 @@ const idRules = [
   (val: string) => new RegExp(/^[A-Za-z0-9_+]*$/).test(val) || '대소문자, 숫자, 언더바를 활용하여 입력해주세요!',
 ];
 
-const options = ref(TagNames.value);
+const options = ref(tags.value);
 const tag = ref('');
 const selectedTags = ref([]) as Ref<string[]>;
 
@@ -62,10 +66,10 @@ onMounted(() => {
 type doneFn = (callbackFn: () => void, afterFn?: (ref: QSelect) => void) => void;
 
 function filterFn(val: string, update: doneFn) {
-  const filterVal = TagNames.value.filter((name: string) => name.includes(val.toLowerCase()));
-  update(() => {
-    options.value = filterVal.length > 0 ? filterVal : val === '' ? [] : [val];
-  });
+  // const filterVal = tags.value.filter((name: string) => name.includes(val.toLowerCase()));
+  // update(() => {
+  //   options.value = filterVal.length > 0 ? filterVal : val === '' ? [] : [val];
+  // });
 }
 
 function selectOption() {

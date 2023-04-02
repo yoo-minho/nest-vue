@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<!-- <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
@@ -109,4 +109,4 @@ const moveSpecialPage = () => {
       </ScrollObserver>
     </template>
   </q-page>
-</template>
+</template> -->
