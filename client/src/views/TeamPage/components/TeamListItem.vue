@@ -37,14 +37,23 @@ const clickGroup = (domain: string) => router.push({ path: `/@${domain}` });
     <q-item class="col q-px-sm">
       <q-item-section>
         <q-item-label class="text-weight-bolder row" style="font-size: 16px">
-          <span>
-            <span>{{ group.title }}</span>
-            <span class="text-grey-5 q-mx-sm">{{ group.links?.length }}</span>
-          </span>
+          <span>{{ group.title }}</span>
+          <span class="text-grey-5 q-mx-sm">{{ group.links?.length }}</span>
         </q-item-label>
         <q-item-label class="ellipsis-2-lines">{{ group.description }}</q-item-label>
         <q-item-label class="text-grey-5">
           {{ getFormatString(group.lastPostCreatedAt, 'YYYY-MM-DD HH:mm (ddd)') }}
+        </q-item-label>
+        <q-item-label class="text-grey-5 text-right">
+          <q-chip square outline dense color="dark" class="views q-mr-xs" :label="'today : ' + group.todayViews" />
+          <q-chip
+            square
+            outline
+            dense
+            color="green-4"
+            class="views"
+            :label="'total : ' + ((group.totalViews || 0) + (group.todayViews || 0))"
+          />
         </q-item-label>
       </q-item-section>
     </q-item>
@@ -52,6 +61,10 @@ const clickGroup = (domain: string) => router.push({ path: `/@${domain}` });
   <q-separator spaced />
 </template>
 <style scope>
+.views {
+  font-size: 12px;
+  opacity: 0.8;
+}
 .image_area {
   width: 80px;
   height: 80px;

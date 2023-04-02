@@ -134,13 +134,13 @@ export class GroupController {
   }
 
   @Get()
-  findAll(@Query() { tag, page }) {
+  findAll(@Query() { tag, page, sort }) {
     const PAGE_PER_COUNT = 10;
     const tagOption = tag ? { tags: { some: { tag: { name: tag } } } } : {};
     page = page || 1;
     return this.groupService.groups({
       where: { published: true, ...tagOption },
-      orderBy: { lastPostCreatedAt: 'desc' },
+      orderBy: { [sort || 'lastPostCreatedAt']: 'desc' },
       skip: (page - 1) * PAGE_PER_COUNT,
       take: PAGE_PER_COUNT,
     });
@@ -161,13 +161,12 @@ export class GroupController {
   @Get(':domain')
   async findOne(@Param('domain') domain: string, @Ip() ip: string) {
     if (await this.cacheService.isUpdatableViewsByGroupDomain(domain, ip)) {
-      await this.groupService.upsertDailyViews(domain);
+      await this.groupService.upsertTodayViews(domain);
       await this.groupService.updateTotalViews(domain);
     }
 
     const groupData = await this.groupService.groupByDomain(domain);
-    groupData.dailyViews = groupData.counts[0]?.count || 0;
-    groupData.totalViews = groupData.totalViews + groupData.dailyViews;
+    groupData.todayViews = groupData.counts[0]?.count || 0;
     delete groupData.counts;
     return groupData;
   }

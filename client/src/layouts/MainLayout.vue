@@ -70,7 +70,7 @@ watch(
                 <slot></slot>
               </q-page-container>
               <q-page-scroller position="bottom-right" :scroll-offset="150" :offset="[18, 18]">
-                <q-btn fab icon="keyboard_arrow_up" color="green-4" />
+                <q-btn fab icon="keyboard_arrow_up" color="green-5" />
               </q-page-scroller>
             </q-layout>
           </q-scroll-area>
@@ -82,3 +82,9 @@ watch(
     <slot></slot>
   </div>
 </template>
+<style lang="scss">
+.q-tab--active {
+  color: $green-5;
+  scale: 1.1;
+}
+</style>

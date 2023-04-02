@@ -32,6 +32,7 @@ model Group {
   title             String          @db.VarChar(50)
   totalViews        Int             @default(0)
   lastPostCreatedAt DateTime?
+  todayViews        Int             @default(0)
   creater           User            @relation(fields: [createrId], references: [id])
   links             LinksOnGroups[]
   tags              TagsOnGroups[]

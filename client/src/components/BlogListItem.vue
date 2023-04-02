@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import { Link } from '@/types/common';
 import LinkCard from '@/components/Card/LinkCard.vue';
+import { openUrl } from '@/util/CommUtil';
 
-const props = defineProps<{ link: Link }>();
+defineProps<{ link: Link }>();
 </script>
 
 <template>
-  <div class="q-my-sm">
-    <LinkCard :link="props.link" icon-name="launch" />
-  </div>
+  <q-item-label class="cursor-pointer" @click="openUrl(link.url)">
+    <LinkCard :link="link" icon-name="launch" />
+  </q-item-label>
+  <q-separator spaced />
 </template>
 <style lang="scss"></style>

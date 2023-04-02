@@ -7,11 +7,17 @@ import { useSubpageStore } from '@/stores/subpage';
 import { useUserStore } from '@/stores/user';
 import { showBottomSheet } from '@/hooks/useSnsBottomSheeet';
 import { MAINTAB_LABEL } from '@/constants';
+import { useGroupStore } from '@/stores/group';
+
+const groupStore = useGroupStore();
+const { currentGroup } = storeToRefs(groupStore);
 
 const subpageStore = useSubpageStore();
 const { openSettingMain } = subpageStore;
+
 const userStore = useUserStore();
 const { mainTab, isSearchMode, searchWord } = storeToRefs(userStore);
+
 const { toggleSearchMode } = userStore;
 
 const router = useRouter();
@@ -45,7 +51,7 @@ const titleByTab = computed(() => MAINTAB_LABEL.find((v) => v.type === mainTab.v
           <q-icon name="search" class="q-ma-sm" />
         </template>
       </q-input>
-      <div v-else style="flex: 1"></div>
+      <q-toolbar-title class="name ellipsis">{{ currentGroup.title }}</q-toolbar-title>
       <q-btn :icon="isSearchMode ? 'close' : 'search'" flat round dense @click="toggleSearchMode()" />
       <q-btn icon="share" flat round dense @click="showBottomSheet()" />
       <q-btn icon="menu" flat round dense @click="_openSettingMain" />
@@ -55,7 +61,6 @@ const titleByTab = computed(() => MAINTAB_LABEL.find((v) => v.type === mainTab.v
 
 <style scope lang="scss">
 .name {
-  display: flex;
   align-items: center;
   color: white;
   font-size: 20px;

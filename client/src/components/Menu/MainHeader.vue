@@ -1,20 +1,29 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
+import { useQuasar } from 'quasar';
 
+import { useGroupStore } from '@/stores/group';
 import { useSubpageStore } from '@/stores/subpage';
 import { useUserStore } from '@/stores/user';
 import { showBottomSheet } from '@/hooks/useSnsBottomSheeet';
 import { MAINTAB_LABEL } from '@/constants';
 
+const groupStore = useGroupStore();
+const { sortGroups } = groupStore;
+const { groupSort } = storeToRefs(groupStore);
+
 const subpageStore = useSubpageStore();
 const { openSettingMain } = subpageStore;
+
 const userStore = useUserStore();
 const { mainTab, isSearchMode, searchWord } = storeToRefs(userStore);
 const { toggleSearchMode } = userStore;
 
+const $q = useQuasar();
 const router = useRouter();
+const route = useRoute();
 
 const _openSettingMain = () => {
   router.push({ hash: '#Setting' });
@@ -35,6 +44,22 @@ watch(
     });
   },
 );
+
+const showSortBottomSheet = () => {
+  const checkedIcon = (name: string) => (groupSort.value === name ? 'check_box' : 'check_box_outline_blank');
+  $q.bottomSheet({
+    message: '정렬',
+    grid: false,
+    actions: [
+      { label: '포스트 최신 작성순', id: 'lastPostCreatedAt', icon: checkedIcon('lastPostCreatedAt') },
+      { label: '투데이 방문자 순', id: 'todayViews', icon: checkedIcon('todayViews') },
+      { label: '누적 방문자 순', id: 'totalViews', icon: checkedIcon('totalViews') },
+    ],
+  }).onOk((action) => {
+    $q.localStorage.set('groupSort', action.id);
+    sortGroups(action.id);
+  });
+};
 </script>
 
 <template>
@@ -62,6 +87,7 @@ watch(
       </q-input>
       <q-toolbar-title v-else class="name">{{ titleByTab }}</q-toolbar-title>
       <q-btn :icon="isSearchMode ? 'close' : 'search'" flat round dense @click="toggleSearchMode()" />
+      <q-btn v-if="String(route.name) === 'Team'" icon="sort" flat round dense @click="showSortBottomSheet()" />
       <q-btn icon="share" flat round dense @click="showBottomSheet()" />
       <q-btn icon="menu" flat round dense @click="_openSettingMain" />
     </q-toolbar>
@@ -70,7 +96,6 @@ watch(
 
 <style scope lang="scss">
 .name {
-  display: flex;
   align-items: center;
   color: white;
   font-size: 20px;

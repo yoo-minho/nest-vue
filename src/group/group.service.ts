@@ -7,7 +7,7 @@ type GroupResponseDto = Group & {
   tags: { tag: Tag }[];
   links: { link: Link }[];
   counts: Views[];
-  dailyViews?: number;
+  todayViews?: number;
 };
 
 @Injectable()
@@ -82,6 +82,7 @@ export class GroupService {
           select: { link: true },
           orderBy: { link: { lastPostCreatedAt: 'desc' } },
         },
+        counts: { where: { date: getToday8() } },
       },
       skip,
       take,
@@ -134,17 +135,23 @@ export class GroupService {
     }
   }
 
-  async upsertDailyViews(groupDomain: string) {
+  async upsertTodayViews(groupDomain: string) {
     const date = getToday8();
     try {
       const { count = 1 } =
         (await this.prisma.views.findUnique({
           where: { groupDomain_date: { groupDomain, date } },
         })) || {};
-      return await this.prisma.views.upsert({
+
+      const { count: resultCount } = await this.prisma.views.upsert({
         where: { groupDomain_date: { groupDomain, date } },
         create: { count: 1, date, Group: { connect: { domain: groupDomain } } },
         update: { count: count + 1 },
+      });
+
+      await this.prisma.group.update({
+        data: { todayViews: resultCount },
+        where: { domain: groupDomain },
       });
     } catch (e) {
       throw new ForbiddenException(e);
@@ -179,4 +186,3 @@ export class GroupService {
     }
   }
 }
-``;

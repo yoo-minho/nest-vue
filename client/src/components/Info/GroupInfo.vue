@@ -11,7 +11,7 @@ const { scrapLoading } = storeToRefs(postStore);
 </script>
 
 <template>
-  <q-item class="column q-pt-md q-pb-sm">
+  <q-item class="column" style="padding: 0">
     <q-item-section class="text-center">
       <q-item-label class="text-weight-bold text-green-4">@{{ groupData.domain }}</q-item-label>
       <q-item-label class="text-h6 text-weight-bolder">{{ groupData.title }}</q-item-label>

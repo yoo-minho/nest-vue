@@ -25,7 +25,7 @@ export type Group = {
   links?: LinkWrap[];
   tags?: GroupTagWrap[];
   createdAt?: Date;
-  dailyViews?: number;
+  todayViews?: number;
   totalViews?: number;
   lastPostCreatedAt?: Date;
 };

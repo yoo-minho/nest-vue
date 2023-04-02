@@ -3,10 +3,10 @@ import axiosClient, { useAxiosGet } from './base';
 import { AxiosError } from 'axios';
 
 export default {
-  async findAll(props: { tag?: string; page?: number } = {}) {
-    const { tag, page } = props;
+  async findAll(props: { tag?: string; page?: number; sort?: string } = {}) {
+    const { tag, page, sort } = props;
     try {
-      return await useAxiosGet('group', { params: { tag, page } });
+      return await useAxiosGet('group', { params: { tag, page, sort } });
     } catch (err) {
       const { message } = err as AxiosError;
       throw new Error(message);

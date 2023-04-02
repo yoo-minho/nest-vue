@@ -4,8 +4,7 @@ import GroupApi from '../api/groupApi';
 import { getDateString, isSameDate } from '@/plugin/dayjs';
 import { scrapOGS } from '@/hooks/useOgs';
 import { useTagStore } from '@/stores/tag';
-
-const appName = 'teamlog';
+import { LocalStorage } from 'quasar';
 
 export const useGroupStore = defineStore('group', {
   state: () => ({
@@ -15,6 +14,7 @@ export const useGroupStore = defineStore('group', {
     groupLoading: true,
     currentGroup: {} as Group,
     selectTab: '' as TabType,
+    groupSort: LocalStorage.getItem('groupSort') || 'lastPostCreatedAt',
   }),
   getters: {
     linkCountMessage: ({ linksOnEditor: links }) => (links.length > 0 ? `(${links.length}/10)` : ''),
@@ -72,11 +72,19 @@ export const useGroupStore = defineStore('group', {
       this.groupLoading = true;
       this.currentGroup = {} as Group;
     },
+    sortGroups(sortValue: string) {
+      this.groupSort = sortValue;
+      this.fetchGroups();
+    },
     async fetchGroups(page?: number) {
       const tagStore = useTagStore();
       const { currentTag, isTotalTag } = storeToRefs(tagStore);
       const isFirstPage = !page || page === 1;
-      const { data } = await GroupApi.findAll(isTotalTag.value ? { page } : { tag: currentTag.value, page });
+      const { data } = await GroupApi.findAll({
+        page: page || 1,
+        sort: this.groupSort,
+        ...(isTotalTag.value ? {} : { tag: currentTag.value }),
+      });
       this.groups = isFirstPage ? data.value : [...this.groups, ...data.value];
       this.groupsLoading = false;
       return data.value.length > 0;
