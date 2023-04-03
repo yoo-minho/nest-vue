@@ -18,6 +18,7 @@ watch(
 );
 
 onMounted(() => {
+  if (location.pathname !== '/') return;
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     showBottomSheet(e as BeforeInstallPromptEvent);
@@ -37,7 +38,6 @@ onMounted(() => {
           <LinkEditor v-if="isOpenLinkEditor" />
           <SettingSubpage v-if="isOpenSettingSubpage" />
           <DataSubpage v-if="isOpenDataSubpage" />
-          <LoginSubpage v-if="isOpenLoginSubpage" />
         </transition-group>
       </div>
       <router-view v-slot="{ Component }">

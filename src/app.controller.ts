@@ -47,6 +47,11 @@ export class AppController {
   async getOAuthPage(): Promise<any> {
     return root.toString();
   }
+
+  @Get('/my')
+  async getMyPage(): Promise<any> {
+    return root.toString();
+  }
 }
 
 class useMeta {
