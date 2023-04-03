@@ -44,7 +44,7 @@ const clickGroup = (domain: string) => router.push({ path: `/@${domain}` });
         <q-item-label class="text-grey-5">
           {{ getFormatString(group.lastPostCreatedAt, 'YYYY-MM-DD HH:mm (ddd)') }}
         </q-item-label>
-        <q-item-label class="text-grey-5 text-right">
+        <q-item-label class="text-grey-5">
           <q-chip square outline dense color="dark" class="views q-mr-xs" :label="'today ' + group.todayViews" />
           <q-chip
             square
@@ -64,6 +64,8 @@ const clickGroup = (domain: string) => router.push({ path: `/@${domain}` });
 .views {
   font-size: 12px;
   opacity: 0.8;
+  margin: 0;
+  margin-right: 4px;
 }
 .image_area {
   width: 80px;

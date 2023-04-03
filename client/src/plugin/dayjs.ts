@@ -9,6 +9,7 @@ dayjs.extend(relativeTime);
 export const getFormatString = (dateStr?: Date, format?: string) => (dateStr ? dayjs(dateStr).format(format) : null);
 export const getDateString = (dateStr?: Date) => (dateStr ? dayjs(dateStr).format('YYYY-MM-DD HH:mm (ddd)') : null);
 export const getAgoString = (dateStr: Date) => dayjs(dateStr).fromNow();
+export const getAgoString2 = (dateStr: Date) => dayjs(dateStr).fromNow();
 
 export const isTodayByString = (dateString: string) => dateString === dayjs(new Date()).format('YYYY-MM-DD');
 export const isTodayByDate = (v = new Date()) => dayjs(v).format('YYYYMMDD') === dayjs(new Date()).format('YYYYMMDD');
