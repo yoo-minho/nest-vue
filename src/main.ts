@@ -23,12 +23,15 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
+  // app.setGlobalPrefix('api');
+
   app.setGlobalPrefix('api', {
     exclude: [
       { path: '', method: RequestMethod.GET },
       { path: '@:domain', method: RequestMethod.GET },
       { path: 'error', method: RequestMethod.GET },
       { path: 'oauth', method: RequestMethod.GET },
+      { path: 'my', method: RequestMethod.GET },
     ],
   });
   app.enableCors();

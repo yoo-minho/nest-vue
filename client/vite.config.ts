@@ -31,7 +31,7 @@ export default defineConfig((config) => {
         registerType: 'autoUpdate',
         injectRegister: 'auto', //default
         workbox: {
-          // globPatterns: ['**/*.{ico,png,svg}'],
+          globPatterns: ['**/*.{ico,png,svg}'],
           // globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
           cleanupOutdatedCaches: true,
         },

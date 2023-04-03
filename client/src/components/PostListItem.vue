@@ -11,11 +11,11 @@ const { post } = toRefs(props);
 </script>
 
 <template>
-  <q-item-label class="cursor-pointer q-my-md" @click="openUrl(post.url)">
+  <q-item-label class="cursor-pointer" @click="openUrl(post.url)">
     <q-item>
       <q-item-section>
         <!-- eslint-disable-next-line vue/no-v-html -->
-        <div class="label text-weight-bold ellipsis text-subtitle2" style="max-width: 300px" v-html="post.title"></div>
+        <div class="label text-weight-bold ellipsis text-subtitle2" v-html="post.title"></div>
         <div class="label ellipsis-2-lines">{{ post.description || 'ㅤ' }}</div>
         <div class="label text-grey-5 ellipsis">{{ getDateString(post.createdAt) }}</div>
         <div class="row items-center">
@@ -36,7 +36,7 @@ const { post } = toRefs(props);
         </div>
       </q-item-section>
     </q-item>
-    <q-separator spaced />
+    <q-separator spaced style="height: 8px" />
   </q-item-label>
 </template>
 <style lang="scss">
@@ -46,5 +46,6 @@ mark {
 }
 .label {
   margin-bottom: 8px;
+  max-width: inherit;
 }
 </style>

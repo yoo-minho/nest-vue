@@ -1,4 +1,5 @@
 export const POST_TAG = [
+  { label: 'GPT', value: 'gpt' },
   { label: '회고', value: '회고|결산|.log|정산' },
   { label: '인프콘', value: '인프콘' },
   { label: '글또', value: '글또' },

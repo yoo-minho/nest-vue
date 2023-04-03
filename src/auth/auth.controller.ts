@@ -28,9 +28,10 @@ export class AuthController {
     await this.userService.createUser({ ...user, refreshToken });
     const isDev = process.env.NODE_ENV === 'development';
     if (isDev) {
-      res.send(
-        `<script>location.href = 'http://127.0.0.1:8090/?code=${accessToken}';</script>`,
-      );
+      res.send(`<script>
+        location.href = 'http://127.0.0.1:8090/?code=${accessToken}';
+        setTimeout(() => self.close(), 1500);
+      </script>`);
     } else {
       res.send(`<script>self.close();</script>`);
     }
