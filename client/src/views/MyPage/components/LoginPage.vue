@@ -20,9 +20,9 @@ const tryLogin = (e: MouseEvent, id: string) => {
       message: '잠시만 기다려주세요!',
       messageColor: 'white',
     });
-    window.open('/api/auth/kakao', 'kakao');
+    const w = window.open('/api/auth/kakao', 'kakao');
     const iv = setInterval(async () => {
-      if (!$cookies?.get('access-token') && !$q.localStorage.getItem('access-token')) return;
+      if (!$cookies?.get('access-token') && !w?.closed) return;
       $q.notify({ type: 'success', message: '로그인 성공' });
       await delay(500);
       $q.loading.hide();

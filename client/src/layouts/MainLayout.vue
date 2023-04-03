@@ -84,8 +84,4 @@ watch(
   color: $green-5;
   scale: 1.1;
 }
-.q-pull-to-refresh__puller {
-  // z-index: -1;
-  // display: none;
-}
 </style>

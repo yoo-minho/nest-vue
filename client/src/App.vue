@@ -9,8 +9,7 @@ import SettingSubpage from './components/Setting/SettingSubpage.vue';
 const $q = useQuasar();
 const isDarkActive = ref($q.dark.isActive);
 const subpageStore = useSubpageStore();
-const { isOpenGroupEditor, isOpenLinkEditor, isOpenSettingSubpage, isOpenDataSubpage, isOpenLoginSubpage } =
-  storeToRefs(subpageStore);
+const { isOpenGroupEditor, isOpenLinkEditor, isOpenSettingSubpage, isOpenDataSubpage } = storeToRefs(subpageStore);
 
 watch(
   () => $q.dark.isActive,
