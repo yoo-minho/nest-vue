@@ -45,14 +45,14 @@ const clickGroup = (domain: string) => router.push({ path: `/@${domain}` });
           {{ getFormatString(group.lastPostCreatedAt, 'YYYY-MM-DD HH:mm (ddd)') }}
         </q-item-label>
         <q-item-label class="text-grey-5 text-right">
-          <q-chip square outline dense color="dark" class="views q-mr-xs" :label="'today : ' + group.todayViews" />
+          <q-chip square outline dense color="dark" class="views q-mr-xs" :label="'today ' + group.todayViews" />
           <q-chip
             square
             outline
             dense
             color="green-4"
             class="views"
-            :label="'total : ' + ((group.totalViews || 0) + (group.todayViews || 0))"
+            :label="'total ' + ((group.totalViews || 0) + (group.todayViews || 0))"
           />
         </q-item-label>
       </q-item-section>

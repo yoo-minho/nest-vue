@@ -14,12 +14,12 @@ watch(
 </script>
 
 <template>
-  <div class="scroll-y" :class="`max-width ${isDarkActive ? 'bg-grey-9' : 'bg-white'}`">
+  <div :class="`max-width ${isDarkActive ? 'bg-grey-9' : 'bg-white'}`">
     <q-scroll-area
       ref="scrollAreaRef"
       class="max-width without-header"
       :visible="false"
-      style="overflow-x: hidden"
+      style="overflow: hidden"
       :thumb-style="{ zIndex: '999999' }"
     >
       <q-layout style="min-height: 0">

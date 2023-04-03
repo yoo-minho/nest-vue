@@ -21,12 +21,16 @@ export class AuthController {
   @Get('/kakao/redirect')
   @UseGuards(KaKaoAuthGuard)
   async loginKakaoRedirect(@Req() req: Request, @Res() res: Response) {
+    const isDev = process.env.NODE_ENV === 'development';
     const user = req.user as Prisma.UserCreateInput;
     const payload = { id: user.id };
     const { accessToken, refreshToken } = this.authService.getToken(payload);
-    res.cookie('access-token', accessToken);
     await this.userService.createUser({ ...user, refreshToken });
-    const isDev = process.env.NODE_ENV === 'development';
+    res.cookie('access-token', accessToken, {
+      path: '/',
+      secure: !isDev,
+      httpOnly: !isDev,
+    });
     if (isDev) {
       res.send(`<script>
         location.href = 'http://127.0.0.1:8090/?code=${accessToken}';
