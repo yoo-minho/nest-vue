@@ -97,6 +97,7 @@ export const useGroupStore = defineStore('group', {
       const { data } = await GroupApi.findById(domain);
       this.groupLoading = false;
       this.currentGroup = data.value;
+      this.groups = this.groups.map((v) => (v.id === data.value.id ? data.value : v));
     },
     async refreshGroup(domain: string) {
       this.groupLoading = true;
