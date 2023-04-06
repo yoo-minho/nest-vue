@@ -53,7 +53,7 @@ const ETC_CATEGORY = [
   { icon: 'military_tech', title: '팀로그의 기술 스택', clickEvent: openStackMain },
 ];
 const countArray = ref();
-const linkCountByPlatform = ref();
+const linkCountByPlatform = ref([]);
 
 onMounted(async () => {
   const { data } = await GroupApi.count();

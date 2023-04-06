@@ -11,6 +11,7 @@ export const useTagStore = defineStore('tag', {
     tagsLoading: true,
     tags: [] as Tag[],
     currentTag: totalTag,
+    teamTags: [] as Tag[],
   }),
   getters: {
     isTotalTag: (state) => state.currentTag === totalTag,
@@ -24,8 +25,10 @@ export const useTagStore = defineStore('tag', {
       const plusAll = (tags: Tag[]) => [{ id: totalTag, name: totalTag }, ...tags];
       switch (name) {
         case 'Team':
+          this.tags = this.teamTags;
           const { data } = await GroupApi.findAllTag();
           this.tags = plusAll(data.value);
+          this.teamTags = this.tags;
           break;
         case 'Blog':
           this.tags = plusAll(BLOG_TAG.map((v) => ({ id: v.type, name: v.type })));

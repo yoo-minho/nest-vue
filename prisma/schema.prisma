@@ -33,6 +33,7 @@ model Group {
   totalViews        Int             @default(0)
   lastPostCreatedAt DateTime?
   todayViews        Int             @default(0)
+  weeklyAvgPost     Float           @default(0)
   creater           User            @relation(fields: [createrId], references: [id])
   links             LinksOnGroups[]
   tags              TagsOnGroups[]

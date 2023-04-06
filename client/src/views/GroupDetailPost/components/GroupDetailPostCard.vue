@@ -26,7 +26,7 @@ const { post } = toRefs(props);
         </q-item-label>
       </q-item-section>
     </q-item>
-    <q-separator spaced />
+    <q-separator spaced style="height: 8px" />
   </q-item-label>
 </template>
 <style lang="scss">

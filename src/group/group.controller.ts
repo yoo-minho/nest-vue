@@ -137,7 +137,12 @@ export class GroupController {
   findAll(@Query() { tag, page, sort }) {
     const PAGE_PER_COUNT = 10;
     const tagOption = tag ? { tags: { some: { tag: { name: tag } } } } : {};
-    page = page || 1;
+    page = +page || 1;
+
+    if (page === 1) {
+      this.groupService.updateTodayViews();
+    }
+
     return this.groupService.groups({
       where: { published: true, ...tagOption },
       orderBy: { [sort || 'lastPostCreatedAt']: 'desc' },

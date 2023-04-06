@@ -3,17 +3,21 @@ import { useQuasar } from 'quasar';
 import { storeToRefs } from 'pinia';
 import { ref, watch, onMounted } from 'vue';
 import { useUserStore } from '@/stores/user';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import MainHeader from '@/components/Menu/MainHeader.vue';
+import { MainTabType } from '@/types/common';
 
 const $q = useQuasar();
 const isDarkActive = ref($q.dark.isActive);
 const userStore = useUserStore();
 const { isExistsUser, profileImage, mainTab } = storeToRefs(userStore);
+const { handleSwipeMainTab } = userStore;
 const { fetchUser } = userStore;
 const route = useRoute();
+const router = useRouter();
 
 const emits = defineEmits<{ (eventName: 'pull2refresh', done: () => void): void }>();
+const tabArr = ['Team', 'Blog', 'Post', 'Noti', 'My'];
 
 onMounted(() => {
   fetchUser();
@@ -26,11 +30,18 @@ watch(
 
 const isInTeam = () => String(route.name).includes('GroupDetail');
 const scrollAreaRef = ref();
+const _handleSwipe = (newInfo: { direction: 'left' | 'right' }) => {
+  const mainTabType = `t_${tabArr.findIndex((v) => v === route.name) || 0}` as MainTabType;
+  handleSwipeMainTab(newInfo.direction, mainTabType);
+};
 
 watch(
   () => mainTab.value,
   (mainTab) => {
-    if (+mainTab.replace('t_', '') % 5 === 0) return; //5의배수??
+    const idx = +mainTab.replace('t_', '');
+    const name = tabArr[idx] || 'Team';
+    router.push({ name, replace: true });
+    if (idx % 5 === 0) return; //5의배수??
     scrollAreaRef.value.setScrollPosition('vertical', 0);
   },
 );
@@ -63,7 +74,7 @@ watch(
       </div>
       <q-layout style="min-height: 0">
         <q-page-container style="min-height: 0; padding: 0">
-          <q-page>
+          <q-page v-touch-swipe.mouse.left.right="_handleSwipe">
             <q-pull-to-refresh @refresh="(done: () => void) => emits('pull2refresh', done)">
               <slot></slot>
             </q-pull-to-refresh>
@@ -82,6 +93,5 @@ watch(
 <style lang="scss">
 .q-tab--active {
   color: $green-5;
-  scale: 1.1;
 }
 </style>

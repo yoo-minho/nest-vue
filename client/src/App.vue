@@ -5,6 +5,9 @@ import { ref, watch, onMounted } from 'vue';
 import { showBottomSheet } from '@/hooks/useInstallBottomSheeet';
 import { useSubpageStore } from '@/stores/subpage';
 import SettingSubpage from './components/Setting/SettingSubpage.vue';
+import DataSubpage from './components/Setting/DataSubpage.vue';
+import GroupEditor from './components/Editor/GroupEditor.vue';
+import LinkEditor from './components/Editor/LinkEditor.vue';
 
 const $q = useQuasar();
 const isDarkActive = ref($q.dark.isActive);
@@ -32,19 +35,15 @@ onMounted(() => {
   <div :class="`max-width ${isDarkActive ? 'bg-grey-9' : 'bg-white'}`">
     <q-layout style="min-height: 0">
       <div id="subpage">
-        <transition-group name="subpage">
-          <GroupEditor v-if="isOpenGroupEditor" />
-          <LinkEditor v-if="isOpenLinkEditor" />
-          <SettingSubpage v-if="isOpenSettingSubpage" />
-          <DataSubpage v-if="isOpenDataSubpage" />
-        </transition-group>
+        <GroupEditor v-if="isOpenGroupEditor" />
+        <LinkEditor v-if="isOpenLinkEditor" />
+        <SettingSubpage v-if="isOpenSettingSubpage" />
+        <DataSubpage v-if="isOpenDataSubpage" />
       </div>
       <router-view v-slot="{ Component }">
-        <transition>
-          <keep-alive include="Team">
-            <component :is="Component" />
-          </keep-alive>
-        </transition>
+        <keep-alive include="Team">
+          <component :is="Component" />
+        </keep-alive>
       </router-view>
     </q-layout>
   </div>

@@ -15,5 +15,5 @@ const getLabel = (type: string) => {
     </q-avatar>
     {{ getLabel(tagName) }}
   </TagList>
-  <q-separator spaced />
+  <q-separator spaced style="height: 8px" />
 </template>

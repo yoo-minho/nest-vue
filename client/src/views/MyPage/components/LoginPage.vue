@@ -1,13 +1,10 @@
 <script setup lang="ts">
-import { inject } from 'vue';
-import { VueCookies } from 'vue-cookies';
 import { useQuasar, QSpinnerIos } from 'quasar';
 
 import { delay } from '@/util/CommUtil';
 import ApiArr from '@/data/login-api.json';
 
 const $q = useQuasar();
-const $cookies = inject<VueCookies>('$cookies');
 const logo = new URL(`../../assets/dark_logo.png`, import.meta.url).toString();
 
 const tryLogin = (e: MouseEvent, id: string) => {
@@ -22,10 +19,10 @@ const tryLogin = (e: MouseEvent, id: string) => {
     });
     const w = window.open('/api/auth/kakao', 'kakao');
     const iv = setInterval(async () => {
-      if (!$cookies?.get('access-token') && !w?.closed) return;
+      if (!w?.closed) return;
+      $q.loading.hide();
       $q.notify({ type: 'success', message: '로그인 성공' });
       await delay(500);
-      $q.loading.hide();
       clearInterval(iv);
       location.reload();
     }, 1000);

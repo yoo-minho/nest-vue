@@ -26,7 +26,7 @@ const linkCountByPlatform = computed(() => getPlatformStat(props.links));
         <div class="row q-px-sm">
           <PlatformStatList :link-count-by-platform="linkCountByPlatform" />
         </div>
-        <q-separator spaced />
+        <q-separator spaced style="height: 8px" />
         <GroupDetailLinkCard v-for="({ link }, i) in props.links" :key="i" :link="link" />
       </div>
     </template>

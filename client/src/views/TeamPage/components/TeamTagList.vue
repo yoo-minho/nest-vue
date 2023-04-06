@@ -4,5 +4,5 @@ import TagList from '@/components/TagList.vue';
 
 <template>
   <TagList v-slot="{ tagName }" name="Team">{{ tagName === 'All' ? '' : '#' }}{{ tagName }}</TagList>
-  <q-separator spaced />
+  <q-separator spaced style="height: 8px" />
 </template>

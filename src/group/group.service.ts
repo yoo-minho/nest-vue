@@ -68,6 +68,14 @@ export class GroupService {
     });
   }
 
+  async updateTodayViews() {
+    const date = getToday8();
+    await this.prisma.group.updateMany({
+      data: { todayViews: 0 },
+      where: { counts: { none: { date } }, todayViews: { not: 0 } },
+    });
+  }
+
   async groups(params: {
     skip?: number;
     take?: number;
@@ -76,7 +84,7 @@ export class GroupService {
     orderBy?: Prisma.GroupOrderByWithRelationInput;
   }): Promise<Group[]> {
     const { skip, take, cursor, where, orderBy } = params;
-    return this.prisma.group.findMany({
+    return await this.prisma.group.findMany({
       include: {
         links: {
           select: { link: true },

@@ -28,6 +28,7 @@ export type Group = {
   todayViews?: number;
   totalViews?: number;
   lastPostCreatedAt?: Date;
+  weeklyAvgPost?: number;
 };
 export type GroupTag = {
   index: number;
@@ -109,5 +110,6 @@ export type StackJson = {
 export type OrderType = 1 | -1;
 export type BlogType = string & ('BRUNCH' | 'MEDIUM' | 'NAVER' | 'TISTORY' | 'VELOG' | 'TWIITCH' | 'RSS' | '');
 export type TabType = string & ('GroupDetailLink' | 'GroupDetailPost' | 'GroupDetailStat');
+export type MainTabType = string & (`t_0` | `t_1` | `t_2` | 't_3' | 't_4');
 export type OrderOption = { label: string; value: string; order: OrderType };
 export type linkCount = { linkId: number; count: number };

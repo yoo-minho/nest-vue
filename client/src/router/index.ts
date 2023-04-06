@@ -31,28 +31,28 @@ export const routes = [
         name: 'My',
         component: () => import('@/views/MyPage/MyPage.vue'),
       },
+    ],
+  },
+  {
+    path: '/@:domain',
+    name: 'GroupDetail',
+    props: true,
+    component: () => import('@/views/GroupDetail/GroupDetail.vue'),
+    children: [
       {
-        path: '/@:domain',
-        name: 'GroupDetail',
-        props: true,
-        component: () => import('@/views/GroupDetail/GroupDetail.vue'),
-        children: [
-          {
-            path: 'blogs',
-            name: 'GroupDetailLink',
-            component: () => import('@/views/GroupDetailLink/GroupDetailLink.vue'),
-          },
-          {
-            path: '',
-            name: 'GroupDetailPost',
-            component: () => import('@/views/GroupDetailPost/GroupDetailPost.vue'),
-          },
-          {
-            path: 'stats',
-            name: 'GroupDetailStat',
-            component: () => import('@/views/GroupDetailStat/GroupDetailStat.vue'),
-          },
-        ],
+        path: 'blogs',
+        name: 'GroupDetailLink',
+        component: () => import('@/views/GroupDetailLink/GroupDetailLink.vue'),
+      },
+      {
+        path: '',
+        name: 'GroupDetailPost',
+        component: () => import('@/views/GroupDetailPost/GroupDetailPost.vue'),
+      },
+      {
+        path: 'stats',
+        name: 'GroupDetailStat',
+        component: () => import('@/views/GroupDetailStat/GroupDetailStat.vue'),
       },
     ],
   },

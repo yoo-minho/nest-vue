@@ -44,13 +44,21 @@ const clickGroup = (domain: string) => router.push({ path: `/@${domain}` });
         <q-item-label class="text-grey-5">
           {{ getFormatString(group.lastPostCreatedAt, 'YYYY-MM-DD HH:mm (ddd)') }}
         </q-item-label>
-        <q-item-label class="text-grey-5">
-          <q-chip square outline dense color="dark" class="views q-mr-xs" :label="'today ' + group.todayViews" />
+        <q-item-label class="text-grey-5 q-pt-xs">
           <q-chip
             square
             outline
             dense
             color="green-4"
+            class="views q-mr-xs"
+            :label="'주간 게시물 ' + group.weeklyAvgPost + '개'"
+          />
+          <q-chip square outline dense color="green-3" class="views q-mr-xs" :label="'today ' + group.todayViews" />
+          <q-chip
+            square
+            outline
+            dense
+            color="green-2"
             class="views"
             :label="'total ' + ((group.totalViews || 0) + (group.todayViews || 0))"
           />
@@ -58,7 +66,7 @@ const clickGroup = (domain: string) => router.push({ path: `/@${domain}` });
       </q-item-section>
     </q-item>
   </q-item-label>
-  <q-separator spaced />
+  <q-separator spaced style="height: 8px" />
 </template>
 <style scope>
 .views {
