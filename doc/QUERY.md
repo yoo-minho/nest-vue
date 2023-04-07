@@ -37,10 +37,10 @@ FROM (
 		"Group"."domain",
 		(with
 			_link as (select "linkId" from "LinksOnGroups" where "groupId" = "Group"."id")
-		select coalesce(round(avg(count), 2), 0) round from (
+		select coalesce(round(sum(count)/4,2), 0) round from (
 			select to_char("createdAt", 'WW'), count(1)
 			from "Post" where "linkId" IN (select "linkId" from _link)
-			and "createdAt" > now() - interval '3 month'
+			and "createdAt" > now() - interval '28 day'
 			group by to_char("createdAt", 'WW')
 		) t)
 	from "Group"
