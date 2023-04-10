@@ -38,15 +38,14 @@ const _handleSwipe = (newInfo: { direction: 'left' | 'right' }) => {
 watch(
   () => mainTab.value,
   (mainTab) => {
-    const idx = +mainTab.replace('t_', '');
+    const idx = +mainTab.replace('t_', '') % 5;
     const name = tabArr[idx] || 'Team';
     router.push({ name, replace: true });
-    if (idx % 5 === 0) return; //5의배수??
+    if (idx === 0) return;
     scrollAreaRef.value.setScrollPosition('vertical', 0);
   },
 );
 </script>
-
 <template>
   <div v-show="!isInTeam()" :class="`max-width ${isDarkActive ? 'bg-grey-9' : 'bg-white'}`">
     <q-scroll-area
