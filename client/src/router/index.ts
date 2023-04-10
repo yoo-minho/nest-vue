@@ -4,6 +4,7 @@ import { useGroupStore } from '@/stores/group';
 import { useTagStore } from '@/stores/tag';
 import { useUserStore } from '@/stores/user';
 import { storeToRefs } from 'pinia';
+import { QScrollArea } from 'quasar';
 
 export const routes = [
   {
@@ -74,19 +75,20 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const subpageStore = useSubpageStore();
   const { isOpenLinkEditor, isOpenDataSubpage } = storeToRefs(subpageStore);
-  const { closeGroupEditor, closeLinkEditor, closeSettingMain, closeStackMain, closeLoginSubpage } = subpageStore;
+  const { closeGroupEditor, closeLinkEditor, closeSettingMain, closeStackMain } = subpageStore;
 
   const groupStore = useGroupStore();
   const { initGroupData } = groupStore;
 
   const tagStore = useTagStore();
-  const { initTag } = tagStore;
+  const { initTag, fetchTag } = tagStore;
 
   const userStore = useUserStore();
   const { initSearchData } = userStore;
 
   if (to.name === 'Team') {
     initGroupData();
+    fetchTag('Team');
   }
   if (!to.query.tag) {
     initTag();

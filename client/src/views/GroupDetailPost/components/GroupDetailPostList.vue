@@ -16,7 +16,7 @@ const { posts, postLoading } = storeToRefs(postStore);
 const groupStore = useGroupStore();
 const { handleSwipeTab } = groupStore;
 
-const props = defineProps<{ links: LinkWrap[] }>();
+const props = defineProps<{ links?: LinkWrap[] }>();
 const page = ref(1);
 
 watch(

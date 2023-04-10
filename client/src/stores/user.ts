@@ -1,5 +1,6 @@
 import { MainTabType } from '@/types/common';
 import { defineStore } from 'pinia';
+import { QScrollArea } from 'quasar';
 
 import UserApi from '../api/userApi';
 
@@ -13,6 +14,7 @@ export const useUserStore = defineStore('user', {
     mainTab: '' as MainTabType,
     isSearchMode: false,
     searchWord: '',
+    mainScrollAreaRef: null as unknown as QScrollArea,
   }),
   getters: {
     isExistsUser: (state) => !!state.id,

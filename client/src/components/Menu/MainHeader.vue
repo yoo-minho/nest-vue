@@ -29,7 +29,7 @@ const _openSettingMain = () => {
   router.push({ hash: '#Setting' });
   openSettingMain();
 };
-const titleByTab = computed(() => MAINTAB_LABEL.find((v) => v.type === mainTab.value)?.label || '팀로그');
+const titleByTab = computed(() => MAINTAB_LABEL[+mainTab.value.replace('t_', '') % 5] || '팀로그');
 const keywordRef = ref();
 const fakeSearchWord = ref();
 

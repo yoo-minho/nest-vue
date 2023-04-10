@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useQuasar } from 'quasar';
 import { storeToRefs } from 'pinia';
-import { ref, watch, onMounted } from 'vue';
+import { ref, watch, onMounted, onActivated } from 'vue';
 import { useUserStore } from '@/stores/user';
 import { useRoute, useRouter } from 'vue-router';
 import MainHeader from '@/components/Menu/MainHeader.vue';
@@ -10,7 +10,7 @@ import { MainTabType } from '@/types/common';
 const $q = useQuasar();
 const isDarkActive = ref($q.dark.isActive);
 const userStore = useUserStore();
-const { isExistsUser, profileImage, mainTab } = storeToRefs(userStore);
+const { isExistsUser, profileImage, mainTab, mainScrollAreaRef } = storeToRefs(userStore);
 const { handleSwipeMainTab } = userStore;
 const { fetchUser } = userStore;
 const route = useRoute();
@@ -28,8 +28,6 @@ watch(
   (val) => (isDarkActive.value = val),
 );
 
-const isInTeam = () => String(route.name).includes('GroupDetail');
-const scrollAreaRef = ref();
 const _handleSwipe = (newInfo: { direction: 'left' | 'right' }) => {
   const mainTabType = `t_${tabArr.findIndex((v) => v === route.name) || 0}` as MainTabType;
   handleSwipeMainTab(newInfo.direction, mainTabType);
@@ -38,20 +36,24 @@ const _handleSwipe = (newInfo: { direction: 'left' | 'right' }) => {
 watch(
   () => mainTab.value,
   (mainTab) => {
+    if (!mainTab) return;
+    //handleSwipe
     const idx = +mainTab.replace('t_', '') % 5;
     const name = tabArr[idx] || 'Team';
     router.push({ name, replace: true });
-    if (idx === 0) return;
-    scrollAreaRef.value.setScrollPosition('vertical', 0);
   },
 );
+
+onActivated(() => {
+  mainTab.value = 't_0';
+});
 </script>
 <template>
-  <div v-show="!isInTeam()" :class="`max-width ${isDarkActive ? 'bg-grey-9' : 'bg-white'}`">
+  <div :class="`max-width ${isDarkActive ? 'bg-grey-9' : 'bg-white'}`">
     <q-scroll-area
-      ref="scrollAreaRef"
+      ref="mainScrollAreaRef"
       class="max-width without-header"
-      :visible="false"
+      :visible="true"
       style="height: 100vh; overflow: hidden"
     >
       <MainHeader style="position: relative" />
@@ -84,9 +86,6 @@ watch(
         </q-page-scroller>
       </q-layout>
     </q-scroll-area>
-  </div>
-  <div v-if="isInTeam()">
-    <slot></slot>
   </div>
 </template>
 <style lang="scss">
