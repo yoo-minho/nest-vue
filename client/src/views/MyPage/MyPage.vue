@@ -4,20 +4,23 @@ import { useUserStore } from '@/stores/user';
 
 import LoginPage from './components/LoginPage.vue';
 import MyInnerPage from './components/MyInnerPage.vue';
+import MainLayout from '@/layouts/MainLayout.vue';
 const userStore = useUserStore();
 const { userLoading, isExistsUser, profileImage, name, email } = storeToRefs(userStore);
 </script>
 
 <template>
-  <q-page class="q-mt-sm">
-    <template v-if="userLoading"></template>
-    <template v-else-if="isExistsUser">
-      <MyInnerPage :name="name" :email="email" :profile-image="profileImage" />
-    </template>
-    <template v-else>
-      <LoginPage />
-    </template>
-  </q-page>
+  <MainLayout>
+    <q-page class="q-mt-sm">
+      <template v-if="userLoading"></template>
+      <template v-else-if="isExistsUser">
+        <MyInnerPage :name="name" :email="email" :profile-image="profileImage" />
+      </template>
+      <template v-else>
+        <LoginPage />
+      </template>
+    </q-page>
+  </MainLayout>
 </template>
 <style lang="scss" scoped>
 .button-wrap {

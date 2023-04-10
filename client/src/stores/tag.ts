@@ -23,6 +23,7 @@ export const useTagStore = defineStore('tag', {
     },
     async fetchTag(name: string) {
       const plusAll = (tags: Tag[]) => [{ id: totalTag, name: totalTag }, ...tags];
+      console.log('this.tags', this.tags);
       switch (name) {
         case 'Team':
           this.tags = this.teamTags;

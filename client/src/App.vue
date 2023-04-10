@@ -41,7 +41,7 @@ onMounted(() => {
         <DataSubpage v-if="isOpenDataSubpage" />
       </div>
       <router-view v-slot="{ Component }">
-        <keep-alive include="Team">
+        <keep-alive include="TeamPage">
           <component :is="Component" />
         </keep-alive>
       </router-view>

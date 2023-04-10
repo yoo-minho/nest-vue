@@ -22,7 +22,7 @@ const page = ref(1);
 watch(
   () => props.links,
   (links) => {
-    if (links.length === 0) return;
+    if (links?.length === 0) return;
     postLoading.value = true;
     fetchPosts();
     page.value++;

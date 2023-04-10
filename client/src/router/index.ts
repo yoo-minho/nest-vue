@@ -10,28 +10,26 @@ export const routes = [
     path: '/',
     name: 'Team',
     component: () => import('@/views/TeamPage/TeamPage.vue'),
-    children: [
-      {
-        path: '/posts',
-        name: 'Post',
-        component: () => import('@/views/PostPage/PostPage.vue'),
-      },
-      {
-        path: '/blogs',
-        name: 'Blog',
-        component: () => import('@/views/BlogPage/BlogPage.vue'),
-      },
-      {
-        path: '/noti',
-        name: 'Noti',
-        component: () => import('@/views/NotiPage/NotiPage.vue'),
-      },
-      {
-        path: '/my',
-        name: 'My',
-        component: () => import('@/views/MyPage/MyPage.vue'),
-      },
-    ],
+  },
+  {
+    path: '/posts',
+    name: 'Post',
+    component: () => import('@/views/PostPage/PostPage.vue'),
+  },
+  {
+    path: '/blogs',
+    name: 'Blog',
+    component: () => import('@/views/BlogPage/BlogPage.vue'),
+  },
+  {
+    path: '/noti',
+    name: 'Noti',
+    component: () => import('@/views/NotiPage/NotiPage.vue'),
+  },
+  {
+    path: '/my',
+    name: 'My',
+    component: () => import('@/views/MyPage/MyPage.vue'),
   },
   {
     path: '/@:domain',
@@ -118,13 +116,6 @@ router.beforeEach((to, from, next) => {
           closeSettingMain();
           next();
         }
-      },
-    },
-    {
-      id: '#Login',
-      cb: () => {
-        closeLoginSubpage();
-        next();
       },
     },
   ];

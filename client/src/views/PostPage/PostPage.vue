@@ -11,6 +11,7 @@ import PostEmpty from './components/PostEmpty.vue';
 
 import { POST_TAG } from '@/constants';
 import { useUserStore } from '@/stores/user';
+import MainLayout from '@/layouts/MainLayout.vue';
 
 const tagStore = useTagStore();
 const { currentTag, isTotalTag } = storeToRefs(tagStore);
@@ -44,24 +45,34 @@ watch(
   },
   { immediate: true },
 );
+
+const refresh = async (done: () => void) => {
+  postLoading.value = true;
+  page.value = 1;
+  await fetchSearchPosts();
+  page.value++;
+  done();
+};
 </script>
 
 <template>
-  <PostTagList />
-  <template v-if="postLoading">
-    <PostListSkeletonItem v-for="i in 10" :key="i" />
-  </template>
-  <template v-if="posts.length === 0">
-    <PostEmpty />
-  </template>
-  <template v-else>
-    <q-page class="q-mt-sm">
-      <div class="max-width">
-        <PostListItem v-for="(post, i) in posts" :key="i" :post="post" />
-        <ScrollObserver v-if="posts.length >= 10" @trigger-intersected="loadMore">
-          <PostListSkeletonItem />
-        </ScrollObserver>
-      </div>
-    </q-page>
-  </template>
+  <MainLayout @pull2refresh="refresh">
+    <PostTagList />
+    <template v-if="postLoading">
+      <PostListSkeletonItem v-for="i in 10" :key="i" />
+    </template>
+    <template v-if="posts.length === 0">
+      <PostEmpty />
+    </template>
+    <template v-else>
+      <q-page class="q-mt-sm">
+        <div class="max-width">
+          <PostListItem v-for="(post, i) in posts" :key="i" :post="post" />
+          <ScrollObserver v-if="posts.length >= 10" @trigger-intersected="loadMore">
+            <PostListSkeletonItem />
+          </ScrollObserver>
+        </div>
+      </q-page>
+    </template>
+  </MainLayout>
 </template>

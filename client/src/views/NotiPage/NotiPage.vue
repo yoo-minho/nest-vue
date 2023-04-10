@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import MainLayout from '@/layouts/MainLayout.vue';
 import NotiEmpty from './components/NotiEmpty.vue';
 </script>
 
 <template>
-  <NotiEmpty />
+  <MainLayout>
+    <NotiEmpty />
+  </MainLayout>
 </template>
