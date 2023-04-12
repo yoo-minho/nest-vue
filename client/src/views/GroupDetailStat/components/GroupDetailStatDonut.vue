@@ -12,7 +12,7 @@ const props = defineProps<{ links: LinkWrap[] }>();
 const orderOptions: OrderOption[] = [{ label: '3개월 동안 많이 작성한 블로그 순', value: 'asc', order: 1 }];
 const currentOrder = ref(orderOptions[0]);
 const series = ref([] as number[]);
-const options = ref({
+let options = {
   dataLabels: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     formatter(_: string, opts: any) {
@@ -50,7 +50,7 @@ const options = ref({
     width: 4,
   },
   colors: ['#39d353', '#26a641', '#006d32', '#0e4429'],
-});
+};
 
 watch(
   () => props.links,
@@ -61,7 +61,7 @@ watch(
 watch(
   () => countPostGroupByLinkId.value,
   () => {
-    options.value = { ...options.value, labels: titleOfPostCounting.value };
+    options = { ...options, labels: titleOfPostCounting.value };
     series.value = countOfPostCounting.value;
   },
 );
@@ -79,7 +79,9 @@ watch(
     </template>
   </q-select>
   <q-card class="bg-dark q-py-md">
-    <apexchart type="donut" :options="options" :series="series"></apexchart>
+    <template v-if="series.length > 0">
+      <apexchart type="donut" :options="options" :series="series"></apexchart>
+    </template>
   </q-card>
 </template>
 <style></style>

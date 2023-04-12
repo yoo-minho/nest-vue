@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { LinkWrap } from '@/types/common';
 import { storeToRefs } from 'pinia';
 import { useGroupStore } from '@/stores/group';
 import { usePostStore } from '@/stores/post';
@@ -15,14 +14,15 @@ const { posts, postLoading } = storeToRefs(postStore);
 
 const groupStore = useGroupStore();
 const { handleSwipeTab } = groupStore;
+const { currentGroup } = storeToRefs(groupStore);
 
-const props = defineProps<{ links?: LinkWrap[] }>();
 const page = ref(1);
 
 watch(
-  () => props.links,
+  () => currentGroup.value.links,
   (links) => {
-    if (links?.length === 0) return;
+    if (!links || links?.length === 0) return;
+
     postLoading.value = true;
     fetchPosts();
     page.value++;

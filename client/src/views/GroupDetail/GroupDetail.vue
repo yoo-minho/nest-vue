@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, computed } from 'vue';
+import { onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useGroupStore } from '@/stores/group';
 import { usePostStore } from '@/stores/post';
@@ -16,7 +16,6 @@ const postStore = usePostStore();
 const { scrapPosts, initPostData, scrapPostsAndAction } = postStore;
 
 const props = defineProps<{ domain: string }>();
-const links = computed(() => currentGroup.value?.links || []);
 
 initGroupData();
 initPostData();
@@ -44,9 +43,9 @@ const refresh = async (done: () => void) => {
   <InTeamLayout @pull2refresh="refresh">
     <GroupDetailTop :loading="groupLoading" />
     <GroupDetailTab />
-    <router-view v-slot="{ Component, route }" :links="links" :loading="groupLoading">
+    <router-view v-slot="{ Component }">
       <transition name="tab">
-        <component :is="Component" :key="route.path" />
+        <component :is="Component" />
       </transition>
     </router-view>
   </InTeamLayout>
