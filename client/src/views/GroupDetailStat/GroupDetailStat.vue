@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { toRefs } from 'vue';
-import { LinkWrap } from '@/types/common';
+import { storeToRefs } from 'pinia';
 import { useGroupStore } from '@/stores/group';
 import GroupDetailStatLast from './components/GroupDetailStatLast/GroupDetailStatLast.vue';
 import GroupDetailStatJandi from './components/GroupDetailStatJandi/GroupDetailStatJandi.vue';
@@ -9,24 +8,22 @@ import ContentsLayout from '@/layouts/ContentsLayout.vue';
 
 const groupStore = useGroupStore();
 const { handleSwipeTab } = groupStore;
+const { currentGroup } = storeToRefs(groupStore);
 const _handleSwipe = (newInfo: { direction: 'left' | 'right' }) => handleSwipeTab(newInfo.direction, 'GroupDetailStat');
-
-const props = defineProps<{ links: LinkWrap[] }>();
-const { links } = toRefs(props);
 </script>
 
 <template>
   <ContentsLayout>
     <div v-touch-swipe.mouse.left.right="_handleSwipe" class="q-px-md q-pb-md q-mt-sm stat-area">
-      <GroupDetailStatJandi :links="links" />
+      <GroupDetailStatJandi :links="currentGroup?.links || []" />
 
       <q-separator class="q-my-md" />
 
-      <GroupDetailStatLast :links="links" />
+      <GroupDetailStatLast :links="currentGroup?.links || []" />
 
       <q-separator class="q-my-md" />
 
-      <GroupDetailStatDonut :links="links" />
+      <GroupDetailStatDonut :links="currentGroup?.links || []" />
     </div>
   </ContentsLayout>
 </template>
