@@ -15,7 +15,6 @@ export class AuthService {
       expiresIn: '7d',
       secret: 'process.env.JWT_SECRET',
     });
-
     return { accessToken, refreshToken };
   }
 
