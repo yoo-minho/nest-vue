@@ -1,31 +1,18 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
-import { storeToRefs } from 'pinia';
 import { useSubpageStore } from '@/stores/subpage';
-import { useUserStore } from '@/stores/user';
 import SettingLayout from '@/layouts/SettingLayout.vue';
 import GroupApi from '@/api/groupApi';
 import SettingCard from './SettingCard.vue';
-import { onMounted, inject, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import DarkModeCard from './DarkModeCard.vue';
 import PlatformStatList from '../PlatformStatList.vue';
 import { openFeedbackForm, openServiceIdentityNotion, openRequestTeamMakerForm } from '@/hooks/useOpenWindow';
-import ApiArr from '@/data/login-api.json';
-import UserApi from '@/api/userApi';
-import { VueCookies } from 'vue-cookies';
-import { QSpinnerIos, useQuasar } from 'quasar';
-import { delay } from '@/util/CommUtil';
-import AccountArea from './AccountArea.vue';
 
-const $cookies = inject<VueCookies>('$cookies');
 const subpageStore = useSubpageStore();
 const { closeSettingMain, openStackMain, openPlatformMain } = subpageStore;
 
-const userStore = useUserStore();
-const { isExistsUser, profileImage, name, email } = storeToRefs(userStore);
-
 const router = useRouter();
-const $q = useQuasar();
 
 const SERVICE_CATEGORY = [
   {

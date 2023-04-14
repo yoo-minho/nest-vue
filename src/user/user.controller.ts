@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Req, UseGuards } from '@nestjs/common';
 import { Request } from 'express';
 import { UserService } from './user.service';
 import { Prisma } from '@prisma/client';
 import { AuthService } from 'src/auth/auth.service';
+import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 
 @Controller('user')
 export class UserController {
@@ -17,6 +18,7 @@ export class UserController {
   }
 
   @Get()
+  @UseGuards(JwtAuthGuard)
   async findById(@Req() req: Request) {
     const accessToken = req.cookies['access-token'];
     if (!accessToken) return {};

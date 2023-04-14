@@ -1,9 +1,11 @@
 import {
   ExecutionContext,
+  Inject,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { AuthService } from 'src/auth/auth.service';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
@@ -14,7 +16,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   handleRequest(err: boolean | null, user, info: Error) {
     if (err || !user) {
       const { name, message, stack } = info;
-      console.log({ name, message, stack });
+      console.log({ name, message, stack, user, err });
       let _name = name,
         _message;
       if (name === 'JsonWebTokenError') {

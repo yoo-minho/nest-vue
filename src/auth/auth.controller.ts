@@ -42,6 +42,23 @@ export class AuthController {
     res.status(200).end();
   }
 
+  @Get('/refresh')
+  //가드로 리프레시 유효한지 따지고
+  //아니면 프론트에서 사인업으로
+  //기면 프론트에서 다시 유저페이지로
+  async refresh(@Req() req: Request, @Res() res: Response) {
+    const isDev = process.env.NODE_ENV === 'development';
+    const id = this.authService.getIdByToken(req.cookies['access-token']);
+    const { accessToken, refreshToken } = this.authService.getToken({ id });
+    res.cookie('access-token', accessToken, {
+      path: '/',
+      secure: !isDev,
+      httpOnly: !isDev,
+    });
+    this.userService.updateUserToken({ id, token: refreshToken });
+    res.status(200).end();
+  }
+
   @Get('/logout')
   async logoutKakao(@Req() req: Request, @Res() res: Response) {
     const id = this.authService.getIdByToken(req.cookies['access-token']);

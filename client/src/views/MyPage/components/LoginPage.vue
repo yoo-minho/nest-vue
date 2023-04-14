@@ -37,7 +37,12 @@ const tryLogin = (e: MouseEvent, id: string) => {
 <template>
   <q-page class="q-pa-lg">
     <ul class="q-ma-none">
-      <li v-for="api in ApiArr" :key="api.id" class="button-wrap" @click="(e:MouseEvent) => tryLogin(e, api.id)">
+      <li
+        v-for="api in ApiArr.filter((api) => api.id === 'kakao')"
+        :key="api.id"
+        class="button-wrap"
+        @click="(e:MouseEvent) => tryLogin(e, api.id)"
+      >
         <div class="contents" :style="api.style">
           <img width="24" height="24" :src="api.src" :alt="api.alt" />
           <span class="label">{{ api.label }}</span>
