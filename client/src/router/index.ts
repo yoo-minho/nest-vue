@@ -11,7 +11,7 @@ export const routes = [
     name: 'Team',
     component: () => import('@/views/TeamPage/TeamPage.vue'),
     meta: {
-      title: '팀로그(teamlog) - 팀으로 글쓰기를 시작할때 최고의 선택',
+      title: '팀로그(teamlog) - 세상의 모든 블로그 한번에 모아보기',
     },
   },
   {
