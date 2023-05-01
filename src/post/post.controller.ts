@@ -70,17 +70,19 @@ export class PostController {
       q: string,
     ): Prisma.Enumerable<Prisma.PostWhereInput> =>
       q
-        .split('|')
+        ?.split('|')
         .filter((word) => !!word)
         .map((word) => ({
           title: { contains: word.trim(), mode: 'insensitive' },
-        }));
+        })) || [];
+    const isExistsTag = !!tag && tag !== 'All';
+    const tagOption = isExistsTag ? createOrJson(tag) : [];
     return await this.postService.posts({
       where: {
         AND: [
           { linkId: { in: linkIds } },
           { OR: createOrJson(q) },
-          { OR: createOrJson(tag) },
+          { OR: tagOption },
         ],
       },
       orderBy: { createdAt: 'desc' },

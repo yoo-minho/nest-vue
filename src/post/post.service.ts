@@ -73,7 +73,6 @@ export class PostService {
         },
       },
       orderBy: [{ _count: { id: 'desc' } }, { _max: { createdAt: 'desc' } }],
-      take: 4,
     });
   }
 

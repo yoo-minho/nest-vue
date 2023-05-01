@@ -7,10 +7,12 @@ export class LinkController {
 
   @Get()
   findAll(@Query() { tag, page }) {
+    const isExistsTag = !!tag && tag !== 'All';
+    const tagOption = isExistsTag ? { type: { equals: tag } } : {};
     const PAGE_PER_COUNT = 10;
     page = page || 1;
     return this.linkService.links({
-      where: { type: { equals: tag }, lastPostCreatedAt: { not: null } },
+      where: { ...tagOption, lastPostCreatedAt: { not: null } },
       orderBy: { lastPostCreatedAt: 'desc' },
       skip: (page - 1) * PAGE_PER_COUNT,
       take: PAGE_PER_COUNT,

@@ -136,7 +136,10 @@ export class GroupController {
   @Get()
   findAll(@Query() { tag, page, sort }) {
     const PAGE_PER_COUNT = 10;
-    const tagOption = tag ? { tags: { some: { tag: { name: tag } } } } : {};
+    const isExistsTag = !!tag && tag !== 'All';
+    const tagOption = isExistsTag
+      ? { tags: { some: { tag: { name: tag } } } }
+      : {};
     page = +page || 1;
 
     if (page === 1) {
