@@ -20,11 +20,17 @@ export class UserController {
   @Get()
   @UseGuards(JwtAuthGuard)
   async findById(@Req() req: Request) {
-    const accessToken = req.cookies['access-token'];
-    if (!accessToken) return {};
-    const id = this.authService.getIdByToken(req.cookies['access-token']);
+    const jwtPayload = req.user as { id: string; iat: number; exp: number };
+    const { id, iat, exp } = jwtPayload;
+    if (!id) return {};
+
     const response = await this.userService.userById({ id });
     const { refreshToken, ...data } = response;
+    const now = new Date().getTime() / 1000;
+    const isNearExpiration = (exp - iat) * 0.3 > exp - now;
+    if (isNearExpiration) {
+      console.log('만료 되기 30% 지점?');
+    }
     return data;
   }
 }
