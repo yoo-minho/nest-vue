@@ -34,7 +34,11 @@ async function bootstrap() {
       { path: 'my', method: RequestMethod.GET },
     ],
   });
-  app.enableCors();
+  app.enableCors({
+    credentials: true,
+    methods: ['GET', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+    origin: process.env.FRONTEND_URL,
+  });
   app.use(cookieParser());
   await app.listen(5000);
 }

@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "Access" ADD COLUMN     "apiName" VARCHAR(100),
+ALTER COLUMN "createdAt" DROP NOT NULL,
+ALTER COLUMN "userAgent" DROP NOT NULL;

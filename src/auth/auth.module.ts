@@ -7,6 +7,7 @@ import { ConfigService } from '@nestjs/config';
 import { AuthController } from './auth.controller';
 import { JwtKakaoStrategy } from './social/jwt-social-kakao.strategy';
 import { PrismaModule } from 'src/prisma/prisma.module';
+import { AccessService } from 'src/access/access.service';
 
 @Module({
   imports: [
@@ -14,14 +15,14 @@ import { PrismaModule } from 'src/prisma/prisma.module';
     PassportModule,
     JwtModule.registerAsync({
       inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        secret: 'process.env.JWT_SECRET',
+      useFactory: () => ({
+        secret: process.env.JWT_SECRET,
         signOptions: { expiresIn: '60s' },
       }),
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, UserService, JwtKakaoStrategy],
+  providers: [AuthService, UserService, AccessService, JwtKakaoStrategy],
   exports: [AuthService],
 })
 export class AuthModule {}

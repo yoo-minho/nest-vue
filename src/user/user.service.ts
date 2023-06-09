@@ -25,6 +25,16 @@ export class UserService {
     return this.prisma.user.findUnique({ where: { id: params.id } });
   }
 
+  async isTokenMatchedInDB(params: {
+    id: string;
+    token: string;
+  }): Promise<boolean> {
+    const count = await this.prisma.user.count({
+      where: { id: params.id, refreshToken: params.token },
+    });
+    return count > 0;
+  }
+
   async updateUserToken(params: { id: string; token: string }): Promise<User> {
     return this.prisma.user.update({
       data: { refreshToken: params.token },

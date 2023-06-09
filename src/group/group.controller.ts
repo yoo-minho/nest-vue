@@ -7,8 +7,9 @@ import {
   Query,
   ConflictException,
   Ip,
-  Patch,
   Put,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { GroupService } from './group.service';
 import { CreateGroupDto } from './dto/create-group.dto';
@@ -19,6 +20,7 @@ import { PostService } from 'src/post/post.service';
 import { UpdateGroupDto } from './dto/update-group.dto';
 import { BadRequestException } from '@nestjs/common/exceptions';
 import { TagService } from 'src/tag/tag.service';
+import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 
 @ApiTags('group')
 @Controller('group')
@@ -32,7 +34,10 @@ export class GroupController {
   ) {}
 
   @Post()
-  async create(@Body() createGroupDto: CreateGroupDto) {
+  @UseGuards(JwtAuthGuard)
+  async create(@Req() req, @Body() createGroupDto: CreateGroupDto) {
+    const jwtPayload = req.user as { id: string; iat: number; exp: number };
+    const { id } = jwtPayload;
     const { domain, title, description, tags, links } = createGroupDto;
     await this.checkDuplicateDomain(domain);
     return this.groupService.createGroup({
@@ -40,7 +45,7 @@ export class GroupController {
       title,
       description,
       creater: {
-        connect: { id: 'dellose@naver.com' },
+        connect: { id },
       },
       published: true, //TO-DO. 개발 true, 운영 false
       tags: {
@@ -179,7 +184,7 @@ export class GroupController {
     return groupData;
   }
 
-  @Patch('last-post-create-at')
+  @Put('last-post-create-at')
   async updateLastPostCreateAt(@Body('groupId') groupId: number) {
     return this.groupService.updateLastPostCreatedAt(groupId);
   }

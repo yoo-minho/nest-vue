@@ -14,12 +14,23 @@ datasource db {
 }
 
 model User {
-  id           String  @id @unique @db.VarChar(100)
-  email        String? @unique @db.VarChar(100)
-  name         String  @db.VarChar(50)
-  profileImage String? @db.VarChar(500)
-  refreshToken String? @unique @db.VarChar(200)
+  id           String   @id @unique @db.VarChar(100)
+  email        String?  @unique @db.VarChar(100)
+  name         String   @db.VarChar(50)
+  profileImage String?  @db.VarChar(500)
+  refreshToken String?  @unique @db.VarChar(200)
+  access       Access[]
   groups       Group[]
+}
+
+model Access {
+  createdAt DateTime? @default(now()) @db.Timestamptz(3)
+  id        Int       @id @default(autoincrement())
+  userAgent String?
+  userId    String    @db.VarChar(100)
+  apiName   String?   @db.VarChar(100)
+  ip        String?   @db.VarChar(100)
+  user      User      @relation(fields: [userId], references: [id])
 }
 
 model Group {

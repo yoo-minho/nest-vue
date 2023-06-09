@@ -17,6 +17,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { JwtStrategy } from 'src/auth/jwt.strategy';
+import { AccessModule } from './access/access.module';
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import { JwtStrategy } from 'src/auth/jwt.strategy';
     PrismaModule,
     UserModule,
     AuthModule,
+    AccessModule,
   ],
   controllers: [AppController],
   providers: [
