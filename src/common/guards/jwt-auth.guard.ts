@@ -19,13 +19,15 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
         _message;
       if (name === 'JsonWebTokenError') {
         _message = '유효하지 않은 토큰입니다.';
+        throw new UnauthorizedException({ name: _name, message: _message });
       } else if (name === 'TokenExpiredError' && message === 'jwt expired') {
         _message = '만료된 토큰입니다.';
+        throw new UnauthorizedException({ name: _name, message: _message });
       } else if (name === 'Error' && message === 'No auth token') {
         _name = 'NoAuthTokenError';
         _message = '토큰이 존재하지 않습니다.';
+        throw new UnauthorizedException({ name: _name, message: _message });
       }
-      throw new UnauthorizedException({ name: _name, message: _message });
     }
     return user;
   }
