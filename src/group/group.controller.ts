@@ -10,6 +10,7 @@ import {
   Put,
   UseGuards,
   Req,
+  Delete,
 } from '@nestjs/common';
 import { GroupService } from './group.service';
 import { CreateGroupDto } from './dto/create-group.dto';
@@ -157,6 +158,12 @@ export class GroupController {
       skip: (page - 1) * PAGE_PER_COUNT,
       take: PAGE_PER_COUNT,
     });
+  }
+
+  @Delete()
+  delete(@Body('id') id: string) {
+    console.log({ id });
+    return this.groupService.deleteGroup(+id);
   }
 
   @Get('counts')

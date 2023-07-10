@@ -55,7 +55,7 @@ model Views {
   date        String @db.VarChar(8)
   count       Int
   groupDomain String @db.VarChar(20)
-  Group       Group  @relation(fields: [groupDomain], references: [domain])
+  Group       Group  @relation(fields: [groupDomain], references: [domain], onDelete: Cascade)
 
   @@id([groupDomain, date])
 }
@@ -78,7 +78,7 @@ model LinksOnGroups {
   groupId    Int
   linkId     Int
   assignedAt DateTime @default(now()) @db.Timestamptz(3)
-  group      Group    @relation(fields: [groupId], references: [id])
+  group      Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
   link       Link     @relation(fields: [linkId], references: [id])
 
   @@id([groupId, linkId])
@@ -94,7 +94,7 @@ model TagsOnGroups {
   groupId    Int
   tagId      Int
   assignedAt DateTime @default(now()) @db.Timestamptz(3)
-  group      Group    @relation(fields: [groupId], references: [id])
+  group      Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
   tag        Tag      @relation(fields: [tagId], references: [id])
 
   @@id([groupId, tagId])
