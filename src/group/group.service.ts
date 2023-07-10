@@ -177,6 +177,14 @@ export class GroupService {
     }
   }
 
+  async deleteGroup(id: number) {
+    try {
+      await this.prisma.group.delete({ where: { id } });
+    } catch (e) {
+      throw new ForbiddenException(e);
+    }
+  }
+
   async updateLastPostCreatedAt(groupId: number) {
     try {
       const res: { max: Date }[] = await this.prisma.$queryRaw`

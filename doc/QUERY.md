@@ -31,13 +31,12 @@ where t2.id = "Group".id;
 
 ```sql
 --주간게시물 갱신 뿅뿅
-update "Group" set "weeklyAvgPost" = t2.round
+UPDATE "Group" set "weeklyAvgPost" = t2.round
 FROM (
 	select
 		"Group"."domain",
-		(with
-			_link as (select "linkId" from "LinksOnGroups" where "groupId" = "Group"."id")
-		select coalesce(round(sum(count)/4,2), 0) round from (
+		(with _link as (select "linkId" from "LinksOnGroups" where "groupId" = "Group"."id")
+		select coalesce(round(sum(count)/4, 2), 0) round from (
 			select to_char("createdAt", 'WW'), count(1)
 			from "Post" where "linkId" IN (select "linkId" from _link)
 			and "createdAt" > now() - interval '28 day'
