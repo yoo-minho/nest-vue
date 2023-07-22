@@ -191,6 +191,16 @@ export class GroupController {
     return groupData;
   }
 
+  @Put('stat')
+  async updateStat(@Body('groupId') groupId: number) {
+    const { weeklyAvgPost } = await this.groupService.updateWeeklyAvgPost(
+      groupId,
+    );
+    const { lastPostCreatedAt } =
+      await this.groupService.updateLastPostCreatedAt(groupId);
+    return { weeklyAvgPost, lastPostCreatedAt };
+  }
+
   @Put('last-post-create-at')
   async updateLastPostCreateAt(@Body('groupId') groupId: number) {
     return this.groupService.updateLastPostCreatedAt(groupId);

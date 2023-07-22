@@ -10,6 +10,7 @@ import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { Prisma } from '@prisma/client';
 import { LinkService } from '../link/link.service';
+import { GroupService } from 'src/group/group.service';
 
 const numbersPipe = new ParseArrayPipe({
   items: Number,
@@ -23,6 +24,7 @@ export class PostController {
   constructor(
     private readonly postService: PostService,
     private readonly linkService: LinkService,
+    private readonly groupService: GroupService,
   ) {}
 
   @Post()
@@ -45,27 +47,14 @@ export class PostController {
   }
 
   @Get()
-  findAll(
-    @Query('linkIds', numbersPipe) linkIds: number[],
-    @Query('page') page: number,
-  ) {
-    page = page || 1;
-    return this.postService.posts({
-      where: { linkId: { in: linkIds } },
-      orderBy: { createdAt: 'desc' },
-      skip: (page - 1) * PAGE_PER_COUNT,
-      take: PAGE_PER_COUNT,
-    });
-  }
-
-  @Get('search')
   async search(
     @Query('q') q: string,
     @Query('tag') tag: string,
     @Query('page') page: number,
-    @Query('linkIds', numbersPipe) linkIds?: number[],
+    @Query('teamId') teamId?: string,
   ) {
     page = page || 1;
+
     const createOrJson = (
       q: string,
     ): Prisma.Enumerable<Prisma.PostWhereInput> =>
@@ -75,12 +64,20 @@ export class PostController {
         .map((word) => ({
           title: { contains: word.trim(), mode: 'insensitive' },
         })) || [];
+
     const isExistsTag = !!tag && tag !== 'All';
     const tagOption = isExistsTag ? createOrJson(tag) : [];
+
+    let linkIds: number[];
+    if (teamId) {
+      const group = await this.groupService.groupByDomain(teamId);
+      linkIds = group.links.map((l) => l.link.id);
+    }
+
     return await this.postService.posts({
       where: {
         AND: [
-          { linkId: { in: linkIds } },
+          linkIds?.length > 0 ? { linkId: { in: linkIds } } : {},
           { OR: createOrJson(q) },
           { OR: tagOption },
         ],

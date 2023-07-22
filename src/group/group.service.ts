@@ -186,19 +186,34 @@ export class GroupService {
   }
 
   async updateLastPostCreatedAt(groupId: number) {
-    try {
-      const res: { max: Date }[] = await this.prisma.$queryRaw`
-         SELECT MAX("Link"."lastPostCreatedAt") FROM "LinksOnGroups"
+    const res: { lastPostCreatedAt: Date }[] = await this.prisma.$queryRaw`
+         SELECT MAX("Link"."lastPostCreatedAt") AS "lastPostCreatedAt" FROM "LinksOnGroups"
             INNER JOIN "Link" ON "LinksOnGroups"."linkId" = "Link"."id"
             WHERE "groupId" = ${groupId}
       `;
-      await this.prisma.group.update({
-        where: { id: groupId },
-        data: { lastPostCreatedAt: res[0].max },
-      });
-      return { lastPostCreatedAt: res[0].max };
-    } catch (e) {
-      throw Error(e);
-    }
+    const lastPostCreatedAt = res[0].lastPostCreatedAt;
+    await this.prisma.group.update({
+      where: { id: groupId },
+      data: { lastPostCreatedAt },
+    });
+    return { lastPostCreatedAt };
+  }
+
+  async updateWeeklyAvgPost(groupId: number, week?: number) {
+    week = week || 4;
+    const res: { weeklyAvgPost: number }[] = await this.prisma.$queryRaw`
+      SELECT COALESCE(round(SUM(COUNT)/${week}, 2)::float, 0) AS "weeklyAvgPost" FROM (
+        SELECT COUNT(1) FROM "Post" 
+        WHERE "linkId" IN (SELECT "linkId" FROM "LinksOnGroups" WHERE "groupId" = ${groupId})
+        AND "createdAt" > now() - interval '${week} week'
+        GROUP BY to_char("createdAt", 'WW')
+      ) t
+    `;
+    const weeklyAvgPost = res[0].weeklyAvgPost;
+    await this.prisma.group.update({
+      where: { id: groupId },
+      data: { weeklyAvgPost: weeklyAvgPost },
+    });
+    return { weeklyAvgPost };
   }
 }
