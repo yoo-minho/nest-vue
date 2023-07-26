@@ -39,6 +39,7 @@ export class GroupController {
   async create(@Req() req, @Body() createGroupDto: CreateGroupDto) {
     const jwtPayload = req.user as { id: string; iat: number; exp: number };
     const { id } = jwtPayload;
+    // const id = 'KAKAO_2710302227';
     const { domain, title, description, tags, links } = createGroupDto;
     await this.checkDuplicateDomain(domain);
     return this.groupService.createGroup({

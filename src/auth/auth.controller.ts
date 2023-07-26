@@ -67,13 +67,12 @@ export class AuthController {
 
     //2. 디비 유효 체크
     const token = this.getBearerToken(req);
-    const params = { id, token };
-    const _isTokenMatchedInDB = await this.userService.isTokenMatchedInDB(
-      params,
-    );
+    const user = await this.userService.userById({ id });
+    const _isTokenMatchedInDB = token === user.refreshToken;
+    // console.log({ reqToken: token, dbToken: user.refreshToken });
+
     if (!_isTokenMatchedInDB) {
-      this.userService.updateUserToken({ id, token: '' });
-      res.send({ atk: '', rtk: '' });
+      res.send({ atk: '', rtk: '', message: 'Not Token Matched In DB!' });
       return;
     }
 
@@ -105,9 +104,9 @@ export class AuthController {
     const _isTokenMatchedInDB = await this.userService.isTokenMatchedInDB(
       params,
     );
+
     if (!_isTokenMatchedInDB) {
-      this.userService.updateUserToken({ id, token: '' });
-      res.send({ atk: '' });
+      res.send({ atk: '', message: 'Not Token Matched In DB!' });
       return;
     }
 
