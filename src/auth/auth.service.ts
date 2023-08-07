@@ -8,7 +8,7 @@ export class AuthService {
 
   getToken(payload: string | object) {
     const accessToken = this.jwtService.sign(payload, {
-      expiresIn: 5,
+      expiresIn: '1h',
       secret: process.env.JWT_SECRET,
     });
 

@@ -61,6 +61,7 @@ export class GroupService {
           orderBy: { link: { lastPostCreatedAt: 'desc' } },
         },
         counts: { where: { date: getToday8() } },
+        creater: true,
       },
       where: {
         id,
@@ -89,6 +90,10 @@ export class GroupService {
         links: {
           select: { link: true },
           orderBy: { link: { lastPostCreatedAt: 'desc' } },
+        },
+        tags: {
+          select: { tag: true },
+          orderBy: { tag: { groups: { _count: 'desc' } } },
         },
         counts: { where: { date: getToday8() } },
       },

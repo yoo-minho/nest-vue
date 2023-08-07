@@ -19,7 +19,10 @@ import { CacheService } from 'src/cache/cache.service';
 import { LinkService } from 'src/link/link.service';
 import { PostService } from 'src/post/post.service';
 import { UpdateGroupDto } from './dto/update-group.dto';
-import { BadRequestException } from '@nestjs/common/exceptions';
+import {
+  BadRequestException,
+  UnauthorizedException,
+} from '@nestjs/common/exceptions';
 import { TagService } from 'src/tag/tag.service';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 
@@ -39,7 +42,6 @@ export class GroupController {
   async create(@Req() req, @Body() createGroupDto: CreateGroupDto) {
     const jwtPayload = req.user as { id: string; iat: number; exp: number };
     const { id } = jwtPayload;
-    // const id = 'KAKAO_2710302227';
     const { domain, title, description, tags, links } = createGroupDto;
     await this.checkDuplicateDomain(domain);
     return this.groupService.createGroup({
@@ -66,12 +68,19 @@ export class GroupController {
   }
 
   @Put()
-  async update(@Body() updateGroupDto: UpdateGroupDto) {
+  @UseGuards(JwtAuthGuard)
+  async update(@Req() req, @Body() updateGroupDto: UpdateGroupDto) {
+    const jwtPayload = req.user as { id: string; iat: number; exp: number };
+    const { id: userIdByJwt } = jwtPayload;
     const { id, domain, title, description, tags, links } = updateGroupDto;
     if (!id) {
       throw new BadRequestException('필수값 에러!');
     }
     const groupData = await this.groupService.groupById(id);
+    const isMasterUser = 'KAKAO_2710302227' == userIdByJwt;
+    if (groupData.createrId !== userIdByJwt && !isMasterUser) {
+      throw new UnauthorizedException('본인이 등록한 팀이 아님!');
+    }
     if (groupData.domain !== domain) {
       await this.checkDuplicateDomain(domain);
     }
@@ -140,6 +149,18 @@ export class GroupController {
     });
   }
 
+  @Delete()
+  @UseGuards(JwtAuthGuard)
+  async delete(@Req() req, @Body('id') id: string) {
+    const jwtPayload = req.user as { id: string; iat: number; exp: number };
+    const { id: userIdByJwt } = jwtPayload;
+    const isMasterUser = 'KAKAO_2710302227' == userIdByJwt;
+    if (id !== userIdByJwt && !isMasterUser) {
+      throw new UnauthorizedException('본인이 등록한 팀이 아님!');
+    }
+    return this.groupService.deleteGroup(+id);
+  }
+
   @Get()
   findAll(@Query() { tag, page, sort }) {
     const PAGE_PER_COUNT = 10;
@@ -159,12 +180,6 @@ export class GroupController {
       skip: (page - 1) * PAGE_PER_COUNT,
       take: PAGE_PER_COUNT,
     });
-  }
-
-  @Delete()
-  delete(@Body('id') id: string) {
-    console.log({ id });
-    return this.groupService.deleteGroup(+id);
   }
 
   @Get('counts')
