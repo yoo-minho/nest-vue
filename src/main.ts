@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { RequestMethod, ValidationPipe } from '@nestjs/common';
+import { ValidationPipe } from '@nestjs/common';
 import cookieParser from 'cookie-parser';
 
 async function bootstrap() {
@@ -23,17 +23,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  // app.setGlobalPrefix('api');
-
-  app.setGlobalPrefix('api', {
-    exclude: [
-      { path: '', method: RequestMethod.GET },
-      { path: '@:domain', method: RequestMethod.GET },
-      { path: 'error', method: RequestMethod.GET },
-      { path: 'oauth', method: RequestMethod.GET },
-      { path: 'my', method: RequestMethod.GET },
-    ],
-  });
   app.enableCors({
     credentials: true,
     methods: ['GET', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
