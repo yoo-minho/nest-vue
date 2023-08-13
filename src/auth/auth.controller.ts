@@ -49,7 +49,8 @@ export class AuthController {
       secure: !isDev,
       httpOnly: true,
     });
-    res.redirect(302, `http://localhost:3000/my?code=${accessToken}`);
+    const baseUrl = isDev ? 'http://localhost:3000' : 'https://teamlog.team';
+    res.redirect(302, `${baseUrl}/my?code=${accessToken}`);
     res.status(200).end();
   }
 
@@ -132,10 +133,12 @@ export class AuthController {
     @Ip() ip: string,
     @Headers('user-agent') ua,
   ) {
+    const isDev = process.env.NODE_ENV === 'development';
+    const baseUrl = isDev ? 'http://localhost:3000' : 'https://teamlog.team';
     this.userService.updateUserToken({ id, token: '' });
     await this.accessService.create({ id, ua, ip, apiName: 'logout' });
     res.cookie('refresh-token', '');
-    res.redirect(302, `http://localhost:3000/`);
+    res.redirect(302, baseUrl);
     res.status(200).end();
   }
 
