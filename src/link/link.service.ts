@@ -18,8 +18,10 @@ export class LinkService {
     return this.prisma.link.findMany({
       include: {
         groups: {
-          select: { group: true },
+          select: { group: { select: { title: true } } },
+          where: { group: { NOT: { lastPostCreatedAt: null } } },
           orderBy: { group: { lastPostCreatedAt: 'desc' } },
+          take: 3,
         },
       },
       skip,

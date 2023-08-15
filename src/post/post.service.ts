@@ -33,7 +33,16 @@ export class PostService {
     const { skip, take, cursor, where, orderBy } = params;
     return this.prisma.post.findMany({
       include: {
-        link: true,
+        link: {
+          include: {
+            groups: {
+              select: { group: { select: { title: true } } },
+              where: { group: { NOT: { lastPostCreatedAt: null } } },
+              orderBy: { group: { lastPostCreatedAt: 'desc' } },
+              take: 3,
+            },
+          },
+        },
       },
       skip,
       take,
