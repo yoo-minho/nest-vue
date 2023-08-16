@@ -172,7 +172,8 @@ export class GroupController {
     const userIdByJwt = this.authService.getIdByToken(auth);
     const PAGE_PER_COUNT = 10;
     const isMyFilter = tag === '내가만든';
-    const myOption = isMyFilter ? { createrId: userIdByJwt } : {};
+    const myOption =
+      isMyFilter && userIdByJwt !== '' ? { createrId: userIdByJwt } : {};
     const isExistsTag = !!tag && tag !== 'All' && !isMyFilter;
     const tagOption = isExistsTag
       ? { tags: { some: { tag: { name: tag } } } }
