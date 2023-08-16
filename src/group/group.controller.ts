@@ -11,6 +11,7 @@ import {
   UseGuards,
   Req,
   Delete,
+  Headers,
 } from '@nestjs/common';
 import { GroupService } from './group.service';
 import { CreateGroupDto } from './dto/create-group.dto';
@@ -25,6 +26,7 @@ import {
 } from '@nestjs/common/exceptions';
 import { TagService } from 'src/tag/tag.service';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
+import { AuthService } from 'src/auth/auth.service';
 
 @ApiTags('group')
 @Controller('group')
@@ -35,6 +37,7 @@ export class GroupController {
     private readonly linkService: LinkService,
     private readonly tagService: TagService,
     private readonly postService: PostService,
+    private readonly authService: AuthService,
   ) {}
 
   @Post()
@@ -162,9 +165,15 @@ export class GroupController {
   }
 
   @Get()
-  findAll(@Query() { tag, page, sort }) {
+  findAll(
+    @Headers('Authorization') auth: string,
+    @Query() { tag, page, sort },
+  ) {
+    const userIdByJwt = this.authService.getIdByToken(auth);
     const PAGE_PER_COUNT = 10;
-    const isExistsTag = !!tag && tag !== 'All';
+    const isMyFilter = tag === '내가만든';
+    const myOption = isMyFilter ? { createrId: userIdByJwt } : {};
+    const isExistsTag = !!tag && tag !== 'All' && !isMyFilter;
     const tagOption = isExistsTag
       ? { tags: { some: { tag: { name: tag } } } }
       : {};
@@ -175,7 +184,7 @@ export class GroupController {
     }
 
     return this.groupService.groups({
-      where: { published: true, ...tagOption },
+      where: { published: true, ...tagOption, ...myOption },
       orderBy: { [sort || 'lastPostCreatedAt']: 'desc' },
       skip: (page - 1) * PAGE_PER_COUNT,
       take: PAGE_PER_COUNT,

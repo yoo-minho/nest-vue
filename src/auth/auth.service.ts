@@ -20,11 +20,10 @@ export class AuthService {
   }
 
   getIdByToken(token: string) {
-    if (token && this.jwtService.verify(token)) {
-      const res = this.jwtService.decode(token);
-      return res['id'];
-    }
-    return '';
+    if (!token) return '';
+    if (token.includes('Bearer ')) token = token.replace('Bearer ', '');
+    const res = this.jwtService.decode(token);
+    return res['id'];
   }
 
   // 암호화 AES256
