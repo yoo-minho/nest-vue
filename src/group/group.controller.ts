@@ -185,7 +185,7 @@ export class GroupController {
     }
 
     return this.groupService.groups({
-      where: { published: true, ...tagOption, ...myOption },
+      where: { published: true, ...tagOption },
       orderBy: { [sort || 'lastPostCreatedAt']: 'desc' },
       skip: (page - 1) * PAGE_PER_COUNT,
       take: PAGE_PER_COUNT,
