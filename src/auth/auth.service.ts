@@ -22,6 +22,7 @@ export class AuthService {
   getIdByToken(token: string) {
     if (!token) return '';
     if (token.includes('Bearer ')) token = token.replace('Bearer ', '');
+    if (!token) return '';
     const res = this.jwtService.decode(token);
     return res['id'];
   }
