@@ -172,8 +172,7 @@ export class GroupController {
     const userIdByJwt = this.authService.getIdByToken(auth);
     const PAGE_PER_COUNT = 10;
     const isMyFilter = tag === '내가만든';
-    const myOption =
-      isMyFilter && userIdByJwt !== '' ? { createrId: userIdByJwt } : {};
+    const myOption = isMyFilter ? { createrId: userIdByJwt } : {};
     const isExistsTag = !!tag && tag !== 'All' && !isMyFilter;
     const tagOption = isExistsTag
       ? { tags: { some: { tag: { name: tag } } } }
@@ -185,7 +184,7 @@ export class GroupController {
     }
 
     return this.groupService.groups({
-      where: { published: true, ...tagOption },
+      where: { published: true, ...tagOption, ...myOption },
       orderBy: { [sort || 'lastPostCreatedAt']: 'desc' },
       skip: (page - 1) * PAGE_PER_COUNT,
       take: PAGE_PER_COUNT,
