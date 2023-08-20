@@ -1,4 +1,8 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  ForbiddenException,
+  Injectable,
+} from '@nestjs/common';
 import { Prisma, Link } from '@prisma/client';
 import { LinkItemDto } from 'src/group/dto/link-item.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -6,6 +10,19 @@ import { PrismaService } from 'src/prisma/prisma.service';
 @Injectable()
 export class LinkService {
   constructor(private prisma: PrismaService) {}
+
+  async createLink(data: Prisma.LinkCreateInput): Promise<Link> {
+    try {
+      return await this.prisma.link.create({ data });
+    } catch (e) {
+      if (e instanceof Prisma.PrismaClientKnownRequestError) {
+        if (e.code === 'P2002') {
+          throw new ConflictException(e);
+        }
+      }
+      throw new ForbiddenException(e);
+    }
+  }
 
   async links(params: {
     skip?: number;

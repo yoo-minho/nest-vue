@@ -10,6 +10,8 @@ type GroupResponseDto = Group & {
   todayViews?: number;
 };
 
+type LastPostCreatedAtType = { lastPostCreatedAt: Date };
+
 @Injectable()
 export class GroupService {
   constructor(private prisma: PrismaService) {}
@@ -204,7 +206,7 @@ export class GroupService {
     return { lastPostCreatedAt };
   }
 
-  async updateWeeklyAvgPost(groupId: number, week?: number) {
+  async updateWeeklyAvgPostByGroupId(groupId: number, week?: number) {
     week = week || 4;
     const res: { weeklyAvgPost: number }[] = await this.prisma.$queryRaw`
       SELECT COALESCE(round(SUM(COUNT)/${week}, 2)::float, 0) AS "weeklyAvgPost" FROM (
@@ -220,5 +222,55 @@ export class GroupService {
       data: { weeklyAvgPost: weeklyAvgPost },
     });
     return { weeklyAvgPost };
+  }
+
+  //최근포스트작성일
+  async updateLastPostCreatedAtByLinkId(
+    linkId: number,
+  ): Promise<LastPostCreatedAtType> {
+    const result: LastPostCreatedAtType = await this.prisma.$queryRaw`
+      WITH pre as (
+        SELECT max("createdAt") as "lastPostCreatedAt" FROM "Post" WHERE "linkId" = ${linkId}
+      )
+      UPDATE "Link" SET "lastPostCreatedAt" = pre."lastPostCreatedAt" 
+      FROM pre WHERE "Link"."id" = ${linkId} AND "Link"."lastPostCreatedAt" != pre."lastPostCreatedAt" 
+      RETURNING pre."lastPostCreatedAt"
+    `;
+    await this.prisma.$queryRaw`
+      WITH pre as (
+        SELECT 
+          "groupId",
+          GREATEST(
+            (SELECT "lastPostCreatedAt" FROM "Link" WHERE "id" = "linkId"),
+            (SELECT "lastPostCreatedAt" FROM "Group" WHERE "id" = t."groupId")
+          ) as "lastPostCreatedAt"
+        FROM "LinksOnGroups" t WHERE "linkId" = ${linkId}
+      )
+      UPDATE "Group" SET "lastPostCreatedAt" = pre."lastPostCreatedAt" FROM pre
+      WHERE "Group"."id" = pre."groupId" AND "Group"."lastPostCreatedAt" != pre."lastPostCreatedAt"
+    `;
+    return { lastPostCreatedAt: result.lastPostCreatedAt };
+  }
+
+  //주간게시물
+  updateWeeklyAvgPostByLinkId(
+    linkId: number,
+  ): Promise<{ groupId: number; weeklyAvgPost: number }> {
+    return this.prisma.$queryRaw`
+      WITH pre as (
+        SELECT 
+          "groupId",
+          (
+            SELECT round(COUNT(1)::numeric/4, 2) FROM "Post" 
+            WHERE "linkId" IN (SELECT "linkId" FROM "LinksOnGroups" WHERE "groupId" = t."groupId")
+            AND "createdAt" > date_trunc('week', current_date) - interval '4 week 1 day' 
+            AND "createdAt" < date_trunc('week', current_date) - interval '1 day'
+          ) "weeklyAvgPost"
+        FROM "LinksOnGroups" t WHERE "linkId" = ${linkId}
+      )
+      UPDATE "Group" SET "weeklyAvgPost" = pre."weeklyAvgPost" FROM pre
+      WHERE pre."groupId" = "Group"."id" AND pre."weeklyAvgPost" != "Group"."weeklyAvgPost"
+      RETURNING pre."groupId", pre."weeklyAvgPost"
+    `;
   }
 }

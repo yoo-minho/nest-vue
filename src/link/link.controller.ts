@@ -1,5 +1,14 @@
-import { Controller, Patch, Param, Get, Query } from '@nestjs/common';
+import {
+  Controller,
+  Patch,
+  Param,
+  Get,
+  Query,
+  Post,
+  Body,
+} from '@nestjs/common';
 import { LinkService } from './link.service';
+import { LinkItemDto } from 'src/group/dto/link-item.dto';
 
 @Controller('link')
 export class LinkController {
@@ -17,6 +26,12 @@ export class LinkController {
       skip: (page - 1) * PAGE_PER_COUNT,
       take: PAGE_PER_COUNT,
     });
+  }
+
+  @Post()
+  create(@Body() linkItemDto: LinkItemDto) {
+    //중복 제거
+    return this.linkService.createLink(linkItemDto);
   }
 
   @Patch(':id')

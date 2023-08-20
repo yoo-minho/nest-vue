@@ -218,9 +218,8 @@ export class GroupController {
 
   @Put('stat')
   async updateStat(@Body('groupId') groupId: number) {
-    const { weeklyAvgPost } = await this.groupService.updateWeeklyAvgPost(
-      groupId,
-    );
+    const { weeklyAvgPost } =
+      await this.groupService.updateWeeklyAvgPostByGroupId(groupId);
     const { lastPostCreatedAt } =
       await this.groupService.updateLastPostCreatedAt(groupId);
     return { weeklyAvgPost, lastPostCreatedAt };
