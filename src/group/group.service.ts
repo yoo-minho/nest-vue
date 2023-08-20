@@ -233,7 +233,8 @@ export class GroupService {
         SELECT max("createdAt") as "lastPostCreatedAt" FROM "Post" WHERE "linkId" = ${linkId}
       )
       UPDATE "Link" SET "lastPostCreatedAt" = pre."lastPostCreatedAt" 
-      FROM pre WHERE "Link"."id" = ${linkId} AND "Link"."lastPostCreatedAt" != pre."lastPostCreatedAt" 
+      FROM pre WHERE "Link"."id" = ${linkId} 
+      AND ("Link"."lastPostCreatedAt" is null OR "Link"."lastPostCreatedAt" != pre."lastPostCreatedAt")
       RETURNING pre."lastPostCreatedAt"
     `;
     await this.prisma.$queryRaw`
@@ -247,7 +248,8 @@ export class GroupService {
         FROM "LinksOnGroups" t WHERE "linkId" = ${linkId}
       )
       UPDATE "Group" SET "lastPostCreatedAt" = pre."lastPostCreatedAt" FROM pre
-      WHERE "Group"."id" = pre."groupId" AND "Group"."lastPostCreatedAt" != pre."lastPostCreatedAt"
+      WHERE "Group"."id" = pre."groupId" 
+      AND ("Group"."lastPostCreatedAt" is null OR "Group"."lastPostCreatedAt" != pre."lastPostCreatedAt")
     `;
     return { lastPostCreatedAt: result.lastPostCreatedAt };
   }

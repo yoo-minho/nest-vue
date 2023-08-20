@@ -15,13 +15,17 @@ export class LinkController {
   constructor(private readonly linkService: LinkService) {}
 
   @Get()
-  findAll(@Query() { tag, page }) {
+  findAll(@Query() { tag, page }, @Query('withTeam') withTeam: boolean) {
     const isExistsTag = !!tag && tag !== 'All';
     const tagOption = isExistsTag ? { type: { equals: tag } } : {};
     const PAGE_PER_COUNT = 10;
     page = page || 1;
     return this.linkService.links({
-      where: { ...tagOption, lastPostCreatedAt: { not: null } },
+      where: {
+        ...tagOption,
+        groups: { [withTeam ? 'some' : 'none']: {} },
+        lastPostCreatedAt: { not: null },
+      },
       orderBy: { lastPostCreatedAt: 'desc' },
       skip: (page - 1) * PAGE_PER_COUNT,
       take: PAGE_PER_COUNT,
