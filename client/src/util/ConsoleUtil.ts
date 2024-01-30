@@ -1,12 +1,12 @@
 export const mainLog = () => {
   console.log(
     `
-    %c TEAMLOG.TEAM
-    %c TEAMLOG.TEAM
-    %c TEAMLOG.TEAM
-    %c TEAMLOG.TEAM
-    %c TEAMLOG.TEAM
-    %c TEAMLOG.TEAM
+    %c TEAMLOG.CC
+    %c TEAMLOG.CC
+    %c TEAMLOG.CC
+    %c TEAMLOG.CC
+    %c TEAMLOG.CC
+    %c TEAMLOG.CC
     `,
     'color:#22577A',
     'color:#38A3A5',
